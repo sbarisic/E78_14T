@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Gauges>
+  <Gauge>
+    <RelativeLocation>1.1, 0</RelativeLocation>
+    <RelativeSize>32, 23.75</RelativeSize>
+    <Type>1</Type>
+    <Label>MAF</Label>
+    <ParameterID>50040</ParameterID>
+    <Unit>71</Unit>
+    <Decimals>1</Decimals>
+    <Maximum>160</Maximum>
+    <MajorTickCount>9</MajorTickCount>
+    <MajorTickFactor>1</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+  </Gauge>
+  <Gauge>
+    <RelativeLocation>1.1, 25</RelativeLocation>
+    <RelativeSize>32, 23.75</RelativeSize>
+    <Type>1</Type>
+    <Label>MAP</Label>
+    <ParameterID>50030</ParameterID>
+    <Unit>91</Unit>
+    <Maximum>300</Maximum>
+    <MajorTickCount>6</MajorTickCount>
+    <MajorTickFactor>1</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+  </Gauge>
+  <Gauge>
+    <RelativeLocation>1.1, 50</RelativeLocation>
+    <RelativeSize>32, 23.75</RelativeSize>
+    <Type>1</Type>
+    <Label>ECT</Label>
+    <ParameterID>50010</ParameterID>
+    <Unit>241</Unit>
+    <Minimum>10</Minimum>
+    <Maximum>120</Maximum>
+    <MajorTickCount>12</MajorTickCount>
+    <MajorTickFactor>1</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+    <Ranges>
+      <Range Start="100" End="110" Level="2" />
+      <Range Start="110" End="120" Level="3" />
+    </Ranges>
+  </Gauge>
+  <Gauge>
+    <RelativeLocation>1.1, 75</RelativeLocation>
+    <RelativeSize>32, 23.75</RelativeSize>
+    <Type>1</Type>
+    <Label>IAT</Label>
+    <ParameterID>50011</ParameterID>
+    <Unit>241</Unit>
+    <Maximum>70</Maximum>
+    <MajorTickCount>8</MajorTickCount>
+    <MajorTickFactor>1</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+    <Ranges>
+      <Range Start="35" End="45" Level="2" />
+      <Range Start="45" End="70" Level="3" />
+    </Ranges>
+  </Gauge>
+  <Gauge>
+    <RelativeLocation>32, 1.8</RelativeLocation>
+    <RelativeSize>66, 49.09</RelativeSize>
+    <Type>1</Type>
+    <Label>RPM</Label>
+    <ParameterID>50070</ParameterID>
+    <Unit>56</Unit>
+    <Maximum>7000</Maximum>
+    <MajorTickCount>8</MajorTickCount>
+    <MajorTickFactor>1000</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+    <Ranges>
+      <Range Start="5500" End="6000" Level="2" />
+      <Range Start="6000" End="7000" Level="3" />
+    </Ranges>
+  </Gauge>
+  <Gauge>
+    <RelativeLocation>32, 50</RelativeLocation>
+    <RelativeSize>66, 49.09</RelativeSize>
+    <Type>1</Type>
+    <Label>Speed</Label>
+    <ParameterID>50020</ParameterID>
+    <Unit>113</Unit>
+    <Maximum>200</Maximum>
+    <MajorTickCount>9</MajorTickCount>
+    <MajorTickFactor>1</MajorTickFactor>
+    <MinorTickCount>5</MinorTickCount>
+    <BaseArcStart>135</BaseArcStart>
+    <BaseArcSweep>270</BaseArcSweep>
+    <DrawMaximumPeak>True</DrawMaximumPeak>
+  </Gauge>
+</Gauges>
