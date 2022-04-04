@@ -1,36 +1,66 @@
 #include <mcp_can.h>
 #include <SPI.h>
 
-#define CAN0_INT 2    // INT pin
+#define CAN0_INT 3    // INT pin
 MCP_CAN CAN0(10);      // CS pin
 
-byte CAN0_byteBuf[256];
-byte CAN0_len;
-unsigned long CAN0_rxID;
+#define CAN1_INT 2
+MCP_CAN CAN1(9);
+
+byte byteBuf[256];
+byte byteLen;
+unsigned long rxID;
 
 void setup() {
 	Serial.begin(2000000);
+	
+	bool ready0 = false;
+	bool ready1 = false;
+	bool wait = true;
 
 	while (!Serial) {
 	}
 
 	if (CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) {
-		Serial.println("READY");
+		Serial.println("READY CAN0");
+		CAN0.setMode(MCP_NORMAL);
+		ready0 = true;
 	} else {
-		Serial.println("ERROR");
+		Serial.println("ERROR CAN0");
 	}
 
-	bool wait = true;
+	if (CAN1.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) {
+		Serial.println("READY CAN1");
+		CAN1.setMode(MCP_NORMAL);
+		ready1 = true;
+	} else {
+		Serial.println("ERROR CAN1");
+	}
+
+	if (ready0 && ready1) {
+		Serial.println("READY");
+	}
+
 	while (wait) {
-		if (Serial.readBytes(CAN0_byteBuf, 1) > 0) {
-			if (CAN0_byteBuf[0] == 0x42) {
+		if (Serial.readBytes(byteBuf, 1) > 0) {
+			if (byteBuf[0] == 0x42) {
 				wait = false;
 			}
 		}
 	}
 	
+	SPI.setClockDivider(SPI_CLOCK_DIV2);
+	pinMode(CAN0_INT, INPUT);
+	pinMode(CAN1_INT, INPUT);
+	
 	Serial.println("SWITCHBIN");
-	pinMode(2, INPUT);
+	/*delay(2000);
+	
+	byteLen = 3;
+	byteBuf[0] = 0x45;	
+	byteBuf[1] = 0xAB;	
+	byteBuf[2] = 0x69;
+	CAN1.sendMsgBuf(0xAABB, 1, byteLen, byteBuf);*/
 }
 
 void serial_send(byte CANsrc, unsigned long rxID, byte CAN_len, byte* CAN_buf) {
@@ -42,15 +72,26 @@ void serial_send(byte CANsrc, unsigned long rxID, byte CAN_len, byte* CAN_buf) {
 
 
 void loop() {
-	delay(500);
+    //CAN1.readMsgBuf(&rxID, &byteLen, byteBuf);
+    //serial_send(1, rxID, byteLen, byteBuf);
+  
+	/*if (!digitalRead(CAN0_INT)) {
+		CAN0.readMsgBuf(&rxID, &byteLen, byteBuf);
+		serial_send(0, rxID, byteLen, byteBuf);
+	}*/
 	
-	// CAN0.readMsgBuf(&CAN0_rxID, &CAN0_len, CAN0_byteBuf);
+	if (!digitalRead(CAN1_INT)) {
+		CAN1.readMsgBuf(&rxID, &byteLen, byteBuf);
+		serial_send(1, rxID, byteLen, byteBuf);
+	}
 	
-	CAN0_rxID = 0xAABBCCDD;
-	CAN0_len = 3;
-	CAN0_byteBuf[0] = 0x45;	
-	CAN0_byteBuf[1] = 0xAB;	
-	CAN0_byteBuf[2] = 0x69;
+	// CAN0.readMsgBuf(&rxID, &byteLen, byteBuf);
 	
-	serial_send(0, CAN0_rxID, CAN0_len, CAN0_byteBuf);
+	/*rxID = 0xAABBCCDD;
+	byteLen = 3;
+	byteBuf[0] = 0x45;	
+	byteBuf[1] = 0xAB;	
+	byteBuf[2] = 0x69;
+	
+	serial_send(0, rxID, byteLen, byteBuf);*/
 }

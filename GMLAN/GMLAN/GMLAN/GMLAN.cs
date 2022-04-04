@@ -12,6 +12,9 @@ using System.Runtime.InteropServices;
 namespace GMLAN {
 	static class Utils {
 		public static string PadRight(string In, int Len) {
+			if (Len - In.Length < 0)
+				return "";
+
 			return In + new string(' ', Len - In.Length);
 		}
 	}
@@ -36,8 +39,8 @@ namespace GMLAN {
 		}
 
 		public CANFrame(uint ID, byte[] Data) {
-			if (Data.Length > 8)
-				throw new Exception("Invalid data length");
+			/*if (Data.Length > 8)
+				throw new Exception("Invalid data length");*/
 
 			this.ID = ID;
 			this.Data = Data;
@@ -118,6 +121,9 @@ namespace GMLAN {
 
 		public void AddFrame(CANFrame Frame) {
 			lock (this) {
+				if (Frame.ID > 4008)
+					return;
+
 				if (FilterIDs != null && FilterIDs.Contains(Frame.ID))
 					return;
 
