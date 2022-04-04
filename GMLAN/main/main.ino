@@ -33,16 +33,24 @@ void setup() {
 	pinMode(2, INPUT);
 }
 
+void serial_send(byte CANsrc, unsigned long rxID, byte CAN_len, byte* CAN_buf) {
+	Serial.write(CANsrc);
+	Serial.write((byte*)&rxID, sizeof(unsigned long));
+	Serial.write(CAN_len);
+	Serial.write(CAN_buf, CAN_len);
+}
+
 
 void loop() {
 	delay(500);
 	
 	// CAN0.readMsgBuf(&CAN0_rxID, &CAN0_len, CAN0_byteBuf);
 	
-	CAN0_len = 10;
 	CAN0_rxID = 0xAABBCCDD;
+	CAN0_len = 3;
+	CAN0_byteBuf[0] = 0x45;	
+	CAN0_byteBuf[1] = 0xAB;	
+	CAN0_byteBuf[2] = 0x69;
 	
-	Serial.write((byte*)&CAN0_rxID, sizeof(unsigned long));
-	Serial.write(CAN0_len);
-	Serial.write(CAN0_byteBuf, 10);
+	serial_send(0, CAN0_rxID, CAN0_len, CAN0_byteBuf);
 }

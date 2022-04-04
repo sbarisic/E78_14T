@@ -283,8 +283,11 @@ namespace GMLAN {
 			while (true) {
 				if (BinaryMode) {
 
+					// Source
+					byte CANSrc = (byte)InPort.ReadByte();
+
 					// ArbID
-					for (int i = 0; i < 4; i++) 
+					for (int i = 0; i < 4; i++)
 						ArbID.Data[i] = (byte)InPort.ReadByte();
 
 					// Data
@@ -293,13 +296,13 @@ namespace GMLAN {
 						Buffer[i] = (byte)InPort.ReadByte();
 					}
 
-					Console.Write("ArbID: {0:X8} - ", ArbID.ID);
-
+					/*Console.Write("[{0}] {1:X8} - ", CANSrc, ArbID.ID);
 					for (int i = 0; i < Len; i++) {
 						Console.Write("{0:X2} ", Buffer[i]);
 					}
+					Console.WriteLine();*/
 
-					Console.WriteLine();
+					CANList.AddFrame(new CANFrame(ArbID.ID, Buffer.Take(Len).ToArray()));
 
 				} else {
 					string Ln = InPort.ReadLine();
