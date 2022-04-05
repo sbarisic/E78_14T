@@ -9,9 +9,11 @@ MCP_CAN CAN1(9);
 
 typedef long unsigned int rxid_t;
 
-byte byteBuf[256];
+byte byteBuf[32];
 byte byteLen;
 rxid_t rxID;
+
+byte sendBuf[256];
 
 void setup() {
 	Serial.begin(2000000);
@@ -66,10 +68,29 @@ void setup() {
 }
 
 void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
-	Serial.write(CANsrc);
+	int len = 0;
+	int idx = 0;
+	
+	sendBuf[idx++] = CANsrc;
+	
+	for (int i = 0; i < sizeof(rxid_t); i++) {
+		sendbuf[idx++] = ((byte*)&rxID)[i];
+		len++;
+	}
+	
+	sendbuf[idx++] = CAN_len;
+	
+	for (int i = 0; i < CAN_len; i++) {
+		sendbuf[idx++] = CAN_buf[i];
+		len++;
+	}
+	
+	Serial.write(sendBuf, len);
+	
+	/*Serial.write(CANsrc);
 	Serial.write((byte*)&rxID, sizeof(rxid_t));
 	Serial.write(CAN_len);
-	Serial.write(CAN_buf, CAN_len);
+	Serial.write(CAN_buf, CAN_len);*/
 }
 
 
