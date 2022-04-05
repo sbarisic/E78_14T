@@ -46,8 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CANFrameArray.cs" />
+    <Compile Include="CANPacketList.cs" />
     <Compile Include="GMLAN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SevenBitMarking.cs" />
+    <Compile Include="Structs.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -7,6 +7,8 @@ MCP_CAN CAN0(10);      // CS pin
 #define CAN1_INT 2
 MCP_CAN CAN1(9);
 
+#define WAIT_FOR_REQUEST
+
 typedef long unsigned int rxid_t;
 
 byte byteBuf[32];
@@ -24,6 +26,10 @@ void setup() {
 
 	while (!Serial) {
 	}
+	
+	Serial.print("sizeof(rxid_t) = ");
+	Serial.print(sizeof(rxid_t));
+	Serial.println("");
 
 	if (CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) {
 		Serial.println("READY CAN0");
@@ -45,6 +51,7 @@ void setup() {
 		Serial.println("READY");
 	}
 
+#ifdef WAIT_FOR_REQUEST
 	while (wait) {
 		if (Serial.readBytes(byteBuf, 1) > 0) {
 			if (byteBuf[0] == 0x42) {
@@ -52,6 +59,7 @@ void setup() {
 			}
 		}
 	}
+#endif
 	
 	SPI.setClockDivider(SPI_CLOCK_DIV2);
 	pinMode(CAN0_INT, INPUT);
@@ -67,25 +75,33 @@ void setup() {
 	CAN1.sendMsgBuf(0xAABB, 1, byteLen, byteBuf);*/
 }
 
-void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
-	int len = 0;
-	int idx = 0;
+void can_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
+	MCP_CAN* can = NULL;
 	
+	if (CANsrc == 0) {
+		can = &CAN0;
+	} else {
+		can = &CAN1;
+	}
+	
+	can->sendMsgBuf(rxID, CAN_len, CAN_buf);
+}
+
+void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
+	int idx = 0;
 	sendBuf[idx++] = CANsrc;
 	
 	for (int i = 0; i < sizeof(rxid_t); i++) {
-		sendbuf[idx++] = ((byte*)&rxID)[i];
-		len++;
+		sendBuf[idx++] = ((byte*)&rxID)[i];
 	}
 	
-	sendbuf[idx++] = CAN_len;
+	sendBuf[idx++] = CAN_len;
 	
 	for (int i = 0; i < CAN_len; i++) {
-		sendbuf[idx++] = CAN_buf[i];
-		len++;
+		sendBuf[idx++] = CAN_buf[i];
 	}
 	
-	Serial.write(sendBuf, len);
+	Serial.write(sendBuf, idx);
 	
 	/*Serial.write(CANsrc);
 	Serial.write((byte*)&rxID, sizeof(rxid_t));
@@ -96,12 +112,17 @@ void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
 
 void loop() {
 	if (!digitalRead(CAN0_INT)) {
-		CAN0.readMsgBuf(&rxID, &byteLen, byteBuf);
-		serial_send(0, rxID, byteLen, byteBuf);
+		if (CAN0.readMsgBuf(&rxID, &byteLen, byteBuf) == CAN_OK) {
+			serial_send(0, rxID, byteLen, byteBuf);
+		}
 	}
 	
 	if (!digitalRead(CAN1_INT)) {
-		CAN1.readMsgBuf(&rxID, &byteLen, byteBuf);
-		serial_send(1, rxID, byteLen, byteBuf);
+		if (CAN1.readMsgBuf(&rxID, &byteLen, byteBuf) == CAN_OK) {
+			serial_send(1, rxID, byteLen, byteBuf);
+		}
 	}
+	
+	delay(1000);
+	can_send(1, 0x12ABCD, 1, byteBuf);
 }
