@@ -7,23 +7,15 @@ MCP_CAN CAN0(10);      // CS pin
 #define CAN1_INT 2
 MCP_CAN CAN1(9);
 
-#define WAIT_FOR_REQUEST
-
 typedef long unsigned int rxid_t;
 
 byte byteBuf[32];
 byte byteLen;
 rxid_t rxID;
 
-byte sendBuf[256];
-
 void setup() {
 	Serial.begin(2000000);
 	
-	bool ready0 = false;
-	bool ready1 = false;
-	bool wait = true;
-
 	while (!Serial) {
 	}
 	
@@ -34,7 +26,6 @@ void setup() {
 	if (CAN0.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) {
 		Serial.println("READY CAN0");
 		CAN0.setMode(MCP_NORMAL);
-		ready0 = true;
 	} else {
 		Serial.println("ERROR CAN0");
 	}
@@ -42,30 +33,15 @@ void setup() {
 	if (CAN1.begin(MCP_STDEXT, CAN_500KBPS, MCP_16MHZ) == CAN_OK) {
 		Serial.println("READY CAN1");
 		CAN1.setMode(MCP_NORMAL);
-		ready1 = true;
 	} else {
 		Serial.println("ERROR CAN1");
 	}
-
-	if (ready0 && ready1) {
-		Serial.println("READY");
-	}
-
-#ifdef WAIT_FOR_REQUEST
-	while (wait) {
-		if (Serial.readBytes(byteBuf, 1) > 0) {
-			if (byteBuf[0] == 0x42) {
-				wait = false;
-			}
-		}
-	}
-#endif
 	
 	SPI.setClockDivider(SPI_CLOCK_DIV2);
 	pinMode(CAN0_INT, INPUT);
 	pinMode(CAN1_INT, INPUT);
 	
-	Serial.println("SWITCHBIN");
+	
 	/*delay(2000);
 	
 	byteLen = 3;
@@ -87,8 +63,48 @@ void can_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
 	can->sendMsgBuf(rxID, CAN_len, CAN_buf);
 }
 
+void sevenbit_encode(byte* RawData, byte RawDataLen, byte* FrameData, byte* OutLen) {
+	byte FrameIdx = 0;
+	byte ExtraBitCount = 0;
+	byte ExtraBits = 0;
+
+	// Placeholder for length
+	FrameData[FrameIdx++] = 0b10000000;
+
+	for (byte i = 0; i < RawDataLen; i++) {
+		// Calculate shifted byte
+		int B = (RawData[i] >> 1) & 0b01111111;
+
+		// Add shifted byte
+		FrameData[FrameIdx++] = (byte)B;
+
+		// Put extra bit aside
+		ExtraBits = (byte)((ExtraBits << 1) | (RawData[i] & 0x1));
+		ExtraBitCount++;
+
+		// If enough extra bits, add extra bits
+		if (ExtraBitCount == 7) {
+			FrameData[FrameIdx++] = ExtraBits;
+
+			ExtraBits = 0;
+			ExtraBitCount = 0;
+		}
+	}
+
+	// If leftover extra bits, add extra bits
+	if (ExtraBitCount > 0) {
+		FrameData[FrameIdx++] = (byte)(ExtraBits << (7 - ExtraBitCount));
+	}
+
+	FrameData[0] |= (byte)(FrameIdx - 1);
+	*OutLen = FrameIdx;
+}
+
+byte sendBuf[111];
+byte encSendBuf[128];
+
 void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
-	int idx = 0;
+	byte idx = 0;
 	sendBuf[idx++] = CANsrc;
 	
 	for (int i = 0; i < sizeof(rxid_t); i++) {
@@ -101,14 +117,32 @@ void serial_send(byte CANsrc, rxid_t rxID, byte CAN_len, byte* CAN_buf) {
 		sendBuf[idx++] = CAN_buf[i];
 	}
 	
-	Serial.write(sendBuf, idx);
+	/*Serial.print("Count: ");
+	Serial.println(idx);
+	for (int i = 0; i < idx; i++) {
+		Serial.print(sendBuf[i], HEX);
+		Serial.print(" ");
+	}
+	Serial.println("");*/
 	
+	sevenbit_encode(sendBuf, idx, encSendBuf, &idx);
+	Serial.write(encSendBuf, idx);
+	
+	/*Serial.print("Count: ");
+	Serial.println(idx);
+	for (int i = 0; i < idx; i++) {
+		Serial.print(encSendBuf[i], BIN);
+		Serial.print(" ");
+	}
+	Serial.println("");*/
+	
+	
+	// old
 	/*Serial.write(CANsrc);
 	Serial.write((byte*)&rxID, sizeof(rxid_t));
 	Serial.write(CAN_len);
 	Serial.write(CAN_buf, CAN_len);*/
 }
-
 
 void loop() {
 	if (!digitalRead(CAN0_INT)) {
@@ -124,5 +158,6 @@ void loop() {
 	}
 	
 	delay(1000);
-	can_send(1, 0x12ABCD, 1, byteBuf);
+	byteBuf[0] = 0x69;
+	can_send(1, 0x33, 1, byteBuf);
 }

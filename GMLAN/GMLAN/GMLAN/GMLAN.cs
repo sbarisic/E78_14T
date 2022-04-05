@@ -103,7 +103,38 @@ namespace GMLAN {
 			byte[] Buffer = new byte[256];
 
 			while (true) {
-				if (BinaryMode) {
+
+				byte B = ReadByte();
+				if ((B & 0b10000000) != 0) {
+					int Count = B & 0b01111111;
+
+					byte[] EncodedBytes = new byte[Count + 1];
+					EncodedBytes[0] = B;
+
+					for (int i = 0; i < Count; i++) {
+						EncodedBytes[i + 1] = ReadByte();
+					}
+
+					byte[] Decoded = SevenBitMarking.Decode(EncodedBytes, (byte)EncodedBytes.Length);
+					int ReadIdx = 0;
+
+					// Source
+					byte CANSrc = Decoded[ReadIdx++];
+
+					// ArbID
+					for (int i = 0; i < 4; i++)
+						ArbID.Data[i] = Decoded[ReadIdx++];
+
+					// Data
+					byte DataLen = Decoded[ReadIdx++];
+					for (int i = 0; i < DataLen; i++)
+						Buffer[i] = Decoded[ReadIdx++];
+
+					CANFrame Frame = new CANFrame(ArbID.ID, Buffer.Take(DataLen).ToArray());
+					CANList.AddFrame(Frame);
+				}
+
+				/*if (BinaryMode) {
 					// Source
 					byte CANSrc = ReadByte();
 
@@ -132,7 +163,7 @@ namespace GMLAN {
 						Console.Clear();
 						BinaryMode = true;
 					}
-				}
+				}*/
 			}
 		}
 	}
