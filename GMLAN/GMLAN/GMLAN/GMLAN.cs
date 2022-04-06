@@ -10,48 +10,48 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace GMLAN {
-	internal unsafe static class Program {
-		static Random Rnd = new Random();
-		static CANPacketList CANList;
-		static SerialPort InputPort;
+    internal unsafe static class Program {
+        static Random Rnd = new Random();
+        static CANPacketList CANList;
+        static SerialPort InputPort;
 
-		static void Main(string[] args) {
-			CANList = new CANPacketList();
-			Stopwatch SWatch = Stopwatch.StartNew();
+        static void Main(string[] args) {
+            CANList = new CANPacketList();
+            Stopwatch SWatch = Stopwatch.StartNew();
 
-			if (File.Exists("filter.dat")) {
-				string[] FiltLines = File.ReadAllLines("filter.dat").Select(L => L.Trim()).ToArray();
-				List<uint> FiltIDs = new List<uint>();
+            if (File.Exists("filter.dat")) {
+                string[] FiltLines = File.ReadAllLines("filter.dat").Select(L => L.Trim()).ToArray();
+                List<uint> FiltIDs = new List<uint>();
 
-				for (int i = 0; i < FiltLines.Length; i++) {
-					if (FiltLines[i].Trim().Length > 0) {
-						FiltIDs.Add(Convert.ToUInt32(FiltLines[i].Replace("0x", "").Trim(), 16));
-					}
-				}
+                for (int i = 0; i < FiltLines.Length; i++) {
+                    if (FiltLines[i].Trim().Length > 0) {
+                        FiltIDs.Add(Convert.ToUInt32(FiltLines[i].Replace("0x", "").Trim(), 16));
+                    }
+                }
 
-				if (FiltIDs.Count > 0)
-					CANList.FilterIDs = FiltIDs.ToArray();
-			}
+                if (FiltIDs.Count > 0)
+                    CANList.FilterIDs = FiltIDs.ToArray();
+            }
 
-			Thread ListenThrd = new Thread(ListenThread);
-			ListenThrd.IsBackground = true;
-			ListenThrd.Start();
+            Thread ListenThrd = new Thread(ListenThread);
+            ListenThrd.IsBackground = true;
+            ListenThrd.Start();
 
-			while (true) {
-				if (SWatch.ElapsedMilliseconds > 100) {
-					SWatch.Restart();
+            while (true) {
+                if (SWatch.ElapsedMilliseconds > 100) {
+                    SWatch.Restart();
 
-					CANList.PrettyPrint();
-				}
-			}
-		}
+                    CANList.PrettyPrint();
+                }
+            }
+        }
 
-		static byte ReadByte() {
-			return (byte)InputPort.ReadByte();
-		}
+        static byte ReadByte() {
+            return (byte)InputPort.ReadByte();
+        }
 
-		static void ListenThread() {
-			/*string[] CapLines = File.ReadAllLines("test_capture.txt");
+        static void ListenThread() {
+            /*string[] CapLines = File.ReadAllLines("test_capture.txt");
 
             for (int i = 0; i < CapLines.Length; i++) {
                 string Line = CapLines[i];
@@ -60,11 +60,20 @@ namespace GMLAN {
                 byte[] Data = Line.Substring(39, Line.Length - 39).Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(B => Convert.ToByte(B.Replace("0x", ""), 16)).ToArray();
 
                 CANList.AddFrame(new CANFrame(ID, Data));
+				//Thread.Sleep(1);
+            }*/
+
+            List<CANHeader> Headers = new List<CANHeader>();
+            Headers.Add(new CANHeader() { HeaderRaw = 0xB9FFCABA });
+
+            for (int i = 0; i < Headers.Count; i++) {
+
+                CANList.AddFrame(new CANFrame(Headers[i], new byte[] { 0x42 }));
             }
 
-            return;*/
+            return;
 
-			/*
+            /*
             uint[] IDs = new uint[] { 0x0, 0x1, 0x6, 0x3, 0xA0, 0xB5, 0x11, 0xFF, 0xA1F, 0x8F4, 0x100, 0x242, 0xFFFF, 0x51FA, 0x2612, 0xBAAB };
 
             while (true) {
@@ -80,91 +89,60 @@ namespace GMLAN {
 
 
 
-			InputPort = new SerialPort("COM9", 2000000);
-			Console.WriteLine("Waiting for COM9");
-			bool Open = false;
+            InputPort = new SerialPort("COM9", 2000000);
+            Console.WriteLine("Waiting for COM9");
+            bool Open = false;
 
-			while (!Open) {
-				try {
-					InputPort.Open();
-					Open = true;
-				} catch (Exception) {
-				}
+            while (!Open) {
+                try {
+                    InputPort.Open();
+                    Open = true;
+                } catch (Exception) {
+                }
 
-				Thread.Sleep(1000);
-			}
+                Thread.Sleep(1000);
+            }
 
-			InputPort.DiscardInBuffer();
-			InputPort.DiscardOutBuffer();
+            InputPort.DiscardInBuffer();
+            InputPort.DiscardOutBuffer();
 
-			bool BinaryMode = false;
 
-			CAN_ArbID ArbID = new CAN_ArbID();
-			byte[] Buffer = new byte[256];
 
-			while (true) {
+            CANHeader Hdr = new CANHeader();
+            byte[] Buffer = new byte[256];
 
-				byte B = ReadByte();
-				if ((B & 0b10000000) != 0) {
-					int Count = B & 0b01111111;
+            while (true) {
 
-					byte[] EncodedBytes = new byte[Count + 1];
-					EncodedBytes[0] = B;
+                byte B = ReadByte();
+                if ((B & 0b10000000) != 0) {
+                    int Count = B & 0b01111111;
 
-					for (int i = 0; i < Count; i++) {
-						EncodedBytes[i + 1] = ReadByte();
-					}
+                    byte[] EncodedBytes = new byte[Count + 1];
+                    EncodedBytes[0] = B;
 
-					byte[] Decoded = SevenBitMarking.Decode(EncodedBytes, (byte)EncodedBytes.Length);
-					int ReadIdx = 0;
+                    for (int i = 0; i < Count; i++) {
+                        EncodedBytes[i + 1] = ReadByte();
+                    }
 
-					// Source
-					byte CANSrc = Decoded[ReadIdx++];
+                    byte[] Decoded = SevenBitMarking.Decode(EncodedBytes, (byte)EncodedBytes.Length);
+                    int ReadIdx = 0;
 
-					// ArbID
-					for (int i = 0; i < 4; i++)
-						ArbID.Data[i] = Decoded[ReadIdx++];
+                    // Source
+                    byte CANSrc = Decoded[ReadIdx++];
 
-					// Data
-					byte DataLen = Decoded[ReadIdx++];
-					for (int i = 0; i < DataLen; i++)
-						Buffer[i] = Decoded[ReadIdx++];
+                    // ArbID
+                    for (int i = 0; i < 4; i++)
+                        Hdr.HeaderBytes[i] = Decoded[ReadIdx++];
 
-					CANFrame Frame = new CANFrame(ArbID.ID, Buffer.Take(DataLen).ToArray());
-					CANList.AddFrame(Frame);
-				}
+                    // Data
+                    byte DataLen = Decoded[ReadIdx++];
+                    for (int i = 0; i < DataLen; i++)
+                        Buffer[i] = Decoded[ReadIdx++];
 
-				/*if (BinaryMode) {
-					// Source
-					byte CANSrc = ReadByte();
-
-					// ArbID
-					for (int i = 0; i < 4; i++)
-						ArbID.Data[i] = ReadByte();
-
-					// Data
-					byte Len = ReadByte();
-					for (int i = 0; i < Len; i++) {
-						Buffer[i] = ReadByte();
-					}
-
-					CANFrame Frame = new CANFrame(ArbID.ID, Buffer.Take(Len).ToArray());
-
-					CANList.AddFrame(Frame);
-
-				} else {
-					string Ln = InputPort.ReadLine();
-					Console.WriteLine(Ln);
-
-					if (Ln.Trim() == "READY")
-						InputPort.Write(new byte[] { 0x42 }, 0, 1);
-
-					if (Ln.Trim() == "SWITCHBIN") {
-						Console.Clear();
-						BinaryMode = true;
-					}
-				}*/
-			}
-		}
-	}
+                    CANFrame Frame = new CANFrame(Hdr, Buffer.Take(DataLen).ToArray());
+                    CANList.AddFrame(Frame);
+                }
+            }
+        }
+    }
 }

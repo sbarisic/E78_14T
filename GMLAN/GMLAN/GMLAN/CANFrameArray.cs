@@ -5,50 +5,60 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GMLAN {
-	class CANFrameArray {
-		public int HitCounter;
+    class CANFrameArray {
+        public int HitCounter;
 
-		CANFrame[] Frames;
-		int Count;
+        CANFrame[] Frames;
+        int Count;
 
-		public CANFrameArray() {
-			Frames = new CANFrame[4096];
-			Count = 0;
-			HitCounter = 0;
-		}
+        // 1 if difference in data, 0 else
+        int Diff = 0;
 
-		public void Push(CANFrame Frame) {
-			HitCounter++;
+        public CANFrameArray() {
+            Frames = new CANFrame[4096];
+            Count = 0;
+            HitCounter = 0;
+        }
 
-			if (Count >= Frames.Length) {
-				Array.Copy(Frames, 1, Frames, 0, Frames.Length - 1);
-				Frames[Frames.Length - 1] = Frame;
-			} else {
-				Frames[Count++] = Frame;
-			}
-		}
+        public void Push(CANFrame Frame) {
+            HitCounter++;
 
-		public CANFrame GetLast() {
-			return Frames[Count - 1];
-		}
+            if (Count >= Frames.Length) {
+                Array.Copy(Frames, 1, Frames, 0, Frames.Length - 1);
+                Frames[Frames.Length - 1] = Frame;
+            } else {
+                Frames[Count++] = Frame;
+            }
 
-		public bool AllDataSame() {
-			byte[] SampleData = Frames[0].Data;
+            if (CalcDiff() > 0)
+                Diff = 1;
+        }
 
-			for (int i = 1; i < Count; i++) {
-				byte[] CurData = Frames[i].Data;
+        int CalcDiff() {
+            byte[] SampleData = Frames[0].Data;
 
-				if (SampleData.Length != CurData.Length)
-					return false;
+            for (int i = 1; i < Count; i++) {
+                byte[] CurData = Frames[i].Data;
 
-				for (int j = 0; j < CurData.Length; j++) {
-					if (CurData[j] != SampleData[j])
-						return false;
-				}
-			}
+                if (SampleData.Length != CurData.Length)
+                    return 1;
 
-			return true;
-		}
-	}
+                for (int j = 0; j < CurData.Length; j++) {
+                    if (CurData[j] != SampleData[j])
+                        return 1;
+                }
+            }
+
+            return 0;
+        }
+
+        public CANFrame GetLast() {
+            return Frames[Count - 1];
+        }
+
+        public int HasDif() {
+            return Diff;
+        }
+    }
 
 }
