@@ -47,7 +47,7 @@ namespace GMLAN {
                     PrintDirty = false;
 
                     int[] ColSizes = new int[] {
-                        90,
+                        80,
                         30,
                         7,
                         4,

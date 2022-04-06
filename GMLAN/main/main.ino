@@ -157,7 +157,7 @@ void loop() {
 		}
 	}
 	
-	delay(1000);
+	/*delay(1000);
 	byteBuf[0] = 0x69;
-	can_send(1, 0x33, 1, byteBuf);
+	can_send(1, 0x33, 1, byteBuf);*/
 }

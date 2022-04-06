@@ -51,6 +51,7 @@ namespace GMLAN {
         }
 
         static void ListenThread() {
+            //----------------------------------------------------------------
             /*string[] CapLines = File.ReadAllLines("test_capture.txt");
 
             for (int i = 0; i < CapLines.Length; i++) {
@@ -63,7 +64,8 @@ namespace GMLAN {
 				//Thread.Sleep(1);
             }*/
 
-            List<CANHeader> Headers = new List<CANHeader>();
+            //----------------------------------------------------------------
+            /*List<CANHeader> Headers = new List<CANHeader>();
             Headers.Add(new CANHeader() { HeaderRaw = 0xB9FFCABA });
 
             for (int i = 0; i < Headers.Count; i++) {
@@ -71,8 +73,9 @@ namespace GMLAN {
                 CANList.AddFrame(new CANFrame(Headers[i], new byte[] { 0x42 }));
             }
 
-            return;
+            return;*/
 
+            //----------------------------------------------------------------
             /*
             uint[] IDs = new uint[] { 0x0, 0x1, 0x6, 0x3, 0xA0, 0xB5, 0x11, 0xFF, 0xA1F, 0x8F4, 0x100, 0x242, 0xFFFF, 0x51FA, 0x2612, 0xBAAB };
 
