@@ -68,7 +68,12 @@ namespace GMLAN {
 		}
 
 		public override string ToString() {
-			return string.Format("{8} UNUS(0x{4:X2}) PRI(0x{5:X2}) AID(0x{6:X4}) ECU(0x{7:X4}) - {8}", Utils.ToBin(Unused, 3), Utils.ToBin(Priority, 3), Utils.ToBin(ArbID, 13), Utils.ToBin(ECU, 13), Unused, Priority, ArbID, ECU, ECUName(), IsExtended ? "E" : "S");
+			if (IsExtended) {
+				return string.Format("UNUS(0x{4:X2}) PRI(0x{5:X2}) AID(0x{6:X4}) ECU(0x{7:X4}) - {8}", Utils.ToBin(Unused, 3), Utils.ToBin(Priority, 3), Utils.ToBin(ArbID, 13), Utils.ToBin(ECU, 13), Unused, Priority, ArbID, ECU, ECUName());
+			} else {
+				return string.Format("UNUS(0x{0:X2}) REQT(0x{1:X2}) ID(0x{2:X2})", Unused, RequestType, ArbID);
+			}
+
 		}
 
 		public string ECUName() {
