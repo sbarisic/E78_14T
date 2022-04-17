@@ -63,20 +63,4 @@
     <RowUnit>91</RowUnit>
     <RowAxis>10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300</RowAxis>
   </Table>
-  <Table>
-    <Label>O2 (mv)</Label>
-    <ParameterID>50051</ParameterID>
-    <Unit>14</Unit>
-    <HighValue>1000</HighValue>
-    <HighValueColor>-16711936</HighValueColor>
-    <MiddleValue>500</MiddleValue>
-    <LowValueColor>-65536</LowValueColor>
-    <ColumnParameterID>50070</ColumnParameterID>
-    <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,800,1200,1600,2000,2400,2800,3200,3600,4000,4400,4800,5200,5600,6000,6400,6800,7000</ColumnAxis>
-    <ColumnAxisVisualFactor>1000</ColumnAxisVisualFactor>
-    <RowParameterID>50030</RowParameterID>
-    <RowUnit>91</RowUnit>
-    <RowAxis>10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,280,290,300</RowAxis>
-  </Table>
 </Graphs>
