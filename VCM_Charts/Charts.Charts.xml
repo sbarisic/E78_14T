@@ -113,14 +113,55 @@
   </Chart>
   <Chart>
     <Series>
-      <Label>CalcEnginePower2</Label>
+      <Label>HP</Label>
       <ParameterID>61001</ParameterID>
       <Unit>82</Unit>
       <Decimals>1</Decimals>
       <Maximum>210</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-1</Color>
+      <Color>-65536</Color>
+    </Series>
+    <Series>
+      <Label>Nm</Label>
+      <ParameterID>61002</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>300</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16744193</Color>
+    </Series>
+    <Series>
+      <Label>VE</Label>
+      <ParameterID>61003</ParameterID>
+      <Unit>150</Unit>
+      <Minimum>-1</Minimum>
+      <Maximum>200</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16711872</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
+      <Label>MAF Cyl Air</Label>
+      <ParameterID>60104</ParameterID>
+      <Unit>223</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>2</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-65536</Color>
+    </Series>
+    <Series>
+      <Label>VE Cyl Air</Label>
+      <ParameterID>60142</ParameterID>
+      <Unit>223</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>2</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16744193</Color>
     </Series>
   </Chart>
 </Charts>
