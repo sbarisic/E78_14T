@@ -42,6 +42,17 @@
       <Reference>0</Reference>
       <Color>-65281</Color>
     </Series>
+    <Series>
+      <Label>ReqBoost</Label>
+      <ParameterID>2360</ParameterID>
+      <Unit>99</Unit>
+      <Decimals>2</Decimals>
+      <Minimum>-1</Minimum>
+      <Maximum>2.5</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-65536</Color>
+    </Series>
   </Chart>
   <Chart>
     <Series>
