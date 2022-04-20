@@ -1,0 +1,7 @@
+Testing: Increase intake cam degrees at idle, increased airflow = retarded, reduced airflow= advanced?
+By airflow I would be watching maf Hz.
+
+I believe I saw this method in one of the VVT tuning threads but I looked for hours last night and was unsuccessful
+
+
+If you increase it and the airflow goes up then on the intake that would be retard and exhaust advance. 
