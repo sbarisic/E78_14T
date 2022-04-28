@@ -100,26 +100,26 @@
   </Chart>
   <Chart>
     <Series>
-      <Label>LTFT B1</Label>
-      <ParameterID>50155</ParameterID>
-      <Unit>156</Unit>
-      <Decimals>1</Decimals>
-      <Minimum>-25</Minimum>
-      <Maximum>25</Maximum>
+      <Label>AFR Cmd</Label>
+      <ParameterID>50121</ParameterID>
+      <Unit>150</Unit>
+      <Decimals>2</Decimals>
+      <Minimum>9</Minimum>
+      <Maximum>17</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
     </Series>
     <Series>
-      <Label>STFT B1</Label>
-      <ParameterID>50156</ParameterID>
-      <Unit>156</Unit>
-      <Decimals>1</Decimals>
-      <Minimum>-25</Minimum>
-      <Maximum>25</Maximum>
+      <Label>AEM AFR</Label>
+      <ParameterID>31001</ParameterID>
+      <Unit>150</Unit>
+      <Decimals>2</Decimals>
+      <Minimum>9</Minimum>
+      <Maximum>17</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-8689426</Color>
+      <Color>-16711936</Color>
     </Series>
   </Chart>
   <Chart>

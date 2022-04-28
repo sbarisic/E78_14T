@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MathParameter Notes="" Decimals="0" Unit="150" Expression="100 * ([31000.238] / 14.7 - [50118.238]) / [50118.238]" Abbreviation="EQErr" Name="EQ Err" />

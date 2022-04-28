@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <DocumentContents>
-  <Content ID="4" Name="Graph" Parent="-1" IsActiveContent="True" Text="Graph">
+  <Content ID="2" Name="Graph" Parent="-1" IsActiveContent="True" Text="Graph">
     <Table>
       <Label>Spark Advance</Label>
       <ParameterID>50110</ParameterID>
@@ -63,10 +63,10 @@
       <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
     </Table>
     <Table>
-      <Label>VVE vs Trims</Label>
-      <ParameterID>60040</ParameterID>
-      <Unit>156</Unit>
-      <Decimals>1</Decimals>
+      <Label>EQErr</Label>
+      <ParameterID>61008</ParameterID>
+      <Unit>150</Unit>
+      <Decimals>3</Decimals>
       <HighValue>10</HighValue>
       <HighValueColor>-1876386</HighValueColor>
       <LowValue>-10</LowValue>
@@ -79,7 +79,7 @@
       <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
     </Table>
   </Content>
-  <Content ID="2" Name="Gauge" Parent="4" Text="Gauge">
+  <Content ID="3" Name="Gauge" Parent="2" Text="Gauge">
     <Gauge>
       <RelativeLocation>1.1, 0</RelativeLocation>
       <RelativeSize>32, 23.75</RelativeSize>
@@ -185,7 +185,7 @@
       <DrawMaximumPeak>True</DrawMaximumPeak>
     </Gauge>
   </Content>
-  <Content ID="3" Name="ChartvsTime" Parent="4" DockAlignment="3" Proportion="0.394907908992416" IsActiveContent="True" Text="Chart vs. Time">
+  <Content ID="4" Name="ChartvsTime" Parent="2" DockAlignment="3" Proportion="0.431683015074453" IsActiveContent="True" Text="Chart vs. Time">
     <Chart>
       <Series>
         <Label>RPM</Label>
@@ -286,26 +286,26 @@
     </Chart>
     <Chart>
       <Series>
-        <Label>LTFT B1</Label>
-        <ParameterID>50155</ParameterID>
-        <Unit>156</Unit>
-        <Decimals>1</Decimals>
-        <Minimum>-25</Minimum>
-        <Maximum>25</Maximum>
+        <Label>AFR Cmd</Label>
+        <ParameterID>50121</ParameterID>
+        <Unit>150</Unit>
+        <Decimals>2</Decimals>
+        <Minimum>9</Minimum>
+        <Maximum>17</Maximum>
         <DrawReference>False</DrawReference>
         <Reference>0</Reference>
         <Color>-65536</Color>
       </Series>
       <Series>
-        <Label>STFT B1</Label>
-        <ParameterID>50156</ParameterID>
-        <Unit>156</Unit>
-        <Decimals>1</Decimals>
-        <Minimum>-25</Minimum>
-        <Maximum>25</Maximum>
+        <Label>AEM AFR</Label>
+        <ParameterID>31001</ParameterID>
+        <Unit>150</Unit>
+        <Decimals>2</Decimals>
+        <Minimum>9</Minimum>
+        <Maximum>17</Maximum>
         <DrawReference>False</DrawReference>
         <Reference>0</Reference>
-        <Color>-8689426</Color>
+        <Color>-16711936</Color>
       </Series>
     </Chart>
     <Chart>
