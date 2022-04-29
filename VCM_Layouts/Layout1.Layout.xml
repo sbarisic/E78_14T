@@ -66,7 +66,8 @@
       <Label>EQErr</Label>
       <ParameterID>61008</ParameterID>
       <Unit>150</Unit>
-      <Decimals>3</Decimals>
+      <Decimals>2</Decimals>
+      <CellHitsRequired>7</CellHitsRequired>
       <HighValue>10</HighValue>
       <HighValueColor>-1876386</HighValueColor>
       <LowValue>-10</LowValue>
@@ -185,7 +186,7 @@
       <DrawMaximumPeak>True</DrawMaximumPeak>
     </Gauge>
   </Content>
-  <Content ID="4" Name="ChartvsTime" Parent="2" DockAlignment="3" Proportion="0.431683015074453" IsActiveContent="True" Text="Chart vs. Time">
+  <Content ID="4" Name="ChartvsTime" Parent="2" DockAlignment="3" Proportion="0.519526143916048" IsActiveContent="True" Text="Chart vs. Time">
     <Chart>
       <Series>
         <Label>RPM</Label>
@@ -205,8 +206,6 @@
         <Reference>0</Reference>
         <Color>-16711936</Color>
       </Series>
-    </Chart>
-    <Chart>
       <Series>
         <Label>MAF</Label>
         <ParameterID>50040</ParameterID>
@@ -217,6 +216,8 @@
         <Reference>0</Reference>
         <Color>-16711681</Color>
       </Series>
+    </Chart>
+    <Chart>
       <Series>
         <Label>Boost</Label>
         <ParameterID>60300</ParameterID>
@@ -307,6 +308,16 @@
         <Reference>0</Reference>
         <Color>-16711936</Color>
       </Series>
+      <Series>
+        <Label>EQ Err2</Label>
+        <ParameterID>61009</ParameterID>
+        <Unit>150</Unit>
+        <Decimals>2</Decimals>
+        <Maximum>10</Maximum>
+        <DrawReference>False</DrawReference>
+        <Reference>0</Reference>
+        <Color>-65408</Color>
+      </Series>
     </Chart>
     <Chart>
       <Series>
@@ -337,28 +348,6 @@
         <DrawReference>False</DrawReference>
         <Reference>0</Reference>
         <Color>-16711872</Color>
-      </Series>
-    </Chart>
-    <Chart>
-      <Series>
-        <Label>MAF Cyl Air</Label>
-        <ParameterID>60104</ParameterID>
-        <Unit>223</Unit>
-        <Decimals>2</Decimals>
-        <Maximum>2</Maximum>
-        <DrawReference>False</DrawReference>
-        <Reference>0</Reference>
-        <Color>-65536</Color>
-      </Series>
-      <Series>
-        <Label>VE Cyl Air</Label>
-        <ParameterID>60142</ParameterID>
-        <Unit>223</Unit>
-        <Decimals>2</Decimals>
-        <Maximum>2</Maximum>
-        <DrawReference>False</DrawReference>
-        <Reference>0</Reference>
-        <Color>-16744193</Color>
       </Series>
     </Chart>
   </Content>
