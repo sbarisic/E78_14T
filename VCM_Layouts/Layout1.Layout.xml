@@ -21,6 +21,7 @@
       <Label>Spark Retard</Label>
       <ParameterID>50111</ParameterID>
       <Unit>161</Unit>
+      <Decimals>1</Decimals>
       <HighValue>10</HighValue>
       <HighValueColor>-65536</HighValueColor>
       <LowValueColor>-1</LowValueColor>
@@ -78,6 +79,19 @@
       <RowParameterID>50030</RowParameterID>
       <RowUnit>99</RowUnit>
       <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
+    </Table>
+    <Table>
+      <Label>EQErr - MAF</Label>
+      <ViewZoomDataOnly>True</ViewZoomDataOnly>
+      <ParameterID>61008</ParameterID>
+      <Unit>150</Unit>
+      <HighValue>25</HighValue>
+      <HighValueColor>-65536</HighValueColor>
+      <LowValue>-25</LowValue>
+      <LowValueColor>-16711936</LowValueColor>
+      <ColumnParameterID>50080</ColumnParameterID>
+      <ColumnUnit>50</ColumnUnit>
+      <ColumnAxis>0,150,300,450,600,750,900,1050,1200,1350,1500,1650,1800,1950,2100,2250,2400,2550,2700,2850,3000,3150,3300,3450,3600,3750,3900,4050,4200,4350,4500,4650,4800,4950,5100,5250,5400,5550,5700,5850,6000,6150,6300,6450,6600,6750,6900,7050,7200,7350,7500,7650,7800,7950,8100,8250,8400,8550,8700,8850,9000,9150,9300,9450,9600,9750,9900,10050,10200,10350,10500,10650,10800,10950,11100,11250,11400,11550,11700,11850,12000,12150,12300,12450,12600,12750,12900,13050,13200,13350,13500,13650,13800,13950,14100,14250,14400,14550,14700,14850,15000</ColumnAxis>
     </Table>
   </Content>
   <Content ID="3" Name="Gauge" Parent="2" Text="Gauge">
@@ -186,7 +200,7 @@
       <DrawMaximumPeak>True</DrawMaximumPeak>
     </Gauge>
   </Content>
-  <Content ID="4" Name="ChartvsTime" Parent="2" DockAlignment="3" Proportion="0.519526143916048" IsActiveContent="True" Text="Chart vs. Time">
+  <Content ID="4" Name="ChartvsTime" Parent="2" DockAlignment="3" Proportion="0.433114264606539" IsActiveContent="True" Text="Chart vs. Time">
     <Chart>
       <Series>
         <Label>RPM</Label>
@@ -283,6 +297,15 @@
         <DrawReference>False</DrawReference>
         <Reference>0</Reference>
         <Color>-1</Color>
+      </Series>
+      <Series>
+        <Label>CamOverlap</Label>
+        <ParameterID>61010</ParameterID>
+        <Unit>150</Unit>
+        <Maximum>30</Maximum>
+        <DrawReference>False</DrawReference>
+        <Reference>0</Reference>
+        <Color>-16744193</Color>
       </Series>
     </Chart>
     <Chart>
