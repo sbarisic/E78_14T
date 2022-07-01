@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.IO;
 
 namespace WindowsFormsApp1 {
 	public partial class MainForm : Form {
@@ -103,8 +104,13 @@ namespace WindowsFormsApp1 {
 			MinRPM = 99999;
 			MaxRPM = 0;
 
+			foreach (string InFiles in Program.InFiles) {
+				string FileName = Path.GetFileNameWithoutExtension(InFiles);
+				LoadGraph(Program.ParseEntriesHPT(InFiles), FileName, Color.Red, Color.Blue, Color.DarkCyan);
+			}
 
-			LoadGraph(Program.ParseEntriesHPT("dynorun.csv"), "dynorun", Color.Red, Color.Blue, Color.DarkCyan);
+			//LoadGraph(Program.ParseEntriesHPT("a.csv"), "a", Color.Red, Color.Blue, Color.DarkCyan);
+			//LoadGraph(Program.ParseEntriesHPT("b.csv"), "b", Color.FromArgb(200, 50, 60), Color.FromArgb(50, 160, 200), Color.FromArgb(150, 50, 200));
 
 			/*DynoDataPoint[] Hypothetical = Program.ParseEntriesHPT("corsa2019_run1.csv");
 			Program.TamperNM(Hypothetical, 4500, 260);

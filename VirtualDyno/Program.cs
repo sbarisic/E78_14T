@@ -8,8 +8,11 @@ using System.Globalization;
 
 namespace WindowsFormsApp1 {
 	internal static class Program {
+		public static string[] InFiles;
+
 		[STAThread]
-		static void Main() {
+		static void Main(string[] Args) {
+			InFiles = Args;
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());
