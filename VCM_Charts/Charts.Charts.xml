@@ -5,7 +5,7 @@
       <Label>RPM</Label>
       <ParameterID>50070</ParameterID>
       <Unit>56</Unit>
-      <Maximum>6000</Maximum>
+      <Maximum>7500</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
@@ -14,7 +14,7 @@
       <Label>Speed</Label>
       <ParameterID>50020</ParameterID>
       <Unit>113</Unit>
-      <Maximum>260</Maximum>
+      <Maximum>200</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16711936</Color>
@@ -32,33 +32,29 @@
   </Chart>
   <Chart>
     <Series>
-      <Label>Boost</Label>
-      <ParameterID>60300</ParameterID>
-      <Unit>99</Unit>
-      <Decimals>2</Decimals>
-      <Minimum>-1</Minimum>
-      <Maximum>2.5</Maximum>
+      <Label>MAP</Label>
+      <ParameterID>50030</ParameterID>
+      <Unit>91</Unit>
+      <Maximum>250</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65281</Color>
     </Series>
     <Series>
-      <Label>ReqBoost</Label>
+      <Label>DesMAP</Label>
       <ParameterID>2360</ParameterID>
-      <Unit>99</Unit>
-      <Decimals>2</Decimals>
-      <Minimum>-1</Minimum>
-      <Maximum>2.5</Maximum>
+      <Unit>91</Unit>
+      <Maximum>250</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
     </Series>
     <Series>
-      <Label>IntakeTemp</Label>
+      <Label>Temp</Label>
       <ParameterID>2126</ParameterID>
       <Unit>241</Unit>
-      <Minimum>25</Minimum>
-      <Maximum>60</Maximum>
+      <Minimum>4</Minimum>
+      <Maximum>80</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16744193</Color>
@@ -108,13 +104,14 @@
       <Color>-1</Color>
     </Series>
     <Series>
-      <Label>CamOverlap</Label>
-      <ParameterID>61010</ParameterID>
-      <Unit>150</Unit>
-      <Maximum>30</Maximum>
+      <Label>Cylinder</Label>
+      <ParameterID>50041</ParameterID>
+      <Unit>223</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>1.5</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-16744193</Color>
+      <Color>-6960385</Color>
     </Series>
   </Chart>
   <Chart>
@@ -139,16 +136,6 @@
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16711936</Color>
-    </Series>
-    <Series>
-      <Label>EQ Err2</Label>
-      <ParameterID>61009</ParameterID>
-      <Unit>150</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>10</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-65408</Color>
     </Series>
   </Chart>
   <Chart>
