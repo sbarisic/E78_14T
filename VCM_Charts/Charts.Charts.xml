@@ -29,17 +29,18 @@
       <Reference>0</Reference>
       <Color>-16711681</Color>
     </Series>
-  </Chart>
-  <Chart>
     <Series>
-      <Label>MAP</Label>
-      <ParameterID>50030</ParameterID>
-      <Unit>91</Unit>
-      <Maximum>250</Maximum>
+      <Label>Temp</Label>
+      <ParameterID>2126</ParameterID>
+      <Unit>241</Unit>
+      <Minimum>4</Minimum>
+      <Maximum>80</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-65281</Color>
+      <Color>-16744193</Color>
     </Series>
+  </Chart>
+  <Chart>
     <Series>
       <Label>DesMAP</Label>
       <ParameterID>2360</ParameterID>
@@ -50,14 +51,55 @@
       <Color>-65536</Color>
     </Series>
     <Series>
-      <Label>Temp</Label>
-      <ParameterID>2126</ParameterID>
-      <Unit>241</Unit>
-      <Minimum>4</Minimum>
-      <Maximum>80</Maximum>
+      <Label>MAP</Label>
+      <ParameterID>50030</ParameterID>
+      <Unit>91</Unit>
+      <Maximum>250</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-16744193</Color>
+      <Color>-65281</Color>
+    </Series>
+    <Series>
+      <Label>PRatio</Label>
+      <ParameterID>60200</ParameterID>
+      <Unit>155</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>4</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16420365</Color>
+    </Series>
+    <Series>
+      <Label>Boost</Label>
+      <ParameterID>60300</ParameterID>
+      <Unit>99</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>2</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-9643776</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
+      <Label>DesPressRat</Label>
+      <ParameterID>61012</ParameterID>
+      <Unit>150</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>4</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-65536</Color>
+    </Series>
+    <Series>
+      <Label>PressRat</Label>
+      <ParameterID>61011</ParameterID>
+      <Unit>150</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>4</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-65281</Color>
     </Series>
   </Chart>
   <Chart>
@@ -76,8 +118,9 @@
       <ParameterID>50110</ParameterID>
       <Unit>161</Unit>
       <Decimals>1</Decimals>
+      <Minimum>-10</Minimum>
       <Maximum>45</Maximum>
-      <DrawReference>False</DrawReference>
+      <DrawReference>True</DrawReference>
       <Reference>0</Reference>
       <Color>-1</Color>
     </Series>
@@ -111,7 +154,7 @@
       <Maximum>1.5</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-6960385</Color>
+      <Color>-13132801</Color>
     </Series>
   </Chart>
   <Chart>
@@ -144,7 +187,8 @@
       <ParameterID>61001</ParameterID>
       <Unit>82</Unit>
       <Decimals>1</Decimals>
-      <Maximum>210</Maximum>
+      <Minimum>50</Minimum>
+      <Maximum>240</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
