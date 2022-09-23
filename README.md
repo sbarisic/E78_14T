@@ -4,7 +4,10 @@ Delphi E78 ECU and GM/Chevrolet/Opel 1.4T engine A14NET LUJ LUV information
 
 
 # BOSCH 0 280 158 117
+Note - none of these are confirmed as of yet
 
+545 cm3/min
+630 cm3/min @ 4 bar
 
 ### Injector voltage offset as a function of battery voltage
 | VBAT (V)   | Offset (ms)   |
