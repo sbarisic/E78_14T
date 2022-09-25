@@ -19,88 +19,6 @@
       <Reference>0</Reference>
       <Color>-16711936</Color>
     </Series>
-    <Series>
-      <Label>MAF</Label>
-      <ParameterID>50040</ParameterID>
-      <Unit>71</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>460</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16711681</Color>
-    </Series>
-    <Series>
-      <Label>Temp</Label>
-      <ParameterID>2126</ParameterID>
-      <Unit>241</Unit>
-      <Minimum>4</Minimum>
-      <Maximum>80</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16744193</Color>
-    </Series>
-  </Chart>
-  <Chart>
-    <Series>
-      <Label>DesMAP</Label>
-      <ParameterID>2360</ParameterID>
-      <Unit>91</Unit>
-      <Maximum>250</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-65536</Color>
-    </Series>
-    <Series>
-      <Label>MAP</Label>
-      <ParameterID>50030</ParameterID>
-      <Unit>91</Unit>
-      <Maximum>250</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-65281</Color>
-    </Series>
-    <Series>
-      <Label>PRatio</Label>
-      <ParameterID>60200</ParameterID>
-      <Unit>155</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>4</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16420365</Color>
-    </Series>
-    <Series>
-      <Label>Boost</Label>
-      <ParameterID>60300</ParameterID>
-      <Unit>99</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>2</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-9643776</Color>
-    </Series>
-  </Chart>
-  <Chart>
-    <Series>
-      <Label>DesPressRat</Label>
-      <ParameterID>61012</ParameterID>
-      <Unit>150</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>4</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-65536</Color>
-    </Series>
-    <Series>
-      <Label>PressRat</Label>
-      <ParameterID>61011</ParameterID>
-      <Unit>150</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>4</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-65281</Color>
-    </Series>
   </Chart>
   <Chart>
     <Series>
@@ -108,10 +26,33 @@
       <ParameterID>50111</ParameterID>
       <Unit>161</Unit>
       <Decimals>1</Decimals>
-      <Maximum>10</Maximum>
+      <Maximum>6</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
+      <Label>Boost</Label>
+      <ParameterID>60300</ParameterID>
+      <Unit>99</Unit>
+      <Decimals>3</Decimals>
+      <Maximum>2</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16711936</Color>
+    </Series>
+    <Series>
+      <Label>BSpark</Label>
+      <ParameterID>2510</ParameterID>
+      <Unit>161</Unit>
+      <Decimals>1</Decimals>
+      <Minimum>-10</Minimum>
+      <Maximum>45</Maximum>
+      <DrawReference>True</DrawReference>
+      <Reference>0</Reference>
+      <Color>-9652481</Color>
     </Series>
     <Series>
       <Label>Spark</Label>
@@ -127,34 +68,117 @@
   </Chart>
   <Chart>
     <Series>
+      <Label>DAF</Label>
+      <ParameterID>2320</ParameterID>
+      <Unit>71</Unit>
+      <Decimals>2</Decimals>
+      <Minimum>-1</Minimum>
+      <Maximum>200</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-1018857</Color>
+    </Series>
+    <Series>
+      <Label>MAF</Label>
+      <ParameterID>50040</ParameterID>
+      <Unit>71</Unit>
+      <Decimals>2</Decimals>
+      <Maximum>200</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16711681</Color>
+    </Series>
+    <Series>
+      <Label>Cylinder</Label>
+      <ParameterID>50041</ParameterID>
+      <Unit>223</Unit>
+      <Decimals>3</Decimals>
+      <Maximum>1</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-13132801</Color>
+    </Series>
+    <Series>
+      <Label>Surge</Label>
+      <ParameterID>61013</ParameterID>
+      <Unit>150</Unit>
+      <Maximum>5000</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-65536</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
+      <Label>DesMAP</Label>
+      <ParameterID>2360</ParameterID>
+      <Unit>91</Unit>
+      <Maximum>270</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-7606423</Color>
+    </Series>
+    <Series>
+      <Label>MAP</Label>
+      <ParameterID>50030</ParameterID>
+      <Unit>91</Unit>
+      <Maximum>270</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16744256</Color>
+    </Series>
+    <Series>
+      <Label>Baro</Label>
+      <ParameterID>50032</ParameterID>
+      <Unit>91</Unit>
+      <Decimals>2</Decimals>
+      <Minimum>70</Minimum>
+      <Maximum>105</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-32768</Color>
+    </Series>
+    <Series>
+      <Label>WGDC</Label>
+      <ParameterID>2304</ParameterID>
+      <Unit>156</Unit>
+      <Decimals>1</Decimals>
+      <Maximum>100</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-549854</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
       <Label>INJ B1</Label>
       <ParameterID>50151</ParameterID>
       <Unit>254</Unit>
       <Decimals>1</Decimals>
-      <Maximum>25</Maximum>
+      <Maximum>15</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-65536</Color>
+      <Color>-15026689</Color>
     </Series>
     <Series>
       <Label>INJ Duty</Label>
       <ParameterID>60000</ParameterID>
       <Unit>156</Unit>
       <Decimals>1</Decimals>
-      <Maximum>100</Maximum>
+      <Maximum>80</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-1</Color>
     </Series>
     <Series>
-      <Label>Cylinder</Label>
-      <ParameterID>50041</ParameterID>
-      <Unit>223</Unit>
-      <Decimals>2</Decimals>
-      <Maximum>1.5</Maximum>
+      <Label>Accel Pedal</Label>
+      <ParameterID>2114</ParameterID>
+      <Unit>156</Unit>
+      <Decimals>1</Decimals>
+      <Maximum>100</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-13132801</Color>
+      <Color>-16711936</Color>
     </Series>
   </Chart>
   <Chart>
@@ -201,16 +225,6 @@
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16744193</Color>
-    </Series>
-    <Series>
-      <Label>VE</Label>
-      <ParameterID>61003</ParameterID>
-      <Unit>150</Unit>
-      <Minimum>-1</Minimum>
-      <Maximum>200</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16711872</Color>
     </Series>
   </Chart>
 </Charts>
