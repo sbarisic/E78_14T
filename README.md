@@ -6,8 +6,16 @@ Delphi E78 ECU and GM/Chevrolet/Opel 1.4T engine A14NET LUJ LUV information
 # BOSCH 0 280 158 117
 Note - none of these are confirmed as of yet
 
-545 cm3/min
-630 cm3/min @ 4 bar
+29.00 PSI (2 bar) 420cc / min = 40 lb / h
+43.50 PSI (3 bar) 510cc / min = 49 lb / h
+58.00 PSI (4 bar) 588cc / min = 56 lb / h
+78.50 PSI (5 bar) 657cc / min = 63 lb / h
+88.00 PSI (6 bar) 732cc / min = 70 Ib / h
+101.5 PSI (7 bar) 792cc / min = 75 lb / h
+Confirm?
+
+Static Flow Rate @ 43.5 PSI (300 kPa): 51.72 lb/hr = 6.52 g/s = 544cc/min (+/-3%)
+Confirm?
 
 ### Injector voltage offset as a function of battery voltage
 | VBAT (V)   | Offset (ms)   |
