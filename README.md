@@ -19,6 +19,11 @@ Confirm?
 Static Flow Rate @ 43.5 PSI (300 kPa): 51.72 lb/hr = 6.52 g/s = 544cc/min (+/-3%)
 Confirm?
 
+### Mustang 500 GT
+```
+
+```
+
 ### Injector voltage offset as a function of battery voltage
 | VBAT (V)   | Offset (ms)   |
 |------------|---------------|
@@ -51,4 +56,23 @@ Duration - 180 degrees
 ```
 Lift - .247" - 6.2738 mm
 Duration - 165 degrees
+```
+
+
+
+# A14NET
+
+```
+Default fuel pressure: 340 kPa?
+
+Default injector: 55565970 - Bosch 0 280 158 205 
+Flow rate: 31.4946703964619 lb/h
+```
+
+
+# Maths, uuuuuh
+
+```
+((Airmass Per Cylinder [g/cyl] / Air Fuel Ratio [AFR]) / Injector Static Flow Rate [g/s]) * 1000 = Injector Open Time [ms] (ideal)
+
 ```
