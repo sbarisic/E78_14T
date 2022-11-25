@@ -9,7 +9,6 @@
   <channel ParameterID="5" Interval="00:00:05" />
   <channel ParameterID="70" Interval="00:00:10" />
   <channel ParameterID="2126" ParamterType="4" Interval="00:00:01" />
-  <channel ParameterID="6215" Interval="00:00:01" />
   <channel ParameterID="2311" Interval="00:00:00.2000000" />
   <channel ParameterID="2320" Interval="00:00:00.2000000" />
   <channel ParameterID="16" Interval="00:00:00.1000000" />
@@ -36,7 +35,6 @@
   <channel ParameterID="6001" Interval="00:00:00.2000000" />
   <channel ParameterID="7" Interval="00:00:00.5000000" />
   <channel ParameterID="6" Interval="00:00:00.5000000" />
-  <channel ParameterID="6210" Interval="00:00:00.2000000" />
   <channel ParameterID="6310" Interval="00:00:00.5000000" />
   <channel ParameterID="3" Interval="00:00:00.2000000" />
   <channel ParameterID="12942" Interval="00:00:01" />
@@ -46,4 +44,17 @@
   <channel ParameterID="2172" Interval="00:00:00.2000000" />
   <channel ParameterID="2178" Interval="00:00:00.2000000" />
   <channel ParameterID="2304" Interval="00:00:00.2000000" />
+  <channel ParameterID="0" />
+  <channel ParameterID="2746" Interval="00:00:00.2000000" />
+  <channel ParameterID="2738" Interval="00:00:00.2000000" />
+  <channel ParameterID="2739" Interval="00:00:00.2000000" />
+  <channel ParameterID="2701" Interval="00:00:00.2000000" />
+  <channel ParameterID="2747" Interval="00:00:00.2000000" />
+  <channel ParameterID="2737" Interval="00:00:00.2000000" />
+  <channel ParameterID="12703" Interval="00:00:01" />
+  <channel ParameterID="12704" Interval="00:00:01" />
+  <channel ParameterID="67" Interval="00:00:00.2000000" />
+  <channel ParameterID="2705" Interval="00:00:00.2000000" />
+  <channel ParameterID="2751" Interval="00:00:00.2000000" />
+  <channel ParameterID="0" />
 </Channels>
