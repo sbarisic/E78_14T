@@ -22,13 +22,23 @@
   </Chart>
   <Chart>
     <Series>
+      <Label>MAT</Label>
+      <ParameterID>2126</ParameterID>
+      <Unit>241</Unit>
+      <Minimum>10</Minimum>
+      <Maximum>50</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>2</Reference>
+      <Color>-16744193</Color>
+    </Series>
+    <Series>
       <Label>KR</Label>
       <ParameterID>50111</ParameterID>
       <Unit>161</Unit>
       <Decimals>1</Decimals>
       <Maximum>6</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
+      <DrawReference>True</DrawReference>
+      <Reference>2</Reference>
       <Color>-65536</Color>
     </Series>
   </Chart>
@@ -49,7 +59,7 @@
       <Unit>161</Unit>
       <Decimals>1</Decimals>
       <Minimum>-10</Minimum>
-      <Maximum>45</Maximum>
+      <Maximum>30</Maximum>
       <DrawReference>True</DrawReference>
       <Reference>0</Reference>
       <Color>-9652481</Color>
@@ -60,7 +70,7 @@
       <Unit>161</Unit>
       <Decimals>1</Decimals>
       <Minimum>-10</Minimum>
-      <Maximum>45</Maximum>
+      <Maximum>30</Maximum>
       <DrawReference>True</DrawReference>
       <Reference>0</Reference>
       <Color>-1</Color>
@@ -127,6 +137,8 @@
       <Reference>0</Reference>
       <Color>-16744256</Color>
     </Series>
+  </Chart>
+  <Chart>
     <Series>
       <Label>Baro</Label>
       <ParameterID>50032</ParameterID>
@@ -136,7 +148,7 @@
       <Maximum>105</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
-      <Color>-32768</Color>
+      <Color>-9914894</Color>
     </Series>
     <Series>
       <Label>WGDC</Label>
@@ -154,7 +166,7 @@
       <Label>INJ B1</Label>
       <ParameterID>50151</ParameterID>
       <Unit>254</Unit>
-      <Decimals>1</Decimals>
+      <Decimals>3</Decimals>
       <Maximum>15</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
@@ -164,7 +176,7 @@
       <Label>INJ Duty</Label>
       <ParameterID>60000</ParameterID>
       <Unit>156</Unit>
-      <Decimals>1</Decimals>
+      <Decimals>3</Decimals>
       <Maximum>80</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
@@ -180,26 +192,36 @@
       <Reference>0</Reference>
       <Color>-16711936</Color>
     </Series>
+    <Series>
+      <Label>Throttle</Label>
+      <ParameterID>50090</ParameterID>
+      <Unit>156</Unit>
+      <Decimals>1</Decimals>
+      <Maximum>100</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16741376</Color>
+    </Series>
   </Chart>
   <Chart>
     <Series>
-      <Label>AFR Cmd</Label>
-      <ParameterID>50121</ParameterID>
-      <Unit>150</Unit>
-      <Decimals>2</Decimals>
-      <Minimum>9</Minimum>
-      <Maximum>17</Maximum>
+      <Label>EQ Cmd</Label>
+      <ParameterID>50118</ParameterID>
+      <Unit>238</Unit>
+      <Decimals>3</Decimals>
+      <Minimum>0.7</Minimum>
+      <Maximum>1.05</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-65536</Color>
     </Series>
     <Series>
-      <Label>AEM AFR</Label>
-      <ParameterID>31001</ParameterID>
+      <Label>AEMLamb</Label>
+      <ParameterID>61013</ParameterID>
       <Unit>150</Unit>
-      <Decimals>2</Decimals>
-      <Minimum>9</Minimum>
-      <Maximum>17</Maximum>
+      <Decimals>3</Decimals>
+      <Minimum>0.7</Minimum>
+      <Maximum>1.05</Maximum>
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16711936</Color>
@@ -225,6 +247,62 @@
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16744193</Color>
+    </Series>
+  </Chart>
+  <Chart>
+    <Series>
+      <Label>ZeroPedal</Label>
+      <ParameterID>2746</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>400</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16744448</Color>
+    </Series>
+    <Series>
+      <Label>PrdEnTqC</Label>
+      <ParameterID>2738</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>400</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-5971457</Color>
+    </Series>
+    <Series>
+      <Label>ImEngTqC</Label>
+      <ParameterID>2739</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>400</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-11162881</Color>
+    </Series>
+    <Series>
+      <Label>DelEngTq</Label>
+      <ParameterID>2701</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>400</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-8388480</Color>
+    </Series>
+    <Series>
+      <Label>EngTq</Label>
+      <ParameterID>2705</ParameterID>
+      <Unit>120</Unit>
+      <Maximum>400</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-32252</Color>
+    </Series>
+    <Series>
+      <Label>BstTqLm</Label>
+      <ParameterID>2751</ParameterID>
+      <Unit>120</Unit>
+      <Minimum>-1</Minimum>
+      <DrawReference>False</DrawReference>
+      <Reference>0</Reference>
+      <Color>-16723408</Color>
     </Series>
   </Chart>
 </Charts>
