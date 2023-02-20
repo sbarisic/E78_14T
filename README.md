@@ -7,36 +7,29 @@ Delphi E78 ECU and GM/Chevrolet/Opel 1.4T engine A14NET LUJ LUV information
 Note - none of these are confirmed as of yet
 
 ```
-29.00 PSI (2 bar) 420cc / min = 40 lb / h
 43.50 PSI (3 bar) 510cc / min = 49 lb / h
 58.00 PSI (4 bar) 588cc / min = 56 lb / h
-78.50 PSI (5 bar) 657cc / min = 63 lb / h
-88.00 PSI (6 bar) 732cc / min = 70 Ib / h
-101.5 PSI (7 bar) 792cc / min = 75 lb / h
+
+
+PSID = 58.0151 psi - 400 kPa
+
+ALOSL = 0.015913 * 1.2170382347140039 = 0.01936672942 lb/s = 8.784600696766525 g/s
+AHISL = 0.013497 * 1.228104952662722 = 0.01657573254 lb/s = 7.518625807304719 g/s
+FUEL_BKPT = 0.0000144400 * 1.1556683491124258 = 0.00001668785 lb = 0.0075694814317 g
+FUEL_BKPT = @ 0.11127137704599 g/cyl
+MINPW = 0.711 ms
+
+FNPW_OFFSET
+v - ms * 1.1853002149901382
+6 - 5.202 = 6.1640625
+8 - 2.184 = 2.59375
+10 - 1.435 = 1.703125
+11 - 1.210 = 1.4375
+12 - 1.041 = 1.234375
+13 - 0.907 = 1.0703125
+14 - 0.789 = 0.9375
+15 - 0.699 = 0.8203125
 ```
-Confirm?
-
-Static Flow Rate @ 43.5 PSI (300 kPa): 51.72 lb/hr = 6.52 g/s = 544cc/min (+/-3%)
-Confirm?
-
-### Mustang 500 GT
-```
-
-```
-
-### Injector voltage offset as a function of battery voltage
-| VBAT (V)   | Offset (ms)   |
-|------------|---------------|
-| 6          | 5.203125      |
-| 7          | 3.6953125     |
-| 8          | 2.1875        |
-| 9          | 1.8125        |
-| 10         | 1.4375        |
-| 11         | 1.2109375     |
-| 12         | 1.0390625     |
-| 13         | 0.90625       |
-| 14         | 0.7890625     |
-| 15         | 0.6953125     |
 
 
 # Camshaft
