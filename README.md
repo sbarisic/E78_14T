@@ -1,7 +1,7 @@
 # E78_14T
 
 Delphi E78 ECU and GM/Chevrolet/Opel 1.4T engine A14NET LUJ LUV information
-
+Original injectors: 0280158205
 
 # BOSCH 0 280 158 117
 Note - none of these are confirmed as of yet
