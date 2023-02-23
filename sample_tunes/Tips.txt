@@ -1,4 +1,10 @@
 KtBSTC_p_ScavgngBstEnbl - Scavenging active when requested boost above this
+KtBSTC_p_MaxKnkSc - Max allowed airmass with regards to knock
 
 
-0050005000202580002000A00010
+0x04824C
+447A0000448980004496000044AF000044C8000044E1000044FA000042700000428C000042A0000042B4000042C8
+
+
+-- astra 0x04878C
+-- corsa 0x04824C
