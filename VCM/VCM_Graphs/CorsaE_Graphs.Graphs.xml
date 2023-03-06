@@ -2,37 +2,41 @@
 <Graphs>
   <Table>
     <Label>Spark Advance</Label>
+    <FilterFunction>[50110.161] &gt; 0</FilterFunction>
     <ParameterID>50110</ParameterID>
     <Unit>161</Unit>
+    <Decimals>1</Decimals>
     <HighValue>40</HighValue>
     <HighValueColor>-11765250</HighValueColor>
     <MiddleValue>10</MiddleValue>
     <LowValueColor>-1</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,800,1200,1600,2000,2400,2800,3200,3600,4000,4400,4800,5200,5600,6000,6400,6800,7000</ColumnAxis>
+    <ColumnAxis>1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
     <RowParameterID>50041</RowParameterID>
     <RowUnit>223</RowUnit>
-    <RowAxis>0.1,0.12,0.14,0.16,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9</RowAxis>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
+    <GraphValueType>1</GraphValueType>
   </Table>
   <Table>
     <Label>Spark Retard</Label>
-    <ParameterID>50111</ParameterID>
-    <Unit>161</Unit>
+    <FilterFunction>[50111.161.slope(50)] &gt; 0 AND [50111.161] &gt; 1</FilterFunction>
+    <ParameterID>61016</ParameterID>
+    <Unit>150</Unit>
     <Decimals>1</Decimals>
     <HighValue>10</HighValue>
     <HighValueColor>-65536</HighValueColor>
     <LowValueColor>-1</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,800,1200,1600,2000,2400,2800,3200,3600,4000,4400,4800,5200,5600,6000,6400,6800,7000</ColumnAxis>
+    <ColumnAxis>1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
     <RowParameterID>50041</RowParameterID>
     <RowUnit>223</RowUnit>
-    <RowAxis>0.1,0.12,0.14,0.16,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9</RowAxis>
-    <GraphValueType>1</GraphValueType>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
   </Table>
   <Table>
-    <Label>LT Fuel Trim</Label>
+    <Label>LTFT</Label>
+    <FilterFunction>[68.238] = 1</FilterFunction>
     <ParameterID>50114</ParameterID>
     <Unit>156</Unit>
     <Decimals>1</Decimals>
@@ -42,13 +46,47 @@
     <LowValueColor>-16711936</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,700,1000,1300,1600,1900,2200,2500,2800,3100,3400,3700,4000,4300,4600,4900,5200,5500,5800,6100,6400,6700,7000,7300,7600,7900,8200</ColumnAxis>
-    <RowParameterID>50030</RowParameterID>
-    <RowUnit>99</RowUnit>
-    <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
+    <ColumnAxis>1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
   </Table>
   <Table>
-    <Label>ST Fuel Trim</Label>
+    <Label>LTFT HiRes</Label>
+    <FilterFunction>[68.238] = 1</FilterFunction>
+    <ParameterID>50114</ParameterID>
+    <Unit>156</Unit>
+    <Decimals>1</Decimals>
+    <HighValue>25</HighValue>
+    <HighValueColor>-65536</HighValueColor>
+    <LowValue>-25</LowValue>
+    <LowValueColor>-16711936</LowValueColor>
+    <ColumnParameterID>50070</ColumnParameterID>
+    <ColumnUnit>56</ColumnUnit>
+    <ColumnAxis>900,985.1851852,1070.37037,1155.555556,1240.740741,1325.925926,1411.111111,1496.296296,1581.481481,1666.666667,1751.851852,1837.037037,1922.222222,2007.407407,2092.592593,2177.777778,2262.962963,2348.148148,2433.333333,2518.518519,2603.703704,2688.888889,2774.074074,2859.259259,2944.444444,3029.62963,3114.814815,3200</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0,0.0125,0.025,0.0375,0.05,0.0625,0.075,0.0875,0.1,0.1125,0.125,0.1375,0.15,0.1625,0.175,0.1875,0.2,0.2125,0.225,0.2375,0.25,0.2625,0.275,0.2875,0.3,0.3125,0.325,0.3375,0.35,0.3625,0.375,0.3875,0.4</RowAxis>
+  </Table>
+  <Table>
+    <Label>INJ PW B1</Label>
+    <ParameterID>6200</ParameterID>
+    <Unit>254</Unit>
+    <Decimals>4</Decimals>
+    <HighValue>10</HighValue>
+    <HighValueColor>-16744193</HighValueColor>
+    <MiddleValue>2</MiddleValue>
+    <LowValueColor>-16711936</LowValueColor>
+    <ColumnParameterID>50070</ColumnParameterID>
+    <ColumnUnit>56</ColumnUnit>
+    <ColumnAxis>900,985.1851852,1070.37037,1155.555556,1240.740741,1325.925926,1411.111111,1496.296296,1581.481481,1666.666667,1751.851852,1837.037037,1922.222222,2007.407407,2092.592593,2177.777778,2262.962963,2348.148148,2433.333333,2518.518519,2603.703704,2688.888889,2774.074074,2859.259259,2944.444444,3029.62963,3114.814815,3200</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0,0.0125,0.025,0.0375,0.05,0.0625,0.075,0.0875,0.1,0.1125,0.125,0.1375,0.15,0.1625,0.175,0.1875,0.2,0.2125,0.225,0.2375,0.25,0.2625,0.275,0.2875,0.3,0.3125,0.325,0.3375,0.35,0.3625,0.375,0.3875,0.4</RowAxis>
+  </Table>
+  <Table>
+    <Label>STFT</Label>
+    <FilterFunction>[68.238] = 1</FilterFunction>
     <ParameterID>50116</ParameterID>
     <Unit>156</Unit>
     <Decimals>1</Decimals>
@@ -58,13 +96,14 @@
     <LowValueColor>-16711936</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,700,1000,1300,1600,1900,2200,2500,2800,3100,3400,3700,4000,4300,4600,4900,5200,5500,5800,6100,6400,6700,7000,7300,7600,7900,8200</ColumnAxis>
-    <RowParameterID>50030</RowParameterID>
-    <RowUnit>99</RowUnit>
-    <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
+    <ColumnAxis>900,1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
   </Table>
   <Table>
     <Label>LTFT + STFT</Label>
+    <FilterFunction>[68.238] = 1</FilterFunction>
     <ParameterID>60040</ParameterID>
     <Unit>156</Unit>
     <Decimals>1</Decimals>
@@ -74,10 +113,24 @@
     <LowValueColor>-16711936</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,700,1000,1300,1600,1900,2200,2500,2800,3100,3400,3700,4000,4300,4600,4900,5200,5500,5800,6100,6400,6700,7000,7300,7600,7900,8200</ColumnAxis>
-    <RowParameterID>50030</RowParameterID>
-    <RowUnit>99</RowUnit>
-    <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
+    <ColumnAxis>900,1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
+  </Table>
+  <Table>
+    <Label>Trim per Inj ms</Label>
+    <FilterFunction>[68.238] = 1</FilterFunction>
+    <ParameterID>7</ParameterID>
+    <Unit>156</Unit>
+    <Decimals>1</Decimals>
+    <HighValue>10</HighValue>
+    <HighValueColor>-65536</HighValueColor>
+    <LowValue>-10</LowValue>
+    <LowValueColor>-16711936</LowValueColor>
+    <RowParameterID>6200</RowParameterID>
+    <RowUnit>254</RowUnit>
+    <RowAxis>0,0.125,0.25,0.375,0.5,0.625,0.75,0.875,1,1.125,1.25,1.375,1.5,1.625,1.75,1.875,2,2.125,2.25,2.375,2.5,2.625,2.75,2.875,3,3.125,3.25,3.375,3.5,3.625,3.75,3.875,4</RowAxis>
   </Table>
   <Table>
     <Label>MAF hz</Label>
@@ -89,10 +142,10 @@
     <LowValueColor>-16711936</LowValueColor>
     <ColumnParameterID>50070</ColumnParameterID>
     <ColumnUnit>56</ColumnUnit>
-    <ColumnAxis>400,700,1000,1300,1600,1900,2200,2500,2800,3100,3400,3700,4000,4300,4600,4900,5200,5500,5800,6100,6400,6700,7000,7300,7600,7900,8200</ColumnAxis>
-    <RowParameterID>50030</RowParameterID>
-    <RowUnit>99</RowUnit>
-    <RowAxis>0.1,0.14,0.18,0.22,0.26,0.3,0.34,0.38,0.42,0.46,0.5,0.54,0.58,0.62,0.66,0.7,0.74,0.78,0.82,0.86,0.9,0.94,0.98,1.02,1.06,1.1,1.14,1.18,1.22,1.26,1.3,1.34,1.38,1.42,1.46,1.5,1.54,1.58,1.62,1.66,1.7,1.74,1.78,1.82,1.86,1.9,1.94,1.98,2.02,2.06,2.1,2.14,2.18,2.22,2.26,2.3,2.34,2.38,2.42,2.46,2.5,2.54,2.58,2.62,2.66,2.7,2.74,2.78,2.82,2.86,2.9,2.94,2.98</RowAxis>
+    <ColumnAxis>900,1000,1200,1400,1600,1800,2000,2200,2400,2500,2600,2800,3000,3200,3400,3600,3800,3900,4000,4100,4200,4400,4800,5200,5600,6000,6500,7000</ColumnAxis>
+    <RowParameterID>2321</RowParameterID>
+    <RowUnit>223</RowUnit>
+    <RowAxis>0.1,0.14,0.18,0.2,0.22,0.24,0.26,0.28,0.3,0.32,0.34,0.36,0.38,0.4,0.42,0.44,0.46,0.48,0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.7,0.75,0.8,0.85,0.9,0.95,1</RowAxis>
   </Table>
   <Histogram>
     <Label>MAF hz</Label>

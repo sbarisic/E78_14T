@@ -41,6 +41,16 @@
       <Reference>2</Reference>
       <Color>-65536</Color>
     </Series>
+    <Series>
+      <Label>CAT B1S1</Label>
+      <ParameterID>60</ParameterID>
+      <Unit>241</Unit>
+      <Minimum>400</Minimum>
+      <Maximum>1000</Maximum>
+      <DrawReference>False</DrawReference>
+      <Reference>2</Reference>
+      <Color>-2582508</Color>
+    </Series>
   </Chart>
   <Chart>
     <Series>
@@ -247,62 +257,6 @@
       <DrawReference>False</DrawReference>
       <Reference>0</Reference>
       <Color>-16744193</Color>
-    </Series>
-  </Chart>
-  <Chart>
-    <Series>
-      <Label>ZeroPedal</Label>
-      <ParameterID>2746</ParameterID>
-      <Unit>120</Unit>
-      <Maximum>400</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16744448</Color>
-    </Series>
-    <Series>
-      <Label>PrdEnTqC</Label>
-      <ParameterID>2738</ParameterID>
-      <Unit>120</Unit>
-      <Maximum>400</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-5971457</Color>
-    </Series>
-    <Series>
-      <Label>ImEngTqC</Label>
-      <ParameterID>2739</ParameterID>
-      <Unit>120</Unit>
-      <Maximum>400</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-11162881</Color>
-    </Series>
-    <Series>
-      <Label>DelEngTq</Label>
-      <ParameterID>2701</ParameterID>
-      <Unit>120</Unit>
-      <Maximum>400</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-8388480</Color>
-    </Series>
-    <Series>
-      <Label>EngTq</Label>
-      <ParameterID>2705</ParameterID>
-      <Unit>120</Unit>
-      <Maximum>400</Maximum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-32252</Color>
-    </Series>
-    <Series>
-      <Label>BstTqLm</Label>
-      <ParameterID>2751</ParameterID>
-      <Unit>120</Unit>
-      <Minimum>-1</Minimum>
-      <DrawReference>False</DrawReference>
-      <Reference>0</Reference>
-      <Color>-16723408</Color>
     </Series>
   </Chart>
 </Charts>
