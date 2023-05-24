@@ -33,6 +33,16 @@ namespace FirmwareScanner {
 			// ConvertToBytes(-256, out byte[] ValBytes3);
 		}
 
+		public void SetOptions2(double RangeMinInclusive, double RangeMaxInclusive, double Step) {
+			this.RangeMinInclusive = RangeMinInclusive;
+			this.RangeMaxInclusive = RangeMaxInclusive;
+			Range = (ulong)(RangeMaxInclusive - RangeMinInclusive);
+
+			this.Step = Step;
+			MaxVal = (uint)(Range / Step);
+			Bits = (uint)(Math.Log(MaxVal) / Math.Log(2));
+		}
+
 		byte[] ConvertToBytes(double Val) {
 			double UVal = Val - RangeMinInclusive;
 			uint UIntVal = (uint)(UVal / Range * MaxVal);
