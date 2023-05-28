@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -112,13 +112,8 @@ namespace FirmwareScanner {
 
 				if (Matches) {
 					yield return i;
-				}
-
-
-				/*if (Src.Skip(i).Take(Pattern.Length).SequenceEqual(Pattern)) {
-					yield return i;
 				}*/
-			}
-		}
-	}
+            }
+        }
+    }
 }
