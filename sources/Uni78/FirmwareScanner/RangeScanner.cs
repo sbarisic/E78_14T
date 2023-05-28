@@ -26,7 +26,7 @@ namespace FirmwareScanner {
 			Range = (ulong)(RangeMaxInclusive - RangeMinInclusive);
 			Step = RangeMaxInclusive - MaxValue;
 			MaxVal = (uint)(Range / Step);
-			Bits = (uint)(Math.Log(MaxVal) / Math.Log(2));
+			Bits = (uint)(Math.Log(MaxVal) / Math.Log(2)) + 1;
 
 			// ConvertToBytes(0, out byte[] ValBytes1);
 			// ConvertToBytes(255.9921875f, out byte[] ValBytes2);
