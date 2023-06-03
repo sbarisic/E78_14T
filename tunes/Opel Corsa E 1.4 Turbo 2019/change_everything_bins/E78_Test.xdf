@@ -1,0 +1,298 @@
+<!-- Written 06/03/2023 14:47:49 -->
+<XDFFORMAT version="1.70">
+  <XDFHEADER>
+    <flags>0x1</flags>
+    <description></description>
+    <BASEOFFSET offset="0" subtract="0" />
+    <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
+    <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
+  </XDFHEADER>
+  <XDFTABLE uniqueid="0x2DAF" flags="0x0">
+    <title>KtTCSI_Scl_TorqueReserve</title>
+    <description>Table of scaler values to be multiplied by traction requests to provide reserve torque.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="400.00" />
+      <LABEL index="2" value="800.00" />
+      <LABEL index="3" value="1200.00" />
+      <LABEL index="4" value="1600.00" />
+      <LABEL index="5" value="2000.00" />
+      <LABEL index="6" value="2400.00" />
+      <LABEL index="7" value="2800.00" />
+      <LABEL index="8" value="3200.00" />
+      <LABEL index="9" value="3600.00" />
+      <LABEL index="10" value="4000.00" />
+      <LABEL index="11" value="4400.00" />
+      <LABEL index="12" value="4800.00" />
+      <LABEL index="13" value="5200.00" />
+      <LABEL index="14" value="5600.00" />
+      <LABEL index="15" value="6000.00" />
+      <LABEL index="16" value="6400.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="100.00" />
+      <LABEL index="2" value="200.00" />
+      <LABEL index="3" value="300.00" />
+      <LABEL index="4" value="400.00" />
+      <LABEL index="5" value="500.00" />
+      <LABEL index="6" value="600.00" />
+      <LABEL index="7" value="700.00" />
+      <LABEL index="8" value="800.00" />
+      <LABEL index="9" value="900.00" />
+      <LABEL index="10" value="1000.00" />
+      <LABEL index="11" value="1100.00" />
+      <LABEL index="12" value="1200.00" />
+      <LABEL index="13" value="1300.00" />
+      <LABEL index="14" value="1400.00" />
+      <LABEL index="15" value="1500.00" />
+      <LABEL index="16" value="1600.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A864" mmedelementsizebits="16" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x363C" flags="0x30">
+    <title>HexView</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>128</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <LABEL index="33" value="0.00" />
+      <LABEL index="34" value="0.00" />
+      <LABEL index="35" value="0.00" />
+      <LABEL index="36" value="0.00" />
+      <LABEL index="37" value="0.00" />
+      <LABEL index="38" value="0.00" />
+      <LABEL index="39" value="0.00" />
+      <LABEL index="40" value="0.00" />
+      <LABEL index="41" value="0.00" />
+      <LABEL index="42" value="0.00" />
+      <LABEL index="43" value="0.00" />
+      <LABEL index="44" value="0.00" />
+      <LABEL index="45" value="0.00" />
+      <LABEL index="46" value="0.00" />
+      <LABEL index="47" value="0.00" />
+      <LABEL index="48" value="0.00" />
+      <LABEL index="49" value="0.00" />
+      <LABEL index="50" value="0.00" />
+      <LABEL index="51" value="0.00" />
+      <LABEL index="52" value="0.00" />
+      <LABEL index="53" value="0.00" />
+      <LABEL index="54" value="0.00" />
+      <LABEL index="55" value="0.00" />
+      <LABEL index="56" value="0.00" />
+      <LABEL index="57" value="0.00" />
+      <LABEL index="58" value="0.00" />
+      <LABEL index="59" value="0.00" />
+      <LABEL index="60" value="0.00" />
+      <LABEL index="61" value="0.00" />
+      <LABEL index="62" value="0.00" />
+      <LABEL index="63" value="0.00" />
+      <LABEL index="64" value="0.00" />
+      <LABEL index="65" value="0.00" />
+      <LABEL index="66" value="0.00" />
+      <LABEL index="67" value="0.00" />
+      <LABEL index="68" value="0.00" />
+      <LABEL index="69" value="0.00" />
+      <LABEL index="70" value="0.00" />
+      <LABEL index="71" value="0.00" />
+      <LABEL index="72" value="0.00" />
+      <LABEL index="73" value="0.00" />
+      <LABEL index="74" value="0.00" />
+      <LABEL index="75" value="0.00" />
+      <LABEL index="76" value="0.00" />
+      <LABEL index="77" value="0.00" />
+      <LABEL index="78" value="0.00" />
+      <LABEL index="79" value="0.00" />
+      <LABEL index="80" value="0.00" />
+      <LABEL index="81" value="0.00" />
+      <LABEL index="82" value="0.00" />
+      <LABEL index="83" value="0.00" />
+      <LABEL index="84" value="0.00" />
+      <LABEL index="85" value="0.00" />
+      <LABEL index="86" value="0.00" />
+      <LABEL index="87" value="0.00" />
+      <LABEL index="88" value="0.00" />
+      <LABEL index="89" value="0.00" />
+      <LABEL index="90" value="0.00" />
+      <LABEL index="91" value="0.00" />
+      <LABEL index="92" value="0.00" />
+      <LABEL index="93" value="0.00" />
+      <LABEL index="94" value="0.00" />
+      <LABEL index="95" value="0.00" />
+      <LABEL index="96" value="0.00" />
+      <LABEL index="97" value="0.00" />
+      <LABEL index="98" value="0.00" />
+      <LABEL index="99" value="0.00" />
+      <LABEL index="100" value="0.00" />
+      <LABEL index="101" value="0.00" />
+      <LABEL index="102" value="0.00" />
+      <LABEL index="103" value="0.00" />
+      <LABEL index="104" value="0.00" />
+      <LABEL index="105" value="0.00" />
+      <LABEL index="106" value="0.00" />
+      <LABEL index="107" value="0.00" />
+      <LABEL index="108" value="0.00" />
+      <LABEL index="109" value="0.00" />
+      <LABEL index="110" value="0.00" />
+      <LABEL index="111" value="0.00" />
+      <LABEL index="112" value="0.00" />
+      <LABEL index="113" value="0.00" />
+      <LABEL index="114" value="0.00" />
+      <LABEL index="115" value="0.00" />
+      <LABEL index="116" value="0.00" />
+      <LABEL index="117" value="0.00" />
+      <LABEL index="118" value="0.00" />
+      <LABEL index="119" value="0.00" />
+      <LABEL index="120" value="0.00" />
+      <LABEL index="121" value="0.00" />
+      <LABEL index="122" value="0.00" />
+      <LABEL index="123" value="0.00" />
+      <LABEL index="124" value="0.00" />
+      <LABEL index="125" value="0.00" />
+      <LABEL index="126" value="0.00" />
+      <LABEL index="127" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x47EA0" mmedelementsizebits="8" mmedrowcount="128" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>2</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFCONSTANT uniqueid="0x9AC" flags="0xC">
+    <title>KfTCSC_Pct_TorqRdctThrsh</title>
+    <description>Threshold for the ratio between TCS Desired Torque and the Indicated MBT Torque for all Cylinders, below which the TCS Torque Reduction is considered to be Active</description>
+    <EMBEDDEDDATA mmedaddress="0x363A4" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.001525878906">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5722">
+    <title>KfTCSC_n_TCR_EngSpdStallHi</title>
+    <EMBEDDEDDATA mmedaddress="0x363A6" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.125">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x6119">
+    <title>KfTCSC_n_TCR_EngSpdStallLo</title>
+    <EMBEDDEDDATA mmedaddress="0x363A8" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.125">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4DC5">
+    <title>KfTCSC_t_MinTC_EngRunTime</title>
+    <EMBEDDEDDATA mmedaddress="0x363AA" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+</XDFFORMAT>
