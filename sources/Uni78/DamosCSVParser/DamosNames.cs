@@ -61,7 +61,7 @@ namespace DamosCSVParser {
 		public const string AxisY_bBackwards = "AxisY.bBackwards";
 		public const string AxisY_bReciprocal = "AxisY.bReciprocal";
 		public const string AxisY_bSigned = "AxisY.bSigned";
-		public const string AxisY_Precision = "AxisY.Precision";
+		public const string AxisY_Precision = "AxisY.Precision"; 
 		public const string AxisY_DataSrc = "AxisY.DataSrc";
 		public const string AxisY_DataHeader = "AxisY.DataHeader";
 		public const string AxisY_DataAddr_Cpu = "AxisY.DataAddr.Cpu";

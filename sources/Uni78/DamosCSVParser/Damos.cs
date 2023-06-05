@@ -38,7 +38,7 @@ namespace DamosCSVParser {
 		}
 
 		public override string ToString() {
-			return Entries[TitleToIdx(DamosNames.Name)];
+			return string.Format("{0} - {1}", Entries[TitleToIdx(DamosNames.Name)], Entries[TitleToIdx(DamosNames.Comment)]);
 		}
 	}
 
@@ -47,8 +47,7 @@ namespace DamosCSVParser {
 		public static string[] Titles;
 
 		string[] SrcLines;
-		DamosEntry[] Entries;
-
+		public DamosEntry[] Entries;
 
 
 		public Damos(string SrcFile) {
@@ -56,14 +55,27 @@ namespace DamosCSVParser {
 			Titles = SrcLines[0].Split(new[] { ';' });
 
 			List<DamosEntry> DamosEntries = new List<DamosEntry>();
+			HashSet<string> AddedNames = new HashSet<string>();
 
 			for (int i = 1; i < SrcLines.Length; i++) {
 				DamosEntry Ent = new DamosEntry();
 				Ent.SetAll(SrcLines[i].Split(new[] { ';' }));
-				DamosEntries.Add(Ent);
+
+				string Name = Ent[DamosNames.Name];
+				if (!EntryContains(AddedNames, Name)) {
+					AddedNames.Add(Name);
+					DamosEntries.Add(Ent);
+				}
 			}
 
 			Entries = DamosEntries.ToArray();
+		}
+
+		bool EntryContains(HashSet<string> Entries, string Name) {
+			if (Entries.Contains(Name))
+				return true;
+
+			return false;
 		}
 	}
 }
