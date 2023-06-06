@@ -1,4 +1,4 @@
-<!-- Written 06/03/2023 16:44:40 -->
+<!-- Written 06/06/2023 16:33:39 -->
 <XDFFORMAT version="1.70">
   <XDFHEADER>
     <flags>0x1</flags>
@@ -105,7 +105,7 @@
     </XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>256</indexcount>
+      <indexcount>512</indexcount>
       <datatype>0</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
@@ -365,12 +365,268 @@
       <LABEL index="253" value="0.00" />
       <LABEL index="254" value="0.00" />
       <LABEL index="255" value="0.00" />
+      <LABEL index="256" value="0.00" />
+      <LABEL index="257" value="0.00" />
+      <LABEL index="258" value="0.00" />
+      <LABEL index="259" value="0.00" />
+      <LABEL index="260" value="0.00" />
+      <LABEL index="261" value="0.00" />
+      <LABEL index="262" value="0.00" />
+      <LABEL index="263" value="0.00" />
+      <LABEL index="264" value="0.00" />
+      <LABEL index="265" value="0.00" />
+      <LABEL index="266" value="0.00" />
+      <LABEL index="267" value="0.00" />
+      <LABEL index="268" value="0.00" />
+      <LABEL index="269" value="0.00" />
+      <LABEL index="270" value="0.00" />
+      <LABEL index="271" value="0.00" />
+      <LABEL index="272" value="0.00" />
+      <LABEL index="273" value="0.00" />
+      <LABEL index="274" value="0.00" />
+      <LABEL index="275" value="0.00" />
+      <LABEL index="276" value="0.00" />
+      <LABEL index="277" value="0.00" />
+      <LABEL index="278" value="0.00" />
+      <LABEL index="279" value="0.00" />
+      <LABEL index="280" value="0.00" />
+      <LABEL index="281" value="0.00" />
+      <LABEL index="282" value="0.00" />
+      <LABEL index="283" value="0.00" />
+      <LABEL index="284" value="0.00" />
+      <LABEL index="285" value="0.00" />
+      <LABEL index="286" value="0.00" />
+      <LABEL index="287" value="0.00" />
+      <LABEL index="288" value="0.00" />
+      <LABEL index="289" value="0.00" />
+      <LABEL index="290" value="0.00" />
+      <LABEL index="291" value="0.00" />
+      <LABEL index="292" value="0.00" />
+      <LABEL index="293" value="0.00" />
+      <LABEL index="294" value="0.00" />
+      <LABEL index="295" value="0.00" />
+      <LABEL index="296" value="0.00" />
+      <LABEL index="297" value="0.00" />
+      <LABEL index="298" value="0.00" />
+      <LABEL index="299" value="0.00" />
+      <LABEL index="300" value="0.00" />
+      <LABEL index="301" value="0.00" />
+      <LABEL index="302" value="0.00" />
+      <LABEL index="303" value="0.00" />
+      <LABEL index="304" value="0.00" />
+      <LABEL index="305" value="0.00" />
+      <LABEL index="306" value="0.00" />
+      <LABEL index="307" value="0.00" />
+      <LABEL index="308" value="0.00" />
+      <LABEL index="309" value="0.00" />
+      <LABEL index="310" value="0.00" />
+      <LABEL index="311" value="0.00" />
+      <LABEL index="312" value="0.00" />
+      <LABEL index="313" value="0.00" />
+      <LABEL index="314" value="0.00" />
+      <LABEL index="315" value="0.00" />
+      <LABEL index="316" value="0.00" />
+      <LABEL index="317" value="0.00" />
+      <LABEL index="318" value="0.00" />
+      <LABEL index="319" value="0.00" />
+      <LABEL index="320" value="0.00" />
+      <LABEL index="321" value="0.00" />
+      <LABEL index="322" value="0.00" />
+      <LABEL index="323" value="0.00" />
+      <LABEL index="324" value="0.00" />
+      <LABEL index="325" value="0.00" />
+      <LABEL index="326" value="0.00" />
+      <LABEL index="327" value="0.00" />
+      <LABEL index="328" value="0.00" />
+      <LABEL index="329" value="0.00" />
+      <LABEL index="330" value="0.00" />
+      <LABEL index="331" value="0.00" />
+      <LABEL index="332" value="0.00" />
+      <LABEL index="333" value="0.00" />
+      <LABEL index="334" value="0.00" />
+      <LABEL index="335" value="0.00" />
+      <LABEL index="336" value="0.00" />
+      <LABEL index="337" value="0.00" />
+      <LABEL index="338" value="0.00" />
+      <LABEL index="339" value="0.00" />
+      <LABEL index="340" value="0.00" />
+      <LABEL index="341" value="0.00" />
+      <LABEL index="342" value="0.00" />
+      <LABEL index="343" value="0.00" />
+      <LABEL index="344" value="0.00" />
+      <LABEL index="345" value="0.00" />
+      <LABEL index="346" value="0.00" />
+      <LABEL index="347" value="0.00" />
+      <LABEL index="348" value="0.00" />
+      <LABEL index="349" value="0.00" />
+      <LABEL index="350" value="0.00" />
+      <LABEL index="351" value="0.00" />
+      <LABEL index="352" value="0.00" />
+      <LABEL index="353" value="0.00" />
+      <LABEL index="354" value="0.00" />
+      <LABEL index="355" value="0.00" />
+      <LABEL index="356" value="0.00" />
+      <LABEL index="357" value="0.00" />
+      <LABEL index="358" value="0.00" />
+      <LABEL index="359" value="0.00" />
+      <LABEL index="360" value="0.00" />
+      <LABEL index="361" value="0.00" />
+      <LABEL index="362" value="0.00" />
+      <LABEL index="363" value="0.00" />
+      <LABEL index="364" value="0.00" />
+      <LABEL index="365" value="0.00" />
+      <LABEL index="366" value="0.00" />
+      <LABEL index="367" value="0.00" />
+      <LABEL index="368" value="0.00" />
+      <LABEL index="369" value="0.00" />
+      <LABEL index="370" value="0.00" />
+      <LABEL index="371" value="0.00" />
+      <LABEL index="372" value="0.00" />
+      <LABEL index="373" value="0.00" />
+      <LABEL index="374" value="0.00" />
+      <LABEL index="375" value="0.00" />
+      <LABEL index="376" value="0.00" />
+      <LABEL index="377" value="0.00" />
+      <LABEL index="378" value="0.00" />
+      <LABEL index="379" value="0.00" />
+      <LABEL index="380" value="0.00" />
+      <LABEL index="381" value="0.00" />
+      <LABEL index="382" value="0.00" />
+      <LABEL index="383" value="0.00" />
+      <LABEL index="384" value="0.00" />
+      <LABEL index="385" value="0.00" />
+      <LABEL index="386" value="0.00" />
+      <LABEL index="387" value="0.00" />
+      <LABEL index="388" value="0.00" />
+      <LABEL index="389" value="0.00" />
+      <LABEL index="390" value="0.00" />
+      <LABEL index="391" value="0.00" />
+      <LABEL index="392" value="0.00" />
+      <LABEL index="393" value="0.00" />
+      <LABEL index="394" value="0.00" />
+      <LABEL index="395" value="0.00" />
+      <LABEL index="396" value="0.00" />
+      <LABEL index="397" value="0.00" />
+      <LABEL index="398" value="0.00" />
+      <LABEL index="399" value="0.00" />
+      <LABEL index="400" value="0.00" />
+      <LABEL index="401" value="0.00" />
+      <LABEL index="402" value="0.00" />
+      <LABEL index="403" value="0.00" />
+      <LABEL index="404" value="0.00" />
+      <LABEL index="405" value="0.00" />
+      <LABEL index="406" value="0.00" />
+      <LABEL index="407" value="0.00" />
+      <LABEL index="408" value="0.00" />
+      <LABEL index="409" value="0.00" />
+      <LABEL index="410" value="0.00" />
+      <LABEL index="411" value="0.00" />
+      <LABEL index="412" value="0.00" />
+      <LABEL index="413" value="0.00" />
+      <LABEL index="414" value="0.00" />
+      <LABEL index="415" value="0.00" />
+      <LABEL index="416" value="0.00" />
+      <LABEL index="417" value="0.00" />
+      <LABEL index="418" value="0.00" />
+      <LABEL index="419" value="0.00" />
+      <LABEL index="420" value="0.00" />
+      <LABEL index="421" value="0.00" />
+      <LABEL index="422" value="0.00" />
+      <LABEL index="423" value="0.00" />
+      <LABEL index="424" value="0.00" />
+      <LABEL index="425" value="0.00" />
+      <LABEL index="426" value="0.00" />
+      <LABEL index="427" value="0.00" />
+      <LABEL index="428" value="0.00" />
+      <LABEL index="429" value="0.00" />
+      <LABEL index="430" value="0.00" />
+      <LABEL index="431" value="0.00" />
+      <LABEL index="432" value="0.00" />
+      <LABEL index="433" value="0.00" />
+      <LABEL index="434" value="0.00" />
+      <LABEL index="435" value="0.00" />
+      <LABEL index="436" value="0.00" />
+      <LABEL index="437" value="0.00" />
+      <LABEL index="438" value="0.00" />
+      <LABEL index="439" value="0.00" />
+      <LABEL index="440" value="0.00" />
+      <LABEL index="441" value="0.00" />
+      <LABEL index="442" value="0.00" />
+      <LABEL index="443" value="0.00" />
+      <LABEL index="444" value="0.00" />
+      <LABEL index="445" value="0.00" />
+      <LABEL index="446" value="0.00" />
+      <LABEL index="447" value="0.00" />
+      <LABEL index="448" value="0.00" />
+      <LABEL index="449" value="0.00" />
+      <LABEL index="450" value="0.00" />
+      <LABEL index="451" value="0.00" />
+      <LABEL index="452" value="0.00" />
+      <LABEL index="453" value="0.00" />
+      <LABEL index="454" value="0.00" />
+      <LABEL index="455" value="0.00" />
+      <LABEL index="456" value="0.00" />
+      <LABEL index="457" value="0.00" />
+      <LABEL index="458" value="0.00" />
+      <LABEL index="459" value="0.00" />
+      <LABEL index="460" value="0.00" />
+      <LABEL index="461" value="0.00" />
+      <LABEL index="462" value="0.00" />
+      <LABEL index="463" value="0.00" />
+      <LABEL index="464" value="0.00" />
+      <LABEL index="465" value="0.00" />
+      <LABEL index="466" value="0.00" />
+      <LABEL index="467" value="0.00" />
+      <LABEL index="468" value="0.00" />
+      <LABEL index="469" value="0.00" />
+      <LABEL index="470" value="0.00" />
+      <LABEL index="471" value="0.00" />
+      <LABEL index="472" value="0.00" />
+      <LABEL index="473" value="0.00" />
+      <LABEL index="474" value="0.00" />
+      <LABEL index="475" value="0.00" />
+      <LABEL index="476" value="0.00" />
+      <LABEL index="477" value="0.00" />
+      <LABEL index="478" value="0.00" />
+      <LABEL index="479" value="0.00" />
+      <LABEL index="480" value="0.00" />
+      <LABEL index="481" value="0.00" />
+      <LABEL index="482" value="0.00" />
+      <LABEL index="483" value="0.00" />
+      <LABEL index="484" value="0.00" />
+      <LABEL index="485" value="0.00" />
+      <LABEL index="486" value="0.00" />
+      <LABEL index="487" value="0.00" />
+      <LABEL index="488" value="0.00" />
+      <LABEL index="489" value="0.00" />
+      <LABEL index="490" value="0.00" />
+      <LABEL index="491" value="0.00" />
+      <LABEL index="492" value="0.00" />
+      <LABEL index="493" value="0.00" />
+      <LABEL index="494" value="0.00" />
+      <LABEL index="495" value="0.00" />
+      <LABEL index="496" value="0.00" />
+      <LABEL index="497" value="0.00" />
+      <LABEL index="498" value="0.00" />
+      <LABEL index="499" value="0.00" />
+      <LABEL index="500" value="0.00" />
+      <LABEL index="501" value="0.00" />
+      <LABEL index="502" value="0.00" />
+      <LABEL index="503" value="0.00" />
+      <LABEL index="504" value="0.00" />
+      <LABEL index="505" value="0.00" />
+      <LABEL index="506" value="0.00" />
+      <LABEL index="507" value="0.00" />
+      <LABEL index="508" value="0.00" />
+      <LABEL index="509" value="0.00" />
+      <LABEL index="510" value="0.00" />
+      <LABEL index="511" value="0.00" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x480F0" mmedelementsizebits="8" mmedrowcount="256" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <EMBEDDEDDATA mmedaddress="0x56000" mmedelementsizebits="8" mmedrowcount="512" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
       <decimalpl>0</decimalpl>
       <min>0.000000</min>
       <max>255.000000</max>
@@ -736,4 +992,259 @@
       <VAR id="X" />
     </MATH>
   </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B3F">
+    <title>t_PulseWidthShortLimit</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56F34" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>8</decimalpl>
+    <datatype>0</datatype>
+    <unittype>85</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x18BE">
+    <title>t_PulseWidthShortLimit2</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56F38" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>8</decimalpl>
+    <datatype>0</datatype>
+    <unittype>85</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFTABLE uniqueid="0x1BDC" flags="0x0">
+    <title>t_ShortPulseAdjust</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="3" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>33</indexcount>
+      <decimalpl>3</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.000" />
+      <LABEL index="1" value="0.125" />
+      <LABEL index="2" value="0.250" />
+      <LABEL index="3" value="0.375" />
+      <LABEL index="4" value="0.500" />
+      <LABEL index="5" value="0.625" />
+      <LABEL index="6" value="0.750" />
+      <LABEL index="7" value="0.875" />
+      <LABEL index="8" value="1.000" />
+      <LABEL index="9" value="1.125" />
+      <LABEL index="10" value="1.250" />
+      <LABEL index="11" value="1.375" />
+      <LABEL index="12" value="1.500" />
+      <LABEL index="13" value="1.625" />
+      <LABEL index="14" value="1.750" />
+      <LABEL index="15" value="1.875" />
+      <LABEL index="16" value="2.000" />
+      <LABEL index="17" value="2.125" />
+      <LABEL index="18" value="2.250" />
+      <LABEL index="19" value="2.375" />
+      <LABEL index="20" value="2.500" />
+      <LABEL index="21" value="2.625" />
+      <LABEL index="22" value="2.750" />
+      <LABEL index="23" value="2.875" />
+      <LABEL index="24" value="3.000" />
+      <LABEL index="25" value="3.125" />
+      <LABEL index="26" value="3.250" />
+      <LABEL index="27" value="3.375" />
+      <LABEL index="28" value="3.500" />
+      <LABEL index="29" value="3.625" />
+      <LABEL index="30" value="3.750" />
+      <LABEL index="31" value="3.875" />
+      <LABEL index="32" value="4.000" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="2" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x56F3C" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22AF" flags="0x0">
+    <title>FloatView</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>4</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>128</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <LABEL index="33" value="0.00" />
+      <LABEL index="34" value="0.00" />
+      <LABEL index="35" value="0.00" />
+      <LABEL index="36" value="0.00" />
+      <LABEL index="37" value="0.00" />
+      <LABEL index="38" value="0.00" />
+      <LABEL index="39" value="0.00" />
+      <LABEL index="40" value="0.00" />
+      <LABEL index="41" value="0.00" />
+      <LABEL index="42" value="0.00" />
+      <LABEL index="43" value="0.00" />
+      <LABEL index="44" value="0.00" />
+      <LABEL index="45" value="0.00" />
+      <LABEL index="46" value="0.00" />
+      <LABEL index="47" value="0.00" />
+      <LABEL index="48" value="0.00" />
+      <LABEL index="49" value="0.00" />
+      <LABEL index="50" value="0.00" />
+      <LABEL index="51" value="0.00" />
+      <LABEL index="52" value="0.00" />
+      <LABEL index="53" value="0.00" />
+      <LABEL index="54" value="0.00" />
+      <LABEL index="55" value="0.00" />
+      <LABEL index="56" value="0.00" />
+      <LABEL index="57" value="0.00" />
+      <LABEL index="58" value="0.00" />
+      <LABEL index="59" value="0.00" />
+      <LABEL index="60" value="0.00" />
+      <LABEL index="61" value="0.00" />
+      <LABEL index="62" value="0.00" />
+      <LABEL index="63" value="0.00" />
+      <LABEL index="64" value="0.00" />
+      <LABEL index="65" value="0.00" />
+      <LABEL index="66" value="0.00" />
+      <LABEL index="67" value="0.00" />
+      <LABEL index="68" value="0.00" />
+      <LABEL index="69" value="0.00" />
+      <LABEL index="70" value="0.00" />
+      <LABEL index="71" value="0.00" />
+      <LABEL index="72" value="0.00" />
+      <LABEL index="73" value="0.00" />
+      <LABEL index="74" value="0.00" />
+      <LABEL index="75" value="0.00" />
+      <LABEL index="76" value="0.00" />
+      <LABEL index="77" value="0.00" />
+      <LABEL index="78" value="0.00" />
+      <LABEL index="79" value="0.00" />
+      <LABEL index="80" value="0.00" />
+      <LABEL index="81" value="0.00" />
+      <LABEL index="82" value="0.00" />
+      <LABEL index="83" value="0.00" />
+      <LABEL index="84" value="0.00" />
+      <LABEL index="85" value="0.00" />
+      <LABEL index="86" value="0.00" />
+      <LABEL index="87" value="0.00" />
+      <LABEL index="88" value="0.00" />
+      <LABEL index="89" value="0.00" />
+      <LABEL index="90" value="0.00" />
+      <LABEL index="91" value="0.00" />
+      <LABEL index="92" value="0.00" />
+      <LABEL index="93" value="0.00" />
+      <LABEL index="94" value="0.00" />
+      <LABEL index="95" value="0.00" />
+      <LABEL index="96" value="0.00" />
+      <LABEL index="97" value="0.00" />
+      <LABEL index="98" value="0.00" />
+      <LABEL index="99" value="0.00" />
+      <LABEL index="100" value="0.00" />
+      <LABEL index="101" value="0.00" />
+      <LABEL index="102" value="0.00" />
+      <LABEL index="103" value="0.00" />
+      <LABEL index="104" value="0.00" />
+      <LABEL index="105" value="0.00" />
+      <LABEL index="106" value="0.00" />
+      <LABEL index="107" value="0.00" />
+      <LABEL index="108" value="0.00" />
+      <LABEL index="109" value="0.00" />
+      <LABEL index="110" value="0.00" />
+      <LABEL index="111" value="0.00" />
+      <LABEL index="112" value="0.00" />
+      <LABEL index="113" value="0.00" />
+      <LABEL index="114" value="0.00" />
+      <LABEL index="115" value="0.00" />
+      <LABEL index="116" value="0.00" />
+      <LABEL index="117" value="0.00" />
+      <LABEL index="118" value="0.00" />
+      <LABEL index="119" value="0.00" />
+      <LABEL index="120" value="0.00" />
+      <LABEL index="121" value="0.00" />
+      <LABEL index="122" value="0.00" />
+      <LABEL index="123" value="0.00" />
+      <LABEL index="124" value="0.00" />
+      <LABEL index="125" value="0.00" />
+      <LABEL index="126" value="0.00" />
+      <LABEL index="127" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56EB0" mmedelementsizebits="32" mmedrowcount="128" mmedcolcount="4" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
 </XDFFORMAT>
