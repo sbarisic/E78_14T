@@ -1,4 +1,4 @@
-<!-- Written 06/19/2023 08:00:02 -->
+<!-- Written 06/20/2023 14:17:09 -->
 <XDFFORMAT version="1.70">
   <XDFHEADER>
     <flags>0x1</flags>
@@ -1381,4 +1381,36 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
+  <XDFCONSTANT uniqueid="0x60B9" flags="0xC">
+    <title>KeSTRC_b_StarterInDevelopment</title>
+    <EMBEDDEDDATA mmedaddress="0x79EB8" mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <outputtype>2</outputtype>
+    <decimalpl>0</decimalpl>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x32BF">
+    <title>KeIMOC_t_AutoLearnDly</title>
+    <EMBEDDEDDATA mmedaddress="0x21838" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7A4C">
+    <title>KeIMOC_t_ToolLearnDly</title>
+    <EMBEDDEDDATA mmedaddress="0x2183C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
 </XDFFORMAT>
