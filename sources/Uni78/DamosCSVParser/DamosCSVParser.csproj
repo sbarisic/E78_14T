@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="Damos.cs" />
     <Compile Include="DamosNames.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="DamosCSVParser_Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

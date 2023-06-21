@@ -12,7 +12,8 @@ namespace DamosCSVParser {
 		[STAThread]
 		static void Main(string[] args) {
 			Damos D = new Damos("data/winols_astra.csv");
-			//File.WriteAllLines("Lines.txt", D.Entries.Select(E => E.ToString()).ToArray());
+
+			File.WriteAllLines("Lines.txt", D.Entries.Select(E => E.ToString()).ToArray());
 		}
 	}
 }
