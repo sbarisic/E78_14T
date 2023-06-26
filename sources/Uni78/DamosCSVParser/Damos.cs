@@ -62,6 +62,11 @@ namespace DamosCSVParser {
 				Ent.SetAll(SrcLines[i].Split(new[] { ';' }));
 
 				string Name = Ent[DamosNames.Name];
+				string FolderName = Ent[DamosNames.FolderName].Replace("\"", "").Trim();
+
+				if (FolderName == "RAM")
+					continue;
+
 				if (!EntryContains(AddedNames, Name)) {
 					AddedNames.Add(Name);
 					DamosEntries.Add(Ent);
