@@ -1,0 +1,17 @@
+Starting around 2004, GM introduced its regulated voltage control (RVC) charging system. You can identify the system by looking for the battery sensor or a 2-wire connection at the alternator. GM has two versions of this system: regulated voltage control and standalone regulated voltage control (SARCV) (figure 1).
+
+The standalone regulated voltage control system wasn’t used for long. Standalone regulated voltage control systems used its own module to control the charging system, known as a generator battery control module (GBCM).
+
+The GM regulated voltage control system can vary from 11.5 –15.5 volts. As with other systems in use today, the GM system has a fuel economy mode, which is designed to lower the charging system voltage by reducing the alternator field strength.
+
+Technicians often diagnose this mode as a faulty charging system, only to find out that the vehicle operates the same even with new parts installed. Simply applying maximum load to the vehicle’s electrical system will cause the PCM/ECM to respond, raising charging system voltage.
+
+GM also designed this system to identify battery sulfation. In response, the PCM/ECM will command the charging system’s voltages to increase to as high as 15.5 volts, even when there’s no electrical load. Sulfation mode will typically last less than five minutes at a time, so, as the timer expires, the system will return to normal charging operation.
+
+The BCM is the brains of the operation, but the PCM is the module that actually controls charging system operation. The PCM controls the signal to terminal L of the alternator to control system output.
+
+Terminal L — Terminal L is designed to control the charging system. Terminal L feeds the signal to a regulator inside the alternator. The PCM/ECM sends five volts to alternator terminal L. When the system requires an increase in output, the PCM/ECM will change the circuit duty cycle, which will cause the regulator to change the voltage set point.
+
+The duty cycle can range from 10% to as high as 90%, with the higher duty cycle creating a higher voltage charging rate. If an open circuit occurs, the system will default to a charging voltage of 13.2–13.8V.
+
+Terminal F — Terminal F is a duty cycle signal that the PCM/TCM monitors. The duty cycle percentage represents the operation of the alternator field. The PCM/ECM monitors the duty cycle to determine the load the alternator is placing on the engine. They then use this input for idle speed control and the alternator voltage set point.
