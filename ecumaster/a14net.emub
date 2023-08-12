@@ -19,7 +19,7 @@
     <symbol name="mapAnalogIn" value="4" storage="ubyte" type="paramList"/>
     <symbol name="knockFrequency" value="59" storage="ubyte" type="paramList"/>
     <symbol name="knockSensorGain" value="29" storage="ubyte" type="paramList"/>
-    <symbol name="initMask" value="1" storage="word" type="paramList"/>
+    <symbol name="initMask" value="65535" storage="word" type="paramList"/>
     <symbol name="primTrigerType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="numTeeth" value="60" storage="ubyte" type="value"/>
     <symbol name="firstTriggerTooth" value="2" storage="ubyte" type="value"/>
@@ -95,7 +95,7 @@
     <symbol name="coolantFanHyst" value="5" storage="ubyte" type="value"/>
     <symbol name="coolantFanOutput" value="3" storage="ubyte" type="paramList"/>
     <symbol name="coolantFanInvOutput" value="0" storage="ubyte" type="bool"/>
-    <symbol name="injectorsSize" value="550" storage="word" type="value"/>
+    <symbol name="injectorsSize" value="606" storage="word" type="value"/>
     <symbol name="engineDisplacement" value="1364" storage="word" type="value"/>
     <symbol name="fuelCutTPSLimit" value="3" storage="ubyte" type="value"/>
     <symbol name="fuelCutAboveRPM" value="2000" storage="word" type="value"/>
@@ -184,7 +184,7 @@
     <symbol name="shortTermRichLimit" value="25" storage="ubyte" type="value"/>
     <symbol name="shortTermLeanLimit" value="25" storage="ubyte" type="value"/>
     <symbol name="shortTermMaxTPS" value="100" storage="ubyte" type="value"/>
-    <symbol name="shortTermMinClt" value="0" storage="sbyte" type="value"/>
+    <symbol name="shortTermMinClt" value="80" storage="sbyte" type="value"/>
     <symbol name="shortTermMinRPM" value="800" storage="word" type="value"/>
     <symbol name="shortTermMaxRPM" value="7000" storage="word" type="value"/>
     <symbol name="shortTermMinMAP" value="20" storage="word" type="value"/>
@@ -219,7 +219,7 @@
     <symbol name="enableMAPFilter" value="0" storage="ubyte" type="bool"/>
     <symbol name="pwmTableOutput" value="0" storage="ubyte" type="paramList"/>
     <symbol name="pwmTableFrequency" value="30" storage="ubyte" type="value"/>
-    <symbol name="shortTrimTransientDelay" value="400" storage="word" type="value"/>
+    <symbol name="shortTrimTransientDelay" value="300" storage="word" type="value"/>
     <symbol name="pwmTableDisableOutputIfNoRPM" value="0" storage="ubyte" type="bool"/>
     <symbol name="egtAlarmType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="egtAlarmTemperature" value="950" storage="word" type="value"/>
@@ -377,17 +377,17 @@
     <symbol name="backpressureInput" value="0" storage="ubyte" type="paramList"/>
     <symbol name="fireInjectorTwicePerCycle" value="0" storage="ubyte" type="bool"/>
     <symbol name="useWBOHeaterForNBOSensor" value="0" storage="ubyte" type="bool"/>
-    <symbol name="dynoCoefOfDrag" value="29" storage="word" type="value"/>
-    <symbol name="dynoFrontalArea" value="220" storage="word" type="value"/>
+    <symbol name="dynoCoefOfDrag" value="30" storage="word" type="value"/>
+    <symbol name="dynoFrontalArea" value="213" storage="word" type="value"/>
     <symbol name="dynoCarMass" value="1300" storage="word" type="value"/>
-    <symbol name="dynoRPMRatio" value="200" storage="word" type="value"/>
-    <symbol name="dynoFilerPower" value="2" storage="ubyte" type="value"/>
+    <symbol name="dynoRPMRatio" value="231" storage="word" type="value"/>
+    <symbol name="dynoFilerPower" value="12" storage="ubyte" type="value"/>
     <symbol name="dynoEnableAeroCorr" value="1" storage="ubyte" type="bool"/>
     <symbol name="dynoShowAFR" value="1" storage="ubyte" type="bool"/>
     <symbol name="dynoShowMAP" value="1" storage="ubyte" type="bool"/>
     <symbol name="dynoShowIAT" value="1" storage="ubyte" type="bool"/>
-    <symbol name="dynoMinRPM" value="2000" storage="word" type="value"/>
-    <symbol name="dynoMaxRPM" value="7000" storage="word" type="value"/>
+    <symbol name="dynoMinRPM" value="1000" storage="word" type="value"/>
+    <symbol name="dynoMaxRPM" value="8000" storage="word" type="value"/>
     <symbol name="disableSparkDuringDecceleration" value="1" storage="ubyte" type="bool"/>
     <symbol name="mainRelayInvertOutput" value="0" storage="ubyte" type="bool"/>
     <symbol name="idleIgnUseTable" value="0" storage="ubyte" type="bool"/>
@@ -1281,7 +1281,7 @@
     <symbol name="ignCLTTrim" storage="sbyte" width="16" height="1" data="8 7 5 4 3 1 0 0 0 0 0 0 0 0 0 -6 "/>
     <symbol name="ignIATTrim" storage="sbyte" width="16" height="1" data="4 3 2 2 1 1 0 0 0 -2 -3 -7 -A -D -11 -14 "/>
     <symbol name="TPSScaleTbl" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 0 0 "/>
-    <symbol name="veTable" storage="u12" width="16" height="20" data="145 14E 188 1DA 25C 27E 29B 2DA 2FE 314 323 344 34A 34E 351 356 146 14F 1B9 1FC 25D 273 2AA 2D5 301 318 324 346 34B 351 355 359 139 157 1FC 235 24B 276 2BE 2D2 307 31D 329 346 34B 351 356 35A 131 179 1FA 223 25A 26F 2A0 2F6 305 312 329 346 34B 351 356 35A 16E 197 1F3 21B 251 261 2AC 2FB 30C 31E 32A 349 34E 351 356 35C 172 19F 1ED 236 256 285 2B6 2FE 317 32A 32A 349 34E 351 356 35C 17C 1A8 200 23E 274 2A0 2CF 309 323 32B 32A 34A 34F 354 356 35C 182 1AF 216 240 26E 293 2CD 306 328 332 361 372 376 377 37D 381 198 1D3 21E 245 26F 2C7 2E5 318 344 35E 3A2 3AE 39E 3A1 3A3 3A8 19F 1D3 23A 25A 291 2EC 2F2 318 358 382 395 3B4 3A3 3A3 3A8 3A9 1E8 204 265 26F 28D 2F3 308 321 354 38D 3A5 3BF 3A9 3AD 3AE 3B2 226 273 2A0 2B1 2D1 31E 334 36E 392 3A5 3BF 3C4 3B3 3B4 3B4 3B4 2B0 2CB 2E7 309 31F 346 361 37C 3A4 3B2 3D8 3D8 3CF 3B9 3B9 3B9 2C7 2E8 301 322 338 34F 367 388 3B8 3C4 3DF 3DF 3D4 3BE 3BE 3BE 2D2 2F3 309 32A 340 356 36C 38D 3BD 3C9 3E2 3E2 3D4 3BE 3BE 3BE 2D6 2F7 30D 32E 344 35A 370 392 3BE 3C9 3EF 3EE 3D4 3BE 3BE 3BE 2D7 2F8 30E 32F 346 35C 372 393 3BF 3CA 3F9 3F9 3D5 3BF 3BF 3BF 2D7 2F8 30E 32F 346 35C 372 393 3BF 3CA 3FA 3F8 3D5 3BF 3BF 3BF 2D7 2F8 30E 32F 346 35C 372 393 3BF 3CA 40C 3EB 3D5 3BF 3BF 3BF 2D7 2F8 30E 32F 346 35C 372 393 3BF 3CA 3E0 3E0 3D5 3BF 3BF 3BF "/>
+    <symbol name="veTable" storage="u12" width="16" height="20" data="122 128 188 1DA 25C 27D 299 2DA 2FD 314 323 343 348 34D 351 356 10C 113 19C 1FB 25D 273 2A8 2D5 301 316 324 346 34B 351 355 357 138 17F 1BF 235 24B 276 2BC 2D0 307 31B 329 346 34B 351 356 35A 140 174 1C1 1FA 23B 24A 283 2A2 305 311 329 346 34B 351 356 35A 152 184 1C4 211 230 23D 283 2BF 2C4 31E 32A 348 34D 351 356 35C 16E 195 1D7 21C 23B 252 284 2B6 2BA 32A 32A 348 34D 351 356 35C 16F 192 1DD 21F 24B 265 288 2B8 2D6 32A 32A 348 34D 352 356 35C 176 19C 1DF 234 263 28C 2C9 2DF 2F4 310 361 370 375 375 37D 37F 182 1A9 1FE 244 26D 298 2B9 2E8 311 323 3A2 3AC 39D 3A1 3A2 3A7 169 190 1FD 23A 26D 2B1 2C0 2E4 31F 330 344 3B4 3A2 3A2 3A7 3A7 175 197 205 23F 288 2AF 2D9 2EF 32B 350 357 3BF 3A7 3AC 3AC 3B1 226 273 227 2B1 296 2B5 2E1 36E 392 365 365 3C4 3B1 3B4 3B4 3B4 2B0 2CB 2E7 307 31F 346 361 37A 2FC 376 37D 389 3CF 3B9 3B9 3B9 2C6 2E8 301 320 338 34D 366 388 3B6 3C4 38C 38D 3D4 3BE 3BE 3BE 2D0 2F3 307 32A 33E 356 36B 38D 3BB 3C9 38A 38B 3D4 3BE 3BE 3BE 2D5 2F7 30C 32E 343 35A 370 392 3BE 3C9 38C 38D 3D4 3BE 3BE 3BE 2D5 2F8 30C 32F 346 35C 370 393 3BF 3CA 391 3F7 3D4 3BF 3BF 3BF 2D5 2F8 30C 32F 346 35C 370 393 3BF 3CA 3A8 3F7 3D4 3BF 3BF 3BF 2D5 2F8 30C 32F 346 35C 370 393 3BF 3CA 40B 3EB 3D4 3BF 3BF 3BF 2D5 2F8 30C 32F 346 35C 370 393 3BF 3CA 3DE 3DE 3D4 3BF 3BF 3BF "/>
     <symbol name="knockNoiseTable" storage="ubyte" width="20" height="4" data="47 4C 4F 52 56 59 5C 63 67 6A 6E 72 75 79 7D 80 84 88 8B 8F 4B 50 53 57 5A 5E 61 69 6E 73 78 7E 83 88 8E 93 98 9E A3 A7 4E 54 58 5C 5F 63 66 6E 75 7C 83 8A 91 97 9F A6 AD B3 BA BF 50 56 5A 5E 61 65 69 71 79 80 88 90 98 9F A7 AF B7 BE C6 CB "/>
     <symbol name="nitrousIgn" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
