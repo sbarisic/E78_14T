@@ -4,12 +4,14 @@ void main_logic(void *params)
 {
     dprintf("main_logic()\n");
 
-    core2_http_get("https://zodogo.com/guimp.com/");
+    const char *JSON_txt = "{ \"APIKey\": \"OoDUEAxaDLE3L+tdG2ZWmvSNJ8A5jnzh9a4r4d4XzEw=\", \"Action\": 1, \"Napon1\": 16.789 }";
+    size_t JSON_txt_len = strlen(JSON_txt);
 
-    /*while (true)
+    while (true)
     {
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }*/
+        // core2_web_json_post("https://demo.sbarisic.com/deviceaccess", JSON_txt, JSON_txt_len);
+        vTaskDelay(pdMS_TO_TICKS(1000 * 5));
+    }
 
     vTaskDelete(NULL);
 }
@@ -38,6 +40,4 @@ void setup()
 
 void loop()
 {
-
-    
 }

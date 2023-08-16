@@ -151,7 +151,20 @@ void *core2_malloc(size_t sz)
         eprintf("malloc(%zu) failed", sz);
     }
 
+    memset(ptr, 0, sz);
     return ptr;
+}
+
+void *core2_realloc(void *ptr, size_t sz)
+{
+    void *new_ptr = realloc(ptr, sz);
+
+    if (new_ptr == NULL)
+    {
+        eprintf("realloc(%p ,%zu) failed", ptr, sz);
+    }
+
+    return new_ptr;
 }
 
 void core2_free(void *ptr)
@@ -159,6 +172,7 @@ void core2_free(void *ptr)
     free(ptr);
 }
 
+// Resulting string needs to be free'd after use
 char *core2_string_concat(const char *a, const char *b)
 {
     size_t len = strlen(a) + strlen(b) + 1;
