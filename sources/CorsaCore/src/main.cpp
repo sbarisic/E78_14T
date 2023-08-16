@@ -4,10 +4,12 @@ void main_logic(void *params)
 {
     dprintf("main_logic()\n");
 
-    while (true)
+    core2_http_get("https://zodogo.com/guimp.com/");
+
+    /*while (true)
     {
         vTaskDelay(pdMS_TO_TICKS(1000));
-    }
+    }*/
 
     vTaskDelete(NULL);
 }
@@ -36,4 +38,6 @@ void setup()
 
 void loop()
 {
+
+    
 }

@@ -142,3 +142,8 @@ bool core2_spi_create(sdmmc_host_t *host, int MOSI, int MISO, int CLK);
 // =================================================================================================
 
 bool core2_json_init();
+void core2_json_begin();
+void core2_json_end();
+
+// Web
+void core2_http_get(const char *server_name);
