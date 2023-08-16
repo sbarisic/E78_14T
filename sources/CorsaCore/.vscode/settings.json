@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "core2.h": "c",
+        "freertos.h": "c"
+    }
+}
