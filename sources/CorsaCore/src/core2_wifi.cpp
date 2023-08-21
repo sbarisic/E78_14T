@@ -15,7 +15,6 @@ int32_t NextConnectWaitTime;
 
 bool IsInAccessPointMode;
 
-int ConDataIdx = 1;
 const char *SSIDs[] = {"Barisic", "TEST69", "Serengeti", "TEST"};
 const char *PASSs[] = {"123456789", "123456789", "srgt#2018", "123456789"};
 
@@ -129,7 +128,6 @@ void c2_wifi_task(void *params)
             if (WiFiStatus != LastWiFiStatus)
                 dprintf(PRF_STAT " WL_NO_SSID_AVAIL \n");
 
-            ConDataIdx++;
             ConnectionValid = false;
             NextConnectWaitTime = 10;
             break;
