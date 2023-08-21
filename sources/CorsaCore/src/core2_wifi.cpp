@@ -117,15 +117,15 @@ void c2_wifi_task(void *params)
         {
             // Idle status, do nothing
         case WL_IDLE_STATUS:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_IDLE_STATUS)
                 dprintf(PRF_STAT " WL_IDLE_STATUS \n");
 
-            continue;
+            NextConnectWaitTime = 10;
             break;
 
             // SSID not found
         case WL_NO_SSID_AVAIL:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_NO_SSID_AVAIL)
                 dprintf(PRF_STAT " WL_NO_SSID_AVAIL \n");
 
             ConnectionValid = false;
@@ -133,14 +133,13 @@ void c2_wifi_task(void *params)
             break;
 
         case WL_SCAN_COMPLETED:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_SCAN_COMPLETED)
                 dprintf(PRF_STAT " WL_SCAN_COMPLETED \n");
 
-            continue;
             break;
 
         case WL_CONNECTED:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_CONNECTED)
                 dprintf(PRF_STAT " WL_CONNECTED \n");
 
             if (!ConnectionValid)
@@ -153,7 +152,7 @@ void c2_wifi_task(void *params)
             break;
 
         case WL_CONNECT_FAILED:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_CONNECT_FAILED)
                 dprintf(PRF_STAT " WL_CONNECT_FAILED \n");
 
             ConnectionValid = false;
@@ -162,27 +161,28 @@ void c2_wifi_task(void *params)
 
         // TODO: Handle losing connection
         case WL_CONNECTION_LOST:
-            dprintf(PRF_STAT " WL_CONNECTION_LOST \n");
+            if (LastWiFiStatus != WL_CONNECTION_LOST)
+                dprintf(PRF_STAT " WL_CONNECTION_LOST \n");
 
             ConnectionValid = false;
-            NextConnectWaitTime = 30;
+            NextConnectWaitTime = 20;
             break;
 
         // TODO: Handle disconnect
         case WL_DISCONNECTED:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_DISCONNECTED)
                 dprintf(PRF_STAT " WL_DISCONNECTED \n");
 
             ConnectionValid = false;
-            NextConnectWaitTime = 15;
+            NextConnectWaitTime = 20;
             break;
 
         case WL_NO_SHIELD:
-            if (WiFiStatus != LastWiFiStatus)
+            if (LastWiFiStatus != WL_NO_SHIELD)
                 dprintf(PRF_STAT " WL_NO_SHIELD \n");
 
             ConnectionValid = false;
-            NextConnectWaitTime = 3;
+            NextConnectWaitTime = 2;
             break;
 
         default:
@@ -207,7 +207,7 @@ void c2_wifi_task(void *params)
         }
 
         LastWiFiStatus = WiFiStatus;
-        vTaskDelay(pdMS_TO_TICKS(2500));
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
 
