@@ -13,6 +13,8 @@ bool ConnectionValid;
 int32_t LastBeginConnect;
 int32_t NextConnectWaitTime;
 
+bool IsInAccessPointMode;
+
 int ConDataIdx = 1;
 const char *SSIDs[] = {"Barisic", "TEST69", "Serengeti", "TEST"};
 const char *PASSs[] = {"123456789", "123456789", "srgt#2018", "123456789"};
@@ -59,6 +61,46 @@ bool c2_wifi_begin_connect(int32_t NextConnectWaitTime)
     }
 
     return false;
+}
+
+bool core2_wifi_ap_start()
+{
+    dprintf("core2_wifi_ap_start()\n");
+    IsInAccessPointMode = true;
+
+    // TODO: Move to separate config
+    IPAddress local_ip(192, 168, 1, 42);
+    IPAddress gateway(192, 168, 1, 1);
+    IPAddress subnet(255, 255, 255, 0);
+
+    if (!WiFi.softAPConfig(local_ip, gateway, subnet))
+    {
+        dprintf("core2_wifi_ap_start() - WiFi Access Point Config FAIL\n");
+        return false;
+    }
+
+    // TODO: Move to separate config
+    if (!WiFi.softAP("core2_wifi_devtest", "core21234"))
+    {
+        dprintf("core2_wifi_ap_start() - WiFi Access Point FAIL\n");
+        return false;
+    }
+
+    String ip = WiFi.softAPIP().toString();
+    dprintf("core2_wifi_ap_start() - %s\n", ip.c_str());
+
+    dprintf("core2_wifi_ap_start() OK\n");
+    return true;
+    // WiFi.softAPConfig()
+}
+
+bool core2_wifi_ap_stop()
+{
+    dprintf("core2_wifi_ap_stop()\n");
+    IsInAccessPointMode = false;
+
+    WiFi.softAPdisconnect(true);
+    return true;
 }
 
 void c2_wifi_task(void *params)
@@ -154,25 +196,21 @@ void c2_wifi_task(void *params)
             break;
         }
 
-        if (!ConnectionValid)
+        if (IsInAccessPointMode)
         {
-            c2_wifi_begin_connect(NextConnectWaitTime);
+            // AP Mode, do whatever
+        }
+        else
+        {
+            if (!ConnectionValid)
+            {
+                c2_wifi_begin_connect(NextConnectWaitTime);
+            }
         }
 
         LastWiFiStatus = WiFiStatus;
         vTaskDelay(pdMS_TO_TICKS(2500));
     }
-}
-
-bool core2_wifi_init()
-{
-    dprintf("core2_wifi_init()\n");
-    ConnectionValid = false;
-    LastBeginConnect = core2_clock_bootseconds();
-    NextConnectWaitTime = 0;
-
-    xTaskCreate(c2_wifi_task, "c2_wifi_task", 4096, NULL, 1, NULL);
-    return true;
 }
 
 bool core2_wifi_isconnected()
@@ -192,4 +230,17 @@ void core2_wifi_yield_until_connected()
     {
         vTaskDelay(pdMS_TO_TICKS(100));
     }
+}
+
+bool core2_wifi_init()
+{
+    dprintf("core2_wifi_init()\n");
+
+    ConnectionValid = false;
+    IsInAccessPointMode = false;
+    LastBeginConnect = core2_clock_bootseconds();
+    NextConnectWaitTime = 0;
+
+    xTaskCreate(c2_wifi_task, "c2_wifi_task", 4096, NULL, 1, NULL);
+    return true;
 }

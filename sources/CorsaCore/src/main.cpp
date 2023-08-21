@@ -24,6 +24,10 @@ void setup()
     core2_wifi_init();
     core2_clock_init();
     core2_json_init();
+    core2_shell_init();
+
+    // Start access point
+    core2_wifi_ap_start();
 
     core2_wifi_yield_until_connected();
     dprintf("init() done\n");
@@ -33,6 +37,9 @@ void setup()
     dprintf("Current date time: %s\n", cur_time);
 
     xTaskCreate(main_logic, "main_logic", 1024 * 16, NULL, 1, NULL);
+
+    vTaskDelay(pdMS_TO_TICKS(1000 * 20));
+    core2_wifi_ap_stop();
 
     // Stop arduino task, job done
     vTaskDelete(NULL);

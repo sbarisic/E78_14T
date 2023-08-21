@@ -92,6 +92,8 @@ bool core2_wifi_init();
 bool core2_wifi_isconnected();
 IPAddress core2_wifi_getip();
 void core2_wifi_yield_until_connected();
+bool core2_wifi_ap_start();
+bool core2_wifi_ap_stop();
 
 // Clock
 // =================================================================================================
@@ -159,3 +161,8 @@ void core2_json_end();
 
 // Web
 bool core2_web_json_post(const char *server_name, const char *json_txt, size_t json_txt_len);
+
+// Shell
+// =================================================================================================
+
+void core2_shell_init();
