@@ -105,8 +105,6 @@ bool core2_wifi_ap_stop()
 void c2_wifi_task(void *params)
 {
     dprintf("c2_wifi_task() STARTED\n");
-    // wl_status_t LastStatus = (wl_status_t)-1;
-
     wl_status_t LastWiFiStatus = (wl_status_t)-1;
 
     for (;;)
@@ -194,16 +192,9 @@ void c2_wifi_task(void *params)
             break;
         }
 
-        if (IsInAccessPointMode)
+        if (!ConnectionValid)
         {
-            // AP Mode, do whatever
-        }
-        else
-        {
-            if (!ConnectionValid)
-            {
-                c2_wifi_begin_connect(NextConnectWaitTime);
-            }
+            c2_wifi_begin_connect(NextConnectWaitTime);
         }
 
         LastWiFiStatus = WiFiStatus;
