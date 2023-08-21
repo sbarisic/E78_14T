@@ -4,6 +4,9 @@
 #include <WiFi.h>
 #include "driver/sdmmc_host.h"
 
+// Entry Point
+void core2_main();
+
 // Default defines
 // =================================================================================================
 
