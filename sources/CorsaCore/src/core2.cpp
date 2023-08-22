@@ -243,8 +243,8 @@ void setup()
 
     xTaskCreate(core2_main_impl, "core2_main", 1024 * 16, NULL, 1, NULL);
 
-    vTaskDelay(pdMS_TO_TICKS(1000 * 20));
-    core2_wifi_ap_stop();
+    //vTaskDelay(pdMS_TO_TICKS(1000 * 20));
+    //core2_wifi_ap_stop();
 
     // Stop arduino task, job done
     vTaskDelete(NULL);

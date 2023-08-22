@@ -18,7 +18,7 @@ void core2_main();
 #define CORE2_DISABLE_OLED
 
 // Uncomment to disable complilation and calling of test functions
-// #define CORE2_OMIT_TESTS 
+#define CORE2_OMIT_TESTS
 
 #ifdef CORE2_DEBUG
 #define dprintf printf

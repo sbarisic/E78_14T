@@ -197,8 +197,8 @@
     <symbol name="boostKi" value="64" storage="ubyte" type="value"/>
     <symbol name="boostKd" value="0" storage="ubyte" type="value"/>
     <symbol name="boostIntegralLimit" value="10" storage="word" type="value"/>
-    <symbol name="boostFeedbackPlus" value="20" storage="ubyte" type="value"/>
-    <symbol name="boostFeedbackMinus" value="20" storage="ubyte" type="value"/>
+    <symbol name="boostFeedbackPlus" value="10" storage="ubyte" type="value"/>
+    <symbol name="boostFeedbackMinus" value="10" storage="ubyte" type="value"/>
     <symbol name="gear1Scale" value="100" storage="ubyte" type="value"/>
     <symbol name="gear2Scale" value="100" storage="ubyte" type="value"/>
     <symbol name="gear3Scale" value="100" storage="ubyte" type="value"/>
@@ -1287,7 +1287,7 @@
     <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="dcBoostRef1" storage="ubyte" width="10" height="10" data="0 58 76 8C 93 9E B6 BC C8 C8 0 58 76 8C 93 9E B8 BD C8 C8 0 53 6F 82 89 92 A9 AF BB C0 0 4E 68 78 7F 86 9A A1 AE B8 0 44 5A 6A 70 77 8A 90 9C A6 0 3A 4C 5C 61 68 7A 7F 8A 94 0 38 48 58 5F 66 76 7B 86 90 0 36 46 54 5B 62 72 77 82 8C 0 32 40 4E 55 5C 6C 71 7C 88 0 2E 3C 48 4F 56 68 6D 76 82 "/>
     <symbol name="dcBoostRef2" storage="ubyte" width="10" height="10" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
-    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 35 38 3B 3D 40 43 46 49 4B 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 "/>
+    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 32 38 3D 43 48 4E 54 59 5F 64 "/>
     <symbol name="boostTarget2" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 "/>
     <symbol name="egtBins" storage="word" width="8" height="1" data="190 1F4 258 2BC 320 384 3E8 44C "/>
     <symbol name="iatBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 3C 19 A 0 "/>
