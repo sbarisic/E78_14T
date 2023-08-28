@@ -1403,7 +1403,7 @@
     <symbol name="etcOpening2" storage="ubyte" width="16" height="8" data="0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 "/>
     <symbol name="dbwGearMaxOpen" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
     <symbol name="dbwGearOpenScl" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
-    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1AE 1AE 1AE 1AE 1AE 1AE 1AE 1AE 1D4 1D4 1D4 1D4 1D4 1D4 1D4 1D4 1C4 1C4 1C4 1C4 1C4 1C4 1C4 1C4 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD "/>
+    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CA 1CA 1CA 1CA 1CA 1CA 1CA 1CA 1C8 1C8 1C8 1C8 1C8 1C8 1C8 1C8 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD "/>
     <symbol name="secTriggerSensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="cam2Sensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="tpsBoostBins" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
