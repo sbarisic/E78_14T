@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="2.164">
+<project version="2.163">
   <variables>
     <symbol name="fuelingType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="enableBaro" value="0" storage="ubyte" type="bool"/>
@@ -19,7 +19,7 @@
     <symbol name="mapAnalogIn" value="4" storage="ubyte" type="paramList"/>
     <symbol name="knockFrequency" value="59" storage="ubyte" type="paramList"/>
     <symbol name="knockSensorGain" value="29" storage="ubyte" type="paramList"/>
-    <symbol name="initMask" value="1" storage="word" type="paramList"/>
+    <symbol name="initMask" value="0" storage="word" type="paramList"/>
     <symbol name="primTrigerType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="numTeeth" value="60" storage="ubyte" type="value"/>
     <symbol name="firstTriggerTooth" value="2" storage="ubyte" type="value"/>
@@ -192,7 +192,7 @@
     <symbol name="pidDebug" value="0" storage="ubyte" type="paramList"/>
     <symbol name="wboFuelType" value="3763" storage="word" type="paramList"/>
     <symbol name="VSSTrigerEdge" value="0" storage="ubyte" type="paramList"/>
-    <symbol name="boostControlType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="boostControlType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="boostKp" value="2" storage="ubyte" type="value"/>
     <symbol name="boostKi" value="64" storage="ubyte" type="value"/>
     <symbol name="boostKd" value="20" storage="ubyte" type="value"/>
@@ -1287,7 +1287,7 @@
     <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="dcBoostRef1" storage="ubyte" width="10" height="10" data="0 58 76 8C 96 A0 B8 BE C8 C8 0 58 76 8C 96 A0 BA BF C8 C8 0 53 6F 82 8B 94 AB B1 BD C2 0 4E 68 78 80 88 9C A3 B0 BA 0 44 5A 6A 72 79 8C 92 9E A8 0 3A 4C 5C 63 6A 7C 81 8C 96 0 38 48 58 60 68 78 7D 88 92 0 36 46 54 5C 64 74 79 84 8E 0 32 40 4E 56 5E 6E 73 7E 8A 0 2E 3C 48 50 58 6A 6F 78 84 "/>
     <symbol name="dcBoostRef2" storage="ubyte" width="10" height="10" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
-    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 34 37 39 3C 3E 41 43 46 48 32 36 39 3D 40 45 48 4C 4F 53 32 37 3C 40 45 4B 50 54 59 5E 32 38 3E 44 4A 51 57 5D 63 69 32 38 3E 44 4A 51 57 5D 63 69 32 38 3E 44 4A 51 57 5D 63 69 32 38 3E 44 4A 51 57 5D 63 69 32 38 3E 44 4A 51 57 5D 63 69 32 38 3E 44 4A 51 57 5D 63 69 "/>
+    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 35 38 3B 3E 42 45 48 4B 4E 32 37 3B 40 45 49 4E 53 57 5C 32 38 3E 44 4B 51 58 5E 64 6A 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 "/>
     <symbol name="boostTarget2" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 "/>
     <symbol name="egtBins" storage="word" width="8" height="1" data="190 1F4 258 2BC 320 384 3E8 44C "/>
     <symbol name="iatBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 3C 19 A 0 "/>
@@ -1403,7 +1403,7 @@
     <symbol name="etcOpening2" storage="ubyte" width="16" height="8" data="0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 "/>
     <symbol name="dbwGearMaxOpen" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
     <symbol name="dbwGearOpenScl" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
-    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CC 1CA 1CA 1CA 1CA 1CA 1CA 1CA 1CA 1C8 1C8 1C8 1C8 1C8 1C8 1C8 1C8 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1C6 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BE 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD 1BD "/>
+    <symbol name="injectionAngle" storage="word" width="8" height="8" data="19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F 19F "/>
     <symbol name="secTriggerSensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="cam2Sensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="tpsBoostBins" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
@@ -1423,8 +1423,8 @@
     <symbol name="tpsLCBins" storage="u12" width="7" height="1" data="14 5A 64 6E BE C8 FA "/>
     <symbol name="rpmLCBins" storage="word" width="7" height="1" data="BB8 C1C C80 CE4 D48 DAC E10 "/>
     <symbol name="lcSparkCutTbl1" storage="ubyte" width="7" height="7" data="0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 0 0 0 0 1E 64 64 "/>
-    <symbol name="lcIgnRetardTbl1" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 -A -A -A -A -A -A -A -14 -14 -14 -14 -14 -14 -14 -1E -1E -1E -1E -1E -1E -1E -28 -28 -28 -28 -28 -28 -28 -32 -32 -32 -32 -32 -32 -32 -3C -3C -3C -3C -3C -3C -3C "/>
-    <symbol name="lcFuelEnrichTbl1" storage="ubyte" width="7" height="7" data="64 64 73 82 82 82 82 64 64 73 82 82 82 82 64 64 73 82 82 82 82 64 64 73 82 82 82 82 64 64 73 82 82 82 82 64 64 73 82 82 82 82 64 64 73 82 82 82 82 "/>
+    <symbol name="lcIgnRetardTbl1" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 -C -C -C -C -C -C -C -17 -17 -17 -17 -17 -17 -17 -23 -23 -23 -23 -23 -23 -23 -2F -2F -2F -2F -2F -2F -2F -3A -3A -3A -3A -3A -3A -3A -46 -46 -46 -46 -46 -46 -46 "/>
+    <symbol name="lcFuelEnrichTbl1" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
     <symbol name="lcWGOverrideTbl1" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="lcSparkCutTbl2" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="lcIgnRetardTbl2" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
@@ -1514,7 +1514,7 @@
     <symbol name="ompTargetTble" storage="ubyte" width="8" height="8" data="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 "/>
     <symbol name="customFXBins8" storage="sword" width="8" height="1" data="0 14 1E 28 32 3C 50 64 "/>
     <symbol name="customFYBins8" storage="sword" width="8" height="1" data="384 3E8 44C 4B0 514 578 5DC 7D0 "/>
-    <symbol name="customFuelCorrection" storage="ubyte" width="8" height="8" data="9B 8F 88 80 77 64 64 64 99 8D 86 7E 75 64 64 64 98 8C 85 7D 74 64 64 64 96 8A 83 7B 72 64 64 64 94 88 81 79 70 64 64 64 92 86 7F 77 6E 64 64 64 91 85 7E 76 6D 64 64 64 88 7C 75 6D 64 64 64 64 "/>
+    <symbol name="customFuelCorrection" storage="ubyte" width="8" height="8" data="9B 8F 88 82 7B 64 64 64 98 8C 85 7F 79 64 64 64 96 8A 83 7D 77 64 64 64 93 87 80 7A 75 64 64 64 90 84 7D 77 73 64 64 64 8D 81 7A 74 71 64 64 64 8B 7F 78 72 6E 64 64 64 7D 71 6A 64 64 64 64 64 "/>
     <symbol name="customIXBins8" storage="sword" width="8" height="1" data="0 20 43 5D 78 93 AD C8 "/>
     <symbol name="customIYBins8" storage="sword" width="8" height="1" data="32 4E 6A 85 A1 BD D9 F4 "/>
     <symbol name="customIgnitionCorrection" storage="sbyte" width="8" height="8" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
