@@ -326,15 +326,15 @@
     <symbol name="vvtCam1ControlType" value="1" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam1Output1" value="5" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam1OutputFrequency" value="400" storage="word" type="value"/>
-    <symbol name="vvtCam1SteadyPosDC" value="41" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1SteadyPosDC" value="40" storage="ubyte" type="value"/>
     <symbol name="vvtCam1MaxDC" value="80" storage="ubyte" type="value"/>
     <symbol name="vvtCam1MinDC" value="10" storage="ubyte" type="value"/>
     <symbol name="vvtCam1MinCoolantTemp" value="0" storage="sbyte" type="value"/>
-    <symbol name="vvtCam1MinRPM" value="820" storage="word" type="value"/>
+    <symbol name="vvtCam1MinRPM" value="450" storage="word" type="value"/>
     <symbol name="vvtCam1PTerm" value="40" storage="ubyte" type="value"/>
     <symbol name="vvtCam1ITerm" value="0" storage="ubyte" type="value"/>
     <symbol name="vvtCam1DTerm" value="20" storage="ubyte" type="value"/>
-    <symbol name="vvtCam1IntegralLimit" value="5" storage="word" type="value"/>
+    <symbol name="vvtCam1IntegralLimit" value="8" storage="word" type="value"/>
     <symbol name="cam2Type" value="2" storage="ubyte" type="paramList"/>
     <symbol name="cam2SensorType" value="1" storage="ubyte" type="paramList"/>
     <symbol name="cam2Pullup" value="1" storage="ubyte" type="paramList"/>
@@ -345,15 +345,15 @@
     <symbol name="vvtCam2ControlType" value="1" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam2Output1" value="6" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam2OutputFrequency" value="400" storage="word" type="value"/>
-    <symbol name="vvtCam2SteadyPosDC" value="41" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2SteadyPosDC" value="40" storage="ubyte" type="value"/>
     <symbol name="vvtCam2MaxDC" value="80" storage="ubyte" type="value"/>
     <symbol name="vvtCam2MinDC" value="10" storage="ubyte" type="value"/>
     <symbol name="vvtCam2MinCoolantTemp" value="0" storage="sbyte" type="value"/>
-    <symbol name="vvtCam2MinRPM" value="820" storage="word" type="value"/>
+    <symbol name="vvtCam2MinRPM" value="450" storage="word" type="value"/>
     <symbol name="vvtCam2PTerm" value="40" storage="ubyte" type="value"/>
     <symbol name="vvtCam2ITerm" value="0" storage="ubyte" type="value"/>
     <symbol name="vvtCam2DTerm" value="20" storage="ubyte" type="value"/>
-    <symbol name="vvtCam2IntegralLimit" value="5" storage="word" type="value"/>
+    <symbol name="vvtCam2IntegralLimit" value="8" storage="word" type="value"/>
     <symbol name="vvtCam1Deadband" value="1" storage="ubyte" type="value"/>
     <symbol name="vvtCam2Deadband" value="1" storage="ubyte" type="value"/>
     <symbol name="vvtCam1direction" value="1" storage="ubyte" type="paramList"/>
