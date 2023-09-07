@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="2.164">
+<project version="2.163">
   <variables>
     <symbol name="fuelingType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="enableBaro" value="0" storage="ubyte" type="bool"/>
@@ -19,7 +19,7 @@
     <symbol name="mapAnalogIn" value="4" storage="ubyte" type="paramList"/>
     <symbol name="knockFrequency" value="59" storage="ubyte" type="paramList"/>
     <symbol name="knockSensorGain" value="29" storage="ubyte" type="paramList"/>
-    <symbol name="initMask" value="65535" storage="word" type="paramList"/>
+    <symbol name="initMask" value="8" storage="word" type="paramList"/>
     <symbol name="primTrigerType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="numTeeth" value="60" storage="ubyte" type="value"/>
     <symbol name="firstTriggerTooth" value="2" storage="ubyte" type="value"/>
@@ -46,20 +46,20 @@
     <symbol name="idleAfterstartDuration" value="1" storage="ubyte" type="value"/>
     <symbol name="idleOnIfTPSBelow" value="1" storage="ubyte" type="value"/>
     <symbol name="idleOffIfTPSOver" value="2" storage="ubyte" type="value"/>
-    <symbol name="idleDeadband" value="30" storage="ubyte" type="value"/>
+    <symbol name="idleDeadband" value="15" storage="ubyte" type="value"/>
     <symbol name="idleIncreaseAboveVSS" value="30" storage="word" type="value"/>
     <symbol name="idleVSSIncrease" value="0" storage="word" type="value"/>
     <symbol name="idleIgntionCtrl" value="1" storage="ubyte" type="bool"/>
-    <symbol name="idleIgnMaxAdvance" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleIgnMaxAdvance" value="10" storage="ubyte" type="value"/>
     <symbol name="idleIgnMaxRetard" value="15" storage="ubyte" type="value"/>
-    <symbol name="idleAngleChangeRate" value="20" storage="ubyte" type="value"/>
-    <symbol name="idlePIDEnable" value="0" storage="ubyte" type="bool"/>
-    <symbol name="idleP" value="10" storage="ubyte" type="value"/>
-    <symbol name="idleI" value="1" storage="ubyte" type="value"/>
-    <symbol name="idleD" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleAngleChangeRate" value="40" storage="ubyte" type="value"/>
+    <symbol name="idlePIDEnable" value="1" storage="ubyte" type="bool"/>
+    <symbol name="idleP" value="24" storage="ubyte" type="value"/>
+    <symbol name="idleI" value="4" storage="ubyte" type="value"/>
+    <symbol name="idleD" value="32" storage="ubyte" type="value"/>
     <symbol name="idleIntWindup" value="20" storage="ubyte" type="value"/>
-    <symbol name="idleFeedbackPlus" value="5" storage="ubyte" type="value"/>
-    <symbol name="idleFeedbackMinus" value="5" storage="ubyte" type="value"/>
+    <symbol name="idleFeedbackPlus" value="8" storage="ubyte" type="value"/>
+    <symbol name="idleFeedbackMinus" value="8" storage="ubyte" type="value"/>
     <symbol name="idleReverse" value="0" storage="ubyte" type="bool"/>
     <symbol name="idlePWMOutput" value="0" storage="ubyte" type="paramList"/>
     <symbol name="ignitionEvent1" value="1" storage="ubyte" type="paramList"/>
@@ -321,7 +321,7 @@
     <symbol name="extPortDeviceID" value="0" storage="ubyte" type="paramList"/>
     <symbol name="nextEdgeAngleThreshold" value="0" storage="ubyte" type="value"/>
     <symbol name="ignitionOutputOffset" value="0" storage="ubyte" type="value"/>
-    <symbol name="vvtCam1TriggerOffset" value="456" storage="word" type="value"/>
+    <symbol name="vvtCam1TriggerOffset" value="455" storage="word" type="value"/>
     <symbol name="vvtCam1MaxAdvance" value="60" storage="ubyte" type="value"/>
     <symbol name="vvtCam1ControlType" value="1" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam1Output1" value="5" storage="ubyte" type="paramList"/>
@@ -330,9 +330,9 @@
     <symbol name="vvtCam1MaxDC" value="80" storage="ubyte" type="value"/>
     <symbol name="vvtCam1MinDC" value="10" storage="ubyte" type="value"/>
     <symbol name="vvtCam1MinCoolantTemp" value="0" storage="sbyte" type="value"/>
-    <symbol name="vvtCam1MinRPM" value="820" storage="word" type="value"/>
+    <symbol name="vvtCam1MinRPM" value="500" storage="word" type="value"/>
     <symbol name="vvtCam1PTerm" value="40" storage="ubyte" type="value"/>
-    <symbol name="vvtCam1ITerm" value="0" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1ITerm" value="1" storage="ubyte" type="value"/>
     <symbol name="vvtCam1DTerm" value="20" storage="ubyte" type="value"/>
     <symbol name="vvtCam1IntegralLimit" value="5" storage="word" type="value"/>
     <symbol name="cam2Type" value="2" storage="ubyte" type="paramList"/>
@@ -340,7 +340,7 @@
     <symbol name="cam2Pullup" value="1" storage="ubyte" type="paramList"/>
     <symbol name="cam2InputFilter" value="1" storage="ubyte" type="paramList"/>
     <symbol name="cam2Edge" value="1" storage="ubyte" type="paramList"/>
-    <symbol name="vvtCam2TriggerOffset" value="609" storage="word" type="value"/>
+    <symbol name="vvtCam2TriggerOffset" value="608" storage="word" type="value"/>
     <symbol name="vvtCam2MaxAdvance" value="60" storage="ubyte" type="value"/>
     <symbol name="vvtCam2ControlType" value="1" storage="ubyte" type="paramList"/>
     <symbol name="vvtCam2Output1" value="6" storage="ubyte" type="paramList"/>
@@ -349,9 +349,9 @@
     <symbol name="vvtCam2MaxDC" value="80" storage="ubyte" type="value"/>
     <symbol name="vvtCam2MinDC" value="10" storage="ubyte" type="value"/>
     <symbol name="vvtCam2MinCoolantTemp" value="0" storage="sbyte" type="value"/>
-    <symbol name="vvtCam2MinRPM" value="820" storage="word" type="value"/>
+    <symbol name="vvtCam2MinRPM" value="500" storage="word" type="value"/>
     <symbol name="vvtCam2PTerm" value="40" storage="ubyte" type="value"/>
-    <symbol name="vvtCam2ITerm" value="0" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2ITerm" value="1" storage="ubyte" type="value"/>
     <symbol name="vvtCam2DTerm" value="20" storage="ubyte" type="value"/>
     <symbol name="vvtCam2IntegralLimit" value="5" storage="word" type="value"/>
     <symbol name="vvtCam1Deadband" value="1" storage="ubyte" type="value"/>
@@ -1250,7 +1250,7 @@
     <symbol name="gearSensorCal" storage="ubyte" width="9" height="1" data="0 20 40 60 80 9F BF DF FF "/>
     <symbol name="rpmErrorBins" storage="word" width="8" height="1" data="0 43 CA 183 265 36C 494 5DC "/>
     <symbol name="idleDCErrBins" storage="sword" width="8" height="1" data="-1F4 -12C -96 -32 32 96 12C 1F4 "/>
-    <symbol name="idleErrDCCorrection" storage="sbyte" width="8" height="1" data="0 0 0 0 -4 -C -18 -28 "/>
+    <symbol name="idleErrDCCorrection" storage="sbyte" width="8" height="1" data="A 6 2 0 -4 -C -18 -28 "/>
     <symbol name="boostDCErrBins" storage="sbyte" width="8" height="1" data="-46 -3C -32 -28 -1E -5 5 1E "/>
     <symbol name="boostErrDCCorrection" storage="sbyte" width="8" height="1" data="14 14 14 14 14 3 -3 -14 "/>
     <symbol name="fprDelta" storage="word" width="8" height="1" data="E1 FA 113 12C 145 15E 177 190 "/>
@@ -1264,7 +1264,7 @@
     <symbol name="chargeTempTbl" storage="ubyte" width="8" height="12" data="5C 3B 24 10 5 0 0 0 58 37 21 F 5 0 0 0 54 33 1E D 4 0 0 0 4F 2E 1B C 4 0 0 0 4B 2A 18 A 3 0 0 0 47 26 15 9 3 0 0 0 43 22 12 7 2 0 0 0 3F 1E F 6 2 0 0 0 3B 1A C 4 1 0 0 0 36 15 9 3 1 0 0 0 32 11 6 1 0 0 0 0 2E D 3 0 0 0 0 0 "/>
     <symbol name="tpsBinsAirCharge" storage="ubyte" width="8" height="1" data="0 5 10 20 30 40 50 64 "/>
     <symbol name="acEvapCal" storage="sbyte" width="16" height="1" data="-14 -C -4 4 C 14 1C 24 2C 34 3C 44 4C 54 5C 64 "/>
-    <symbol name="ignTable" storage="sbyte" width="16" height="20" data="36 30 26 1E 16 A 0 -1 -2 -4 -6 -7 -9 -A -C -D 40 3A 32 24 1E 10 A 6 4 2 1 1 -1 -4 -7 -A 44 40 38 2C 25 1C 16 E A 6 5 5 1 -2 -5 -8 48 42 3A 30 28 20 1A 14 F A 7 7 3 0 -3 -6 4C 46 3E 32 2E 26 1E 18 13 D A 9 5 2 -1 -4 4F 48 40 34 30 28 20 1A 15 10 D B 7 4 1 -2 4F 48 40 36 31 2A 24 20 19 13 F E A 7 4 1 4F 48 40 36 32 2C 28 24 1E 18 13 11 D A 7 4 4F 48 40 37 32 2E 2C 28 21 1A 16 14 10 D A 7 4F 48 40 37 33 2E 2C 2A 23 1D 18 15 11 E B 8 4F 48 40 37 33 2E 2C 2A 23 1D 19 15 11 E B 8 4F 48 42 37 33 2E 2C 2A 25 1F 19 16 12 F C 9 4C 47 42 36 34 2E 2C 2A 24 1F 19 16 13 10 D A 49 44 3E 36 32 2E 2C 29 23 1F 19 17 14 11 E B 46 42 3C 34 30 2D 2B 29 23 1F 1A 18 15 12 F C 44 40 3A 32 2E 2C 29 28 23 1F 1B 18 15 12 F C 42 3E 37 31 2E 2C 29 28 25 21 1C 19 16 13 10 D 42 3C 36 32 2E 2C 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D "/>
+    <symbol name="ignTable" storage="sbyte" width="16" height="20" data="2C 29 26 1E 16 A 0 -1 -2 -4 -6 -7 -9 -A -C -D 37 35 31 24 1E 10 A 6 4 2 1 1 -1 -4 -7 -A 3C 3A 37 2C 25 1C 16 E A 6 5 5 1 -2 -5 -8 45 40 3A 30 28 20 1A 14 F A 7 7 3 0 -3 -6 4C 46 3E 32 2E 26 1E 18 13 D A 9 5 2 -1 -4 4F 48 40 34 30 28 20 1A 15 10 D B 7 4 1 -2 4F 48 40 36 31 2A 24 20 19 13 F E A 7 4 1 4F 48 40 36 32 2C 28 24 1E 18 13 11 D A 7 4 4F 48 40 37 32 2E 2C 28 21 1A 16 14 10 D A 7 4F 48 40 37 33 2E 2C 2A 23 1D 18 15 11 E B 8 4F 48 40 37 33 2E 2C 2A 23 1D 19 15 11 E B 8 4F 48 42 37 33 2E 2C 2A 25 1F 19 16 12 F C 9 4C 47 42 36 34 2E 2C 2A 24 1F 19 16 13 10 D A 49 44 3E 36 32 2E 2C 29 23 1F 19 17 14 11 E B 46 42 3C 34 30 2D 2B 29 23 1F 1A 18 15 12 F C 44 40 3A 32 2E 2C 29 28 23 1F 1B 18 15 12 F C 42 3E 37 31 2E 2C 29 28 25 21 1C 19 16 13 10 D 42 3C 36 32 2E 2C 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D "/>
     <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E "/>
     <symbol name="iatTbl" storage="sbyte" width="20" height="1" data="7F 7F 7F 7F 7F 7F 7F 7F 78 62 55 48 39 27 1C 11 4 -B -14 -28 "/>
     <symbol name="cltTbl" storage="sword" width="20" height="1" data="FA 85 6D 63 5B 56 51 4B 40 30 2B 21 16 D 2 -6 -D -17 -1C -28 "/>
@@ -1277,11 +1277,11 @@
     <symbol name="accRPMFactor" storage="ubyte" width="20" height="1" data="61 5C 59 56 53 50 4D 46 40 3A 35 30 2B 26 21 1E 1B 18 16 15 "/>
     <symbol name="dwellTime" storage="ubyte" width="12" height="1" data="50 4C 49 45 41 3E 3A 37 33 2F 2C 28 "/>
     <symbol name="dwellRPMCorr" storage="ubyte" width="20" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
-    <symbol name="idleRPM" storage="word" width="16" height="1" data="4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 4B0 3E8 3E8 3E8 "/>
+    <symbol name="idleRPM" storage="word" width="16" height="1" data="514 514 514 514 514 514 514 514 514 514 514 514 514 3E8 3E8 3E8 "/>
     <symbol name="ignCLTTrim" storage="sbyte" width="16" height="1" data="A A A A 9 8 7 6 5 3 1 0 0 0 0 -8 "/>
-    <symbol name="ignIATTrim" storage="sbyte" width="16" height="1" data="3 3 2 2 1 0 0 0 0 0 0 -2 -7 -B -10 -14 "/>
+    <symbol name="ignIATTrim" storage="sbyte" width="16" height="1" data="3 3 2 2 1 0 0 0 0 0 -2 -7 -B -10 -14 -14 "/>
     <symbol name="TPSScaleTbl" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 0 0 "/>
-    <symbol name="veTable" storage="u12" width="16" height="20" data="14A 154 1E0 229 292 2A8 2B3 2BE 2D9 2EF 300 30F 31A 322 326 328 149 155 1EF 23B 28D 2A1 2AE 2BA 2DA 2F1 300 311 31D 324 31F 321 151 174 1D6 221 266 27A 296 2AD 2CB 2E9 305 318 324 32B 326 328 15B 18A 1F3 22D 25F 282 29C 2BB 2CB 2E7 309 320 32D 334 32E 32F 165 193 1E7 22D 251 26C 295 2BF 2CE 2E6 30F 329 337 33D 336 337 16F 1A4 1EB 234 251 267 293 2C3 2D5 2ED 318 336 33F 345 33E 340 17C 1B3 1FF 243 263 285 2A0 2CD 2E0 2FB 323 33C 349 34E 348 349 189 1BD 207 249 271 29B 2BD 2D4 2F5 31A 339 350 35A 35F 358 35A 18A 1B1 204 24D 280 2B3 2C0 2DC 304 330 35B 36E 375 375 370 373 172 1B0 1F2 23A 26F 29B 2AB 2D8 2F2 329 350 375 380 383 37D 37F 175 1B9 1FA 230 260 292 2AE 2D8 306 32F 347 383 389 38C 38A 38E 18E 1BD 202 241 27E 295 2B6 2F9 315 333 357 39A 398 398 399 399 19B 1BB 219 259 29A 2B5 2C1 2FB 313 365 386 3B6 3A6 3A8 3A2 3A6 1A9 1C4 1FE 23C 28A 2B7 2C3 2FB 30F 355 389 3B3 3B3 3B5 3AA 3AC 1B3 1D4 20A 243 27A 2A8 2C4 2FD 313 35F 38B 3B4 3B1 3B1 3AD 3AF 1B9 1DE 220 25D 29B 2C0 2C5 304 31E 36D 38E 3AA 3AA 3AA 3B1 3B0 1BC 1E0 222 25F 29D 2BD 2C3 308 329 370 390 3A7 3AC 3AE 3B1 3B1 1C0 1E1 222 25F 29C 2BB 2C1 309 329 372 392 3AA 3B2 3B3 3B1 3B1 1C0 1E2 223 25F 29C 2BB 2C1 309 32A 374 393 3AB 3AD 3B0 3B1 3B1 1C0 1E2 222 25F 29B 2BA 2C0 308 32A 373 394 3A6 3A9 3B0 3B1 3B1 "/>
+    <symbol name="veTable" storage="u12" width="16" height="20" data="14A 154 1E0 229 292 2CF 30B 334 344 340 33C 338 334 330 32C 328 149 155 1CB 218 2A7 2E5 310 330 347 341 33C 337 331 32C 326 321 14D 160 1E0 23B 28E 2EA 319 31C 31E 31F 321 322 323 325 327 328 150 16A 209 250 274 2A5 2E2 2F7 2DD 2E7 308 320 32D 334 32E 32F 154 175 1F4 244 259 274 2BE 2DC 2D3 2E5 30F 329 337 33D 335 337 157 17F 1F2 23A 25B 27E 2B7 2D4 2D4 2ED 317 335 33E 344 33E 33F 15B 18A 212 242 25F 286 2B5 2DB 2DF 2FB 323 33C 348 34D 348 348 163 19F 211 23E 263 28B 2B1 2DE 2F1 303 339 350 35A 35F 357 35A 16B 1B4 217 253 28F 2B1 2BF 2E8 311 328 35B 36E 375 375 370 373 174 1B4 21C 25E 298 2BA 2D1 2F5 317 347 36A 379 37F 383 37D 37F 17C 1B3 221 26A 2A1 2C3 2E2 2F1 32A 36B 385 393 397 38C 389 38E 184 1B3 226 275 2AA 2CC 2F4 314 333 37C 39A 3A9 3A7 3A6 398 398 19D 1C2 227 26E 2A9 2D0 2E8 312 334 38D 398 3B6 3AF 3B0 3A2 3A6 1A9 1C4 1FE 23C 28A 2B7 2C2 2FB 30F 37D 398 3BC 3B3 3B3 3AA 3AC 1B3 1D3 20A 243 27A 2A8 2C4 2FD 312 35F 3A2 3B8 3B1 3B1 3AC 3AF 1B8 1DD 220 25D 29A 2C0 2C5 303 31E 36C 38E 3AA 3AB 3AB 3B1 3B0 1BC 1E0 221 25F 29D 2BC 2C2 307 329 370 38F 3A7 3AC 3AC 3B1 3B1 1BF 1E0 221 25F 29C 2BB 2C1 308 329 371 392 3AA 3B3 3B1 3B1 3B1 1BF 1E2 223 25F 29C 2BB 2C1 308 32A 374 393 3AB 3BC 3B0 3B1 3B1 1BF 1E2 221 25F 29A 2BA 2C0 307 32A 373 393 3A6 3A8 3B0 3B1 3B1 "/>
     <symbol name="knockNoiseTable" storage="ubyte" width="20" height="4" data="47 4C 4F 52 56 59 5C 63 67 6B 6F 73 77 7B 7F 83 87 8B 8F 92 4B 50 53 57 5B 5E 62 69 6F 74 7A 80 85 8B 91 96 9C A1 A7 AB 4E 54 58 5C 60 63 67 6F 76 7D 85 8D 94 9B A2 A9 B1 B8 BF C4 50 56 5A 5E 62 66 6A 72 7A 82 8A 93 9B A3 AB B3 BB C3 CB D1 "/>
     <symbol name="nitrousIgn" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
@@ -1312,9 +1312,9 @@
     <symbol name="rpmBins10" storage="word" width="10" height="1" data="320 5DC 898 BB8 E74 1130 1450 170C 19C8 1CE8 "/>
     <symbol name="mapBinsWarmup" storage="word" width="4" height="1" data="14 6F CA 10E "/>
     <symbol name="tpsBinsWarmup" storage="ubyte" width="4" height="1" data="0 24 48 64 "/>
-    <symbol name="cam1AdvTbl" storage="sbyte" width="12" height="12" data="-32 -2F -2B -28 -25 -21 -1E -1E -1E -1E -1E -1E -34 -31 -2D -2A -27 -23 -20 -20 -20 -20 -20 -20 -36 -33 -2F -2C -29 -25 -22 -22 -22 -22 -22 -22 -37 -34 -30 -2D -2A -26 -23 -23 -23 -23 -23 -23 -39 -36 -32 -2F -2C -28 -25 -25 -25 -25 -25 -25 -3B -38 -34 -31 -2E -2A -27 -27 -27 -27 -27 -27 -3D -3A -36 -33 -30 -2C -29 -29 -29 -29 -29 -29 -3F -3C -38 -35 -32 -2E -2B -2B -2B -2B -2B -2B -41 -3E -3A -37 -34 -30 -2D -2D -2D -2D -2D -2D -42 -3F -3B -38 -35 -31 -2E -2E -2E -2E -2E -2E -44 -41 -3D -3A -37 -33 -30 -30 -30 -30 -30 -30 -46 -43 -3F -3C -39 -35 -32 -32 -32 -32 -32 -32 "/>
+    <symbol name="cam1AdvTbl" storage="sbyte" width="12" height="12" data="-32 -30 -2E -2C -2A -28 -28 -28 -28 -28 -28 -28 -32 -31 -2F -2E -2C -2B -2B -2B -2B -2B -2B -2B -36 -34 -32 -31 -2F -2D -2D -2D -2D -2D -2D -2D -37 -36 -34 -33 -31 -30 -30 -30 -30 -30 -30 -30 -39 -38 -37 -35 -34 -33 -33 -33 -33 -33 -33 -33 -3B -3A -39 -38 -37 -36 -36 -36 -36 -36 -36 -36 -3D -3C -3B -3A -39 -38 -38 -38 -38 -38 -38 -38 -3F -3E -3D -3D -3C -3B -3B -3B -3B -3B -3B -3B -41 -40 -40 -3F -3F -3E -3E -3E -3E -3E -3E -3E -42 -42 -42 -41 -41 -41 -41 -41 -41 -41 -41 -41 -44 -44 -44 -43 -43 -43 -43 -43 -43 -43 -43 -43 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 "/>
     <symbol name="accCLTFactor" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
-    <symbol name="cam2AdvTbl" storage="sbyte" width="12" height="12" data="-4 -A -10 -16 -1C -22 -28 -28 -28 -28 -28 -28 -7 -D -12 -18 -1D -23 -28 -28 -28 -28 -28 -28 -B -10 -15 -1A -1E -23 -28 -28 -28 -28 -28 -28 -E -12 -17 -1B -1F -24 -28 -28 -28 -28 -28 -28 -11 -15 -19 -1D -20 -24 -28 -28 -28 -28 -28 -28 -15 -18 -1B -1F -22 -25 -28 -28 -28 -28 -28 -28 -18 -1B -1D -20 -23 -25 -28 -28 -28 -28 -28 -28 -1B -1D -1F -22 -24 -26 -28 -28 -28 -28 -28 -28 -1E -20 -21 -23 -25 -26 -28 -28 -28 -28 -28 -28 -22 -23 -24 -25 -26 -27 -28 -28 -28 -28 -28 -28 -25 -26 -26 -27 -27 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 "/>
+    <symbol name="cam2AdvTbl" storage="sbyte" width="12" height="12" data="-14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -15 -15 -15 -16 -16 -16 -16 -16 -16 -16 -14 -15 -16 -17 -17 -18 -19 -19 -19 -19 -19 -19 -14 -15 -16 -18 -19 -1A -1B -1B -1B -1B -1B -1B -14 -16 -17 -19 -1B -1C -1E -1E -1E -1E -1E -1E -14 -16 -18 -1A -1C -1E -20 -20 -20 -20 -20 -20 -14 -16 -19 -1B -1D -20 -22 -22 -22 -22 -22 -22 -14 -17 -1A -1D -1F -22 -25 -25 -25 -25 -25 -25 -14 -17 -1A -1E -21 -24 -27 -27 -27 -27 -27 -27 -14 -18 -1B -1F -23 -26 -2A -2A -2A -2A -2A -2A -14 -18 -1C -20 -24 -28 -2C -2C -2C -2C -2C -2C "/>
     <symbol name="egtFuelCorrection" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
     <symbol name="oilPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
     <symbol name="oilPressureCal" storage="ubyte" width="2" height="1" data="0 A0 "/>
@@ -1334,8 +1334,8 @@
     <symbol name="lambdaTable2" storage="ubyte" width="8" height="10" data="64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 "/>
     <symbol name="etcStiction" storage="sbyte" width="16" height="1" data="-2C -28 -28 -26 -18 0 44 4C 46 4C 4A 50 4C 48 52 4E "/>
     <symbol name="etcDeltaErrBins" storage="sbyte" width="17" height="1" data="-78 -50 -40 -20 -C -6 -3 -1 0 1 3 6 C 20 40 50 78 "/>
-    <symbol name="cam1AdvTblB" storage="sbyte" width="12" height="12" data="-32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -34 -34 -34 -34 -34 -34 -34 -34 -34 -34 -34 -34 -36 -36 -36 -36 -36 -36 -36 -36 -36 -36 -36 -36 -37 -37 -37 -37 -37 -37 -37 -37 -37 -37 -37 -37 -39 -39 -39 -39 -39 -39 -39 -39 -39 -39 -39 -39 -3B -3B -3B -3B -3B -3B -3B -3B -3B -3B -3B -3B -3D -3D -3D -3D -3D -3D -3D -3D -3D -3D -3D -3D -3F -3F -3F -3F -3F -3F -3F -3F -3F -3F -3F -3F -41 -41 -41 -41 -41 -41 -41 -41 -41 -41 -41 -41 -42 -42 -42 -42 -42 -42 -42 -42 -42 -42 -42 -42 -44 -44 -44 -44 -44 -44 -44 -44 -44 -44 -44 -44 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 -46 "/>
-    <symbol name="cam2AdvTblB" storage="sbyte" width="12" height="12" data="-4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -7 -7 -7 -7 -7 -7 -7 -7 -7 -7 -7 -7 -B -B -B -B -B -B -B -B -B -B -B -B -E -E -E -E -E -E -E -E -E -E -E -E -11 -11 -11 -11 -11 -11 -11 -11 -11 -11 -11 -11 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -14 -18 -18 -18 -18 -18 -18 -18 -18 -18 -18 -18 -18 -1B -1B -1B -1B -1B -1B -1B -1B -1B -1B -1B -1B -1E -1E -1E -1E -1E -1E -1E -1E -1E -1E -1E -1E -21 -21 -21 -21 -21 -21 -21 -21 -21 -21 -21 -21 -25 -25 -25 -25 -25 -25 -25 -25 -25 -25 -25 -25 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 "/>
+    <symbol name="cam1AdvTblB" storage="sbyte" width="12" height="12" data="-32 -2F -2B -28 -25 -21 -1E -1E -1E -1E -1E -1E -34 -31 -2D -2A -27 -23 -20 -20 -20 -20 -20 -20 -36 -33 -2F -2C -29 -25 -22 -22 -22 -22 -22 -22 -37 -34 -30 -2D -2A -26 -23 -23 -23 -23 -23 -23 -39 -36 -32 -2F -2C -28 -25 -25 -25 -25 -25 -25 -3B -38 -34 -31 -2E -2A -27 -27 -27 -27 -27 -27 -3D -3A -36 -33 -30 -2C -29 -29 -29 -29 -29 -29 -3F -3C -38 -35 -32 -2E -2B -2B -2B -2B -2B -2B -41 -3E -3A -37 -34 -30 -2D -2D -2D -2D -2D -2D -42 -3F -3B -38 -35 -31 -2E -2E -2E -2E -2E -2E -44 -41 -3D -3A -37 -33 -30 -30 -30 -30 -30 -30 -46 -43 -3F -3C -39 -35 -32 -32 -32 -32 -32 -32 "/>
+    <symbol name="cam2AdvTblB" storage="sbyte" width="12" height="12" data="-4 -A -10 -16 -1C -22 -28 -28 -28 -28 -28 -28 -7 -D -12 -18 -1D -23 -28 -28 -28 -28 -28 -28 -B -10 -15 -1A -1E -23 -28 -28 -28 -28 -28 -28 -E -12 -17 -1B -1F -24 -28 -28 -28 -28 -28 -28 -11 -15 -19 -1D -20 -24 -28 -28 -28 -28 -28 -28 -15 -18 -1B -1F -22 -25 -28 -28 -28 -28 -28 -28 -18 -1B -1D -20 -23 -25 -28 -28 -28 -28 -28 -28 -1B -1D -1F -22 -24 -26 -28 -28 -28 -28 -28 -28 -1E -20 -21 -23 -25 -26 -28 -28 -28 -28 -28 -28 -22 -23 -24 -25 -26 -27 -28 -28 -28 -28 -28 -28 -25 -26 -26 -27 -27 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 "/>
     <symbol name="flexFuelEthanolContentBins" storage="ubyte" width="9" height="1" data="0 17 2D 44 5A 71 87 9E B4 "/>
     <symbol name="flexFuelVEBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
     <symbol name="flexFuelIgnBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
@@ -1403,7 +1403,7 @@
     <symbol name="etcOpening2" storage="ubyte" width="16" height="8" data="0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 "/>
     <symbol name="dbwGearMaxOpen" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
     <symbol name="dbwGearOpenScl" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
-    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A6 1A5 1A5 1A5 1A5 1A5 1A5 1A5 1A5 1A3 1A3 1A3 1A3 1A3 1A3 1A3 1A3 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 19F 19F 19F 19F 19F 19F 19F 19F "/>
+    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 1A7 "/>
     <symbol name="secTriggerSensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="cam2Sensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="tpsBoostBins" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
