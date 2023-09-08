@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="2.164">
+<project version="2.163">
   <variables>
     <symbol name="fuelingType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="enableBaro" value="0" storage="ubyte" type="bool"/>
@@ -1423,9 +1423,9 @@
     <symbol name="tpsLCBins" storage="u12" width="7" height="1" data="14 5A 64 6E BE C8 FA "/>
     <symbol name="rpmLCBins" storage="word" width="7" height="1" data="BB8 C1C C80 CE4 D48 DAC E10 "/>
     <symbol name="lcSparkCutTbl1" storage="ubyte" width="7" height="7" data="0 0 0 0 0 64 64 0 0 0 0 0 64 64 0 0 0 0 0 64 64 0 0 0 0 0 64 64 0 0 0 0 0 64 64 0 0 0 0 0 64 64 0 0 0 0 0 64 64 "/>
-    <symbol name="lcIgnRetardTbl1" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 -C -C -C -C -C -C -C -17 -17 -17 -17 -17 -17 -17 -23 -23 -23 -23 -23 -23 -23 -2F -2F -2F -2F -2F -2F -2F -3A -3A -3A -3A -3A -3A -3A -46 -46 -46 -46 -46 -46 -46 "/>
-    <symbol name="lcFuelEnrichTbl1" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 69 69 69 69 69 69 69 6E 6E 6E 6E 6E 6E 6E 73 73 73 73 73 73 73 78 78 78 78 78 78 78 7D 7D 7D 7D 7D 7D 7D 82 82 82 82 82 82 82 "/>
-    <symbol name="lcWGOverrideTbl1" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="lcIgnRetardTbl1" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -46 -46 -46 -46 -46 -46 -46 -4B -4B -4B -4B -4B -4B -4B -50 -50 -50 -50 -50 -50 -50 "/>
+    <symbol name="lcFuelEnrichTbl1" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="lcWGOverrideTbl1" storage="ubyte" width="7" height="7" data="64 64 64 64 64 0 0 64 64 64 64 64 0 0 64 64 64 64 64 0 0 64 64 64 64 64 0 0 64 64 64 64 64 0 0 64 64 64 64 64 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="lcSparkCutTbl2" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="lcIgnRetardTbl2" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="lcFuelEnrichTbl2" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
