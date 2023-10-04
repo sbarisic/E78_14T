@@ -1,0 +1,131 @@
+{
+  "uuid": "7dae9ba1e9ce3decd13397832d3af2aa",
+  "path": "Offline/CorsaE",
+  "name": "CorsaE",
+  "content": "",
+  "created_at": "2023-10-04 14:17:10",
+  "updated_at": "2023-10-04 15:17:58",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "5224a30437b714027d651e3d6cac6567",
+      "title": "Sheet_1",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "40c7819a7d8c7b7d7565f4d117de9b24": 4,
+        "b0248eb51e084227889f2cb84eab79c4": 8,
+        "72f40601e6a40b2476976f46eba4b3ae": 1,
+        "5166a773a2ea40d3b5329b7c04f01a08": 3
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "1.25T-7PWB",
+          1,
+          "CONN-SMD_7P-P1.25_1.25T-7AWB",
+          "CN1",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "BOOMELE",
+            "Manufacturer Part": "1.25T-7PWB",
+            "Supplier Part": "C50344",
+            "link": "https://lcsc.com/eda_search?q=C50344&%26type=1&ref=editor",
+            "spiceSymbolName": "1.25T-7PWB",
+            "puuid": "3a3d9149bf5b43c7ba65345dac461bbf",
+            "uuid": "72f40601e6a40b2476976f46eba4b3ae"
+          }
+        ],
+        [
+          "IRFZ44NPBF",
+          4,
+          "TO-220-3_L10.0-W4.5-P2.54-L",
+          "Q1,Q2,Q3,Q4",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "Infineon(英飞凌)",
+            "Manufacturer Part": "IRFZ44NPBF",
+            "Supplier Part": "C2586",
+            "JLCPCB Part Class": "Extended Part",
+            "link": "https://lcsc.com/eda_search?q=C2586&%26type=1&ref=editor",
+            "spiceSymbolName": "IRFZ44NPBF",
+            "puuid": "948e610cffd14df79f04c73832b1409b",
+            "uuid": "40c7819a7d8c7b7d7565f4d117de9b24"
+          }
+        ],
+        [
+          "10k",
+          8,
+          "R0603",
+          "R1,R2,R3,R4,R5,R6,R7,R8",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "1546551-4",
+          3,
+          "CONN-TH_4P-P3.50_1546551-4",
+          "U1,U2,U3",
+          {
+            "Contributor": "lcsc",
+            "Supplier": "LCSC",
+            "Supplier Part": "C3820154",
+            "Manufacturer": "TE Connectivity(美国泰科)",
+            "Manufacturer Part": "1546551-4",
+            "JLCPCB Part Class": "Extended Part",
+            "link": "https://lcsc.com/eda_search?q=C3820154&%26type=1&ref=editor",
+            "spiceSymbolName": "1546551-4",
+            "puuid": "cb9b0a8c4dae4abb8de3662c7e748ab5",
+            "uuid": "5166a773a2ea40d3b5329b7c04f01a08"
+          }
+        ]
+      ],
+      "updateTime": 1696424102,
+      "createTime": 1696421831,
+      "histories": [],
+      "created_at": "2023-10-04 14:17:11",
+      "updated_at": "2023-10-04 14:55:02"
+    },
+    {
+      "uuid": "a3986037f46b719f7a25aff4fba8dee0",
+      "puuid": "7dae9ba1e9ce3decd13397832d3af2aa",
+      "title": "PCB_CorsaE",
+      "filename": "PCB_CorsaE.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "948e610cffd14df79f04c73832b1409b": 4,
+        "398691f1f785460098bbe5ee6590333c": 8,
+        "cb9b0a8c4dae4abb8de3662c7e748ab5": 3
+      },
+      "BOM": [],
+      "updateTime": 1696425478,
+      "createTime": 1696424344,
+      "histories": [],
+      "created_at": "2023-10-04 14:59:04",
+      "updated_at": "2023-10-04 15:17:58"
+    }
+  ],
+  "sort": [],
+  "title": "CorsaE",
+  "foldername": "CorsaE",
+  "schfilename": "CorsaE.json",
+  "schfilemtime": 1696424102925
+}
