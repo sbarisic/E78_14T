@@ -68,4 +68,11 @@ Flow rate: 31.4946703964619 lb/h
 ```
 ((Airmass Per Cylinder [g/cyl] / Air Fuel Ratio [AFR]) / Injector Static Flow Rate [g/s]) * 1000 = Injector Open Time [ms] (ideal)
 
+
+BMEP_BAR = (4 * Pi * MOMENT_NM) / (KUBIKAZA_LITRE * 100)
+HP = (MOMENT_NM * RPM) / 7127
+MOMENT_NM = (7127 * HP) / RPM
+MOMENT_NM = (BMEP_BAR * (KUBIKAZA_LITRE * 100)) / (4 * Pi)
+
+
 ```
