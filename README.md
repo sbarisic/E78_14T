@@ -32,27 +32,6 @@ v - ms * 1.1853002149901382
 ```
 
 
-# Camshaft
-
-Stock
-Lift in inches, duration at .050" (1.27 mm)
-
-### Intake
-
-```
-Lift - .330" - 8.382 mm
-Duration - 180 degrees
-```
-
-### Exhaust
-
-```
-Lift - .247" - 6.2738 mm
-Duration - 165 degrees
-```
-
-
-
 # A14NET
 
 ```
@@ -74,5 +53,32 @@ HP = (MOMENT_NM * RPM) / 7127
 MOMENT_NM = (7127 * HP) / RPM
 MOMENT_NM = (BMEP_BAR * (KUBIKAZA_LITRE * 100)) / (4 * Pi)
 
+
+```
+
+
+# Engine specs
+
+```
+Bore - 72.5 mm 
+Stroke - 82.6 mm
+
+Intake Valve
+Head diameter - 28 mm
+
+Exhaust Valve
+Head diameter - 25 mm
+
+Cams - Lift in inches, duration at .050" (1.27 mm)
+
+* Intake
+
+Lift - .330" - 8.382 mm
+Duration - 180 degrees
+
+* Exhaust
+
+Lift - .247" - 6.2738 mm
+Duration - 165 degrees
 
 ```
