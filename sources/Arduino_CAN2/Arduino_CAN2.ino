@@ -63,6 +63,14 @@ int timing_Advance = 10;
 unsigned int intake_Temp = 25;
 int maf_Air_Flow_Rate = 20;
 
+typedef void (*pid_handler)(int pid, int service_mode, int add_bytes, byte *buf);
+
+typedef struct
+{
+    int PID;
+    pid_handler Func;
+} service_01_pid;
+
 //=================================================================
 // Init CAN-BUS and Serial
 //=================================================================
@@ -139,12 +147,30 @@ void create_response_frame(byte *out, int service_mode, int pid, size_t len, byt
 
     out[0] = len + 2;
     out[1] = service_mode + 0x40;
-    out[2] = pid;
+    int offset = 2;
+
+    if (pid >= 0)
+    {
+        out[2] = pid;
+        offset++;
+    }
 
     for (size_t i = 0; i < len; i++)
     {
-        out[i + 3] = bytes[i];
+        out[i + offset] = bytes[i];
     }
+}
+
+void create_response_frame(byte *out, int service_mode, int pid)
+{
+    create_response_frame(out, service_mode, pid, 0, NULL);
+}
+
+void create_response_frame(byte *out, int service_mode, int pid, uint32_t u32)
+{
+    byte *bytes = (byte *)&u32;
+    byte obd_bytes[] = {bytes[3], bytes[2], bytes[1], bytes[0]};
+    create_response_frame(out, service_mode, pid, 4, obd_bytes);
 }
 
 void send_frame(uint32_t id, size_t len, byte *buf)
@@ -153,40 +179,89 @@ void send_frame(uint32_t id, size_t len, byte *buf)
     CAN0.sendMsgBuf(id, len, buf);
 }
 
+// SERVICE 01 PID List
+
+void service_01_pid_1F(int pid, int service_mode, int add_bytes, byte *buf) // Run time since engine start
+{
+    byte dat[2] = {0x00, 0x3C};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+void service_01_pid_0C(int pid, int service_mode, int add_bytes, byte *buf) // RPM
+{
+    byte dat[2] = {0x25, 0x25};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+void service_01_pid_0D(int pid, int service_mode, int add_bytes, byte *buf) // Vehicle speed
+{
+    byte dat[1] = {100};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+void service_01_pid_1C(int pid, int service_mode, int add_bytes, byte *buf) // OBD standards this vehicle conforms to
+{
+    byte dat[1] = {obd_Std};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+void service_01_pid_51(int pid, int service_mode, int add_bytes, byte *buf) // Fuel type
+{
+    byte dat[1] = {fuel_Type};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+void service_01_pid_05(int pid, int service_mode, int add_bytes, byte *buf) // ECT
+{
+    byte dat[1] = {(byte)(95 + 40)};
+    create_response_frame(tmp8, service_mode, pid, sizeof(dat) / sizeof(*dat), dat);
+    send_frame(REPLY_ID, 8, tmp8);
+}
+
+service_01_pid service_01_PIDs[] = {{0x05, service_01_pid_05},
+                                    {0x1C, service_01_pid_1C},
+                                    {0x1F, service_01_pid_1F},
+                                    {0x0D, service_01_pid_0D},
+                                    {0x51, service_01_pid_51},
+                                    {0x0C, service_01_pid_0C}};
+
 void handle_service_01(int add_bytes, int pid, byte *buf)
 {
     const int service_mode = 0x1;
 
-    byte mode1Supported0x00PID[8] = {0x06, 0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    byte mode1Supported0x20PID[8] = {0x06, 0x41, 0x20, 0x02, 0x00, 0x00, 0x00, 0x00};
-    byte mode1Supported0x40PID[8] = {0x06, 0x41, 0x40, 0x04, 0x00, 0x00, 0x00, 0x00};
-
-    // byte ABCD[4] = {0b01111111, 0b01110111, 0b11101111, 0b11101111};
-
     byte A = B7(0) | B0(0);
     byte B = B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
-    byte C = B7(0) | B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
+    byte C = B7(1) | B6(1) | B5(1) | B4(1) | B3(1) | B2(1) | B1(1) | B0(1);
     byte D = B7(0) | B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0); // B7(0) | B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
 
     byte B2 = B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
-    byte C2 = B7(0) | B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
+    byte C2 = B7(1) | B6(1) | B5(1) | B4(1) | B3(1) | B2(1) | B1(1) | B0(1);
     byte D2 = B7(0) | B6(0) | B5(1) | B4(0) | B3(0) | B2(0) | B1(0) | B0(1); // B7(0) | B6(0) | B5(0) | B4(0) | B3(0) | B2(0) | B1(0) | B0(0);
 
-    byte monitoring1[8] = {0x06, 0x01 + 0x40, 0x01, A, B, C, D, 0};
-    // byte monitoring2[8] = {0x06, 0x01 + 0x40, 0x41, 0b00000000, 0b01110111, 0b11101111, 0b11101111, 0};
-
-    if (add_bytes == 2 && (pid == 0x0 || pid == 0x20 || pid == 0x40))
+    if (add_bytes == 2 && (pid == 0x0 || pid == 0x20 || pid == 0x40 || pid == 0x60 || pid == 0x80 || pid == 0xA0))
     {
+        Serial.println("!!! Show PIDs Supported !!!");
+
         // Show PIDs supported
+        uint32_t supported = 0;
+        size_t incl_from = pid + 0x01;
+        size_t incl_to = incl_from + 0x1F;
 
-        byte *out = mode1Supported0x00PID;
+        for (size_t i = 0; i < sizeof(service_01_PIDs) / sizeof(*service_01_PIDs); i++)
+        {
+            uint32_t f_pid = service_01_PIDs[i].PID;
 
-        if (pid == 0x20)
-            out = mode1Supported0x20PID;
-        else if (pid == 0x40)
-            out = mode1Supported0x40PID;
+            if (f_pid >= incl_from && f_pid <= incl_to)
+                supported = supported | ((uint32_t)1 << (32 - (f_pid - pid)));
+        }
 
-        send_frame(REPLY_ID, 8, out);
+        create_response_frame(tmp8, service_mode, pid, supported);
+        send_frame(REPLY_ID, 8, tmp8);
     }
     else if (add_bytes == 2 && (pid == 0x1 || pid == 0x41))
     {
@@ -216,6 +291,15 @@ void handle_service_01(int add_bytes, int pid, byte *buf)
         }
 
         send_frame(REPLY_ID, 8, tmp8);
+    }
+
+    for (size_t i = 0; i < sizeof(service_01_PIDs) / sizeof(*service_01_PIDs); i++)
+    {
+        if (service_01_PIDs[i].PID == pid)
+        {
+            service_01_PIDs[i].Func(pid, service_mode, add_bytes, buf);
+            return;
+        }
     }
 }
 
@@ -312,13 +396,14 @@ void handle_request_frame(int address, int add_bytes, byte *buf)
     {
         if (MIL)
         {
-            unsigned char DTC[] = {0x6, 0x43, 0x2, 0x04, 0x20, 0x04, 0x30, 0}; // P0217
-            CAN0.sendMsgBuf(REPLY_ID, 0, 8, DTC);
+            byte dat[4] = {0x04, 0x20, 0x04, 0x30};
+            create_response_frame(tmp8, buf[0], 0x01, sizeof(dat) / sizeof(*dat), dat);
+            send_frame(REPLY_ID, 8, tmp8);
         }
         else
         {
-            unsigned char DTC[] = {0x6, 0x43, 0, 0, 0, 0, 0, 0}; // No Stored DTC
-            CAN0.sendMsgBuf(REPLY_ID, 0, 8, DTC);
+            create_response_frame(tmp8, buf[0], buf[1]);
+            send_frame(REPLY_ID, 8, tmp8);
         }
     }
     else if (add_bytes == 1 && buf[0] == 0x4) // Clear DTCs
