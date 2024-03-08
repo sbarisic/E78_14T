@@ -1,6 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "programmer": "avrisp",
-    "port": "COM13",
-    "sketch": "Arduino_CAN2.ino"
-}
