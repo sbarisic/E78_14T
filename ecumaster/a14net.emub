@@ -19,7 +19,7 @@
     <symbol name="mapAnalogIn" value="4" storage="ubyte" type="paramList"/>
     <symbol name="knockFrequency" value="59" storage="ubyte" type="paramList"/>
     <symbol name="knockSensorGain" value="29" storage="ubyte" type="paramList"/>
-    <symbol name="initMask" value="1024" storage="word" type="paramList"/>
+    <symbol name="initMask" value="0" storage="word" type="paramList"/>
     <symbol name="primTrigerType" value="0" storage="ubyte" type="paramList"/>
     <symbol name="numTeeth" value="60" storage="ubyte" type="value"/>
     <symbol name="firstTriggerTooth" value="2" storage="ubyte" type="value"/>
@@ -1266,7 +1266,7 @@
     <symbol name="tpsBinsAirCharge" storage="ubyte" width="8" height="1" data="0 5 10 20 30 40 50 64 "/>
     <symbol name="acEvapCal" storage="sbyte" width="16" height="1" data="-14 -C -4 4 C 14 1C 24 2C 34 3C 44 4C 54 5C 64 "/>
     <symbol name="ignTable" storage="sbyte" width="16" height="20" data="1E 25 24 1E 16 A 0 -1 -2 -4 -6 -7 -9 -A -C -D 29 31 2F 24 1E 10 A 6 4 2 1 1 -1 -4 -7 -A 3C 3A 37 2C 25 1C 16 E A 6 5 5 1 -2 -5 -8 45 40 3A 30 28 20 1A 14 F A 7 7 3 0 -3 -6 4C 46 3E 32 2E 26 1E 18 13 D A 9 5 2 -1 -4 4F 48 40 34 30 28 20 1A 15 10 D B 7 4 1 -2 4F 48 40 36 31 2A 24 20 19 13 F E A 7 4 1 4F 48 40 36 32 2C 28 24 1E 18 13 11 D A 7 4 4F 48 40 37 32 2E 2C 28 21 1A 16 14 10 D A 7 4F 48 40 37 33 2E 2C 2A 23 1D 18 15 11 E B 8 4F 48 40 37 33 2E 2C 2A 23 1D 19 15 11 E B 8 4F 48 42 37 33 2E 2C 2A 25 1F 19 16 12 F C 9 4C 47 42 36 34 2E 2C 2A 24 1F 19 16 13 10 D A 49 44 3E 36 32 2E 2C 29 23 1F 19 17 14 11 E B 46 42 3C 34 30 2D 2B 29 23 1F 1A 18 15 12 F C 44 40 3A 32 2E 2C 29 28 23 1F 1B 18 15 12 F C 42 3E 37 31 2E 2C 29 28 25 21 1C 19 16 13 10 D 42 3C 36 32 2E 2C 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D 40 3C 36 32 30 2E 2A 28 25 21 1C 19 16 13 10 D "/>
-    <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 64 61 57 50 4E 4E 4E 67 64 61 57 50 4E 4E 4E 68 68 61 57 50 4E 4E 4E 68 68 61 57 50 4E 4E 4E 68 68 61 57 50 4E 4E 4E 67 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E 64 64 61 57 50 4E 4E 4E "/>
+    <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E "/>
     <symbol name="iatTbl" storage="sbyte" width="20" height="1" data="7F 7F 7F 7F 7F 7F 7F 7F 78 62 55 48 39 27 1C 11 4 -B -14 -28 "/>
     <symbol name="cltTbl" storage="sword" width="20" height="1" data="FA 85 6D 63 5B 56 51 4B 40 30 2B 21 16 D 2 -6 -D -17 -1C -28 "/>
     <symbol name="aseTbl" storage="ubyte" width="16" height="1" data="96 96 96 96 96 96 96 94 91 8C 82 78 6B 64 64 64 "/>
@@ -1288,7 +1288,7 @@
     <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="dcBoostRef1" storage="ubyte" width="10" height="10" data="0 67 85 9B A5 AF BC C0 C8 C8 0 67 85 9B A5 AF BC C0 C8 C8 0 62 7E 91 9A A3 B0 B4 BD C2 0 4E 68 78 80 88 9C A3 B0 BA 0 44 5A 6A 72 79 8C 92 9E A8 0 3A 4C 5C 63 6A 7C 81 8C 96 0 38 48 58 60 68 78 7D 88 92 0 36 46 54 5C 64 74 79 84 8E 0 32 40 4E 56 5E 6E 73 7E 8A 0 2E 3C 48 50 58 6A 6F 78 84 "/>
     <symbol name="dcBoostRef2" storage="ubyte" width="10" height="10" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
-    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 38 3D 43 48 4E 54 59 5F 64 32 39 3F 46 4C 54 5A 61 67 6E 32 39 40 47 4F 56 5E 65 6C 73 32 3A 41 49 51 59 61 69 70 78 32 3A 41 49 51 59 61 69 70 78 32 39 41 48 50 58 60 67 6F 76 32 39 40 47 4F 56 5E 65 6C 73 32 39 3F 46 4C 54 5A 61 67 6E 32 38 3D 43 48 4E 54 59 5F 64 "/>
+    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 38 3E 44 4A 51 57 5D 63 69 32 39 3F 46 4C 54 5A 61 67 6E 32 39 40 47 4F 56 5E 65 6C 73 32 3A 41 49 51 59 61 69 70 78 32 3A 42 4A 52 5A 62 6A 72 7A 32 3A 42 4A 52 5A 62 6A 72 7A 32 3A 42 49 51 5A 62 69 71 79 32 39 41 48 4F 57 5E 65 6D 74 32 38 3F 45 4C 53 5A 60 67 6D "/>
     <symbol name="boostTarget2" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 4B 4C 4D 4E 4F 4F 50 51 52 53 58 59 5A 5C 5D 5E 5F 61 62 63 64 66 67 69 6B 6C 6E 70 71 73 64 66 68 6B 6D 6F 71 74 76 78 64 66 68 6B 6D 6F 71 74 76 78 64 66 68 6B 6D 6F 71 74 76 78 64 66 68 6A 6C 6E 70 72 74 76 64 66 67 69 6A 6C 6D 6F 70 72 64 65 66 67 68 6A 6B 6C 6D 6E "/>
     <symbol name="egtBins" storage="word" width="8" height="1" data="190 1F4 258 2BC 320 384 3E8 44C "/>
     <symbol name="iatBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
@@ -1404,7 +1404,7 @@
     <symbol name="etcOpening2" storage="ubyte" width="16" height="8" data="0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 "/>
     <symbol name="dbwGearMaxOpen" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
     <symbol name="dbwGearOpenScl" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
-    <symbol name="injectionAngle" storage="word" width="8" height="8" data="1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 1A2 "/>
+    <symbol name="injectionAngle" storage="word" width="8" height="8" data="18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E 18E "/>
     <symbol name="secTriggerSensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="cam2Sensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
     <symbol name="tpsBoostBins" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
@@ -1494,7 +1494,7 @@
     <symbol name="pwmXAnalogBins" storage="ubyte" width="16" height="1" data="0 D 1B 28 35 43 50 5D 6B 78 85 93 A0 AD BB C8 "/>
     <symbol name="pwm2XAxis" storage="sword" width="8" height="1" data="5A 5C 5E 60 62 64 69 6E "/>
     <symbol name="pwm2YAxis" storage="sword" width="8" height="1" data="384 4B0 5DC 7D0 BB8 FA0 1388 1770 "/>
-    <symbol name="pwmTable2" storage="ubyte" width="8" height="8" data="0 0 0 32 64 64 64 64 0 0 0 50 64 64 64 64 0 0 0 64 64 64 64 64 0 0 14 64 64 64 64 64 0 0 41 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 "/>
+    <symbol name="pwmTable2" storage="ubyte" width="8" height="8" data="0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 "/>
     <symbol name="ewgBackPressureBins" storage="word" width="5" height="1" data="64 A3 E1 120 15E "/>
     <symbol name="ewgTargetBins" storage="ubyte" width="8" height="1" data="0 E 1D 2B 39 47 56 64 "/>
     <symbol name="ewgBaseDC" storage="sbyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
