@@ -6,7 +6,7 @@
     <symbol name="numCylinders" value="4" storage="ubyte" type="value"/>
     <symbol name="rpmLimit" value="8000" storage="word" type="value"/>
     <symbol name="fuelCutAbovePressure" value="260" storage="word" type="value"/>
-    <symbol name="fuelCutUnderPressure" value="20" storage="word" type="value"/>
+    <symbol name="fuelCutUnderPressure" value="24" storage="word" type="value"/>
     <symbol name="iatSensorType" value="0" storage="ubyte" type="value"/>
     <symbol name="aseDuration" value="1000" storage="word" type="value"/>
     <symbol name="primTrigSensorType" value="1" storage="ubyte" type="paramList"/>
@@ -98,8 +98,8 @@
     <symbol name="injectorsSize" value="613" storage="word" type="value"/>
     <symbol name="engineDisplacement" value="1364" storage="word" type="value"/>
     <symbol name="fuelCutTPSLimit" value="0" storage="ubyte" type="value"/>
-    <symbol name="fuelCutAboveRPM" value="2000" storage="word" type="value"/>
-    <symbol name="fuelResumeBelow" value="1600" storage="word" type="value"/>
+    <symbol name="fuelCutAboveRPM" value="1600" storage="word" type="value"/>
+    <symbol name="fuelResumeBelow" value="1500" storage="word" type="value"/>
     <symbol name="coolantFanOffDuringCranking" value="1" storage="ubyte" type="bool"/>
     <symbol name="secTrigerType" value="5" storage="ubyte" type="paramList"/>
     <symbol name="secTrigSensorType" value="1" storage="ubyte" type="paramList"/>
@@ -448,7 +448,7 @@
     <symbol name="camCrankTooth" value="0" storage="ubyte" type="value"/>
     <symbol name="camMaxDeviation" value="0" storage="ubyte" type="value"/>
     <symbol name="canBusSpeed" value="1" storage="ubyte" type="paramList"/>
-    <symbol name="canBusSendEMUDataOverCAN" value="0" storage="ubyte" type="bool"/>
+    <symbol name="canBusSendEMUDataOverCAN" value="1" storage="ubyte" type="bool"/>
     <symbol name="etcMaxPotError" value="6" storage="ubyte" type="value"/>
     <symbol name="failReportDBW" value="1" storage="ubyte" type="bool"/>
     <symbol name="oilPressureCutDelay" value="300" storage="word" type="value"/>
@@ -1017,7 +1017,7 @@
     <symbol name="psShiftDownRPMLimit7" value="6000" storage="word" type="value"/>
     <symbol name="psShiftDownRPMLimit8" value="6000" storage="word" type="value"/>
     <symbol name="psRAnd1EnableSwitchInput" value="0" storage="ubyte" type="paramList"/>
-    <symbol name="canOBD2Support" value="1" storage="ubyte" type="bool"/>
+    <symbol name="canOBD2Support" value="0" storage="ubyte" type="bool"/>
     <symbol name="lcTimeToActivate" value="0" storage="ubyte" type="value"/>
     <symbol name="tblSwitchVtecVeOverride" value="0" storage="ubyte" type="bool"/>
     <symbol name="idleIgnDelay" value="0" storage="word" type="value"/>
@@ -1265,7 +1265,7 @@
     <symbol name="chargeTempTbl" storage="ubyte" width="8" height="12" data="5C 3B 24 10 5 0 0 0 58 37 21 F 5 0 0 0 54 33 1E D 4 0 0 0 4F 2E 1B C 4 0 0 0 4B 2A 18 A 3 0 0 0 47 26 15 9 3 0 0 0 43 22 12 7 2 0 0 0 3F 1E F 6 2 0 0 0 3B 1A C 4 1 0 0 0 36 15 9 3 1 0 0 0 32 11 6 1 0 0 0 0 2E D 3 0 0 0 0 0 "/>
     <symbol name="tpsBinsAirCharge" storage="ubyte" width="8" height="1" data="0 5 10 20 30 40 50 64 "/>
     <symbol name="acEvapCal" storage="sbyte" width="16" height="1" data="-14 -C -4 4 C 14 1C 24 2C 34 3C 44 4C 54 5C 64 "/>
-    <symbol name="ignTable" storage="sbyte" width="16" height="20" data="1E 25 24 1E 16 A 0 -1 -2 -4 -6 -7 -9 -A -C -D 29 31 2F 24 1E 10 A 6 4 2 1 1 -1 -4 -7 -A 3C 3A 37 2C 25 1C 16 E A 6 5 5 1 -2 -5 -8 45 40 3A 30 28 20 1A 14 F A 7 7 3 0 -3 -6 4C 46 3E 32 2E 26 1E 18 13 D A 9 5 2 -1 -4 4F 48 3F 37 30 2A 23 1D 17 12 E B 7 4 1 -2 4F 48 40 3A 35 2E 28 24 1D 17 11 E A 7 4 1 4F 48 41 3A 36 30 2C 28 22 1C 15 11 D A 7 4 4F 48 41 3B 36 32 30 2C 25 1E 18 14 10 D A 7 4F 48 41 3B 37 32 30 2E 27 21 19 15 11 E B 8 4F 48 41 3B 37 32 30 2E 27 21 1B 15 11 E B 8 4F 48 42 3B 37 32 30 2E 29 23 1B 16 12 F C 9 4C 47 41 3A 38 32 30 2E 28 23 1B 16 13 10 D A 49 44 3E 3A 36 32 30 2D 27 23 1C 17 14 11 E B 46 42 3C 38 34 31 2F 2D 27 23 1C 18 15 12 F C 44 40 3A 36 32 30 2D 2C 27 23 1D 18 15 12 F C 42 3E 39 35 32 30 2D 2C 29 25 1E 19 16 13 10 D 42 3C 38 36 32 30 2E 2C 29 25 1E 19 16 13 10 D 40 3C 38 36 34 32 2E 2C 29 25 1E 19 16 13 10 D 40 3C 38 36 34 32 2E 2C 29 25 1E 19 16 13 10 D "/>
+    <symbol name="ignTable" storage="sbyte" width="16" height="20" data="1E 25 24 1E 16 A 0 -1 -2 -4 -6 -7 -9 -A -C -D 29 31 2F 24 1E 10 A 6 4 2 1 1 -1 -4 -7 -A 3C 3E 3D 30 27 1F 18 12 D A 6 5 1 -2 -5 -8 45 44 40 38 2E 26 20 1A 15 E 9 7 3 0 -3 -6 4C 4A 44 3A 34 2C 24 1E 19 11 D 9 5 2 -1 -4 4F 4C 45 3F 36 30 29 23 1D 16 10 B 7 4 1 -2 4F 4C 46 42 3B 34 2E 2A 23 1B 12 E A 7 4 1 4F 4C 47 42 3C 36 32 2E 28 20 15 11 D A 7 4 4F 4C 47 43 3C 38 36 32 2B 22 18 14 10 D A 7 4F 4C 47 43 3D 38 36 34 2D 25 19 15 11 E B 8 4F 4C 47 43 3D 38 36 34 2D 25 1B 15 11 E B 8 4F 4C 48 43 3D 38 36 34 2F 27 1B 16 12 F C 9 4C 4B 47 42 3E 38 36 34 2E 27 1B 16 13 10 D A 49 48 44 42 3C 38 36 31 2C 27 1C 17 14 11 E B 46 45 41 3D 39 36 33 31 2B 27 1C 18 15 12 F C 44 44 3E 3A 36 34 31 30 2B 27 1D 18 15 12 F C 42 42 3D 39 36 34 31 30 2D 29 1E 19 16 13 10 D 42 40 3C 3A 36 34 32 30 2D 29 1E 19 16 13 10 D 40 40 3C 3A 38 36 32 30 2D 29 1E 19 16 13 10 D 40 40 3C 3A 38 36 32 30 2D 29 1E 19 16 13 10 D "/>
     <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E "/>
     <symbol name="iatTbl" storage="sbyte" width="20" height="1" data="7F 7F 7F 7F 7F 7F 7F 7F 78 62 55 48 39 27 1C 11 4 -B -14 -28 "/>
     <symbol name="cltTbl" storage="sword" width="20" height="1" data="FA 85 6D 63 5B 56 51 4B 40 30 2B 21 16 D 2 -6 -D -17 -1C -28 "/>
