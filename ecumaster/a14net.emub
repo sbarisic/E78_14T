@@ -1135,7 +1135,7 @@
     <symbol name="revMatchMinVSS" value="20" storage="ubyte" type="value"/>
     <symbol name="revMatchMinGear" value="3" storage="ubyte" type="value"/>
     <symbol name="afterstartIgnitionLockAngle" value="30" storage="sbyte" type="value"/>
-    <symbol name="afterstartIgnitionLockTime" value="160" storage="ubyte" type="value"/>
+    <symbol name="afterstartIgnitionLockTime" value="100" storage="ubyte" type="value"/>
     <symbol name="afterstartIgnRestoreRate" value="4" storage="sbyte" type="value"/>
     <symbol name="gcMinRPMToBlip" value="2000" storage="word" type="value"/>
     <symbol name="dsgReverseOutput" value="0" storage="ubyte" type="paramList"/>
@@ -1269,10 +1269,10 @@
     <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E 64 5C 5A 57 50 4E 4E 4E "/>
     <symbol name="iatTbl" storage="sbyte" width="20" height="1" data="7F 7F 7F 7F 7F 7F 7F 7F 78 62 55 48 39 27 1C 11 4 -B -14 -28 "/>
     <symbol name="cltTbl" storage="sword" width="20" height="1" data="FA 85 6D 63 5B 56 51 4B 40 30 2B 21 16 D 2 -6 -D -17 -1C -28 "/>
-    <symbol name="aseTbl" storage="ubyte" width="16" height="1" data="78 78 78 78 78 78 78 76 74 70 68 64 64 64 64 64 "/>
+    <symbol name="aseTbl" storage="ubyte" width="16" height="1" data="8C 8C 8C 8C 8C 8C 8C 8A 87 82 78 6E 64 64 64 64 "/>
     <symbol name="crankingTbl" storage="ubyte" width="16" height="5" data="41 40 3F 3F 3E 3D 3C 3B 3A 39 38 37 37 37 37 37 41 40 3F 3F 3E 3D 3C 3B 3A 39 38 37 37 37 37 37 41 40 3F 3F 3E 3D 3C 3B 3A 39 38 37 37 37 37 37 41 40 3F 3F 3E 3D 3C 3B 3A 39 38 37 37 37 37 37 37 36 35 35 34 33 32 31 30 2F 2E 2D 2D 2D 2D 2D "/>
     <symbol name="injOpeningTimeTbl" storage="ubyte" width="12" height="1" data="68 5B 4F 44 38 32 2B 28 24 21 1E 1C "/>
-    <symbol name="warmupTbl" storage="ubyte" width="16" height="4" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 6A 6A 6A 68 67 66 66 66 65 65 65 64 64 64 64 64 70 6F 6F 6C 69 68 68 67 66 65 65 64 64 64 64 64 80 7F 7E 7A 75 6D 66 66 65 65 64 64 64 64 64 64 "/>
+    <symbol name="warmupTbl" storage="ubyte" width="16" height="4" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 6C 6C 6B 69 68 65 64 64 64 64 64 64 64 64 64 64 7E 7D 7D 7A 76 70 6B 65 64 64 64 64 64 64 64 64 90 8F 8E 89 83 7A 73 6A 64 64 64 64 64 64 64 64 "/>
     <symbol name="accDTPSRate" storage="ubyte" width="16" height="1" data="2E 2E 2F 33 35 37 3B 3F 44 4A 4E 54 5C 62 70 8F "/>
     <symbol name="accTPSFactor" storage="ubyte" width="16" height="1" data="64 61 5F 5C 59 57 54 51 4F 4C 49 47 44 41 3F 3C "/>
     <symbol name="accRPMFactor" storage="ubyte" width="20" height="1" data="61 5C 59 56 53 50 4D 46 40 3A 35 30 2B 26 21 1E 1B 18 16 15 "/>
@@ -1367,7 +1367,7 @@
     <symbol name="flexFuelWarmupBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
     <symbol name="ignIdleCLTTrim" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="etcOpeningRPMBins" storage="word" width="8" height="1" data="3E8 7D0 BB8 FA0 1388 1770 1B58 1F40 "/>
-    <symbol name="engineStartDelay" storage="ubyte" width="16" height="1" data="A A A A A A A A 9 8 7 6 5 5 5 5 "/>
+    <symbol name="engineStartDelay" storage="ubyte" width="16" height="1" data="C C C C C C C C C A A A A 5 5 5 "/>
     <symbol name="idleAINCorrection" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
     <symbol name="mapSensorFilterStrength" storage="ubyte" width="12" height="1" data="5 5 5 5 5 5 5 5 5 5 5 5 "/>
     <symbol name="idleACCorrection" storage="ubyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
