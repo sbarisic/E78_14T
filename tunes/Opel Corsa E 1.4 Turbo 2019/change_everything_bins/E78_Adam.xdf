@@ -1,0 +1,1181 @@
+<!-- Written 04/10/2025 23:29:21 -->
+<XDFFORMAT version="1.80">
+  <XDFHEADER>
+    <flags>0x1</flags>
+    <description></description>
+    <BASEOFFSET offset="0" subtract="0" />
+    <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
+    <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
+  </XDFHEADER>
+  <XDFTABLE uniqueid="0x2DAF" flags="0x0">
+    <title>KtTCSI_Scl_TorqueReserve</title>
+    <description>Table of scaler values to be multiplied by traction requests to provide reserve torque.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="400.00" />
+      <LABEL index="2" value="800.00" />
+      <LABEL index="3" value="1200.00" />
+      <LABEL index="4" value="1600.00" />
+      <LABEL index="5" value="2000.00" />
+      <LABEL index="6" value="2400.00" />
+      <LABEL index="7" value="2800.00" />
+      <LABEL index="8" value="3200.00" />
+      <LABEL index="9" value="3600.00" />
+      <LABEL index="10" value="4000.00" />
+      <LABEL index="11" value="4400.00" />
+      <LABEL index="12" value="4800.00" />
+      <LABEL index="13" value="5200.00" />
+      <LABEL index="14" value="5600.00" />
+      <LABEL index="15" value="6000.00" />
+      <LABEL index="16" value="6400.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="100.00" />
+      <LABEL index="2" value="200.00" />
+      <LABEL index="3" value="300.00" />
+      <LABEL index="4" value="400.00" />
+      <LABEL index="5" value="500.00" />
+      <LABEL index="6" value="600.00" />
+      <LABEL index="7" value="700.00" />
+      <LABEL index="8" value="800.00" />
+      <LABEL index="9" value="900.00" />
+      <LABEL index="10" value="1000.00" />
+      <LABEL index="11" value="1100.00" />
+      <LABEL index="12" value="1200.00" />
+      <LABEL index="13" value="1300.00" />
+      <LABEL index="14" value="1400.00" />
+      <LABEL index="15" value="1500.00" />
+      <LABEL index="16" value="1600.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A864" mmedelementsizebits="16" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x363C" flags="0x30">
+    <title>HexView</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>128</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <LABEL index="33" value="0.00" />
+      <LABEL index="34" value="0.00" />
+      <LABEL index="35" value="0.00" />
+      <LABEL index="36" value="0.00" />
+      <LABEL index="37" value="0.00" />
+      <LABEL index="38" value="0.00" />
+      <LABEL index="39" value="0.00" />
+      <LABEL index="40" value="0.00" />
+      <LABEL index="41" value="0.00" />
+      <LABEL index="42" value="0.00" />
+      <LABEL index="43" value="0.00" />
+      <LABEL index="44" value="0.00" />
+      <LABEL index="45" value="0.00" />
+      <LABEL index="46" value="0.00" />
+      <LABEL index="47" value="0.00" />
+      <LABEL index="48" value="0.00" />
+      <LABEL index="49" value="0.00" />
+      <LABEL index="50" value="0.00" />
+      <LABEL index="51" value="0.00" />
+      <LABEL index="52" value="0.00" />
+      <LABEL index="53" value="0.00" />
+      <LABEL index="54" value="0.00" />
+      <LABEL index="55" value="0.00" />
+      <LABEL index="56" value="0.00" />
+      <LABEL index="57" value="0.00" />
+      <LABEL index="58" value="0.00" />
+      <LABEL index="59" value="0.00" />
+      <LABEL index="60" value="0.00" />
+      <LABEL index="61" value="0.00" />
+      <LABEL index="62" value="0.00" />
+      <LABEL index="63" value="0.00" />
+      <LABEL index="64" value="0.00" />
+      <LABEL index="65" value="0.00" />
+      <LABEL index="66" value="0.00" />
+      <LABEL index="67" value="0.00" />
+      <LABEL index="68" value="0.00" />
+      <LABEL index="69" value="0.00" />
+      <LABEL index="70" value="0.00" />
+      <LABEL index="71" value="0.00" />
+      <LABEL index="72" value="0.00" />
+      <LABEL index="73" value="0.00" />
+      <LABEL index="74" value="0.00" />
+      <LABEL index="75" value="0.00" />
+      <LABEL index="76" value="0.00" />
+      <LABEL index="77" value="0.00" />
+      <LABEL index="78" value="0.00" />
+      <LABEL index="79" value="0.00" />
+      <LABEL index="80" value="0.00" />
+      <LABEL index="81" value="0.00" />
+      <LABEL index="82" value="0.00" />
+      <LABEL index="83" value="0.00" />
+      <LABEL index="84" value="0.00" />
+      <LABEL index="85" value="0.00" />
+      <LABEL index="86" value="0.00" />
+      <LABEL index="87" value="0.00" />
+      <LABEL index="88" value="0.00" />
+      <LABEL index="89" value="0.00" />
+      <LABEL index="90" value="0.00" />
+      <LABEL index="91" value="0.00" />
+      <LABEL index="92" value="0.00" />
+      <LABEL index="93" value="0.00" />
+      <LABEL index="94" value="0.00" />
+      <LABEL index="95" value="0.00" />
+      <LABEL index="96" value="0.00" />
+      <LABEL index="97" value="0.00" />
+      <LABEL index="98" value="0.00" />
+      <LABEL index="99" value="0.00" />
+      <LABEL index="100" value="0.00" />
+      <LABEL index="101" value="0.00" />
+      <LABEL index="102" value="0.00" />
+      <LABEL index="103" value="0.00" />
+      <LABEL index="104" value="0.00" />
+      <LABEL index="105" value="0.00" />
+      <LABEL index="106" value="0.00" />
+      <LABEL index="107" value="0.00" />
+      <LABEL index="108" value="0.00" />
+      <LABEL index="109" value="0.00" />
+      <LABEL index="110" value="0.00" />
+      <LABEL index="111" value="0.00" />
+      <LABEL index="112" value="0.00" />
+      <LABEL index="113" value="0.00" />
+      <LABEL index="114" value="0.00" />
+      <LABEL index="115" value="0.00" />
+      <LABEL index="116" value="0.00" />
+      <LABEL index="117" value="0.00" />
+      <LABEL index="118" value="0.00" />
+      <LABEL index="119" value="0.00" />
+      <LABEL index="120" value="0.00" />
+      <LABEL index="121" value="0.00" />
+      <LABEL index="122" value="0.00" />
+      <LABEL index="123" value="0.00" />
+      <LABEL index="124" value="0.00" />
+      <LABEL index="125" value="0.00" />
+      <LABEL index="126" value="0.00" />
+      <LABEL index="127" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x56F00" mmedelementsizebits="8" mmedrowcount="128" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>2</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFCONSTANT uniqueid="0x9AC" flags="0xC">
+    <title>KfTCSC_Pct_TorqRdctThrsh</title>
+    <description>Threshold for the ratio between TCS Desired Torque and the Indicated MBT Torque for all Cylinders, below which the TCS Torque Reduction is considered to be Active</description>
+    <EMBEDDEDDATA mmedaddress="0x363A4" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.001525878906">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5722">
+    <title>KfTCSC_n_TCR_EngSpdStallHi</title>
+    <EMBEDDEDDATA mmedaddress="0x363A6" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.125">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x6119">
+    <title>KfTCSC_n_TCR_EngSpdStallLo</title>
+    <EMBEDDEDDATA mmedaddress="0x363A8" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.125">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4DC5">
+    <title>KfTCSC_t_MinTC_EngRunTime</title>
+    <EMBEDDEDDATA mmedaddress="0x363AA" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1FBC">
+    <title>KeBSTC_K_OctaneAdaptDsbl</title>
+    <description>Scavenging is inhibited if the octane scalar is above this value incase VeBSTR_b_ScavgngRqstd = CbTRUE.</description>
+    <EMBEDDEDDATA mmedaddress="0x4815C" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.000015258789">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0xA8E">
+    <title>KeBSTC_K_OctaneAdaptEnbl</title>
+    <description>Scavenging is inhibited if the octane scalar is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE.</description>
+    <EMBEDDEDDATA mmedaddress="0x4815E" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.000015258789">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x28DB">
+    <title>KeBSTC_Pct_ScavAccPedalEnbl</title>
+    <description>Scavenging request is inhibited if the percentage of pedal is below this value incase VeBSTC_b_ScavPedalInRng = CbFALSE.</description>
+    <EMBEDDEDDATA mmedaddress="0x48162" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.001525878906">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0xEA1">
+    <title>KeBSTC_Pct_ScavAccPedalDsbl</title>
+    <description>Scavenging request is inhibited if the percentage of pedal is below this value incase VeBSTC_b_ScavPedalInRng = CbTRUE.</description>
+    <EMBEDDEDDATA mmedaddress="0x48160" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.001525878906">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1BF3">
+    <title>KeBSTC_T_ScavgngCatDsbl</title>
+    <description>Scavenging is inhibited if the catalyst temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbTRUE.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48164" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5E52">
+    <title>KeBSTC_T_ScavgngCatEnbl</title>
+    <description>Scavenging is inhibited if the catalyst temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48168" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x59A0">
+    <title>KeBSTC_T_ScavgngCoolantMin</title>
+    <description>Scavenging is inhibited when the coolant temperature is below this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is subtracted from this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48174" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x389C">
+    <title>KeBSTC_T_ScavgngCoolantHys</title>
+    <description>Hystersis value applied to the maximum and minimum coolant temperatures calibrations when VeBSTR_b_ScavgngRqstd = CbTRUE.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4816C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x3ACE">
+    <title>KeBSTC_T_ScavgngCoolantMax</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48170" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x320C">
+    <title>?? KeBSTC_n_ScavgngEngSpdMax</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4817C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1BA">
+    <title>?? KeBSTC_n_ScavgngEngSpdMin</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48180" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x61E">
+    <title>?? KeBSTC_n_ScavgngEngSpdMin?</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48184" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0xB17">
+    <title>?? Hysteresis?</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48188" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0xF4A">
+    <title>KeBSTC_p_ScavgngBstHys</title>
+    <description>This value is subtracted from the output of table KtBSTC_p_ScavgngBstEnbl do determine when scavenging no more is desired.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4818C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1310">
+    <title>KeBSTC_p_ScavgngBstTransDsbl</title>
+    <description>Scavenging is not desired and will deactivate if the difference between actual and desired boost pressure is less than this calibration, unless if desired boost pressure is higher than what can be achived without scavenging.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48190" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1641">
+    <title>KeBSTC_p_ScavgngBstTransEnbl</title>
+    <description>Scavenging is desired and will activate (if all other criterias is fulfilled) if the difference between actual and desired boost pressure is greater than this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48194" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1940">
+    <title>?? Unknown1</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48198" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1C0B">
+    <title>?? Unknown2</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration.</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4819C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4651" flags="0xC">
+    <title>KeBSTC_t_ScavMaxActive</title>
+    <description>Maximum time scavenging is allowed to be active.</description>
+    <EMBEDDEDDATA mmedaddress="0x481A0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5170" flags="0xC">
+    <title>KeBSTC_t_ScavMaxDly</title>
+    <description>Maximum delay from desired boost request goes above enabling limit to scavenging is activated. This calibration should be set so the driver will not experince a large delay between pressing the acc. pedal to the torque is delivered.</description>
+    <EMBEDDEDDATA mmedaddress="0x481A2" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x178E" flags="0xC">
+    <title>KeBSTC_t_ScavMaxDlyWoReq</title>
+    <description>Maximum delay from desired boost request goes above enabling limit to scavenging is requested. This calibration should be set to value received by subtracting the typical time between VeBSTR_b_ScavgngReqstd turns CbTRUE until PHSR indicates scavenging is active, from KeBSTC_t_ScavMaxDly.</description>
+    <EMBEDDEDDATA mmedaddress="0x481A4" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7AEE" flags="0xC">
+    <title>KeBSTC_t_ScavMinPE_DsblTime</title>
+    <description>Minimum time between scavenging has been active until PE is allowed to run.</description>
+    <EMBEDDEDDATA mmedaddress="0x481A6" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4FED" flags="0xC">
+    <title>KeBSTC_t_ScavReloadTime</title>
+    <description>Minimum time the boost request needs to be in none scavenging area before allowing scavenging.</description>
+    <EMBEDDEDDATA mmedaddress="0x481A8" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5BFF" flags="0xC">
+    <title>KeBSTC_t_ScavgngConvOverTemp</title>
+    <description>Calibration Note:&#013;&#010;If the converter over-temperature condition has been met, scavenging will not be allowed until this period of time has passed after the converter over-temperature condition is disabled.</description>
+    <EMBEDDEDDATA mmedaddress="0x481AA" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7391" flags="0xC">
+    <title>KeBSTC_t_ScavgngEnrichDsbl</title>
+    <description>If a remedial action has taken place including rich air fuel ratio, scavenging will not be allowed until this period of time has passed after rich air fuel mixture is disabled.</description>
+    <EMBEDDEDDATA mmedaddress="0x481AC" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1B3B" flags="0xC">
+    <title>KeBSTC_t_ScavgngMinDsblTime</title>
+    <description>Minimum time scavenging needs to be disabled after it has been active until ones again allowing scavenging.</description>
+    <EMBEDDEDDATA mmedaddress="0x481AE" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1DD2" flags="0xC">
+    <title>KeBSTC_t_ScavgngPE_Dsbl</title>
+    <description>Minimum time power enrichment has to been disabled until allowing scavenging.</description>
+    <EMBEDDEDDATA mmedaddress="0x481B0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>4</decimalpl>
+    <rangehigh>99.998497</rangehigh>
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B3F">
+    <title>t_PulseWidthShortLimit</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56F34" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>8</decimalpl>
+    <datatype>0</datatype>
+    <unittype>85</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x18BE">
+    <title>t_PulseWidthShortLimit2</title>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56F38" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <decimalpl>8</decimalpl>
+    <datatype>0</datatype>
+    <unittype>85</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFTABLE uniqueid="0x1BDC" flags="0x0">
+    <title>t_ShortPulseAdjust2</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="3" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>33</indexcount>
+      <decimalpl>3</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.000" />
+      <LABEL index="1" value="0.125" />
+      <LABEL index="2" value="0.250" />
+      <LABEL index="3" value="0.375" />
+      <LABEL index="4" value="0.500" />
+      <LABEL index="5" value="0.625" />
+      <LABEL index="6" value="0.750" />
+      <LABEL index="7" value="0.875" />
+      <LABEL index="8" value="1.000" />
+      <LABEL index="9" value="1.125" />
+      <LABEL index="10" value="1.250" />
+      <LABEL index="11" value="1.375" />
+      <LABEL index="12" value="1.500" />
+      <LABEL index="13" value="1.625" />
+      <LABEL index="14" value="1.750" />
+      <LABEL index="15" value="1.875" />
+      <LABEL index="16" value="2.000" />
+      <LABEL index="17" value="2.125" />
+      <LABEL index="18" value="2.250" />
+      <LABEL index="19" value="2.375" />
+      <LABEL index="20" value="2.500" />
+      <LABEL index="21" value="2.625" />
+      <LABEL index="22" value="2.750" />
+      <LABEL index="23" value="2.875" />
+      <LABEL index="24" value="3.000" />
+      <LABEL index="25" value="3.125" />
+      <LABEL index="26" value="3.250" />
+      <LABEL index="27" value="3.375" />
+      <LABEL index="28" value="3.500" />
+      <LABEL index="29" value="3.625" />
+      <LABEL index="30" value="3.750" />
+      <LABEL index="31" value="3.875" />
+      <LABEL index="32" value="4.000" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="2" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x56EE4" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x1C10" flags="0x0">
+    <title>t_ShortPulseAdjust</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="3" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>33</indexcount>
+      <decimalpl>3</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.000" />
+      <LABEL index="1" value="0.125" />
+      <LABEL index="2" value="0.250" />
+      <LABEL index="3" value="0.375" />
+      <LABEL index="4" value="0.500" />
+      <LABEL index="5" value="0.625" />
+      <LABEL index="6" value="0.750" />
+      <LABEL index="7" value="0.875" />
+      <LABEL index="8" value="1.000" />
+      <LABEL index="9" value="1.125" />
+      <LABEL index="10" value="1.250" />
+      <LABEL index="11" value="1.375" />
+      <LABEL index="12" value="1.500" />
+      <LABEL index="13" value="1.625" />
+      <LABEL index="14" value="1.750" />
+      <LABEL index="15" value="1.875" />
+      <LABEL index="16" value="2.000" />
+      <LABEL index="17" value="2.125" />
+      <LABEL index="18" value="2.250" />
+      <LABEL index="19" value="2.375" />
+      <LABEL index="20" value="2.500" />
+      <LABEL index="21" value="2.625" />
+      <LABEL index="22" value="2.750" />
+      <LABEL index="23" value="2.875" />
+      <LABEL index="24" value="3.000" />
+      <LABEL index="25" value="3.125" />
+      <LABEL index="26" value="3.250" />
+      <LABEL index="27" value="3.375" />
+      <LABEL index="28" value="3.500" />
+      <LABEL index="29" value="3.625" />
+      <LABEL index="30" value="3.750" />
+      <LABEL index="31" value="3.875" />
+      <LABEL index="32" value="4.000" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="2" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x56F3C" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22AF" flags="0x30">
+    <title>KaTHMC_T_EngCool_Labels</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10002" mmedelementsizebits="32" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <outputtype>4</outputtype>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Deg C" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x78238" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x417B" flags="0x30">
+    <title>KaTHMC_T_EngCool</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10002" mmedaddress="0x78238" mmedelementsizebits="32" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="3" linkobjid="0x22AF" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>2</indexcount>
+      <outputtype>4</outputtype>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Max ECT" />
+      <LABEL index="1" value="Min ECT" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x78200" mmedelementsizebits="32" mmedrowcount="2" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x79F2" flags="0x0">
+    <title>FloatView</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>4</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>128</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <LABEL index="33" value="0.00" />
+      <LABEL index="34" value="0.00" />
+      <LABEL index="35" value="0.00" />
+      <LABEL index="36" value="0.00" />
+      <LABEL index="37" value="0.00" />
+      <LABEL index="38" value="0.00" />
+      <LABEL index="39" value="0.00" />
+      <LABEL index="40" value="0.00" />
+      <LABEL index="41" value="0.00" />
+      <LABEL index="42" value="0.00" />
+      <LABEL index="43" value="0.00" />
+      <LABEL index="44" value="0.00" />
+      <LABEL index="45" value="0.00" />
+      <LABEL index="46" value="0.00" />
+      <LABEL index="47" value="0.00" />
+      <LABEL index="48" value="0.00" />
+      <LABEL index="49" value="0.00" />
+      <LABEL index="50" value="0.00" />
+      <LABEL index="51" value="0.00" />
+      <LABEL index="52" value="0.00" />
+      <LABEL index="53" value="0.00" />
+      <LABEL index="54" value="0.00" />
+      <LABEL index="55" value="0.00" />
+      <LABEL index="56" value="0.00" />
+      <LABEL index="57" value="0.00" />
+      <LABEL index="58" value="0.00" />
+      <LABEL index="59" value="0.00" />
+      <LABEL index="60" value="0.00" />
+      <LABEL index="61" value="0.00" />
+      <LABEL index="62" value="0.00" />
+      <LABEL index="63" value="0.00" />
+      <LABEL index="64" value="0.00" />
+      <LABEL index="65" value="0.00" />
+      <LABEL index="66" value="0.00" />
+      <LABEL index="67" value="0.00" />
+      <LABEL index="68" value="0.00" />
+      <LABEL index="69" value="0.00" />
+      <LABEL index="70" value="0.00" />
+      <LABEL index="71" value="0.00" />
+      <LABEL index="72" value="0.00" />
+      <LABEL index="73" value="0.00" />
+      <LABEL index="74" value="0.00" />
+      <LABEL index="75" value="0.00" />
+      <LABEL index="76" value="0.00" />
+      <LABEL index="77" value="0.00" />
+      <LABEL index="78" value="0.00" />
+      <LABEL index="79" value="0.00" />
+      <LABEL index="80" value="0.00" />
+      <LABEL index="81" value="0.00" />
+      <LABEL index="82" value="0.00" />
+      <LABEL index="83" value="0.00" />
+      <LABEL index="84" value="0.00" />
+      <LABEL index="85" value="0.00" />
+      <LABEL index="86" value="0.00" />
+      <LABEL index="87" value="0.00" />
+      <LABEL index="88" value="0.00" />
+      <LABEL index="89" value="0.00" />
+      <LABEL index="90" value="0.00" />
+      <LABEL index="91" value="0.00" />
+      <LABEL index="92" value="0.00" />
+      <LABEL index="93" value="0.00" />
+      <LABEL index="94" value="0.00" />
+      <LABEL index="95" value="0.00" />
+      <LABEL index="96" value="0.00" />
+      <LABEL index="97" value="0.00" />
+      <LABEL index="98" value="0.00" />
+      <LABEL index="99" value="0.00" />
+      <LABEL index="100" value="0.00" />
+      <LABEL index="101" value="0.00" />
+      <LABEL index="102" value="0.00" />
+      <LABEL index="103" value="0.00" />
+      <LABEL index="104" value="0.00" />
+      <LABEL index="105" value="0.00" />
+      <LABEL index="106" value="0.00" />
+      <LABEL index="107" value="0.00" />
+      <LABEL index="108" value="0.00" />
+      <LABEL index="109" value="0.00" />
+      <LABEL index="110" value="0.00" />
+      <LABEL index="111" value="0.00" />
+      <LABEL index="112" value="0.00" />
+      <LABEL index="113" value="0.00" />
+      <LABEL index="114" value="0.00" />
+      <LABEL index="115" value="0.00" />
+      <LABEL index="116" value="0.00" />
+      <LABEL index="117" value="0.00" />
+      <LABEL index="118" value="0.00" />
+      <LABEL index="119" value="0.00" />
+      <LABEL index="120" value="0.00" />
+      <LABEL index="121" value="0.00" />
+      <LABEL index="122" value="0.00" />
+      <LABEL index="123" value="0.00" />
+      <LABEL index="124" value="0.00" />
+      <LABEL index="125" value="0.00" />
+      <LABEL index="126" value="0.00" />
+      <LABEL index="127" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x56F01" mmedelementsizebits="32" mmedrowcount="128" mmedcolcount="4" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x36BE" flags="0x0">
+    <title>?? Intake Cam Idle</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>33</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x6CBA4" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x1067" flags="0x0">
+    <title>?? Exhaust Cam Idle</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>33</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <LABEL index="24" value="0.00" />
+      <LABEL index="25" value="0.00" />
+      <LABEL index="26" value="0.00" />
+      <LABEL index="27" value="0.00" />
+      <LABEL index="28" value="0.00" />
+      <LABEL index="29" value="0.00" />
+      <LABEL index="30" value="0.00" />
+      <LABEL index="31" value="0.00" />
+      <LABEL index="32" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x6CBC8" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFCONSTANT uniqueid="0x60B9" flags="0xC">
+    <title>KeSTRC_b_StarterInDevelopment</title>
+    <EMBEDDEDDATA mmedaddress="0x79EB8" mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <outputtype>2</outputtype>
+    <decimalpl>0</decimalpl>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x32BF">
+    <title>KeIMOC_t_AutoLearnDly</title>
+    <EMBEDDEDDATA mmedaddress="0x21838" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7A4C">
+    <title>KeIMOC_t_ToolLearnDly</title>
+    <EMBEDDEDDATA mmedaddress="0x2183C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 0.00625">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+</XDFFORMAT>
