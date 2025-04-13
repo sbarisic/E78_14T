@@ -1,0 +1,4 @@
+0x7E8: P0054 - HO2S Heater Resistance (Bank 1, Sensor 2) (Pending, Old)
+0x7E8: P0138 - O2 Circuit High Voltage (Bank 1, Sensor 2) (Pending, Old)
+0x7E8: P0141 - O2 Heater Circuit (Bank 1, Sensor 2) (Pending, Old)
+0x7E8: P0172 - System Too Rich (Bank 1) (SES, Pending, Current, Old, Permanent, History)
