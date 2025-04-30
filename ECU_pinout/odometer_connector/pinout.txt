@@ -1,0 +1,20 @@
+pin 1&2 unoccupied
+pin 5&6 unoccupied
+pin 10&11 unoccupied
+pin 15&16&17&18 unoccupied
+pin 20&21&22&23&24 unoccupied
+pin 26 unoccupied
+pin 28&29 unoccupied
+pin 31&32 unoccupied
+
+pin 3 & 4 Low Speed GMLAN
+pin 7 Battery Positive Voltage
+pin 8 Run/Crank Ignition 1 Voltage
+pin 9 Driver Information Center Select Menu Switch Signal
+pin 12 Forward Collision Alert LED Control
+pin 13 Driver Information Center Switch Low Reference
+pin 14 Driver Information Center Switch Signal
+pin 19 ground
+pin 25 Outside Ambient Temperature Sensor Low Reference
+pin 27 Outside Ambient Air Temperature Sensor Signal
+pin 30 Reflected LED Display Dimming Control
