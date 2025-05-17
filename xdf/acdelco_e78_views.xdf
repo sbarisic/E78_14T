@@ -1,4 +1,4 @@
-<!-- Written 05/01/2025 01:45:09 -->
+<!-- Written 05/13/2025 00:42:00 -->
 <XDFFORMAT version="1.80">
   <XDFHEADER>
     <flags>0x1</flags>
@@ -7,6 +7,39 @@
     <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
     <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
   </XDFHEADER>
+  <XDFCONSTANT uniqueid="0x547C">
+    <title>KeBSTC_Pct_ScavAccPedalDsbl</title>
+    <description>Scavenging request is inhibited if the percentage of pedal is below this value incase VeBSTC_b_ScavPedalInRng = CbTRUE</description>
+    <EMBEDDEDDATA mmedaddress="0x48150" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 100 / 65536">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7BDE">
+    <title>KeBSTC_Pct_ScavAccPedalEnbl</title>
+    <description>Scavenging request is inhibited if the percentage of pedal is below this value incase VeBSTC_b_ScavPedalInRng = CbFALSE</description>
+    <EMBEDDEDDATA mmedaddress="0x48152" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>67</unittype>
+    <DALINK index="0" />
+    <MATH equation="X * 100 / 65536">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4FE5">
+    <title>KeBSTC_T_ScavgngCatDsbl</title>
+    <description>Scavenging is inhibited if the catalyst temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbTRUE</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48154" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
   <XDFTABLE uniqueid="0x363C" flags="0x30">
     <title>HexView</title>
     <XDFAXIS id="x" uniqueid="0x0">
@@ -174,7 +207,7 @@
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x7B550" mmedelementsizebits="8" mmedrowcount="128" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <EMBEDDEDDATA mmedaddress="0x48154" mmedelementsizebits="8" mmedrowcount="128" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
       <decimalpl>0</decimalpl>
       <min>0.000000</min>
       <max>255.000000</max>
@@ -339,7 +372,7 @@
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x7B550" mmedelementsizebits="32" mmedrowcount="128" mmedcolcount="4" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48154" mmedelementsizebits="32" mmedrowcount="128" mmedcolcount="4" mmedmajorstridebits="0" mmedminorstridebits="0" />
       <decimalpl>6</decimalpl>
       <min>0.000000</min>
       <max>255.000000</max>
@@ -349,7 +382,7 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
-  <XDFTABLE uniqueid="0x3A4A" flags="0x0">
+  <XDFTABLE uniqueid="0x2C94" flags="0x0">
     <title>ECT</title>
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -517,6 +550,158 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
+  <XDFTABLE uniqueid="0x3A4A" flags="0x0">
+    <title>KtBSTC_p_ScavgngBstEnbl</title>
+    <description>If the boost request exceeds the output of this table scavenging will be activated, given that all other criterias is fulfilled. Deactivation of scavenging will occur if the desired boost request goes below the value received by subtracting KeBSTC_p_ScavgngBstHys from the output of this table</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x4823C" mmedelementsizebits="32" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <embedinfo type="3" linkobjid="0x556" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x48258" mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <embedinfo type="3" linkobjid="0x4DCD" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x481E0" mmedelementsizebits="16" mmedrowcount="5" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x35D9" flags="0x0">
+    <title>KtBSTC_p_ScavgngBstEnbl_UNSIGN</title>
+    <description>If the boost request exceeds the output of this table scavenging will be activated, given that all other criterias is fulfilled. Deactivation of scavenging will occur if the desired boost request goes below the value received by subtracting KeBSTC_p_ScavgngBstHys from the output of this table</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x4823C" mmedelementsizebits="32" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <embedinfo type="3" linkobjid="0x556" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x48258" mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <embedinfo type="3" linkobjid="0x4DCD" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x481E0" mmedelementsizebits="16" mmedrowcount="5" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x556" flags="0x0">
+    <title>KtBSTC_p_ScavgngBstEnbl_COLS</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="32" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.00" />
+      <LABEL index="1" value="2.00" />
+      <LABEL index="2" value="3.00" />
+      <LABEL index="3" value="4.00" />
+      <LABEL index="4" value="5.00" />
+      <LABEL index="5" value="6.00" />
+      <LABEL index="6" value="7.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4823C" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x4DCD" flags="0x0">
+    <title>KtBSTC_p_ScavgngBstEnbl_ROWS</title>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="32" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.00" />
+      <LABEL index="1" value="2.00" />
+      <LABEL index="2" value="3.00" />
+      <LABEL index="3" value="4.00" />
+      <LABEL index="4" value="5.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48258" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
   <XDFTABLE uniqueid="0x2AB0" flags="0x0">
     <title>Max Desired ECT - Cold</title>
     <XDFAXIS id="x" uniqueid="0x0">
@@ -599,4 +784,224 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
+  <XDFCONSTANT uniqueid="0x7F57">
+    <title>KeBSTC_T_ScavgngCatEnbl</title>
+    <description>Scavenging is inhibited if the catalyst temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48158" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5AE">
+    <title>KeBSTC_T_ScavgngCoolantHys</title>
+    <description>Hystersis value applied to the maximum and minimum coolant temperatures calibrations when VeBSTR_b_ScavgngRqstd = CbTRUE</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4815C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2FFC">
+    <title>KeBSTC_T_ScavgngCoolantMax</title>
+    <description>Scavenging is inhibited when the coolant temperature is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is added to this calibration</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48160" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x70A3">
+    <title>KeBSTC_T_ScavgngCoolantMin</title>
+    <description>Scavenging is inhibited when the coolant temperature is below this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_T_ScavgngCoolantHys is subtracted from this calibration</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48164" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x466D">
+    <title>KeBSTC_n_ScavgngEngSpdHys</title>
+    <description>Hystersis value applied to the maximum and minimum engine speed calibrations when VeBSTR_b_ScavgngRqstd = CbTRUE</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48170" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x3E23">
+    <title>KeBSTC_n_ScavgngEngSpdMax</title>
+    <description>Scavenging is inhibited when the engine speed is above this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_n_ScavgngEngSpdHys is added to this calibration</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48174" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x5111">
+    <title>KeBSTC_n_ScavgngEngSpdMin</title>
+    <description>Scavenging is inhibited when the engine speed is below this value incase VeBSTR_b_ScavgngRqstd = CbFALSE. Incase VeBSTR_b_ScavgngReqstd = CbTRUE the hysteresis value KeBSTC_n_ScavgngEngSpd is subtracted from this calibration</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48178" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>4</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x767">
+    <title>KeBSTC_p_ScavgngBstHys</title>
+    <description>This value is subtracted from the output of table KtBSTC_p_ScavgngBstEnbl do determine when scavenging no more is desired</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4817C" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>17</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x7994">
+    <title>KeBSTC_p_ScavgngBstTransDsbl</title>
+    <description>Scavenging is not desired and will deactivate if the difference between actual and desired boost pressure is less than this calibration, unless if desired boost pressure is higher than what can be achived without scavenging</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48180" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>17</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x58C5">
+    <title>KeBSTC_p_ScavgngBstTransEnbl</title>
+    <description>Scavenging is desired and will activate (if all other criterias is fulfilled) if the difference between actual and desired boost pressure is greater than this calibration</description>
+    <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x48184" mmedelementsizebits="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>17</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x1BFB">
+    <title>KeBSTC_t_ScavMaxActive</title>
+    <description>Maximum time scavenging is allowed to be active</description>
+    <EMBEDDEDDATA mmedaddress="0x48190" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x43BB">
+    <title>KeBSTC_t_ScavMaxDly</title>
+    <description>Maximum delay from desired boost request goes above enabling limit to scavenging is activated. This calibration should be set so the driver will not experince a large delay between pressing the acc. pedal to the torque is delivered</description>
+    <EMBEDDEDDATA mmedaddress="0x48192" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x60FE">
+    <title>KeBSTC_t_ScavMaxDlyWoReq</title>
+    <description>Maximum delay from desired boost request goes above enabling limit to scavenging is requested. This calibration should be set to value received by subtracting the typical time between VeBSTR_b_ScavgngReqstd turns CbTRUE until PHSR indicates scavenging is active, from KeBSTC_t_ScavMaxDly</description>
+    <EMBEDDEDDATA mmedaddress="0x48194" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x3968">
+    <title>KeBSTC_t_ScavMinPE_DsblTime</title>
+    <description>Minimum time between scavenging has been active until PE is allowed to run</description>
+    <EMBEDDEDDATA mmedaddress="0x48196" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x3ECB">
+    <title>KeBSTC_t_ScavReloadTime</title>
+    <description>Minimum time the boost request needs to be in none scavenging area before allowing scavenging</description>
+    <EMBEDDEDDATA mmedaddress="0x48198" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4260">
+    <title>KeBSTC_t_ScavgngEnrichDsbl</title>
+    <description>If a remedial action has taken place including rich air fuel ratio, scavenging will not be allowed until this period of time has passed after rich air fuel mixture is disabled</description>
+    <EMBEDDEDDATA mmedaddress="0x4819C" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4591">
+    <title>KeBSTC_t_ScavgngMinDsblTime</title>
+    <description>Minimum time scavenging needs to be disabled after it has been active until ones again allowing scavenging</description>
+    <EMBEDDEDDATA mmedaddress="0x4819E" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x4890">
+    <title>KeBSTC_t_ScavgngPE_Dsbl</title>
+    <description>Minimum time power enrichment has to been disabled until allowing scavenging</description>
+    <EMBEDDEDDATA mmedaddress="0x481A0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>84</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 160">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2DA6">
+    <title>KeFDLV_T_InhbtAutoStopLimITT</title>
+    <description>The injector tip temperature threshold above which an AutoStop will be inhibited</description>
+    <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x56FD6" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 128">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2D60">
+    <title>KeFDLV_T_InhbtAutoStopHysITT</title>
+    <description>The injector tip temperature threshold hysteris value which is subtracted from KeFDLV_T_InhbtAutoStopLimITT to determine injector tip temperature threshold below which an AutoStop will no longer be inhibited if it had previously been inhibited</description>
+    <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x56FD8" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <datatype>0</datatype>
+    <unittype>15</unittype>
+    <DALINK index="0" />
+    <MATH equation="X / 128">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
 </XDFFORMAT>
