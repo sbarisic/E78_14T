@@ -1,0 +1,1641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="2.166">
+  <variables>
+    <symbol name="fuelingType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="enableBaro" value="0" storage="ubyte" type="bool"/>
+    <symbol name="numCylinders" value="4" storage="ubyte" type="value"/>
+    <symbol name="rpmLimit" value="8000" storage="word" type="value"/>
+    <symbol name="fuelCutAbovePressure" value="260" storage="word" type="value"/>
+    <symbol name="fuelCutUnderPressure" value="10" storage="word" type="value"/>
+    <symbol name="iatSensorType" value="0" storage="ubyte" type="value"/>
+    <symbol name="aseDuration" value="1000" storage="word" type="value"/>
+    <symbol name="primTrigSensorType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="primTrigAdaptive" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="primTrigPullup" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="primTrigInputFilter" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="iatSensorCal" value="0" storage="eTmpSensorCal" type="struct"/>
+    <symbol name="batchInjectors" value="0" storage="ubyte" type="bool"/>
+    <symbol name="useBuiltInMap" value="0" storage="ubyte" type="bool"/>
+    <symbol name="mapAnalogIn" value="4" storage="ubyte" type="paramList"/>
+    <symbol name="knockFrequency" value="59" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorGain" value="29" storage="ubyte" type="paramList"/>
+    <symbol name="initMask" value="0" storage="word" type="paramList"/>
+    <symbol name="primTrigerType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="numTeeth" value="60" storage="ubyte" type="value"/>
+    <symbol name="firstTriggerTooth" value="2" storage="ubyte" type="value"/>
+    <symbol name="triggerAngle" value="64" storage="ubyte" type="value"/>
+    <symbol name="tpsMin" value="51" storage="ubyte" type="value"/>
+    <symbol name="tpsMax" value="185" storage="ubyte" type="value"/>
+    <symbol name="cltSensorCal" value="0" storage="eTmpSensorCal" type="struct"/>
+    <symbol name="cltSensorType" value="0" storage="ubyte" type="value"/>
+    <symbol name="crankingThreshold" value="450" storage="word" type="value"/>
+    <symbol name="crankingIgnAnlge" value="20" storage="sbyte" type="value"/>
+    <symbol name="injector1Phase" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="injector2Phase" value="4" storage="ubyte" type="paramList"/>
+    <symbol name="injector3Phase" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="injector4Phase" value="3" storage="ubyte" type="paramList"/>
+    <symbol name="injector5Phase" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="injector6Phase" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="injector7Phase" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="injector8Phase" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="engineStallRevs" value="150" storage="ubyte" type="value"/>
+    <symbol name="idleValveType" value="6" storage="ubyte" type="paramList"/>
+    <symbol name="idleFrequency" value="20" storage="word" type="value"/>
+    <symbol name="idleStepperNumSteps" value="100" storage="word" type="value"/>
+    <symbol name="idleAfterstartAdd" value="400" storage="word" type="value"/>
+    <symbol name="idleAfterstartDuration" value="1" storage="ubyte" type="value"/>
+    <symbol name="idleOnIfTPSBelow" value="1" storage="ubyte" type="value"/>
+    <symbol name="idleOffIfTPSOver" value="2" storage="ubyte" type="value"/>
+    <symbol name="idleDeadband" value="30" storage="ubyte" type="value"/>
+    <symbol name="idleIncreaseAboveVSS" value="30" storage="word" type="value"/>
+    <symbol name="idleVSSIncrease" value="0" storage="word" type="value"/>
+    <symbol name="idleIgntionCtrl" value="1" storage="ubyte" type="bool"/>
+    <symbol name="idleIgnMaxAdvance" value="10" storage="ubyte" type="value"/>
+    <symbol name="idleIgnMaxRetard" value="12" storage="ubyte" type="value"/>
+    <symbol name="idleAngleChangeRate" value="30" storage="ubyte" type="value"/>
+    <symbol name="idlePIDEnable" value="1" storage="ubyte" type="bool"/>
+    <symbol name="idleP" value="24" storage="ubyte" type="value"/>
+    <symbol name="idleI" value="4" storage="ubyte" type="value"/>
+    <symbol name="idleD" value="32" storage="ubyte" type="value"/>
+    <symbol name="idleIntWindup" value="20" storage="ubyte" type="value"/>
+    <symbol name="idleFeedbackPlus" value="8" storage="ubyte" type="value"/>
+    <symbol name="idleFeedbackMinus" value="8" storage="ubyte" type="value"/>
+    <symbol name="idleReverse" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idlePWMOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent1" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent2" value="3" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent3" value="6" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent4" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent5" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent6" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent7" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent8" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent9" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent10" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent11" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEvent12" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionTrim1" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim2" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim3" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim4" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim5" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim6" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim7" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim8" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim9" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim10" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim11" value="0" storage="sbyte" type="value"/>
+    <symbol name="ignitionTrim12" value="0" storage="sbyte" type="value"/>
+    <symbol name="sparkDistribution" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="coilsType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="fuelPumpASActivity" value="20" storage="ubyte" type="value"/>
+    <symbol name="fuelPumpOutput" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="fuelPumpInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="coolantFanActTemp" value="94" storage="sword" type="value"/>
+    <symbol name="coolantFanHyst" value="2" storage="ubyte" type="value"/>
+    <symbol name="coolantFanOutput" value="3" storage="ubyte" type="paramList"/>
+    <symbol name="coolantFanInvOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="injectorsSize" value="613" storage="word" type="value"/>
+    <symbol name="engineDisplacement" value="1364" storage="word" type="value"/>
+    <symbol name="fuelCutTPSLimit" value="1" storage="ubyte" type="value"/>
+    <symbol name="fuelCutAboveRPM" value="1600" storage="word" type="value"/>
+    <symbol name="fuelResumeBelow" value="1500" storage="word" type="value"/>
+    <symbol name="coolantFanOffDuringCranking" value="1" storage="ubyte" type="bool"/>
+    <symbol name="secTrigerType" value="5" storage="ubyte" type="paramList"/>
+    <symbol name="secTrigSensorType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="secTrigInputFilter" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="secTrigPullup" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="secTrigerEdge" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="copyrightsStr" value="" storage="char" type="value"/>
+    <symbol name="contactStr" value="" storage="char" type="value"/>
+    <symbol name="checkEngineLightOutput" value="99" storage="ubyte" type="paramList"/>
+    <symbol name="checkEngineLightInvOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="failReportWBO" value="1" storage="ubyte" type="bool"/>
+    <symbol name="failReportIAT" value="1" storage="ubyte" type="bool"/>
+    <symbol name="failReportCLT" value="1" storage="ubyte" type="bool"/>
+    <symbol name="failReportEGT1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="failReportEGT2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="failReportMAP" value="1" storage="ubyte" type="bool"/>
+    <symbol name="failSafeMAPValue" value="100" storage="ubyte" type="value"/>
+    <symbol name="failSafeIATValue" value="30" storage="sbyte" type="value"/>
+    <symbol name="failSafeCLTValue" value="30" storage="sbyte" type="value"/>
+    <symbol name="VSSSensorType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="VSSPullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="VSSFilter" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="speedRatio" value="128" storage="word" type="value"/>
+    <symbol name="gearRatio1" value="7" storage="word" type="value"/>
+    <symbol name="gearRatio2" value="4" storage="word" type="value"/>
+    <symbol name="gearRatio3" value="3" storage="word" type="value"/>
+    <symbol name="gearRatio4" value="2" storage="word" type="value"/>
+    <symbol name="gearRatio5" value="2" storage="word" type="value"/>
+    <symbol name="gearRatio6" value="1" storage="word" type="value"/>
+    <symbol name="gearRatioTolerance" value="15" storage="ubyte" type="value"/>
+    <symbol name="shiftLightOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="shiftLightInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="shiftLightHysteresis" value="100" storage="word" type="value"/>
+    <symbol name="shiftLightGear1RPM" value="6000" storage="word" type="value"/>
+    <symbol name="shiftLightGear2RPM" value="6000" storage="word" type="value"/>
+    <symbol name="shiftLightGear3RPM" value="6000" storage="word" type="value"/>
+    <symbol name="shiftLightGear4RPM" value="6000" storage="word" type="value"/>
+    <symbol name="shiftLightGear5RPM" value="6000" storage="word" type="value"/>
+    <symbol name="shiftLightGear6RPM" value="6000" storage="word" type="value"/>
+    <symbol name="knockIntegrator" value="26" storage="ubyte" type="paramList"/>
+    <symbol name="knockWindowStart" value="0" storage="ubyte" type="value"/>
+    <symbol name="knockWindowDuration" value="100" storage="ubyte" type="value"/>
+    <symbol name="knockSensorIgnEvent1" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent2" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent3" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent4" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent5" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent6" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent7" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent8" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent9" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent10" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent11" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockSensorIgnEvent12" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockActionActive" value="1" storage="ubyte" type="bool"/>
+    <symbol name="knockActionMinRPM" value="1000" storage="word" type="value"/>
+    <symbol name="knockActionMaxRPM" value="8000" storage="word" type="value"/>
+    <symbol name="knockFuelEnrichRate" value="6" storage="ubyte" type="value"/>
+    <symbol name="knockMaxFuelEnrich" value="0" storage="ubyte" type="value"/>
+    <symbol name="knockMaxIgnRetard" value="10" storage="ubyte" type="value"/>
+    <symbol name="knockIgnRetardRate" value="4" storage="ubyte" type="value"/>
+    <symbol name="knockRestoreRate" value="20" storage="ubyte" type="value"/>
+    <symbol name="nitrousControlActive" value="0" storage="ubyte" type="bool"/>
+    <symbol name="nitrousActInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="nitrousActOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="nitrousMinLoad" value="90" storage="word" type="value"/>
+    <symbol name="nitrousMaxLoad" value="160" storage="word" type="value"/>
+    <symbol name="nitrousReactLoad" value="140" storage="word" type="value"/>
+    <symbol name="nitrousMinRPM" value="3000" storage="word" type="value"/>
+    <symbol name="nitrousMaxRPM" value="7000" storage="word" type="value"/>
+    <symbol name="nitrousReactRPM" value="6000" storage="word" type="value"/>
+    <symbol name="nitrousActivateTPS" value="85" storage="ubyte" type="value"/>
+    <symbol name="nitrousDeactivateTPS" value="75" storage="ubyte" type="value"/>
+    <symbol name="nitrousActivateVSS" value="0" storage="ubyte" type="value"/>
+    <symbol name="accEnrichDTPSThreshold" value="3" storage="ubyte" type="value"/>
+    <symbol name="accEnrichSustainRate" value="50" storage="ubyte" type="value"/>
+    <symbol name="accEnrichLimit" value="100" storage="ubyte" type="value"/>
+    <symbol name="tachoOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="rpmMultiplier" value="100" storage="word" type="value"/>
+    <symbol name="oxygenSensorType" value="3" storage="ubyte" type="paramList"/>
+    <symbol name="shortTermEnable" value="1" storage="ubyte" type="bool"/>
+    <symbol name="shortTermRichLimit" value="25" storage="ubyte" type="value"/>
+    <symbol name="shortTermLeanLimit" value="25" storage="ubyte" type="value"/>
+    <symbol name="shortTermMaxTPS" value="100" storage="ubyte" type="value"/>
+    <symbol name="shortTermMinClt" value="0" storage="sbyte" type="value"/>
+    <symbol name="shortTermMinRPM" value="700" storage="word" type="value"/>
+    <symbol name="shortTermMaxRPM" value="8200" storage="word" type="value"/>
+    <symbol name="shortTermMinMAP" value="20" storage="word" type="value"/>
+    <symbol name="shortTermMaxMAP" value="300" storage="word" type="value"/>
+    <symbol name="pidDebug" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="wboFuelType" value="3763" storage="word" type="paramList"/>
+    <symbol name="VSSTrigerEdge" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="boostControlType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="boostKp" value="2" storage="ubyte" type="value"/>
+    <symbol name="boostKi" value="24" storage="ubyte" type="value"/>
+    <symbol name="boostKd" value="100" storage="ubyte" type="value"/>
+    <symbol name="boostIntegralLimit" value="10" storage="word" type="value"/>
+    <symbol name="boostFeedbackPlus" value="25" storage="ubyte" type="value"/>
+    <symbol name="boostFeedbackMinus" value="25" storage="ubyte" type="value"/>
+    <symbol name="gear1Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear2Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear3Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear4Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear5Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear6Scale" value="100" storage="ubyte" type="value"/>
+    <symbol name="boostEnabled" value="1" storage="ubyte" type="bool"/>
+    <symbol name="boostValveMinDC" value="5" storage="ubyte" type="value"/>
+    <symbol name="boostValveMaxDC" value="95" storage="ubyte" type="value"/>
+    <symbol name="boostValveFrequency" value="32" storage="word" type="value"/>
+    <symbol name="boostOutput" value="11" storage="ubyte" type="paramList"/>
+    <symbol name="boostInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="boostDisableOutputUnder" value="100" storage="word" type="value"/>
+    <symbol name="boostSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="enableSoftRevLimiter" value="1" storage="ubyte" type="bool"/>
+    <symbol name="revLimit" value="7800" storage="word" type="value"/>
+    <symbol name="controlRange" value="200" storage="word" type="value"/>
+    <symbol name="enableMAPFilter" value="1" storage="ubyte" type="bool"/>
+    <symbol name="pwmTableOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pwmTableFrequency" value="30" storage="ubyte" type="value"/>
+    <symbol name="shortTrimTransientDelay" value="300" storage="word" type="value"/>
+    <symbol name="pwmTableDisableOutputIfNoRPM" value="0" storage="ubyte" type="bool"/>
+    <symbol name="egtAlarmType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="egtAlarmTemperature" value="950" storage="word" type="value"/>
+    <symbol name="egtAlarmOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="egtAlarmInvOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="enablePrimePulse" value="1" storage="ubyte" type="bool"/>
+    <symbol name="overrunCutRate" value="100" storage="ubyte" type="value"/>
+    <symbol name="idleIntWindupMinus" value="16" storage="ubyte" type="value"/>
+    <symbol name="flatShiftInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="flatShiftCutOffRPM" value="5500" storage="word" type="value"/>
+    <symbol name="flatShiftCutSpark" value="1" storage="ubyte" type="bool"/>
+    <symbol name="flatShiftCutFuel" value="0" storage="ubyte" type="bool"/>
+    <symbol name="flatShiftCutSparkPercent" value="100" storage="ubyte" type="value"/>
+    <symbol name="softLimiterCurSparkPercent" value="100" storage="ubyte" type="value"/>
+    <symbol name="primTrigEdge" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="mainRelayControlOutput" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="idlePWMOutput2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1Output" value="101" storage="ubyte" type="paramList"/>
+    <symbol name="po1InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po1VariableType1" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="po1Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1VariableValue1" value="0" storage="sword" type="value"/>
+    <symbol name="po1VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po1LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po1VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="idleCrankingDC" value="0" storage="ubyte" type="value"/>
+    <symbol name="wboAFRAt0V" value="59" storage="ubyte" type="value"/>
+    <symbol name="wboAFRAt5V" value="154" storage="ubyte" type="value"/>
+    <symbol name="wboExtCtrlInput" value="11" storage="ubyte" type="paramList"/>
+    <symbol name="po2Output" value="101" storage="ubyte" type="paramList"/>
+    <symbol name="po2InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po2VariableType1" value="108" storage="ubyte" type="paramList"/>
+    <symbol name="po2Operator1" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="po2VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po2VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po2LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po2VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po2Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po2VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po2VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="idleValveMinDC" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleValveMaxDC" value="100" storage="ubyte" type="value"/>
+    <symbol name="cltFreqOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="nissanCamSyncWindowWidth" value="4" storage="ubyte" type="paramList"/>
+    <symbol name="etcPosSeneorAin" value="6" storage="ubyte" type="paramList"/>
+    <symbol name="etcPosSeneorInvAin" value="7" storage="ubyte" type="paramList"/>
+    <symbol name="etcIdleRange" value="60" storage="ubyte" type="value"/>
+    <symbol name="ewgPositionMin" value="10" storage="ubyte" type="value"/>
+    <symbol name="ewgPositionMax" value="240" storage="ubyte" type="value"/>
+    <symbol name="etcPositiveIntegralLimit" value="32" storage="word" type="value"/>
+    <symbol name="ewgkP" value="16" storage="ubyte" type="value"/>
+    <symbol name="ewgkI" value="4" storage="ubyte" type="value"/>
+    <symbol name="ewgkD" value="1" storage="ubyte" type="value"/>
+    <symbol name="etcNegativeIntegralLimit" value="32" storage="word" type="value"/>
+    <symbol name="ewgIntergralLimit" value="5" storage="ubyte" type="value"/>
+    <symbol name="etcPositionMin" value="32" storage="ubyte" type="value"/>
+    <symbol name="etcPositionMax" value="225" storage="ubyte" type="value"/>
+    <symbol name="po1LogicalOperator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1VariableType3" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1Operator3" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1VariableValue3" value="100" storage="sword" type="value"/>
+    <symbol name="po1VariableHyst3" value="10" storage="word" type="value"/>
+    <symbol name="primTriggerEnableScope" value="0" storage="ubyte" type="bool"/>
+    <symbol name="pitLimitEnabled" value="0" storage="ubyte" type="bool"/>
+    <symbol name="pitLimitInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pitSpeedLimit" value="90" storage="word" type="value"/>
+    <symbol name="pitLimitMaxSpeed" value="140" storage="word" type="value"/>
+    <symbol name="pitLimitSpeedActive" value="70" storage="word" type="value"/>
+    <symbol name="pitLimitIgnition" value="10" storage="sbyte" type="value"/>
+    <symbol name="pitLimitDecay" value="100" storage="ubyte" type="value"/>
+    <symbol name="flatShiftVssToActivate" value="0" storage="word" type="value"/>
+    <symbol name="pitLimitTorqueReductionMode" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pitLimitETCMaxOpen" value="100" storage="ubyte" type="value"/>
+    <symbol name="po3Output" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po3VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po3VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po3LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po3VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po3VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="po4Output" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po4VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po4VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po4LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po4VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po4VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="extPortDeviceID" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="nextEdgeAngleThreshold" value="0" storage="ubyte" type="value"/>
+    <symbol name="ignitionOutputOffset" value="0" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1TriggerOffset" value="463" storage="word" type="value"/>
+    <symbol name="vvtCam1MaxAdvance" value="60" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1ControlType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam1Output1" value="5" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam1OutputFrequency" value="400" storage="word" type="value"/>
+    <symbol name="vvtCam1SteadyPosDC" value="40" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1MaxDC" value="80" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1MinDC" value="10" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1MinCoolantTemp" value="0" storage="sbyte" type="value"/>
+    <symbol name="vvtCam1MinRPM" value="850" storage="word" type="value"/>
+    <symbol name="vvtCam1PTerm" value="40" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1ITerm" value="1" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1DTerm" value="20" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1IntegralLimit" value="5" storage="word" type="value"/>
+    <symbol name="cam2Type" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="cam2SensorType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="cam2Pullup" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="cam2InputFilter" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="cam2Edge" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam2TriggerOffset" value="554" storage="word" type="value"/>
+    <symbol name="vvtCam2MaxAdvance" value="60" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2ControlType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam2Output1" value="6" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam2OutputFrequency" value="400" storage="word" type="value"/>
+    <symbol name="vvtCam2SteadyPosDC" value="40" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2MaxDC" value="80" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2MinDC" value="10" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2MinCoolantTemp" value="0" storage="sbyte" type="value"/>
+    <symbol name="vvtCam2MinRPM" value="850" storage="word" type="value"/>
+    <symbol name="vvtCam2PTerm" value="40" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2ITerm" value="1" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2DTerm" value="20" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2IntegralLimit" value="5" storage="word" type="value"/>
+    <symbol name="vvtCam1Deadband" value="1" storage="ubyte" type="value"/>
+    <symbol name="vvtCam2Deadband" value="1" storage="ubyte" type="value"/>
+    <symbol name="vvtCam1direction" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam2direction" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="failReportEGTAlarm" value="0" storage="ubyte" type="bool"/>
+    <symbol name="failReportKnocking" value="1" storage="ubyte" type="bool"/>
+    <symbol name="builtInMAPOffset" value="0" storage="sbyte" type="value"/>
+    <symbol name="speedoOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="speedoMultiplier" value="64" storage="word" type="value"/>
+    <symbol name="fuelTrim1" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim2" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim3" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim4" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim5" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim6" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim7" value="100" storage="ubyte" type="value"/>
+    <symbol name="fuelTrim8" value="100" storage="ubyte" type="value"/>
+    <symbol name="oilPressureInput" value="63" storage="ubyte" type="paramList"/>
+    <symbol name="fuelPressureInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="oilTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="backpressureInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="fireInjectorTwicePerCycle" value="0" storage="ubyte" type="bool"/>
+    <symbol name="useWBOHeaterForNBOSensor" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dynoCoefOfDrag" value="30" storage="word" type="value"/>
+    <symbol name="dynoFrontalArea" value="213" storage="word" type="value"/>
+    <symbol name="dynoCarMass" value="1300" storage="word" type="value"/>
+    <symbol name="dynoRPMRatio" value="231" storage="word" type="value"/>
+    <symbol name="dynoFilerPower" value="12" storage="ubyte" type="value"/>
+    <symbol name="dynoEnableAeroCorr" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dynoShowAFR" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dynoShowMAP" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dynoShowIAT" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dynoMinRPM" value="1000" storage="word" type="value"/>
+    <symbol name="dynoMaxRPM" value="8000" storage="word" type="value"/>
+    <symbol name="disableSparkDuringDecceleration" value="1" storage="ubyte" type="bool"/>
+    <symbol name="mainRelayInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleIgnUseTable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="nitrousMinGear" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleControlMaxRPM" value="1800" storage="word" type="value"/>
+    <symbol name="vvtCam1Output2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam2Output2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ffEnableFFSensor" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffBlendVE" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffBlendIGN" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffBlendAFR" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffBlendBoost" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffTempCorrection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffEthanolContentIfError" value="0" storage="ubyte" type="value"/>
+    <symbol name="tblSwitchMode" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="tblSwitchVE" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchIGN" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchAFR" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchVVT1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchVVT2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchInput" value="66" storage="ubyte" type="paramList"/>
+    <symbol name="vtecOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vtecRPMMin1" value="5000" storage="word" type="value"/>
+    <symbol name="vtecRPMMax1" value="7500" storage="word" type="value"/>
+    <symbol name="vtecMAPMin1" value="50" storage="word" type="value"/>
+    <symbol name="vtecMAPMax1" value="115" storage="word" type="value"/>
+    <symbol name="vtecTPSMin1" value="50" storage="ubyte" type="value"/>
+    <symbol name="vtecTPSMax1" value="100" storage="ubyte" type="value"/>
+    <symbol name="vtecRPMMin2" value="5000" storage="word" type="value"/>
+    <symbol name="vtecRPMMax2" value="7500" storage="word" type="value"/>
+    <symbol name="vtecMAPMin2" value="50" storage="word" type="value"/>
+    <symbol name="vtecMAPMax2" value="115" storage="word" type="value"/>
+    <symbol name="vtecTPSMin2" value="50" storage="ubyte" type="value"/>
+    <symbol name="vtecTPSMax2" value="100" storage="ubyte" type="value"/>
+    <symbol name="failReportFFSensor" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vtecInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vtecRPMHist1" value="300" storage="word" type="value"/>
+    <symbol name="vtecRPMHist2" value="300" storage="word" type="value"/>
+    <symbol name="vtecMAPHist1" value="10" storage="ubyte" type="value"/>
+    <symbol name="vtecMAPHist2" value="10" storage="ubyte" type="value"/>
+    <symbol name="vtecTPSHist1" value="50" storage="ubyte" type="value"/>
+    <symbol name="vtecTPSHist2" value="50" storage="ubyte" type="value"/>
+    <symbol name="alsEnableInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsTPSLimit" value="10" storage="ubyte" type="value"/>
+    <symbol name="alsRPMMin" value="3000" storage="word" type="value"/>
+    <symbol name="alsRPMMax" value="6000" storage="word" type="value"/>
+    <symbol name="alsMaxIAT" value="50" storage="ubyte" type="value"/>
+    <symbol name="alsMaxCLT" value="102" storage="word" type="value"/>
+    <symbol name="alsMaxDuration" value="8" storage="ubyte" type="value"/>
+    <symbol name="alsUseIdleValve" value="0" storage="ubyte" type="bool"/>
+    <symbol name="alsIdleValveDCRef" value="100" storage="ubyte" type="value"/>
+    <symbol name="alsSolenoidOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsInvertSolenoidOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="alsMaxEGT" value="900" storage="word" type="value"/>
+    <symbol name="ffEthanolTempIfError" value="20" storage="sbyte" type="value"/>
+    <symbol name="ffBlendCrankingFuel" value="0" storage="ubyte" type="bool"/>
+    <symbol name="camEnableAdvancedFilter" value="0" storage="ubyte" type="bool"/>
+    <symbol name="camCrankTooth" value="0" storage="ubyte" type="value"/>
+    <symbol name="camMaxDeviation" value="0" storage="ubyte" type="value"/>
+    <symbol name="canBusSpeed" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="canBusSendEMUDataOverCAN" value="1" storage="ubyte" type="bool"/>
+    <symbol name="etcMaxPotError" value="6" storage="ubyte" type="value"/>
+    <symbol name="failReportDBW" value="1" storage="ubyte" type="bool"/>
+    <symbol name="oilPressureCutDelay" value="300" storage="word" type="value"/>
+    <symbol name="oilPressureCutRestartTime" value="5" storage="ubyte" type="value"/>
+    <symbol name="tcEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tcGearDisableTime" value="100" storage="word" type="value"/>
+    <symbol name="tcDisableIfSecondTablesSet" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tcAdjustPotInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="tcSensitivity" value="100" storage="word" type="value"/>
+    <symbol name="tcActiveOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="oilPressureCutEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po1EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po2EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po3EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po4EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po1OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po2OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po3OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po4OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po1OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po2OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po3OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po4OffTime" value="16" storage="word" type="value"/>
+    <symbol name="oilPressureStartDelay" value="5" storage="ubyte" type="value"/>
+    <symbol name="tpsValueUnderMin" value="0" storage="ubyte" type="value"/>
+    <symbol name="tpsValueOverMax" value="200" storage="ubyte" type="value"/>
+    <symbol name="ffBlendASE" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffBlendWarmup" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dtpsInterval" value="50" storage="ubyte" type="value"/>
+    <symbol name="gapDetectionScaleCranking" value="100" storage="ubyte" type="value"/>
+    <symbol name="canBusDashType" value="36" storage="ubyte" type="paramList"/>
+    <symbol name="flatShiftGearCutTime" value="0" storage="word" type="value"/>
+    <symbol name="alsUseDBW" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="alsDBWOpenThrottle" value="50" storage="ubyte" type="value"/>
+    <symbol name="po1CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po2CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po3CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po4CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="gearDetectionType" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="gearSensorInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearCutEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="gearCutSignalSrc" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearCutSignalActiveLevel" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearForceUp" value="50" storage="ubyte" type="value"/>
+    <symbol name="gearForceDown" value="178" storage="ubyte" type="value"/>
+    <symbol name="gearForceUpHyst" value="5" storage="ubyte" type="value"/>
+    <symbol name="gearForceDownHyst" value="5" storage="ubyte" type="value"/>
+    <symbol name="gearCutMinTPS" value="20" storage="ubyte" type="value"/>
+    <symbol name="gearCutMinRPM" value="3000" storage="word" type="value"/>
+    <symbol name="gearCutMaxTPSForBlip" value="20" storage="ubyte" type="value"/>
+    <symbol name="gearCutArmTime" value="600" storage="word" type="value"/>
+    <symbol name="gearCutCutDelay" value="10" storage="ubyte" type="value"/>
+    <symbol name="gearCutSignalInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="primTriggerScopeTraceError" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tcMinSpeed" value="0" storage="word" type="value"/>
+    <symbol name="idleCorrAnalogIn" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vtecVSSMin1" value="0" storage="word" type="value"/>
+    <symbol name="vtecVSSHist1" value="5" storage="word" type="value"/>
+    <symbol name="vtecVSSMin2" value="0" storage="word" type="value"/>
+    <symbol name="vtecVSSHist2" value="5" storage="word" type="value"/>
+    <symbol name="softLimiterIgnRetard" value="30" storage="ubyte" type="value"/>
+    <symbol name="nitrousMinCLT" value="60" storage="ubyte" type="value"/>
+    <symbol name="canFrame600" value="1536" storage="word" type="value"/>
+    <symbol name="hondaS2000DashClt" value="0" storage="ubyte" type="bool"/>
+    <symbol name="hondaS2000DashCltOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="fprFailSafeEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="fprMinDelta" value="250" storage="word" type="value"/>
+    <symbol name="fprMaxDelta" value="350" storage="word" type="value"/>
+    <symbol name="fprDelay" value="100" storage="word" type="value"/>
+    <symbol name="fprLimitRPM" value="0" storage="ubyte" type="bool"/>
+    <symbol name="fprRPM" value="3000" storage="word" type="value"/>
+    <symbol name="failReportFPR" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ffSensorMaxTPS" value="100" storage="ubyte" type="value"/>
+    <symbol name="muxSwitchEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="muxSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="fuelLevel" value="13" storage="ubyte" type="paramList"/>
+    <symbol name="enableHighCLTProtection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="enableLowCLTProtection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="highCLTSValue" value="105" storage="sword" type="value"/>
+    <symbol name="lowCLTSValue" value="30" storage="sword" type="value"/>
+    <symbol name="lowCLTSRevLimiter" value="6000" storage="word" type="value"/>
+    <symbol name="lowCLTSSoftRevLimiter" value="5700" storage="word" type="value"/>
+    <symbol name="highCLTSRevLimiter" value="6000" storage="word" type="value"/>
+    <symbol name="highCLTSSoftRevLimiter" value="5700" storage="word" type="value"/>
+    <symbol name="tblSwitchCrankFuel" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tblSwitchWarmup" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lockIgnition" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lockIgnitionAngle" value="0" storage="sbyte" type="value"/>
+    <symbol name="vvtiUseTableFromCAM1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vtecOffDelay" value="0" storage="word" type="value"/>
+    <symbol name="cam2ToothRangeMin" value="0" storage="ubyte" type="value"/>
+    <symbol name="cam2ToothRangeMax" value="0" storage="ubyte" type="value"/>
+    <symbol name="alsDisableNitro" value="0" storage="ubyte" type="bool"/>
+    <symbol name="inj1EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj2EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj3EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj4EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj5EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj6EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj7EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="inj8EGTProbe" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="enableEGTCorrection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dbwUseTPasTPS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ralEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ralInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ralBoostTarget" value="200" storage="word" type="value"/>
+    <symbol name="ralP" value="10" storage="ubyte" type="value"/>
+    <symbol name="ralI" value="1" storage="ubyte" type="value"/>
+    <symbol name="ralMinVSS" value="20" storage="word" type="value"/>
+    <symbol name="crankingUseInjCal" value="1" storage="ubyte" type="bool"/>
+    <symbol name="disableCamSyncOver" value="10000" storage="word" type="value"/>
+    <symbol name="vssFreqDivider" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="ralsckP" value="50" storage="ubyte" type="value"/>
+    <symbol name="ralMaxSC" value="80" storage="ubyte" type="value"/>
+    <symbol name="ralMaxRetard" value="80" storage="ubyte" type="value"/>
+    <symbol name="idleAfterstartAddDC" value="40" storage="ubyte" type="value"/>
+    <symbol name="acPressure" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="acActivation" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="acMinRPM" value="500" storage="word" type="value"/>
+    <symbol name="acMinPressure" value="150" storage="word" type="value"/>
+    <symbol name="acMaxPressure" value="2000" storage="word" type="value"/>
+    <symbol name="acMaxTPS" value="70" storage="ubyte" type="value"/>
+    <symbol name="acTimeToEngage" value="250" storage="word" type="value"/>
+    <symbol name="acClutchOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="acEvapTemp" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="idleCoolantFanCorr" value="0" storage="ubyte" type="value"/>
+    <symbol name="coolantFanTurnOnWhenAC" value="0" storage="ubyte" type="bool"/>
+    <symbol name="acEvapMinTemp" value="0" storage="sbyte" type="value"/>
+    <symbol name="enableLogWhenProtected" value="0" storage="ubyte" type="bool"/>
+    <symbol name="stagedInjectionEnabled" value="0" storage="ubyte" type="bool"/>
+    <symbol name="stagedInjectionOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="stagedInjectionMinRPM" value="2000" storage="word" type="value"/>
+    <symbol name="stagedInjectionMinPW" value="32" storage="ubyte" type="value"/>
+    <symbol name="stagedInjectionInjSize" value="240" storage="word" type="value"/>
+    <symbol name="accEnrichFullgroup" value="0" storage="ubyte" type="bool"/>
+    <symbol name="accEnrichFullgroupThreshold" value="20" storage="ubyte" type="value"/>
+    <symbol name="secTrigerEnableSyncWithoutCamsync" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po5VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5VariableValue1" value="0" storage="sword" type="value"/>
+    <symbol name="po5VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po5LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po5VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po5VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="po6InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po6VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po6Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po6VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po6VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po6LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po6VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po6Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po6VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po6VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="po7InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po7VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po7Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po7VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po7VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po7LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po7VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po7Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po7VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po7VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="po8InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po8VariableType1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po8Operator1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po8VariableValue1" value="100" storage="sword" type="value"/>
+    <symbol name="po8VariableHyst1" value="10" storage="word" type="value"/>
+    <symbol name="po8LogicalOperator" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po8VariableType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po8Operator2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po8VariableValue2" value="100" storage="sword" type="value"/>
+    <symbol name="po8VariableHyst2" value="10" storage="word" type="value"/>
+    <symbol name="po5EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po6EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po7EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po8EnableCycling" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po5OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po6OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po7OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po8OnTime" value="16" storage="word" type="value"/>
+    <symbol name="po5OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po6OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po7OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po8OffTime" value="16" storage="word" type="value"/>
+    <symbol name="po5CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po6CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po7CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po8CycleOnce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="po8Output" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1Name" value="ALS_AlwaysOn" storage="char" type="value"/>
+    <symbol name="po2Name" value="ALS_Active" storage="char" type="value"/>
+    <symbol name="po3Name" value="" storage="char" type="value"/>
+    <symbol name="po4Name" value="" storage="char" type="value"/>
+    <symbol name="po5Name" value="" storage="char" type="value"/>
+    <symbol name="po6Name" value="" storage="char" type="value"/>
+    <symbol name="po7Name" value="" storage="char" type="value"/>
+    <symbol name="po8Name" value="" storage="char" type="value"/>
+    <symbol name="coolantFanWhenCLTFail" value="1" storage="ubyte" type="bool"/>
+    <symbol name="flatShiftTPSLimit" value="0" storage="ubyte" type="value"/>
+    <symbol name="enablePerInjectorFuelCut" value="0" storage="ubyte" type="bool"/>
+    <symbol name="inj1RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj2RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj3RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj4RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj5RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj6RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj7RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="inj8RPMFuelcut" value="20000" storage="word" type="value"/>
+    <symbol name="injCutHysteresis" value="50" storage="ubyte" type="value"/>
+    <symbol name="increseOverrunRPMWhenAfterstart" value="0" storage="word" type="value"/>
+    <symbol name="alsTablesSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsIdleValveDCRef2" value="100" storage="ubyte" type="value"/>
+    <symbol name="alsDBWOpenThrottle2" value="50" storage="ubyte" type="value"/>
+    <symbol name="decEnrichSustainRate" value="50" storage="ubyte" type="value"/>
+    <symbol name="decEnrichLimit" value="100" storage="ubyte" type="value"/>
+    <symbol name="disableMapFilterIfdTPS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="disableMapFilterdTPSthreshold" value="20" storage="ubyte" type="value"/>
+    <symbol name="usePPS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="enableDBWCANControl" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dbwCANControlID" value="1639" storage="word" type="value"/>
+    <symbol name="acMaxRPM" value="9000" storage="word" type="value"/>
+    <symbol name="sendEcumasterDataToBTModule" value="0" storage="ubyte" type="bool"/>
+    <symbol name="fsFuelEnrichment" value="0" storage="ubyte" type="value"/>
+    <symbol name="fsIgnitionRetard" value="0" storage="ubyte" type="value"/>
+    <symbol name="vssSource" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="acMaxCLT" value="110" storage="sword" type="value"/>
+    <symbol name="timer1Trigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="timer2Trigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="fuelCorrTimer" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignCorrTimer" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="boostCorrTimer" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alphaNUseMAPForAFR" value="0" storage="ubyte" type="bool"/>
+    <symbol name="stEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="stBrakeSwitch" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="stThrottleSrc" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="stMinRPM" value="1000" storage="word" type="value"/>
+    <symbol name="stBrakeTimeout" value="600" storage="word" type="value"/>
+    <symbol name="stTPSLevel" value="30" storage="ubyte" type="value"/>
+    <symbol name="dbwInvertMotor" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dbwFrictionAccrue" value="1" storage="ubyte" type="bool"/>
+    <symbol name="fuelPressureFilter" value="0" storage="ubyte" type="value"/>
+    <symbol name="oilPressureFilter" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleACRPMIncrease" value="0" storage="word" type="value"/>
+    <symbol name="acClutchInvert" value="0" storage="ubyte" type="bool"/>
+    <symbol name="nitrousDisableWhenLC" value="0" storage="ubyte" type="bool"/>
+    <symbol name="nitrousDisableWhenFS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="fuelCutAbovePressureDelay" value="0" storage="word" type="value"/>
+    <symbol name="enableMAPControlBoost" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="gearCutIgnitionRetard" value="0" storage="ubyte" type="value"/>
+    <symbol name="gearCutIgnitionRetardTime" value="50" storage="word" type="value"/>
+    <symbol name="gearCutIgnitionRetardRestoreRate" value="4" storage="ubyte" type="value"/>
+    <symbol name="momentarySwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="momentarySwitchDefaultState" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="momentarySwitchOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="momentarySwitchMinPressTime" value="500" storage="word" type="value"/>
+    <symbol name="momentarySwitchNumStates" value="2" storage="ubyte" type="value"/>
+    <symbol name="ignitionEventCranking1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking3" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking4" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking5" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking6" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking7" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking8" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking9" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking10" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking11" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionEventCranking12" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="enableOutputCrankTable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleAfterstartSustainRate" value="50" storage="ubyte" type="value"/>
+    <symbol name="coolantFanTimeToEngage" value="250" storage="word" type="value"/>
+    <symbol name="alsEnableFCIdleControl" value="0" storage="ubyte" type="bool"/>
+    <symbol name="alsIdleControlRPM" value="2500" storage="word" type="value"/>
+    <symbol name="alsIdleTargetRPM" value="1500" storage="word" type="value"/>
+    <symbol name="alsIdleActiveTPS" value="10" storage="ubyte" type="value"/>
+    <symbol name="coolantFanDisableWhenNoRPM" value="0" storage="ubyte" type="bool"/>
+    <symbol name="acFanOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="acFanInvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="pwmTableXAxisType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="idleActivateTargetIncrease" value="0" storage="word" type="value"/>
+    <symbol name="idleActivateDCIncrease" value="0" storage="ubyte" type="value"/>
+    <symbol name="idleActivateDuration" value="0" storage="word" type="value"/>
+    <symbol name="ethanolScaleFactor" value="10000" storage="word" type="value"/>
+    <symbol name="etcSecondPPS" value="5" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCAM1CtrlDelay" value="0" storage="ubyte" type="value"/>
+    <symbol name="vvtCAM2CtrlDelay" value="0" storage="ubyte" type="value"/>
+    <symbol name="gearCutMinVSS" value="0" storage="ubyte" type="value"/>
+    <symbol name="gear1Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear2Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear3Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear4Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear5Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="gear6Scale2" value="100" storage="ubyte" type="value"/>
+    <symbol name="primTrigInputDelay" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey1Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey2Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey3Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey4Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey5Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey6Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey7Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey8Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey9Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey10Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey11Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey12Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey1Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey2Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey3Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey4Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey5Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey6Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey7Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey8Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey9Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey10Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey11Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spKey12Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spBacklight" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKeyBright" value="100" storage="ubyte" type="value"/>
+    <symbol name="spEnable" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dbwCharSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsRestoreIgnRate" value="5" storage="ubyte" type="value"/>
+    <symbol name="rlcRestoreIgnRate" value="5" storage="ubyte" type="value"/>
+    <symbol name="loggingLevel" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an1Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an2Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an3Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an4Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an5Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="an6Pullup" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cltPullup" value="1" storage="ubyte" type="bool"/>
+    <symbol name="iatPullup" value="1" storage="ubyte" type="bool"/>
+    <symbol name="etcFreqency" value="4000" storage="word" type="value"/>
+    <symbol name="etcEMUComaptibility" value="0" storage="ubyte" type="bool"/>
+    <symbol name="etcEnable" value="1" storage="ubyte" type="bool"/>
+    <symbol name="injAngleCtrl" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="alsTPSArming" value="50" storage="ubyte" type="value"/>
+    <symbol name="alsRPMArming" value="3100" storage="word" type="value"/>
+    <symbol name="baroOption" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="baroAnalogInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="enableHighOilTempProtection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="enableLowOilTempProtection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="highOilTempValue" value="105" storage="sword" type="value"/>
+    <symbol name="lowOilTempValue" value="30" storage="sword" type="value"/>
+    <symbol name="lowOilTempRevLimiter" value="6000" storage="word" type="value"/>
+    <symbol name="lowOilTempSoftRevLimiter" value="5700" storage="word" type="value"/>
+    <symbol name="highOilTempRevLimiter" value="6000" storage="word" type="value"/>
+    <symbol name="highOilTempSoftRevLimiter" value="5700" storage="word" type="value"/>
+    <symbol name="stopSwitchEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="startSwitchEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="stopInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="startInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="stopSwitchTimeout" value="100" storage="word" type="value"/>
+    <symbol name="starterOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="autoStartTime" value="0" storage="word" type="value"/>
+    <symbol name="idlePIDUpdateInterval" value="150" storage="word" type="value"/>
+    <symbol name="enableBuzzerOnStartup" value="1" storage="ubyte" type="bool"/>
+    <symbol name="enableBuzzerOnMkPerm" value="1" storage="ubyte" type="bool"/>
+    <symbol name="canBusTerminator" value="1" storage="ubyte" type="bool"/>
+    <symbol name="lcInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="lcTableSwitch" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="lcActivationRPM1" value="3000" storage="word" type="value"/>
+    <symbol name="lcActivationTPS1" value="95" storage="ubyte" type="value"/>
+    <symbol name="lcHardCutRPM1" value="3200" storage="word" type="value"/>
+    <symbol name="lcHardCutType1" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="lcOverrideWG1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcOverrideDBW1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcVssLimit1" value="1" storage="ubyte" type="value"/>
+    <symbol name="lcIgnRestoreRate1" value="14" storage="ubyte" type="value"/>
+    <symbol name="lcSparkRestoreRate1" value="30" storage="ubyte" type="value"/>
+    <symbol name="lcIgnCtrlType1" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="lcActivationRPM2" value="3000" storage="word" type="value"/>
+    <symbol name="lcActivationTPS2" value="80" storage="ubyte" type="value"/>
+    <symbol name="lcHardCutRPM2" value="4000" storage="word" type="value"/>
+    <symbol name="lcHardCutType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="lcOverrideWG2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcOverrideDBW2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcVssLimit2" value="1" storage="ubyte" type="value"/>
+    <symbol name="lcIgnRestoreRate2" value="20" storage="ubyte" type="value"/>
+    <symbol name="lcSparkRestoreRate2" value="40" storage="ubyte" type="value"/>
+    <symbol name="lcIgnCtrlType2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsDisableRPMvsTPS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lgEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lgMinClt" value="80" storage="sbyte" type="value"/>
+    <symbol name="lgMinRPM" value="3000" storage="word" type="value"/>
+    <symbol name="lgMaxRPM" value="9000" storage="word" type="value"/>
+    <symbol name="lgMinMAP" value="80" storage="word" type="value"/>
+    <symbol name="lgMaxMAP" value="200" storage="word" type="value"/>
+    <symbol name="lgMinTPS" value="50" storage="ubyte" type="value"/>
+    <symbol name="lgMaxTPS" value="100" storage="ubyte" type="value"/>
+    <symbol name="lgMaxLambdaLean" value="6" storage="ubyte" type="value"/>
+    <symbol name="lgLeantime" value="1000" storage="word" type="value"/>
+    <symbol name="lgGearCutDelay" value="200" storage="ubyte" type="value"/>
+    <symbol name="lgTransientDelay" value="200" storage="ubyte" type="value"/>
+    <symbol name="lgFuelCutDelay" value="200" storage="ubyte" type="value"/>
+    <symbol name="lgFuelCorrection" value="100" storage="ubyte" type="value"/>
+    <symbol name="lgIgnitionRetard" value="0" storage="ubyte" type="value"/>
+    <symbol name="lgWGDCScale" value="100" storage="ubyte" type="value"/>
+    <symbol name="lgDBWPosScale" value="100" storage="ubyte" type="value"/>
+    <symbol name="knockActionMinTps" value="5" storage="ubyte" type="value"/>
+    <symbol name="boostSwitchType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="dbwDisableIfNoRPM" value="1" storage="ubyte" type="bool"/>
+    <symbol name="acPressHyst" value="500" storage="word" type="value"/>
+    <symbol name="altCtrlEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="altCtrlBaseDC" value="20" storage="ubyte" type="value"/>
+    <symbol name="altCtrlkP" value="16" storage="ubyte" type="value"/>
+    <symbol name="altCtrlkI" value="4" storage="ubyte" type="value"/>
+    <symbol name="altCtrlkD" value="16" storage="ubyte" type="value"/>
+    <symbol name="altCtrlIntegralLimit" value="5" storage="ubyte" type="value"/>
+    <symbol name="csbEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAin1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX3" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX4" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX5" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX6" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX7" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAin2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableAinX8" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scbSW1Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW2Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW3Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW4Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW5Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW6Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW7Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scbSW8Id" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW1Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW2Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW3Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW4Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW5Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW6Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW7Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW8Type" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW1Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW2Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW3Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW4Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW5Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW6Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW7Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbSW8Led" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="spEnableOpenCeremony" value="1" storage="ubyte" type="bool"/>
+    <symbol name="spKey1DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey2DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey3DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey4DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey5DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey6DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey7DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey8DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey9DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey10DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey11DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKey12DefState" value="0" storage="ubyte" type="value"/>
+    <symbol name="pmuKeyboardEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="pmuKey1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey3" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey4" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey5" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey6" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey7" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey8" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey9" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey10" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey11" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pmuKey12" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="boostDisableSolenoid" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffOilTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearBoxTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="preICTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="psFluidTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dtoEnable" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dtoMinTime" value="1" storage="ubyte" type="value"/>
+    <symbol name="dtoTurnOffCondition" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="genericTempSensorCal" value="0" storage="eTmpSensorCal" type="struct"/>
+    <symbol name="pressureSensorType" value="1" storage="ubyte" type="value"/>
+    <symbol name="genericPressSensorCal" value="0" storage="ePressureSensorCal" type="struct"/>
+    <symbol name="dbwDCRefTableType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlEnableInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlCtrlInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlCtrlType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlOilPumpOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlHandbrakeInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlOilPumpCtrlType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlOilPumpPressMin" value="64" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlOilPumpPressMax" value="110" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlBrakeInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vvtCam1InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vvtCam2InvertOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="diffPressureInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffCtrlLCEnableFixedDC" value="0" storage="ubyte" type="bool"/>
+    <symbol name="diffCtrlLCFixedDC" value="100" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlOilPumpTimeout" value="5" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlLCFixedDCSustain" value="4" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlWhenTableZero" value="0" storage="ubyte" type="value"/>
+    <symbol name="etcBMWITB" value="0" storage="ubyte" type="bool"/>
+    <symbol name="etcBMWITBOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="wbo2Enable" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="wbo2AFRAt0V" value="80" storage="ubyte" type="value"/>
+    <symbol name="wbo2AFRAt5V" value="160" storage="ubyte" type="value"/>
+    <symbol name="wbo2ExtCtrlInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="wboHeaterMode" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="stagedInjectionForceMAP" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleUseV3OutToActivatePID" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcBlendInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="scndFRInjectorsSize" value="2000" storage="word" type="value"/>
+    <symbol name="scndFREnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj1" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj2" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj3" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj4" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj5" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj6" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj7" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRAssignInj8" value="0" storage="ubyte" type="bool"/>
+    <symbol name="scndFRMinRPM" value="3000" storage="word" type="value"/>
+    <symbol name="scndFRMinMAP" value="150" storage="word" type="value"/>
+    <symbol name="stagedInjectionOutput2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="steeringWheelSensorOffset" value="0" storage="sword" type="value"/>
+    <symbol name="brakePedalInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="etcUseMAPForCharacteristic" value="0" storage="ubyte" type="bool"/>
+    <symbol name="alsCutType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="alsRetardIgnRate" value="10" storage="ubyte" type="value"/>
+    <symbol name="idleMinMAP" value="0" storage="ubyte" type="value"/>
+    <symbol name="boostCutEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="boostCutOverboostLimit" value="20" storage="ubyte" type="value"/>
+    <symbol name="boostCutOverboostDuration" value="200" storage="word" type="value"/>
+    <symbol name="boostCutOverboostCutTime" value="400" storage="word" type="value"/>
+    <symbol name="ffEthanolRevLimierEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="egtAlarmTemperatureALSLC" value="950" storage="word" type="value"/>
+    <symbol name="ksGearcutDelay" value="0" storage="word" type="value"/>
+    <symbol name="fuelTempInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignAnalogCorrEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ignAnalogCorrInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignAnalogCorrCondition" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="overrunResumeEnrich" value="0" storage="ubyte" type="value"/>
+    <symbol name="overrunResumeEnrichDecayRate" value="50" storage="ubyte" type="value"/>
+    <symbol name="psEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="psSolenoidUpOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="psSolenoidUpDelay" value="200" storage="word" type="value"/>
+    <symbol name="psSolenoidUpHoldOff" value="200" storage="word" type="value"/>
+    <symbol name="psSolenoidDownOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="psSolenoidDownDelay" value="200" storage="word" type="value"/>
+    <symbol name="psSolenoidDownHoldOff" value="200" storage="word" type="value"/>
+    <symbol name="psDownInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="psUpInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="clutchPedalInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="psNumGears" value="7" storage="ubyte" type="value"/>
+    <symbol name="psShiftDownRPMLimitN" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit1" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit2" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit3" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit4" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit5" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit6" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit7" value="6000" storage="word" type="value"/>
+    <symbol name="psShiftDownRPMLimit8" value="6000" storage="word" type="value"/>
+    <symbol name="psRAnd1EnableSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="canOBD2Support" value="0" storage="ubyte" type="bool"/>
+    <symbol name="lcTimeToActivate" value="0" storage="ubyte" type="value"/>
+    <symbol name="tblSwitchVtecVeOverride" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleIgnDelay" value="0" storage="word" type="value"/>
+    <symbol name="idlePIDDelay" value="0" storage="word" type="value"/>
+    <symbol name="coolantFanVSSOff" value="200" storage="word" type="value"/>
+    <symbol name="tcType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="tcDrivenWheels" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="tcUnDrivenWheels" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="tcDrivenWheelsBias" value="100" storage="ubyte" type="value"/>
+    <symbol name="tcUnDrivenWheelsBias" value="90" storage="ubyte" type="value"/>
+    <symbol name="tcDrivenWheelSpdCorr" value="200" storage="ubyte" type="value"/>
+    <symbol name="tcUnDrivenWheelSpdCorr" value="200" storage="ubyte" type="value"/>
+    <symbol name="tcActivationSwitch" value="99" storage="ubyte" type="paramList"/>
+    <symbol name="tcDisableAdjPotPos" value="11" storage="ubyte" type="value"/>
+    <symbol name="tcCutType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="tcMinRPM" value="2000" storage="word" type="value"/>
+    <symbol name="tcPidIntegralLimitMinus" value="5" storage="ubyte" type="value"/>
+    <symbol name="tcDecayRate" value="50" storage="ubyte" type="value"/>
+    <symbol name="tcDiffModeSpeed" value="0" storage="word" type="value"/>
+    <symbol name="tcPidIntegralResetMinus" value="5" storage="ubyte" type="value"/>
+    <symbol name="nonDrivenAxleSource" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="nonDrivenAxleRatio" value="128" storage="word" type="value"/>
+    <symbol name="nonDrivenAxleDivider" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="canBoschABS" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearDelay" value="10" storage="ubyte" type="value"/>
+    <symbol name="altCtrlInvert" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dbwPlausibleTPSCheck" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="knockBoostLowerRate" value="0" storage="ubyte" type="value"/>
+    <symbol name="knockBoostCorrLimit" value="0" storage="ubyte" type="value"/>
+    <symbol name="boostUseUndrivenSpeedAsVss" value="0" storage="ubyte" type="bool"/>
+    <symbol name="diffCtrlDCFor0" value="0" storage="ubyte" type="value"/>
+    <symbol name="diffCtrlDCFor100" value="100" storage="ubyte" type="value"/>
+    <symbol name="trailingCoil1" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="trailingCoil2" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="startDelay" value="0" storage="ubyte" type="value"/>
+    <symbol name="boostMinRPM" value="1400" storage="word" type="value"/>
+    <symbol name="enableRotarySupport" value="0" storage="ubyte" type="bool"/>
+    <symbol name="diffControlType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="diffControlMaxOilTemp" value="120" storage="ubyte" type="value"/>
+    <symbol name="pwmMinDCWhenACActive" value="0" storage="ubyte" type="value"/>
+    <symbol name="spKeypadType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="canRX8ABSModel" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="dbwClampToIdleOut" value="1" storage="ubyte" type="bool"/>
+    <symbol name="tcActivateTCOutputWhenTCDisabled" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vtecRPMAboveVTECAlwaysOn" value="15000" storage="word" type="value"/>
+    <symbol name="idleKeepSteperPowerdOverMAPValue" value="400" storage="word" type="value"/>
+    <symbol name="dsgEnable" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dsgEnablePaddleShift" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dsgEnableSelectorEmulation" value="0" storage="ubyte" type="bool"/>
+    <symbol name="rx8EmulatePowerSteering" value="0" storage="ubyte" type="bool"/>
+    <symbol name="tcInvertTCActiveOutput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="pwm2TableDisableOutputIfNoRPM" value="1" storage="ubyte" type="bool"/>
+    <symbol name="lcRestore10TimeSlower" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleUseAsSecondaryThrottle" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ewgControlFrequency" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cltFanPWMCtrl" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dsgKickdownEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="revMatchType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="afterstartEnableIgnLock" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dsgTrqRedMaxIgnReatrd" value="40" storage="ubyte" type="value"/>
+    <symbol name="dsgMaxEngineTorque" value="300" storage="word" type="value"/>
+    <symbol name="dsgPsDownInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dsgPsUpInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dsgFuelEnrichment" value="10" storage="ubyte" type="value"/>
+    <symbol name="dsgFuelEnrichSusatainRate" value="80" storage="ubyte" type="value"/>
+    <symbol name="dsgKickdownLimit" value="80" storage="ubyte" type="value"/>
+    <symbol name="dsgSelectorAnalogInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="po1DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po2DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po3DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po4DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po5DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po6DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po7DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="po8DelayToOn" value="0" storage="ubyte" type="value"/>
+    <symbol name="pwm2TableXAxisType" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="pwm2TableOutput" value="12" storage="ubyte" type="paramList"/>
+    <symbol name="pwm2TableFrequency" value="30" storage="ubyte" type="value"/>
+    <symbol name="pwm2TableYAxisType" value="10" storage="ubyte" type="paramList"/>
+    <symbol name="pwm2TableDCWhenInactive" value="0" storage="ubyte" type="value"/>
+    <symbol name="pwm2Trigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pwmTableDCWhenInactive" value="0" storage="ubyte" type="value"/>
+    <symbol name="pwmTrigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cltFanPWMMin" value="5" storage="ubyte" type="value"/>
+    <symbol name="cltFanPWMMax" value="95" storage="ubyte" type="value"/>
+    <symbol name="cltFanPWMPropGain" value="20" storage="ubyte" type="value"/>
+    <symbol name="cltFanACMinDC" value="0" storage="ubyte" type="value"/>
+    <symbol name="disSparkWhenCrankDelay" value="1" storage="ubyte" type="bool"/>
+    <symbol name="ewgEnableControl" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ewgInvertDirection" value="0" storage="ubyte" type="bool"/>
+    <symbol name="enableVirtualTPS" value="0" storage="ubyte" type="bool"/>
+    <symbol name="virtualTPSIdleVoltage" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vssFLSensorCANInput" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="ewgFeedbackInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbOutput1Control" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbOutput2Control" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbOutput3Control" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="csbOutput4Control" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="idleSecThrottleAnalogRefInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="idleSecThrottleAnalogRefInputMin" value="50" storage="ubyte" type="value"/>
+    <symbol name="idleSecThrottleAnalogRefInputMax" value="200" storage="ubyte" type="value"/>
+    <symbol name="dsgMDNorm" value="400" storage="word" type="value"/>
+    <symbol name="coolantPressureInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="crankCasePressureInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="revMatchEnableInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="revMatchTargetRPM" value="1000" storage="word" type="value"/>
+    <symbol name="revMatchMaxRPM" value="5000" storage="word" type="value"/>
+    <symbol name="revMatchThrottleBlipRefLvl" value="12" storage="ubyte" type="value"/>
+    <symbol name="revMatchMaxBlipDuration" value="10" storage="ubyte" type="value"/>
+    <symbol name="revMatchDelayToActivate" value="10" storage="ubyte" type="value"/>
+    <symbol name="revMatchDelayToDeactivate" value="10" storage="ubyte" type="value"/>
+    <symbol name="revMatchFuelCorrection" value="100" storage="ubyte" type="value"/>
+    <symbol name="revMatchMaxIgnRetard" value="50" storage="ubyte" type="value"/>
+    <symbol name="revMatchMinVSS" value="20" storage="ubyte" type="value"/>
+    <symbol name="revMatchMinGear" value="3" storage="ubyte" type="value"/>
+    <symbol name="afterstartIgnitionLockAngle" value="20" storage="sbyte" type="value"/>
+    <symbol name="afterstartIgnitionLockTime" value="100" storage="ubyte" type="value"/>
+    <symbol name="afterstartIgnRestoreRate" value="4" storage="sbyte" type="value"/>
+    <symbol name="gcMinRPMToBlip" value="2000" storage="word" type="value"/>
+    <symbol name="dsgReverseOutput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="espEmulationEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="csbEnableDebounce" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ignSyncCrankWithCam" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignCAMToothMin" value="0" storage="ubyte" type="value"/>
+    <symbol name="ignCAMToothMax" value="60" storage="ubyte" type="value"/>
+    <symbol name="dsgAutoNmodeEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="maxEngineTrqNmINV" value="3277" storage="word" type="value"/>
+    <symbol name="maxVeRpm" value="0" storage="ubyte" type="value"/>
+    <symbol name="vssFRSensorCANInput" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="dsgUseGearShiftTables" value="0" storage="ubyte" type="bool"/>
+    <symbol name="vssRLSensorCANInput" value="3" storage="ubyte" type="paramList"/>
+    <symbol name="vssRRSensorCANInput" value="4" storage="ubyte" type="paramList"/>
+    <symbol name="useEGT1asCLT" value="0" storage="ubyte" type="bool"/>
+    <symbol name="keypadBacklightColor" value="8" storage="ubyte" type="paramList"/>
+    <symbol name="oilPressureSwitch" value="1" storage="ubyte" type="bool"/>
+    <symbol name="oilPressCutDisableWhenOilpSensorFails" value="0" storage="ubyte" type="bool"/>
+    <symbol name="useMapCalibrationForInternalMAPSensorAin" value="0" storage="ubyte" type="bool"/>
+    <symbol name="diffCtrlDisableHandBrakeWhenBrakes" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dbwBlendCharacteristics" value="0" storage="ubyte" type="bool"/>
+    <symbol name="etcOverrideDC" value="0" storage="ubyte" type="bool"/>
+    <symbol name="etcOverrideTarget" value="0" storage="ubyte" type="bool"/>
+    <symbol name="etcOverridedDC" value="0" storage="sword" type="value"/>
+    <symbol name="etcOverridedTarget" value="0" storage="word" type="value"/>
+    <symbol name="etcMovementTest" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ompEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="ompPositionInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ompPositionMinV" value="30" storage="ubyte" type="value"/>
+    <symbol name="ompPositionMaxV" value="220" storage="ubyte" type="value"/>
+    <symbol name="cruiseControlEnable" value="0" storage="ubyte" type="bool"/>
+    <symbol name="cruiseControlSetInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cruiseControlResumeInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cruiseControlMinSpeed" value="30" storage="ubyte" type="value"/>
+    <symbol name="cruiseControlMaxAcc" value="0" storage="ubyte" type="value"/>
+    <symbol name="cruiseControlkP" value="512" storage="word" type="value"/>
+    <symbol name="cruiseControlkI" value="128" storage="word" type="value"/>
+    <symbol name="cruiseControlkD" value="200" storage="word" type="value"/>
+    <symbol name="gearCutBlipInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="gearCutBlipSignalActiveLevel" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="idleEnableVirtualTarget" value="0" storage="ubyte" type="bool"/>
+    <symbol name="idleVirtualTargetMax" value="300" storage="word" type="value"/>
+    <symbol name="idleVirtualTargetRamp" value="50" storage="ubyte" type="value"/>
+    <symbol name="cruiseControlMaxIRate" value="30" storage="word" type="value"/>
+    <symbol name="cruiseControlMaxTPSChangeRate" value="5" storage="ubyte" type="value"/>
+    <symbol name="emuClassicSerialCompatibility" value="0" storage="ubyte" type="bool"/>
+    <symbol name="altUsedPWM" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="fuelCustomCorrXAxisType" value="2" storage="ubyte" type="paramList"/>
+    <symbol name="fuelCustomCorrYAxisType" value="10" storage="ubyte" type="paramList"/>
+    <symbol name="fuelCustomCorrTrigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignCustomCorrXAxisType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="ignCustomCorrYAxisType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignCustomCorrTrigger" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dbwThrottlePosCheckType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dsgCCCanVer" value="12" storage="ubyte" type="value"/>
+    <symbol name="dsgCCMotCode" value="51" storage="ubyte" type="value"/>
+    <symbol name="dsgGearboxCode" value="11" storage="ubyte" type="value"/>
+    <symbol name="ompMotorType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ompDeadZone" value="1" storage="ubyte" type="value"/>
+    <symbol name="pitSpeedLimit2" value="80" storage="word" type="value"/>
+    <symbol name="pitLimitSwitchInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="vwCANVersion" value="44" storage="ubyte" type="value"/>
+    <symbol name="vwEngineCode" value="51" storage="ubyte" type="value"/>
+    <symbol name="dsgBlipTime" value="120" storage="ubyte" type="value"/>
+    <symbol name="dsgBlipFuelEnrichment" value="0" storage="ubyte" type="value"/>
+    <symbol name="ksSparkCutDelay" value="0" storage="word" type="value"/>
+    <symbol name="sendClio3ImmoMessage" value="1" storage="ubyte" type="bool"/>
+    <symbol name="dsgNumCutIgnEvents" value="0" storage="ubyte" type="value"/>
+    <symbol name="dsgBlipMaxIgnRetard" value="50" storage="ubyte" type="value"/>
+    <symbol name="fuelLevelFilterUpdateRate" value="2" storage="ubyte" type="value"/>
+    <symbol name="dsgRevMatchMinDBWPos" value="4" storage="ubyte" type="value"/>
+    <symbol name="sendExigeStreamWhenVW" value="0" storage="ubyte" type="bool"/>
+    <symbol name="dsgSportCutMinRPM" value="3000" storage="word" type="value"/>
+    <symbol name="dsgSportCutMinTPS" value="30" storage="ubyte" type="value"/>
+    <symbol name="canLotusExigeSportRotary" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="lcLoadAxisType" value="1" storage="ubyte" type="paramList"/>
+    <symbol name="highPrecisionTrigger" value="1" storage="ubyte" type="bool"/>
+    <symbol name="nitrousDeactivationInput" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="softRevLimiterCutType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ignitionCutType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="lcCutType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="ewgInvertInput" value="0" storage="ubyte" type="bool"/>
+    <symbol name="mavericProductionYear" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="cruiseControlMinSpeedToResume" value="0" storage="ubyte" type="value"/>
+    <symbol name="acEvapHysteresis" value="2" storage="ubyte" type="value"/>
+    <symbol name="machZType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="dbwSpeedLimit" value="15" storage="ubyte" type="paramList"/>
+    <symbol name="fordFocusType" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="machZBoostOnDashUnit" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pwm1Function" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="pwm2Function" value="0" storage="ubyte" type="paramList"/>
+    <symbol name="lambdaTrimKP" value="8960" storage="word" type="value"/>
+    <symbol name="lambdaTrimKI" value="12800" storage="word" type="value"/>
+    <symbol name="lambdaTrimIntegralLimitMin" value="-25" storage="sbyte" type="value"/>
+    <symbol name="lambdaTrimIntegralLimitMax" value="25" storage="ubyte" type="value"/>
+    <symbol name="shortTermMaxLambda" value="166" storage="ubyte" type="value"/>
+    <symbol name="dsgAllowStartWhenP" value="0" storage="ubyte" type="bool"/>
+  </variables>
+  <tables>
+    <symbol name="cltBins8" storage="sword" width="8" height="1" data="-1E -A A 1E 32 46 5A 6E "/>
+    <symbol name="idleTargetBins" storage="word" width="5" height="1" data="320 3E8 4B0 578 7D0 "/>
+    <symbol name="tpsBins" storage="ubyte" width="16" height="1" data="0 D 1B 28 35 43 50 5D 6B 78 85 93 A0 AD BB C8 "/>
+    <symbol name="mapBins" storage="word" width="16" height="1" data="1E 28 32 3C 46 50 5A 64 7D 96 AF C8 E1 FA 113 12C "/>
+    <symbol name="rpmBins" storage="word" width="20" height="1" data="384 4B0 578 640 708 7D0 898 A28 BB8 D48 ED8 1068 11F8 1388 1518 16A8 1838 19C8 1B58 1CE8 "/>
+    <symbol name="cltBins" storage="sword" width="16" height="1" data="-28 -1E -14 -A 0 A 14 1E 28 32 3C 46 50 5A 6A 6E "/>
+    <symbol name="iatBins" storage="sbyte" width="16" height="1" data="-14 -A 0 5 A F 14 19 1E 23 28 32 3C 46 50 5A "/>
+    <symbol name="vbattVBins" storage="word" width="12" height="1" data="DE 103 128 14D 172 197 1BC 1E1 206 22B 250 275 "/>
+    <symbol name="voltage5VBins" storage="ubyte" width="16" height="1" data="0 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF "/>
+    <symbol name="voltage5VTempBins" storage="ubyte" width="20" height="1" data="0 5 B 11 19 22 2A 33 44 5E 66 77 88 99 AD BD CC DD E8 FF "/>
+    <symbol name="percentBins" storage="ubyte" width="16" height="1" data="0 6 D 14 1A 21 28 2E 35 3C 42 49 50 56 5D 64 "/>
+    <symbol name="gearSensorBins" storage="sbyte" width="9" height="1" data="-1 0 1 2 3 4 5 6 7 "/>
+    <symbol name="gearSensorCal" storage="ubyte" width="9" height="1" data="0 20 40 60 80 9F BF DF FF "/>
+    <symbol name="rpmErrorBins" storage="word" width="8" height="1" data="0 43 CA 183 265 36C 494 5DC "/>
+    <symbol name="idleDCErrBins" storage="sword" width="8" height="1" data="-1F4 -12C -96 -32 32 96 12C 1F4 "/>
+    <symbol name="idleErrDCCorrection" storage="sbyte" width="8" height="1" data="A 6 2 0 -4 -C -18 -28 "/>
+    <symbol name="boostDCErrBins" storage="sbyte" width="8" height="1" data="-46 -3C -32 -28 -1E -5 5 1E "/>
+    <symbol name="boostErrDCCorrection" storage="sbyte" width="8" height="1" data="0 0 0 0 0 0 0 -A "/>
+    <symbol name="fprDelta" storage="word" width="8" height="1" data="E1 FA 113 12C 145 15E 177 190 "/>
+    <symbol name="fprDeltaCorrection" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
+    <symbol name="fuelLevelCal" storage="ubyte" width="16" height="1" data="64 5D 57 50 49 43 3C 35 2F 28 21 1B 14 D 7 0 "/>
+    <symbol name="etcFriction" storage="sbyte" width="16" height="1" data="B A A 9 6 B 11 13 11 13 12 14 13 12 14 13 "/>
+    <symbol name="etcFrictionChar" storage="sbyte" width="15" height="1" data="-64 -64 -64 -64 -64 -64 -50 0 50 64 64 64 64 64 64 "/>
+    <symbol name="acPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="acPressureCal" storage="word" width="2" height="1" data="69 CE4 "/>
+    <symbol name="mapBinsAirCharge" storage="word" width="8" height="1" data="14 27 39 4C 5E 71 83 96 "/>
+    <symbol name="chargeTempTbl" storage="ubyte" width="8" height="12" data="5C 3B 24 10 5 0 0 0 58 37 21 F 5 0 0 0 54 33 1E D 4 0 0 0 4F 2E 1B C 4 0 0 0 4B 2A 18 A 3 0 0 0 47 26 15 9 3 0 0 0 43 22 12 7 2 0 0 0 3F 1E F 6 2 0 0 0 3B 1A C 4 1 0 0 0 36 15 9 3 1 0 0 0 32 11 6 1 0 0 0 0 2E D 3 0 0 0 0 0 "/>
+    <symbol name="tpsBinsAirCharge" storage="ubyte" width="8" height="1" data="0 5 10 20 30 40 50 64 "/>
+    <symbol name="acEvapCal" storage="sbyte" width="16" height="1" data="-14 -C -4 4 C 14 1C 24 2C 34 3C 44 4C 54 5C 64 "/>
+    <symbol name="ignTable" storage="sbyte" width="16" height="20" data="1E 23 22 1E 19 14 F A -3 -6 -8 -9 -B -C -E -F 2B 2F 2D 29 24 20 1C 18 3 0 -1 -1 -3 -6 -9 -C 36 38 37 31 2C 26 22 1D C 8 4 3 -1 -4 -7 -A 3F 3E 3A 35 31 2C 28 23 14 D A 7 3 0 -3 -6 46 44 3E 3A 35 31 2C 28 18 12 F B 7 4 1 -2 49 46 3F 3A 36 33 2F 2B 1C 15 12 D 9 6 3 0 49 47 41 3D 39 35 30 2C 20 18 14 10 C 9 6 3 4D 4A 46 41 3D 39 34 30 25 1D 17 13 F C 9 6 4F 4C 47 43 3F 3C 38 34 28 1F 1A 14 10 D A 7 4F 4C 47 43 40 3D 39 36 2A 22 1C 16 12 F C 9 4F 4C 47 43 40 3D 3A 37 2D 25 1F 19 15 12 F C 4F 4C 48 43 40 3D 3A 37 2F 27 1F 1A 16 13 10 D 4C 4B 47 42 3F 3D 3A 37 2E 27 1F 1A 17 14 11 E 49 48 44 42 3F 3C 39 36 2C 27 20 1B 18 15 12 F 46 45 41 3D 3B 3A 38 36 2B 27 20 1C 19 16 13 10 44 44 3E 3A 39 38 36 35 2B 27 21 1C 19 16 13 10 42 42 3D 39 38 37 36 35 2D 29 22 1D 1A 17 14 11 42 40 3C 3A 39 38 36 35 2D 29 22 1D 1A 17 14 11 40 40 3C 3A 39 38 36 35 2D 29 22 1D 1A 17 14 11 40 40 3C 3A 39 38 36 35 2D 29 22 1D 1A 17 14 11 "/>
+    <symbol name="lambdaTable" storage="ubyte" width="8" height="10" data="64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E 64 61 5A 57 50 4E 4E 4E "/>
+    <symbol name="iatTbl" storage="sbyte" width="20" height="1" data="7F 7F 7F 7F 7F 7F 7F 7F 78 62 55 48 39 27 1C 11 4 -B -14 -28 "/>
+    <symbol name="cltTbl" storage="sword" width="20" height="1" data="FA 85 6D 63 5B 56 51 4B 40 30 2B 21 16 D 2 -6 -D -17 -1C -28 "/>
+    <symbol name="aseTbl" storage="ubyte" width="16" height="1" data="96 96 96 96 96 96 96 94 91 8C 82 78 6B 64 64 64 "/>
+    <symbol name="crankingTbl" storage="ubyte" width="16" height="5" data="46 45 44 44 43 42 41 40 3F 3E 3D 3C 3C 3C 3C 3C 46 45 44 44 43 42 41 40 3F 3E 3D 3C 3C 3C 3C 3C 46 45 44 44 43 42 41 40 3F 3E 3D 3C 3C 3C 3C 3C 46 45 44 44 43 42 41 40 3F 3E 3D 3C 3C 3C 3C 3C 3C 3B 3A 3A 39 38 37 36 35 34 33 32 32 32 32 32 "/>
+    <symbol name="injOpeningTimeTbl" storage="ubyte" width="12" height="1" data="68 5B 4F 44 38 32 2B 28 24 21 1E 1C "/>
+    <symbol name="warmupTbl" storage="ubyte" width="16" height="4" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 78 78 77 75 73 70 6D 6A 67 66 65 64 64 64 64 64 8C 8B 8B 87 83 7C 77 70 6B 69 65 64 64 64 64 64 A0 9F 9E 98 92 88 80 76 6E 6B 66 64 64 64 64 64 "/>
+    <symbol name="accDTPSRate" storage="ubyte" width="16" height="1" data="2E 2E 2F 33 35 37 3B 3F 44 4A 4E 54 5C 62 70 8F "/>
+    <symbol name="accTPSFactor" storage="ubyte" width="16" height="1" data="64 61 5F 5C 59 57 54 51 4F 4C 49 47 44 41 3F 3C "/>
+    <symbol name="accRPMFactor" storage="ubyte" width="20" height="1" data="61 5C 59 56 53 50 4D 46 40 3A 35 30 2B 26 21 1E 1B 18 16 15 "/>
+    <symbol name="dwellTime" storage="ubyte" width="12" height="1" data="46 42 3F 3B 37 34 30 2D 29 25 22 1E "/>
+    <symbol name="dwellRPMCorr" storage="ubyte" width="20" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="idleRPM" storage="word" width="16" height="1" data="514 514 514 514 514 514 514 514 44C 44C 44C 44C 44C 44C 44C 44C "/>
+    <symbol name="ignCLTTrim" storage="sbyte" width="16" height="1" data="8 8 8 8 8 8 7 6 5 3 1 0 0 0 0 -8 "/>
+    <symbol name="ignIATTrim" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 -2 -7 -B -10 -14 -14 "/>
+    <symbol name="TPSScaleTbl" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 0 0 "/>
+    <symbol name="veTable" storage="u12" width="16" height="20" data="179 184 1E0 252 295 2C8 2E7 2FB 308 313 31C 321 320 315 311 30E 179 183 1F1 252 298 2CA 2EA 2FC 30A 315 31D 322 324 328 322 31D 187 1A0 1FD 24C 290 2C5 2E7 2FD 30B 316 321 324 327 325 326 328 18B 1A2 205 24C 28E 2C3 2E7 2FE 30C 317 320 327 32C 334 32E 32F 18D 1AE 20A 24B 28D 2C4 2E9 2FF 30C 318 322 32C 335 33D 334 337 18F 1B2 20D 24A 28C 2C6 2EB 2FE 30B 319 325 334 33E 343 33E 33E 190 1B5 20F 24A 288 2BF 2E2 2F7 30A 31B 32F 33C 348 34D 348 348 194 1BA 214 24B 288 2B8 2D8 2F2 30A 322 337 346 34F 354 34E 34F 197 1C1 217 253 289 2B3 2D4 2F1 30E 328 340 34F 356 35B 354 356 19B 1C2 21C 25B 290 2B8 2D7 2F7 316 32C 342 34D 352 356 350 352 19E 1C4 221 264 29A 2C1 2E3 303 324 341 357 365 369 35F 35C 361 1A2 1C6 226 275 2A9 2CB 2F3 314 333 34F 36B 379 378 377 36A 36A 1A5 1CD 226 26E 2A8 2C7 2E8 311 334 353 372 387 380 381 374 377 1A9 1D0 218 25D 295 2BA 2E0 304 328 345 374 38B 383 383 37B 37D 1B3 1D3 21D 25A 28F 2B7 2DC 2FF 322 343 370 387 382 382 37D 380 1B8 1DD 21D 25B 293 2BB 2E0 302 322 342 364 37B 37C 37C 382 381 1BC 1E0 221 25F 29D 2BC 2E2 307 329 345 361 378 37D 37D 382 382 1BF 1E0 221 25F 29C 2BB 2E2 307 329 347 364 37B 383 382 382 382 1BF 1E2 223 25F 29C 2BB 2E2 307 32A 347 365 37C 386 381 382 382 1BF 1E2 221 25F 299 2BA 2E0 307 32A 347 365 377 387 381 382 382 "/>
+    <symbol name="knockNoiseTable" storage="ubyte" width="20" height="4" data="47 4C 4F 52 56 59 5C 63 67 6B 6F 73 77 7B 7F 83 87 8B 8F 92 4B 50 53 57 5B 5E 62 69 6F 74 7A 80 85 8B 91 96 9C A1 A7 AB 46 4C 4F 53 56 59 5D 64 6A 71 78 7F 85 8C 92 98 9F A6 AC B0 48 4D 51 55 58 5C 5F 67 6E 75 7C 84 8C 93 9A A1 A8 B0 B7 BC "/>
+    <symbol name="nitrousIgn" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="nitrousFuel" storage="sbyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="dcBoostRef1" storage="ubyte" width="10" height="10" data="0 C8 C8 C8 C8 C8 C8 C8 C8 C8 0 7C 8F AB BE C8 C8 C8 C8 C8 0 7B 87 9B A3 AB C8 C8 C8 C8 0 7A 89 95 9D A5 B9 BD C1 C1 0 76 87 94 9C A3 B7 BB BF BF 0 76 88 97 9E A5 B9 BD C1 C1 0 76 89 99 A0 A8 BB BF C3 C3 0 76 8A 9B A3 AB BD C1 C5 C5 0 77 8C 9E A7 B0 C0 C4 C8 C8 0 77 8E A2 AC B6 C4 C8 C8 C8 "/>
+    <symbol name="dcBoostRef2" storage="ubyte" width="10" height="10" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="boostTarget1" storage="ubyte" width="10" height="10" data="32 38 3D 43 48 4E 54 59 5F 64 32 39 40 47 4F 56 5E 65 6C 73 32 3A 42 4A 52 5A 62 6A 72 7A 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 42 4A 53 5B 64 6C 74 7C 32 3A 41 49 50 59 60 68 6F 77 32 39 40 47 4E 56 5D 64 6B 72 "/>
+    <symbol name="boostTarget2" storage="ubyte" width="10" height="10" data="32 32 32 32 32 32 32 32 32 32 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D 32 3A 43 4B 53 5C 64 6D 75 7D "/>
+    <symbol name="egtBins" storage="word" width="8" height="1" data="190 1F4 258 2BC 320 384 3E8 44C "/>
+    <symbol name="iatBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="egtBoostScale" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
+    <symbol name="vssBins" storage="word" width="16" height="1" data="0 14 28 3C 50 64 78 8C A0 B4 C8 DC F0 104 118 12C "/>
+    <symbol name="vssBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="baroBins" storage="ubyte" width="8" height="1" data="32 3C 46 50 5A 64 6E 78 "/>
+    <symbol name="baroCorrection" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
+    <symbol name="pwmTable" storage="ubyte" width="16" height="20" data="28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 "/>
+    <symbol name="primePulseTable" storage="ubyte" width="16" height="1" data="20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 "/>
+    <symbol name="accDTPSIgnCorr" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="cltFrequencyOutputTbl" storage="ubyte" width="16" height="1" data="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 "/>
+    <symbol name="etcOpening" storage="ubyte" width="16" height="8" data="0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 0 A 15 20 2A 35 3E 45 4C 52 58 5E 64 64 64 64 "/>
+    <symbol name="fuelIATCorr" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="pitLimitError" storage="sbyte" width="8" height="1" data="-A -8 -6 -4 -2 0 2 4 "/>
+    <symbol name="pitLimitTorqReduction" storage="ubyte" width="8" height="1" data="5 16 26 36 43 50 5C 64 "/>
+    <symbol name="tpsBins8" storage="ubyte" width="12" height="1" data="0 9 12 1B 24 2D 37 40 49 52 5B 64 "/>
+    <symbol name="mapBins8" storage="word" width="12" height="1" data="14 2B 41 58 6F 86 9C B3 CA E1 F7 10E "/>
+    <symbol name="rpmBins8" storage="word" width="12" height="1" data="384 5DC 834 A8C CE4 F3C 1194 13EC 1644 189C 1AF4 1D4C "/>
+    <symbol name="tpsBinsL8" storage="ubyte" width="8" height="1" data="0 9 12 1B 24 2D 37 40 "/>
+    <symbol name="mapBinsL8" storage="word" width="8" height="1" data="1E 64 7D 96 AF C8 FA 12C "/>
+    <symbol name="rpmBins10" storage="word" width="10" height="1" data="320 5DC 898 BB8 E74 1130 1450 170C 19C8 1CE8 "/>
+    <symbol name="mapBinsWarmup" storage="word" width="4" height="1" data="14 32 50 6E "/>
+    <symbol name="tpsBinsWarmup" storage="ubyte" width="4" height="1" data="0 24 48 64 "/>
+    <symbol name="cam1AdvTbl" storage="sbyte" width="12" height="12" data="-28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1B -F -2 -2 -2 -2 -2 -2 -2 -28 -28 -28 -1C -10 -4 -4 -4 -4 -4 -4 -4 -28 -28 -28 -1D -13 -8 -8 -8 -8 -8 -8 -8 -28 -28 -28 -1F -15 -C -C -C -C -C -C -C -28 -28 -28 -1F -16 -D -D -D -D -D -D -D -28 -28 -28 -1F -16 -D -D -D -D -D -D -D "/>
+    <symbol name="accCLTFactor" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="cam2AdvTbl" storage="sbyte" width="12" height="12" data="-10 -10 -1D -2A -38 -38 -38 -38 -38 -38 -38 -38 -10 -10 -1B -27 -32 -32 -32 -32 -32 -32 -32 -32 -10 -10 -1A -24 -2E -2E -2E -2E -2E -2E -2E -2E -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -13 -17 -1A -1A -1A -1A -1A -1A -1A -1A -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -18 -1C -1C -1C -1C -1C -1C -1C -1C -10 -10 -14 -17 -1B -1B -1B -1B -1B -1B -1B -1B "/>
+    <symbol name="egtFuelCorrection" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
+    <symbol name="oilPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="oilPressureCal" storage="ubyte" width="2" height="1" data="0 A0 "/>
+    <symbol name="fuelPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="fuelPressureCal" storage="ubyte" width="2" height="1" data="0 70 "/>
+    <symbol name="oilTempCal" storage="ubyte" width="16" height="1" data="0 9 13 1C 25 2F 38 41 4B 54 5D 67 70 79 83 8C "/>
+    <symbol name="idleErrBins" storage="sword" width="8" height="1" data="-FA -96 -4B -19 19 4B 96 FA "/>
+    <symbol name="idleIgnAngleCorrection" storage="sbyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="idleRPMREF" storage="ubyte" width="20" height="1" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 "/>
+    <symbol name="etcErrBins" storage="sword" width="15" height="1" data="-A0 -50 -28 -10 -8 -4 -2 0 2 4 8 10 28 50 A0 "/>
+    <symbol name="etcPosBins" storage="ubyte" width="16" height="1" data="1 9 12 1B 25 27 29 38 49 5A 6B 7C 8D 9E AF C0 "/>
+    <symbol name="etckITbl" storage="sbyte" width="15" height="1" data="-7E -7E -7E -50 -28 -14 -A 0 A 14 28 50 7E 7E 7E "/>
+    <symbol name="etckDTbl" storage="sbyte" width="17" height="1" data="-5A -3C -30 -18 -9 -5 -2 -1 0 1 2 5 9 18 30 3C 5A "/>
+    <symbol name="etckPTbl" storage="sbyte" width="15" height="16" data="-5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A -5A -5A -3C -18 -C -6 -3 0 3 6 C 18 3C 5A 5A "/>
+    <symbol name="veTable2" storage="u12" width="16" height="20" data="13A 190 1E6 24D 26E 28E 2A8 2C2 2ED 2F4 2F3 314 334 33D 342 343 142 192 1E1 24E 28D 29D 2B1 2B5 2F9 2FB 2FB 31A 338 33E 343 344 153 18F 1E3 22B 265 275 29A 2AE 2FD 2FE 30C 323 33A 343 347 349 153 19B 1F0 229 258 27E 2A7 2BE 2D2 301 312 325 337 347 34B 34D 16F 1A2 1EB 227 24F 285 2A0 2B3 2B8 302 320 332 342 346 34B 34E 175 1B2 1F4 22C 247 26B 2A4 2C0 2C9 306 323 333 342 346 34B 34E 17A 1B4 1FA 22D 245 276 29F 2CE 2D8 2ED 323 33C 344 349 34E 352 175 1AF 1F7 21D 240 273 299 2CF 2E1 2FB 332 346 351 357 35C 35F 17B 1B0 20A 235 241 26F 298 2E4 313 330 33D 34E 35C 361 365 366 180 1B1 1CF 22E 264 297 2B3 2ED 333 359 377 37E 36C 36E 373 373 188 1AA 1D4 1F9 254 281 2BD 2F8 34C 36F 385 38B 38E 392 37E 382 18C 1A1 1C4 214 251 285 2B7 2EC 325 38C 39D 3A3 39C 39E 399 399 191 1AE 1E0 236 272 297 2C1 2EE 339 36A 39E 3B2 3AB 3AD 3AD 3B0 195 1C7 1F6 258 28A 2A7 2CB 308 341 35B 37E 38D 3B3 3B6 3B4 3B7 199 1D3 208 252 286 2AC 2DF 311 348 355 389 390 3B6 3BA 3B8 3B9 19F 1DB 20A 24E 27C 2A2 2D0 314 34B 358 385 398 3B1 3B4 3BB 3BA 19F 1DB 20A 24E 27B 29A 2C6 30F 346 358 389 3A1 3B1 3B2 3BB 3BB 1A1 1DB 20A 24E 27C 29A 2C6 30F 346 35B 391 3AC 3BC 3B7 3BC 3BB 1A1 1DB 20A 24E 27C 29A 2C6 30F 346 361 39B 3BC 3B8 3BB 3BC 3BB 1A1 1DB 20A 24E 27B 29A 2C9 30F 346 36D 3B4 3C7 3C5 3BE 3BC 3BB "/>
+    <symbol name="ignTable2" storage="sbyte" width="16" height="20" data="2E 30 30 2F 2E 28 1B B 6 6 3 1 1 0 0 0 32 34 34 33 32 2D 25 19 10 A 6 4 3 2 2 2 34 37 38 37 36 31 29 1F 14 C 8 6 5 4 3 3 3A 3D 3E 3C 3A 33 2B 21 16 E A 8 6 5 4 4 3E 41 42 3F 3C 35 2D 22 17 F C A 8 6 5 5 40 43 44 41 3E 37 2F 23 19 11 E C 9 8 6 6 42 45 46 43 40 38 31 26 1D 14 11 F C A 9 8 42 45 45 43 40 3A 34 2C 22 18 14 12 10 E C B 42 45 44 43 40 3B 35 2E 24 1A 17 15 11 F D C 41 43 43 41 40 3B 35 2E 25 1C 19 17 13 11 F E 3F 42 41 40 3E 3A 34 2E 26 1E 19 17 13 11 F E 3D 40 40 3E 3C 39 33 2E 26 1D 18 16 12 10 E D 3C 3E 3E 3B 39 37 32 2F 25 1C 17 15 11 F D C 3B 3D 3B 39 36 34 31 2F 24 1C 17 15 11 F D C 39 3B 39 37 34 32 2F 2D 23 1C 17 15 11 10 E D 38 38 37 34 32 2F 2D 2A 21 1D 18 15 13 11 F E 37 37 35 32 2F 2C 29 26 1F 1D 18 16 13 11 F E 35 35 32 30 2D 2A 27 24 1E 1D 18 16 13 11 F E 34 33 31 2E 2B 29 26 23 1E 1D 19 17 13 11 F E 32 32 2F 2C 29 27 24 21 1D 1C 19 17 13 11 F E "/>
+    <symbol name="lambdaTable2" storage="ubyte" width="8" height="10" data="64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 64 5E 5B 59 57 56 55 54 "/>
+    <symbol name="etcStiction" storage="sbyte" width="16" height="1" data="-2C -28 -28 -26 -18 0 44 4C 46 4C 4A 50 4C 48 52 4E "/>
+    <symbol name="etcDeltaErrBins" storage="sbyte" width="17" height="1" data="-78 -50 -40 -20 -C -6 -3 -1 0 1 3 6 C 20 40 50 78 "/>
+    <symbol name="cam1AdvTblB" storage="sbyte" width="12" height="12" data="-32 -2F -2B -28 -25 -21 -1E -1E -1E -1E -1E -1E -34 -31 -2D -2A -27 -23 -20 -20 -20 -20 -20 -20 -36 -33 -2F -2C -29 -25 -22 -22 -22 -22 -22 -22 -37 -34 -30 -2D -2A -26 -23 -23 -23 -23 -23 -23 -39 -36 -32 -2F -2C -28 -25 -25 -25 -25 -25 -25 -3B -38 -34 -31 -2E -2A -27 -27 -27 -27 -27 -27 -3D -3A -36 -33 -30 -2C -29 -29 -29 -29 -29 -29 -3F -3C -38 -35 -32 -2E -2B -2B -2B -2B -2B -2B -41 -3E -3A -37 -34 -30 -2D -2D -2D -2D -2D -2D -42 -3F -3B -38 -35 -31 -2E -2E -2E -2E -2E -2E -44 -41 -3D -3A -37 -33 -30 -30 -30 -30 -30 -30 -46 -43 -3F -3C -39 -35 -32 -32 -32 -32 -32 -32 "/>
+    <symbol name="cam2AdvTblB" storage="sbyte" width="12" height="12" data="-4 -A -10 -16 -1C -22 -28 -28 -28 -28 -28 -28 -7 -D -12 -18 -1D -23 -28 -28 -28 -28 -28 -28 -B -10 -15 -1A -1E -23 -28 -28 -28 -28 -28 -28 -E -12 -17 -1B -1F -24 -28 -28 -28 -28 -28 -28 -11 -15 -19 -1D -20 -24 -28 -28 -28 -28 -28 -28 -15 -18 -1B -1F -22 -25 -28 -28 -28 -28 -28 -28 -18 -1B -1D -20 -23 -25 -28 -28 -28 -28 -28 -28 -1B -1D -1F -22 -24 -26 -28 -28 -28 -28 -28 -28 -1E -20 -21 -23 -25 -26 -28 -28 -28 -28 -28 -28 -22 -23 -24 -25 -26 -27 -28 -28 -28 -28 -28 -28 -25 -26 -26 -27 -27 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 -28 "/>
+    <symbol name="flexFuelEthanolContentBins" storage="ubyte" width="9" height="1" data="0 17 2D 44 5A 71 87 9E B4 "/>
+    <symbol name="flexFuelVEBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="flexFuelIgnBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="flexFuelAFRBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="flexFuelBoostBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="flexFuelTempBin" storage="sbyte" width="9" height="1" data="-28 -14 0 14 28 3C 50 64 78 "/>
+    <symbol name="flexFuelTempCorr" storage="ubyte" width="9" height="1" data="64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="alsTPSBin" storage="ubyte" width="8" height="1" data="0 3 6 9 B E 11 14 "/>
+    <symbol name="alsMAPBin" storage="word" width="8" height="1" data="6F 86 9C B3 CA E1 F7 10E "/>
+    <symbol name="alsRPMBin" storage="word" width="10" height="1" data="BB8 D3D EC2 1047 11CC 1350 14D5 165A 17DF 1964 "/>
+    <symbol name="alsIgnition" storage="sbyte" width="8" height="10" data="-32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 -32 "/>
+    <symbol name="alsFuelCorr" storage="sbyte" width="8" height="10" data="28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 "/>
+    <symbol name="alsSparkCut" storage="ubyte" width="8" height="10" data="28 28 28 28 28 28 28 28 27 27 27 27 27 27 27 27 26 26 26 26 26 26 26 26 25 25 25 25 25 25 25 25 24 24 24 24 24 24 24 24 22 22 22 22 22 22 22 22 21 21 21 21 21 21 21 21 20 20 20 20 20 20 20 20 1F 1F 1F 1F 1F 1F 1F 1F 1E 1E 1E 1E 1E 1E 1E 1E "/>
+    <symbol name="crankingTbl2" storage="ubyte" width="16" height="5" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 "/>
+    <symbol name="flexFuelCrankingBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="idleIgnitionCutPercent" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="oilPressureCutTbl" storage="ubyte" width="12" height="1" data="8 8 8 8 8 8 8 8 8 8 8 8 "/>
+    <symbol name="gearBins" storage="ubyte" width="7" height="1" data="1 2 3 4 5 6 7 "/>
+    <symbol name="tcAdjustBins" storage="ubyte" width="10" height="1" data="1 2 3 4 5 6 7 8 9 A "/>
+    <symbol name="tcdRPM" storage="word" width="16" height="1" data="10 20 30 40 50 60 70 80 A0 B0 C0 D0 E0 F0 100 110 "/>
+    <symbol name="tcGearPercent" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tcAdjPosCal" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="tcAdjPosPercent" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="tcTorqReductionTbl" storage="ubyte" width="16" height="16" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="warmupTbl2" storage="ubyte" width="16" height="4" data="A0 9F 9E 98 92 88 80 76 6E 6B 66 64 64 64 68 69 A0 9F 9E 98 92 88 80 76 6E 6B 66 64 64 64 68 69 A0 9F 9E 98 92 88 80 76 6E 6B 66 64 64 64 68 69 A0 9F 9E 98 92 88 80 76 6E 6B 66 64 64 64 68 69 "/>
+    <symbol name="aseTbl2" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="flexFuelASEBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="flexFuelWarmupBlend" storage="ubyte" width="9" height="1" data="C8 AE 96 7C 64 4A 32 18 0 "/>
+    <symbol name="ignIdleCLTTrim" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="etcOpeningRPMBins" storage="word" width="8" height="1" data="3E8 7D0 BB8 FA0 1388 1770 1B58 1F40 "/>
+    <symbol name="engineStartDelay" storage="ubyte" width="16" height="1" data="8 8 8 8 8 8 8 8 8 8 8 8 8 5 5 5 "/>
+    <symbol name="idleAINCorrection" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="mapSensorFilterStrength" storage="ubyte" width="12" height="1" data="5 5 5 5 5 5 5 5 5 5 5 5 "/>
+    <symbol name="idleACCorrection" storage="ubyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="stagedInjectorsCal" storage="ubyte" width="12" height="1" data="68 52 41 34 2A 24 1F 1B 17 14 11 F "/>
+    <symbol name="stagedInjSplit" storage="ubyte" width="12" height="12" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="idleDCBin" storage="ubyte" width="8" height="1" data="0 C 18 24 30 3C 48 54 "/>
+    <symbol name="idleDCVERPM" storage="word" width="4" height="1" data="1F4 3E8 5DC 7D0 "/>
+    <symbol name="idlePWMBattCorr" storage="sbyte" width="12" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="percentBinsNegative" storage="sbyte" width="16" height="1" data="-64 -5D -56 -50 -49 -42 -3C -35 -2E -28 -21 -1A -14 -D -6 0 "/>
+    <symbol name="decDTPSRate" storage="ubyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="decTPSFactor" storage="ubyte" width="16" height="1" data="64 61 5F 5C 59 57 54 51 4F 4C 49 47 44 41 3F 3C "/>
+    <symbol name="decRPMFactor" storage="ubyte" width="20" height="1" data="61 5C 59 56 53 50 4D 46 40 3A 35 30 2B 26 21 1E 1B 18 16 15 "/>
+    <symbol name="alsIgnition2" storage="sbyte" width="8" height="10" data="-3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C -3C "/>
+    <symbol name="alsFuelCorr2" storage="sbyte" width="8" height="10" data="1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E 1E "/>
+    <symbol name="alsSparkCut2" storage="ubyte" width="8" height="10" data="A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A A "/>
+    <symbol name="timer1Bins" storage="ubyte" width="10" height="1" data="0 4 8 C 10 14 18 1C 20 24 "/>
+    <symbol name="timer2Bins" storage="ubyte" width="10" height="1" data="0 4 8 C 10 14 18 1C 20 24 "/>
+    <symbol name="timer3Bins" storage="ubyte" width="10" height="1" data="0 4 8 C 10 14 18 1C 20 24 "/>
+    <symbol name="timerFuelCorrection" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="timerIgnCorrection" storage="sbyte" width="10" height="1" data="0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="timerBoostCorrection" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="tpsBins8B" storage="ubyte" width="8" height="1" data="0 E 1D 2B 39 47 56 64 "/>
+    <symbol name="rpmBins8B" storage="word" width="8" height="1" data="1F4 5DC 7D0 9C4 BB8 FA0 1388 1B58 "/>
+    <symbol name="mapBins8B" storage="word" width="8" height="1" data="14 50 5A 64 6E 78 96 C8 "/>
+    <symbol name="tpsRPMFuelCorr" storage="ubyte" width="8" height="8" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="mapRPMFuelCorr" storage="ubyte" width="8" height="8" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="nitrousFuelRPMCorrection" storage="ubyte" width="20" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="idleFuelCutPercent" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="idleDCVECorrection" storage="sbyte" width="8" height="4" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="map5VBins" storage="ubyte" width="4" height="1" data="A 58 A7 FF "/>
+    <symbol name="mapSensorCal" storage="word" width="4" height="1" data="14 60E C12 12D4 "/>
+    <symbol name="baro5VBins" storage="ubyte" width="4" height="1" data="A 58 A7 F5 "/>
+    <symbol name="baroSensorCal" storage="ubyte" width="4" height="1" data="14 60 AE FA "/>
+    <symbol name="etcOpening2" storage="ubyte" width="16" height="8" data="0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 0 7 E 14 1B 22 28 2F 36 3C 43 4A 50 57 5E 64 "/>
+    <symbol name="dbwGearMaxOpen" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="dbwGearOpenScl" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="injectionAngle" storage="word" width="8" height="8" data="19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A 19A "/>
+    <symbol name="secTriggerSensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
+    <symbol name="cam2Sensitivity" storage="ubyte" width="12" height="1" data="E 20 31 43 4E 52 55 58 5C 5F 62 63 "/>
+    <symbol name="tpsBoostBins" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
+    <symbol name="rpmBoostBins" storage="word" width="10" height="1" data="3E8 7D0 9C4 BB8 DAC FA0 1194 1388 1770 1B58 "/>
+    <symbol name="mapBoostBins" storage="word" width="10" height="1" data="32 4E 6A 85 A1 BD D9 F4 110 12C "/>
+    <symbol name="alsDBWTarget1" storage="ubyte" width="8" height="10" data="3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C 3C "/>
+    <symbol name="alsDBWTarget2" storage="ubyte" width="8" height="10" data="14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 "/>
+    <symbol name="backPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="backPressureCal" storage="ubyte" width="2" height="1" data="0 80 "/>
+    <symbol name="dwellMAPCorr" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="gearCutGearCutLevel" storage="ubyte" width="9" height="1" data="64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="gearCutGerCutDuration" storage="word" width="9" height="1" data="C8 C8 C8 C8 C8 C8 C8 C8 C8 "/>
+    <symbol name="gearCutFuleMultipler" storage="ubyte" width="9" height="1" data="64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="gearCutMAPMultiplier" storage="ubyte" width="8" height="1" data="64 64 64 64 64 64 64 64 "/>
+    <symbol name="gearCutBlipDuration" storage="ubyte" width="9" height="1" data="64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="gearCutBlipLevel" storage="ubyte" width="9" height="1" data="32 32 32 32 32 32 32 32 32 "/>
+    <symbol name="tpsLCBins" storage="u12" width="7" height="1" data="14 5A 64 B4 BE C8 FA "/>
+    <symbol name="rpmLCBins" storage="word" width="7" height="1" data="BB8 C1C C80 CE4 D48 DAC E10 "/>
+    <symbol name="lcSparkCutTbl1" storage="ubyte" width="7" height="7" data="0 0 0 64 64 64 64 0 0 0 64 64 64 64 0 0 0 64 64 64 64 0 0 0 64 64 64 64 0 0 0 64 64 64 64 0 0 0 64 64 64 64 0 0 0 64 64 64 64 "/>
+    <symbol name="lcIgnRetardTbl1" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A -5A "/>
+    <symbol name="lcFuelEnrichTbl1" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="lcWGOverrideTbl1" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="lcSparkCutTbl2" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="lcIgnRetardTbl2" storage="sbyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="lcFuelEnrichTbl2" storage="ubyte" width="7" height="7" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="lcWGOverrideTbl2" storage="ubyte" width="7" height="7" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="etcOpeningLC" storage="ubyte" width="7" height="1" data="0 0 0 0 0 0 0 "/>
+    <symbol name="etcOpeningLC2" storage="ubyte" width="7" height="1" data="0 0 0 0 0 0 0 "/>
+    <symbol name="crankRevCntBins" storage="ubyte" width="5" height="1" data="1 2 3 A 20 "/>
+    <symbol name="boostAdjPosCal" storage="ubyte" width="10" height="1" data="0 1C 39 55 71 8E AA C6 E3 FF "/>
+    <symbol name="boostAdjBlend" storage="ubyte" width="10" height="1" data="64 59 4E 43 38 2C 21 16 B 0 "/>
+    <symbol name="altCtrlTargetVoltage" storage="ubyte" width="8" height="8" data="87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 87 "/>
+    <symbol name="gearBoxOilTempCal" storage="ubyte" width="16" height="1" data="0 9 13 1C 25 2F 38 41 4B 54 5D 67 70 79 83 8C "/>
+    <symbol name="diffOilTempCal" storage="ubyte" width="16" height="1" data="0 9 13 1C 25 2F 38 41 4B 54 5D 67 70 79 83 8C "/>
+    <symbol name="powerSteeringFluidTempCal" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="preIntercoolerAirTempCal" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="idleDCIATCorrection" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="autotuneDirtyFlags" storage="ubyte" width="40" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="dsgSelectorRotarySwitchBins" storage="ubyte" width="8" height="1" data="0 1 2 3 4 5 6 7 "/>
+    <symbol name="dsgSelectorRotarySwitchCal" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlRotarySwitchBins" storage="ubyte" width="4" height="1" data="1 2 3 4 "/>
+    <symbol name="diffCtrlRotarySwitchCal" storage="ubyte" width="4" height="1" data="0 55 8E FF "/>
+    <symbol name="diffCtrlVSSBin" storage="word" width="8" height="1" data="0 20 40 60 80 A0 C0 E0 "/>
+    <symbol name="diffCtrlTPSBin" storage="ubyte" width="5" height="1" data="0 28 50 3C A0 "/>
+    <symbol name="diffCtrlDCTbl1Acc" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlDCTbl2Acc" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlDCTbl3Acc" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlDCTbl1Brk" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlDCTbl2Brk" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffCtrlDCTbl3Brk" storage="ubyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="diffPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="diffPressureCal" storage="ubyte" width="2" height="1" data="1A 5A "/>
+    <symbol name="boostAdjustBins" storage="ubyte" width="10" height="1" data="1 2 3 4 5 6 7 8 9 A "/>
+    <symbol name="userCANStream" storage="ubyte" width="315" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 14 11 1 1 0 0 15 13 1 1 0 0 16 15 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="cltBoostScale" storage="ubyte" width="16" height="1" data="64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 0 "/>
+    <symbol name="etcOpeningMAPBins" storage="word" width="8" height="1" data="19 32 4B 64 7D 96 AF C8 "/>
+    <symbol name="flexFuelRPMLimit" storage="word" width="9" height="1" data="3E80 3E8 3E8 3E8 3E8 3E8 3E8 3E8 3E8 "/>
+    <symbol name="fuelTemperatureCal" storage="sbyte" width="16" height="1" data="0 9 13 1C 25 2F 38 41 4B 54 5D 67 70 78 78 78 "/>
+    <symbol name="ignitionAINCorrection" storage="sbyte" width="16" height="1" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="mapKnockBin" storage="word" width="4" height="1" data="32 50 6E 7D "/>
+    <symbol name="cltBins4" storage="sword" width="4" height="1" data="-28 0 64 6E "/>
+    <symbol name="idleAfterstartDCScale" storage="ubyte" width="4" height="1" data="64 64 64 64 "/>
+    <symbol name="tpsBins7TC" storage="ubyte" width="7" height="1" data="0 21 43 64 85 A7 C8 "/>
+    <symbol name="binSpeedTCDiff" storage="word" width="7" height="1" data="0 A 14 1E 28 32 3C "/>
+    <symbol name="binSpeedTCPerc" storage="word" width="10" height="1" data="0 19 32 4B 64 7D 96 AF C8 E1 "/>
+    <symbol name="tcMaxDiffSlip" storage="ubyte" width="7" height="7" data="28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 "/>
+    <symbol name="tcDiffSlipGearMulitplier" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tcMaxPercSlip" storage="ubyte" width="7" height="10" data="32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 "/>
+    <symbol name="tcPercSlipGearMulitplier" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tckPDiff" storage="ubyte" width="8" height="1" data="14 14 14 14 14 14 14 14 "/>
+    <symbol name="tckPDiffGearScale" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tckPDiffTpsScale" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tckPPerc" storage="ubyte" width="8" height="1" data="14 14 14 14 14 14 14 14 "/>
+    <symbol name="tckPPercGearScale" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tckPPercTpsScale" storage="ubyte" width="7" height="1" data="64 64 64 64 64 64 64 "/>
+    <symbol name="tcUserSlipDiff" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="tcUserSlipPerc" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="binTCTrqRed" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
+    <symbol name="tcTRIgnitionRetard" storage="ubyte" width="10" height="1" data="0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="tcTRCut" storage="ubyte" width="10" height="1" data="0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="tckIDiff" storage="ubyte" width="8" height="1" data="14 14 14 14 14 14 14 14 "/>
+    <symbol name="tckIPerc" storage="ubyte" width="8" height="1" data="14 14 14 14 14 14 14 14 "/>
+    <symbol name="tckDDiff" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="tckDPerc" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="tcUserTorqRedScle" storage="ubyte" width="10" height="1" data="64 64 64 64 64 64 64 64 64 64 "/>
+    <symbol name="trailingSparkDelay" storage="ubyte" width="8" height="8" data="14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 "/>
+    <symbol name="pwmXAnalogBins" storage="ubyte" width="16" height="1" data="0 D 1B 28 35 43 50 5D 6B 78 85 93 A0 AD BB C8 "/>
+    <symbol name="pwm2XAxis" storage="sword" width="8" height="1" data="5A 5C 5E 60 62 64 69 6E "/>
+    <symbol name="pwm2YAxis" storage="sword" width="8" height="1" data="384 4B0 5DC 7D0 BB8 FA0 1388 1770 "/>
+    <symbol name="pwmTable2" storage="ubyte" width="8" height="8" data="0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 0 32 64 64 64 64 64 64 "/>
+    <symbol name="ewgBackPressureBins" storage="word" width="5" height="1" data="64 A3 E1 120 15E "/>
+    <symbol name="ewgTargetBins" storage="ubyte" width="8" height="1" data="0 E 1D 2B 39 47 56 64 "/>
+    <symbol name="ewgBaseDC" storage="sbyte" width="8" height="5" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="crankCasePressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="crankCasePressureCal" storage="ubyte" width="2" height="1" data="1A 5A "/>
+    <symbol name="coolantPressureCalBins" storage="ubyte" width="2" height="1" data="1A E6 "/>
+    <symbol name="coolantPressureCal" storage="ubyte" width="2" height="1" data="0 A0 "/>
+    <symbol name="eTqMapBins8" storage="word" width="12" height="1" data="14 2D 47 60 7A 93 AD C6 E0 F9 113 12C "/>
+    <symbol name="eTqRpmBins8" storage="word" width="10" height="1" data="2EE 5DC 8CA BB8 EA6 1194 1482 1770 1A5E 1D4C "/>
+    <symbol name="engineTorqueNm" storage="sbyte" width="12" height="10" data="14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 "/>
+    <symbol name="targetBoostBins" storage="word" width="10" height="1" data="64 A0 B4 C8 D2 DC FA 104 118 12C "/>
+    <symbol name="dsgUpShiftTargetRpm" storage="ubyte" width="7" height="1" data="C8 C8 C8 C8 C8 C8 C8 "/>
+    <symbol name="dsgDownShiftTargetRpm" storage="ubyte" width="7" height="1" data="78 78 78 78 78 78 78 "/>
+    <symbol name="nitrousTorqueCorr" storage="ubyte" width="8" height="1" data="0 0 0 0 0 0 0 0 "/>
+    <symbol name="dbwBoostBlendAinBin" storage="ubyte" width="10" height="1" data="0 1C 39 55 71 8E AA C6 E3 FF "/>
+    <symbol name="dbwCharBlendCal" storage="ubyte" width="10" height="1" data="0 B 16 21 2C 38 43 4E 59 64 "/>
+    <symbol name="idleDCREF" storage="ubyte" width="8" height="5" data="31 2E 2B 28 24 21 1E 1B 38 34 31 2D 29 25 22 1E 40 3C 38 34 30 2C 28 24 47 43 3F 3B 38 34 30 2C 5A 57 53 50 4C 49 45 42 "/>
+    <symbol name="ompTargetTble" storage="ubyte" width="8" height="8" data="1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 "/>
+    <symbol name="customFXBins8" storage="sword" width="8" height="1" data="0 14 1E 28 32 3C 50 64 "/>
+    <symbol name="customFYBins8" storage="sword" width="8" height="1" data="384 3E8 44C 4B0 514 578 5DC 7D0 "/>
+    <symbol name="customFuelCorrection" storage="ubyte" width="8" height="8" data="9B 8F 88 82 7B 64 64 64 98 8C 85 7F 79 64 64 64 96 8A 83 7D 77 64 64 64 93 87 80 7A 75 64 64 64 90 84 7D 77 73 64 64 64 8D 81 7A 74 71 64 64 64 8B 7F 78 72 6E 64 64 64 7D 71 6A 64 64 64 64 64 "/>
+    <symbol name="customIXBins8" storage="sword" width="8" height="1" data="0 20 43 5D 78 93 AD C8 "/>
+    <symbol name="customIYBins8" storage="sword" width="8" height="1" data="32 4E 6A 85 A1 BD D9 F4 "/>
+    <symbol name="customIgnitionCorrection" storage="sbyte" width="8" height="8" data="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+    <symbol name="dsgBlipRPMError" storage="word" width="5" height="1" data="14 2D 46 5F 78 "/>
+    <symbol name="dsgBlipRPMTarget" storage="word" width="5" height="1" data="7D0 BB8 FA0 1388 1770 "/>
+    <symbol name="dsgBlipGear" storage="ubyte" width="6" height="1" data="1 2 3 4 5 6 "/>
+    <symbol name="dsgBlipLevel" storage="ubyte" width="5" height="6" data="19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 "/>
+    <symbol name="dsgPostBlipLevel" storage="ubyte" width="5" height="1" data="C C C C C "/>
+    <symbol name="idleDSGTorqueLosesBin" storage="ubyte" width="6" height="1" data="0 8 10 18 20 28 "/>
+    <symbol name="idleDSGTorqueCorr" storage="ubyte" width="6" height="1" data="64 64 64 64 64 64 "/>
+    <symbol name="airflowBins4" storage="ubyte" width="4" height="1" data="0 A 32 64 "/>
+    <symbol name="lambdaDelay" storage="word" width="4" height="1" data="15E 12C A0 5A "/>
+    <symbol name="torqueReductionRequestBin" storage="ubyte" width="5" height="1" data="0 19 32 4B 64 "/>
+    <symbol name="torqueReductionLoadBin" storage="word" width="4" height="1" data="19 32 4B 64 "/>
+    <symbol name="dsgTorqueReductionIgn" storage="ubyte" width="5" height="4" data="28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 "/>
+    <symbol name="shortTrimKPScale" storage="ubyte" width="4" height="1" data="64 64 64 64 "/>
+    <symbol name="shortTrimKIScale" storage="ubyte" width="4" height="1" data="64 64 64 64 "/>
+  </tables>
+  <userNames>
+    <outputName id="0" name=""/>
+    <outputName id="1" name="AUX1 - Main Relay"/>
+    <outputName id="2" name="AUX2 - Fuel Pump"/>
+    <outputName id="3" name="AUX3 - Fan"/>
+    <outputName id="4" name=""/>
+    <outputName id="5" name="AUX5 - Int Phaser"/>
+    <outputName id="6" name="AUX6 - Exh Phaser"/>
+    <outputName id="7" name=""/>
+    <outputName id="8" name=""/>
+    <outputName id="9" name=""/>
+    <outputName id="10" name=""/>
+    <outputName id="11" name="INJ5 - Boost N75"/>
+    <outputName id="12" name="INJ6 - Thermostat"/>
+    <outputName id="13" name="HBRIDGE1 A - DBW"/>
+    <outputName id="14" name="HBRIDGE1 B - DBW"/>
+    <outputName id="15" name=""/>
+    <outputName id="16" name=""/>
+    <inputName id="60" name="SW1 - Oil Pressure"/>
+    <inputName id="61" name=""/>
+    <inputName id="62" name=""/>
+    <inputName id="63" name="SW1 - Oil Pressure "/>
+    <inputName id="64" name=""/>
+    <inputName id="65" name=""/>
+    <inputName id="7" name="AIN1 - DBW Pos Inv"/>
+    <inputName id="6" name="AIN2 - DBW Pos"/>
+    <inputName id="5" name="AIN3 - DBW PPS"/>
+    <inputName id="4" name="AIN4 - MAP Input"/>
+    <inputName id="11" name="AIN5 - Wideband"/>
+    <inputName id="13" name="AIN6 - Fuel Input"/>
+    <inputName id="135" name=""/>
+    <inputName id="134" name=""/>
+    <inputName id="133" name=""/>
+    <inputName id="132" name=""/>
+    <inputName id="139" name=""/>
+    <inputName id="141" name=""/>
+    <inputName id="200" name=""/>
+    <inputName id="201" name=""/>
+    <inputName id="202" name=""/>
+    <inputName id="203" name=""/>
+    <inputName id="204" name=""/>
+    <inputName id="205" name=""/>
+    <inputName id="206" name=""/>
+    <inputName id="207" name=""/>
+    <inputName id="20" name=""/>
+    <inputName id="21" name=""/>
+    <inputName id="22" name=""/>
+    <inputName id="49" name=""/>
+    <inputName id="50" name=""/>
+    <inputName id="51" name=""/>
+    <inputName id="23" name=""/>
+    <inputName id="24" name=""/>
+    <inputName id="33" name=""/>
+    <inputName id="34" name=""/>
+    <inputName id="35" name=""/>
+    <inputName id="36" name=""/>
+    <inputName id="37" name=""/>
+    <inputName id="38" name=""/>
+    <inputName id="39" name=""/>
+    <inputName id="40" name=""/>
+    <inputName id="41" name=""/>
+    <inputName id="42" name=""/>
+    <inputName id="43" name=""/>
+    <inputName id="44" name=""/>
+    <inputName id="45" name=""/>
+    <inputName id="46" name=""/>
+    <inputName id="47" name=""/>
+    <inputName id="48" name=""/>
+    <inputName id="100" name=""/>
+    <inputName id="101" name=""/>
+    <inputName id="102" name=""/>
+    <inputName id="103" name=""/>
+    <inputName id="104" name=""/>
+    <inputName id="105" name=""/>
+    <inputName id="106" name=""/>
+    <inputName id="107" name=""/>
+    <inputName id="108" name=""/>
+    <inputName id="109" name=""/>
+    <inputName id="110" name=""/>
+    <inputName id="111" name=""/>
+    <inputName id="112" name=""/>
+    <inputName id="113" name=""/>
+    <inputName id="114" name=""/>
+    <inputName id="115" name=""/>
+    <inputName id="152" name=""/>
+    <inputName id="153" name=""/>
+    <inputName id="154" name=""/>
+    <inputName id="155" name=""/>
+    <inputName id="156" name=""/>
+    <inputName id="157" name=""/>
+    <inputName id="158" name=""/>
+    <inputName id="159" name=""/>
+    <inputName id="160" name=""/>
+    <inputName id="161" name=""/>
+    <inputName id="162" name=""/>
+    <inputName id="163" name=""/>
+    <inputName id="164" name=""/>
+    <inputName id="165" name=""/>
+    <inputName id="166" name=""/>
+    <inputName id="167" name=""/>
+    <inputName id="56" name=""/>
+    <inputName id="57" name=""/>
+    <inputName id="58" name=""/>
+  </userNames>
+</project>
