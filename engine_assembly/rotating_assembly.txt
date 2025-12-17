@@ -1,0 +1,51 @@
+H-Beam con rods compatible for Opel Compatible for Vauxhall Corsa VXR Z16LER Z16LET Z16LEH 1.6 16V Turbo
+Compatible for GM compatible for Opel Compatible for Vauxhall Corsa 1.6 1.8 C16XE Tigra X16XE
+
+Dimensions:
+Center to center length: 129.75mm;
+Big end diameter: 46mm;    - OK
+Small end diameter: 18mm;    - OK
+Big end width: 22mm; 21.8mm
+Small end width: 18mm; 17.9mm
+
+
+
+
+Bore Size 	
+	72.5mm – K9549DA,
+	73mm – K9549D050
+
+Pin Size - 18mm
+Stroke - 82.6mm
+Compression Height - 25.85mm
+
+
+=========== Stock ==========================
+
+https://workshop-manuals.com/vauxhall/astra-j/engine/engine_mechanics_1.4l_(ldd_ldu_llu_luh_luj)/specifications/engine_mechanical_specifications_1.4l_luj/
+
+
+
+https://www.cruzetalk.com/threads/connecting-rod-length.27345/?post_id=3305632&nested_view=1&sortby=oldest#post-3305632
+Center to Center Length: 5.130" - 130.302 mm
+Big End Diameter: 1.8113" - 46.00702 mm
+Small End Diameter: 0.7091" - 18.01114 mm
+Big End Width: 0.703" - 17.8562 mm - ????
+Small End Width: 0.748" - 18.9992 mm - ????
+
+K1 - 112EK10130
+Length: 130.3mm
+Housing bore: 46.000mm
+Pin diameter: 18mm
+BE Width: 17.88mm
+PE Width: 19.00mm
+Bolt size: 5/16" - 7.9375mm
+
+Adam-S 1.4 Turbo H-Beam Connecting rod kit G0366 H
+Length (center to center): 130.3mm
+BE DIA: 46mm
+SE DIA: 18mm
+BE Width: 17.9mm
+SE Width: 11mm tapered
+ARP Bolt Size: 5/16"
+Fits Wossner Piston: K9549
