@@ -9,12 +9,25 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - First-pass TunerPro definition.
-  - Contains raw table views, candidate table views, and 68HC11 vector markers.
+  - TunerPro definition, now updated to comparison markup version `0.4`.
+  - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
 - `IAW8P40_peugeot106_offsets.md`
   - Short offset summary generated during the first investigation pass.
+
+- `IAW8P40_peugeot106_comparison_analysis.md`
+  - Stock-vs-MOD2 comparison notes.
+  - Documents duplicate stock file confirmation, checksum behavior, changed regions, code-reference hints, and new XDF entries.
+
+- `IAW8P40_peugeot106_disassembly_notes.md`
+  - 68HC11 disassembly findings.
+  - Documents reset flow, checksum routine, interpolation helpers, code-confirmed map/vector structures, and corrected XDF interpretations.
+
+- `1_3L_8V_IAW8P40/`
+  - Internet comparison files.
+  - `1.3L_8V_IAW8P40_Stok.bin` is byte-identical to `M27C512_original.BIN`.
+  - `1.3L_8V_IAW8P40_MOD2.bin` is the same ROM family with modified calibration/checksum bytes.
 
 ## Main ROM Observations
 
@@ -157,28 +170,54 @@ They remain worth inspecting in TunerPro.
 - The EPROM is a full `27C512` image.
 - The EPROM appears to contain executable ECU firmware.
 - The reset vector points into the dense code region.
+- `1.3L_8V_IAW8P40_Stok.bin` is byte-identical to `M27C512_original.BIN`.
+- `1.3L_8V_IAW8P40_MOD2.bin` differs from stock in `479` bytes across `87` runs.
+- `0x800C-0x800F` stores a checksum word and one's-complement word:
+  - Stock: `0x800C = 0x4A65`, `0x800E = 0xB59A`
+  - MOD2: `0x800C = 0x47BE`, `0x800E = 0xB841`
+- The checksum complement matches the additive byte sum over `0x4000-0xFFFF`; the internal `0xB600-0xB7FF` hole is zero-filled.
 - At least two packed table-like structures have been identified:
   - `0x88CD` as `17x9`
   - `0x86DB` as `13x9`
+- MOD2 comparison adds stronger tune-touched candidates:
+  - `0x802E` as `47x9`
+  - `0x802E` as upper split `24x9` and `0x8106` as lower split `23x9`
+  - `0x879E` / `0x87A0` as a code-confirmed threshold/hysteresis pair
+  - `0x89ED-0x89F2` as code-referenced control scalars
+  - `0x89F3` as a code-confirmed `1x19` interpolated vector
+  - `0x8A68` as a code-confirmed signed offset byte
+  - `0x8A69` and `0x8B41` as code-confirmed `24x9` 2D table banks
+  - legacy raw `0x8A68` as `48x9`, now known to be off by one byte for true bank starts
+  - `0x91D9` as `15x9`
 - The current XDF is valid XML and was copied next to the BIN.
 
 ## Things Not Yet Known
 
-- Exact checksum algorithm and checksum storage address.
 - Which maps are fuel, ignition, idle, warmup, transient, limiter, or diagnostic.
 - Whether `0x88CD` and `0x86DB` are active engine calibration tables or structured lookup constants.
 - Axis locations and axis scaling.
 - Byte scaling for physical units.
 - Whether any table values are signed.
+- Whether MOD2's `0x91EC: 0xCD -> 0x6F` change is a meaningful calibration correction, a copied tune artifact, or an outlier.
 
 ## Recommended Next Steps
 
 1. Open `M27C512_original.BIN` in TunerPro with `IAW8P40_peugeot106_firstpass.xdf`.
-2. Inspect `Candidate 17x9 Map @ 0x88CD` first.
-3. Inspect `Candidate 13x9 Row Table @ 0x86DB` next.
-4. Compare nearby bytes before each candidate table to look for axis arrays, dimensions, or table descriptors.
-5. Search code references to the surrounding address ranges in a 68HC11 disassembler.
-6. Identify checksum behavior before editing and burning a modified EPROM.
+2. Inspect the `MOD2 Compared Candidates` category first:
+   - code-confirmed `24x9 @ 0x8A69`
+   - code-confirmed `24x9 @ 0x8B41`
+   - code-confirmed `1x19 @ 0x89F3`
+   - control scalars `1x6 @ 0x89ED`
+   - `15x9 @ 0x91D9`
+   - still-unconfirmed `47x9 @ 0x802E`
+3. Inspect `Candidate 17x9 Map @ 0x88CD` and `Candidate 13x9 Row Table @ 0x86DB` next; they are still visually structured but were not touched by MOD2.
+4. Continue disassembling code around confirmed reference areas:
+   - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
+   - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
+   - `0x6F14-0x6F2A` references `0x879E/0x87A0`
+   - `0x5E33-0x5EA0` references descriptors around `0x913A` and scalars `0x925F-0x9261`
+5. Confirm table axes, units, and signedness before assigning fuel/spark names.
+6. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
 7. Keep original BIN unchanged and create tuned copies with clear names.
 
 ## Practical Caution
