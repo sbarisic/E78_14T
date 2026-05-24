@@ -580,8 +580,27 @@ Physical meaning:
 - This matches the online XDF screenshot convention for spark tables using `0.5 deg/bit`.
 - MOD2 touched these heavily, so they are high-priority tune-relevant maps.
 - Stock selector behavior points at `0x8A69` as the normal/default active bank.
-  The exact physical bank names, such as high octane vs low octane, are not
-  proven yet.
+- Working octane-bank naming:
+  - `0x8A69` is now labelled as likely high-octane/default spark advance.
+  - `0x8B41` is now labelled as likely low-octane/alternate spark advance.
+  - This is still a likely label, not a final proof from knock-control code.
+
+Numeric support for the octane-bank naming:
+
+- Stock and MOD2 both store `0x800A = 0x00`.
+- The initialization path decrements that to runtime `0x20B1 = 0xFF`.
+- The spark routine therefore selects `0x8A69` in normal/default stock operation.
+- Comparing stock `0x8B41 - 0x8A69` in displayed degrees:
+  - All cells: mean `-1.46 deg`, min `-12.0 deg`, max `+17.0 deg`.
+  - Low-load columns `0-2`: mean `-0.62 deg`.
+  - Mid-load columns `3-4`: mean `+2.14 deg`.
+  - High-load columns `5-8`: mean `-3.89 deg`, with `87` lower cells and
+    only `9` higher cells.
+  - Highest columns `6-8`: mean `-3.78 deg`.
+- Therefore `0x8B41` is not a simple globally-retarded copy. It has a
+  mid-load advance ridge, but it is usually more conservative where load is
+  highest. That pattern is more consistent with `0x8A69` as the
+  high-octane/default table and `0x8B41` as the low-octane/alternate table.
 
 Downstream trace:
 
@@ -652,7 +671,58 @@ Physical meaning:
 - This is now exposed in the XDF as `Correction Factor Candidate 24x9 @ 0x9187`.
   The code confirms the lookup, axes, and consumers, but not yet whether the
   factor is air density, VE, fuel, or another compensation path.
+- Current best interpretation is correction/load-model rather than final main
+  fuel, because one confirmed path stores the lookup result to `0x00D0`, then
+  stores `0x00CE = 0x00D0 << 2`, and `0x00CE` is later normalized into the
+  load/MAP-like axis `0x2034`.
 - The old `15x9 @ 0x91D9` view is misaligned and should be treated as legacy only.
+
+### MOD2 Fuel/Corr Candidate Pass
+
+Using `1_3L_8V_IAW8P40_MOD2.bin` against `M27C512_original.BIN`, the current
+fuel-search priority is:
+
+1. `0x802E-0x81D4` candidate `47x9`.
+2. `0x9187-0x925E` code-confirmed correction/load table.
+3. `0x89F3-0x8A05` code-confirmed `0x2044`-indexed vector.
+
+`0x802E` is the strongest unconfirmed fuel/enrichment candidate:
+
+- Shape used in the XDF: `47x9`, split as upper `24x9 @ 0x802E` and lower
+  `23x9 @ 0x8106`.
+- MOD2 changes `147 / 423` cells.
+- Upper split: `75 / 216` cells changed.
+  - Changed rows: `10`, `11`, `13-18`, `21-23`.
+  - Deltas are clean positive raw-count increases, mostly `+4`, `+5`, and `+6`.
+- Lower split: `72 / 207` cells changed.
+  - Parent rows `35-46` are touched, mostly columns `0-5`.
+  - Most deltas are modulo-byte `+5`, with one row group at `+18`.
+  - Several values wrap through `0xFF`, so unsigned display can look like a
+    negative drop even though modulo-byte interpretation is an increase.
+- No direct code reference to table base `0x802E` has been confirmed. The only
+  raw address-byte occurrence in stock is around `0xC621`, and current 68HC11
+  decoding treats it as an immediate compare sequence rather than a table base.
+- Because the edited pattern is broad, coherent, and mostly positive in a
+  tuned 100 hp 1.3 Rallye file, `0x802E` remains the best main-fuel or
+  enrichment candidate, but it must stay unconfirmed until a consumer path is
+  found.
+
+`0x9187` is code-confirmed and MOD2-touched, but is probably upstream of load:
+
+- MOD2 changes `62 / 216` cells.
+- It is called by the `0x6344` lookup routine and returns a byte.
+- Known callers store that byte to `0x210F` or `0x00D0`.
+- The `0x00D0 -> 0x00CE -> 0x2034` path means this table can affect later
+  spark/fuel tables by changing the load/MAP-like axis.
+- Until a direct pulse-width or fueling consumer is found, label it as a
+  correction/load-model candidate, not main fuel.
+
+`0x89F3` is code-confirmed and MOD2-touched:
+
+- Shape: `1x19`, indexed by `RAM 0x2044` through helper `0xB2AB`.
+- MOD2 changes `16 / 19` cells, with mostly positive deltas from `+2` to `+18`.
+- It is a plausible enrichment/limit/correction vector candidate, but the
+  `0x2044` axis still needs physical naming before it should be called fuel.
 
 ### 2D Table `0x85BA`
 

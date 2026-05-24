@@ -411,6 +411,40 @@ Spark-bank selector trace:
 - Stock and MOD2 both have `0x800A = 0x00`, so the stored selector underflows
   to `0xFF`; stock runtime behavior should use the `0x8A69` spark bank.
 
+Spark-bank octane/default naming pass:
+
+- The XDF now labels `0x8A69` as `Likely Spark Advance High Octane / Default`
+  and `0x8B41` as `Likely Spark Advance Low Octane / Alternate`.
+- This is based on selector behavior and numeric comparison, not just the order
+  of the tables in ROM.
+- Stock `0x8B41 - 0x8A69` comparison in displayed degrees:
+  - Overall mean: `-1.46 deg`.
+  - Low-load columns `0-2`: mean `-0.62 deg`.
+  - Mid-load columns `3-4`: mean `+2.14 deg`.
+  - High-load columns `5-8`: mean `-3.89 deg`.
+  - Highest columns `6-8`: mean `-3.78 deg`.
+- Bank B has a mid-load advance ridge, so it is not simply a uniformly lower
+  copy. At high load, however, it is mostly more conservative, which fits the
+  low-octane/alternate interpretation.
+
+Fuel/correction candidate pass:
+
+- `0x802E-0x81D4` remains the strongest unconfirmed fuel/enrichment candidate.
+  MOD2 changes `147 / 423` cells in the `47x9` view.
+- The upper split `24x9 @ 0x802E` changes `75 / 216` cells, mostly rows
+  `10`, `11`, `13-18`, and `21-23` by `+4`, `+5`, or `+6`.
+- The lower split `23x9 @ 0x8106` changes `72 / 207` cells, mostly parent rows
+  `35-46` and columns `0-5`. Most deltas are modulo-byte `+5`, with one
+  `+18` group.
+- Direct code usage for `0x802E` is still not confirmed. The only raw address
+  byte occurrence currently seen is the earlier false hit around `0xC621`.
+- `0x9187-0x925E` is code-confirmed and MOD2 changes `62 / 216` cells, but the
+  traced path can feed `0x00D0 -> 0x00CE -> 0x2034`, so it currently looks more
+  like a correction/load-model table than final main fuel.
+- `0x89F3-0x8A05` is a code-confirmed `1x19` vector indexed by `0x2044`; MOD2
+  changes `16 / 19` cells. It remains a plausible enrichment/correction vector
+  until the `0x2044` axis is physically named.
+
 Free-space scan:
 
 - `0xF021-0xFFD5`: `4021` zero bytes and the best current code-cave candidate.

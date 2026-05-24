@@ -243,6 +243,14 @@ value before storing it, runtime `0x20B1` becomes `0xFF`, so stock runtime
 behavior should select the nonzero `0x8A69` bank. If `0x800A` were `0x01`, the
 stored selector would become `0x00` and the `0x8B41` bank would be selected.
 
+Working bank naming:
+
+- `0x8A69`: likely high-octane/default spark advance bank.
+- `0x8B41`: likely low-octane/alternate spark advance bank.
+- Reasoning: stock selector behavior defaults to `0x8A69`, and a stock
+  table-to-table comparison shows `0x8B41` is usually lower in high-load
+  columns even though it has a mid-load advance ridge.
+
 Inputs:
 
 ```text
@@ -666,7 +674,14 @@ C623: FD 24 56      STD $2456
 
 Status:
 
-- Keep `0x802E-0x81D4` as MOD2-backed data.
+- Keep `0x802E-0x81D4` as MOD2-backed data and the strongest unconfirmed
+  fuel/enrichment candidate.
+- MOD2 changes `147 / 423` cells in the `47x9` view.
+- Upper split `24x9 @ 0x802E`: `75 / 216` changed cells, mostly `+4`, `+5`,
+  and `+6` raw-count increases.
+- Lower split `23x9 @ 0x8106`: `72 / 207` changed cells, mostly parent rows
+  `35-46` and columns `0-5`, with modulo-byte `+5` changes and one `+18`
+  group.
 - Do not call it code-confirmed yet.
 - It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
 

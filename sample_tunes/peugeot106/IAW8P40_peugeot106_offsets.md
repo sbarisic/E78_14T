@@ -37,7 +37,10 @@ What the XDF contains:
 
 - Raw 16x16 byte views for the most promising regions.
 - Scalar views for the 68HC11 vectors.
-- Conservative descriptions only. No fuel/spark semantics are asserted yet.
+- Conservative descriptions remain the default. The spark bank pair now has
+  likely octane/default labels because the selector path and high-load timing
+  comparison both support that interpretation; fuel/correction candidates remain
+  explicitly unconfirmed.
 - Added compact views for packed structures:
   - `0x86DB` as `8x15`
   - `0x88CA` as `8x19`
@@ -53,7 +56,8 @@ What the XDF contains:
   - the `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52`
 - Added screenshot-assisted scaled views:
   - `0x929E` as the code-confirmed `24` point RPM axis, displayed as `15000000 / period`
-  - `0x8A69` and `0x8B41` as likely spark advance banks, displayed as `raw / 2` degrees
+  - `0x8A69` as likely high-octane/default spark advance, displayed as `raw / 2` degrees
+  - `0x8B41` as likely low-octane/alternate spark advance, displayed as `raw / 2` degrees
   - `0x8C19` as a likely RPM-only/WOT spark advance vector, displayed as `raw / 2` degrees
   - `0x879E`, `0x87A0`, `0x87A2`, and `0x87A4` as RPM-scaled period thresholds
   - `0x9291` and `0x92CF` as code-referenced 9-byte axis vectors
@@ -98,9 +102,13 @@ Checksum offsets:
 
 Candidate and code-confirmed offsets added to the XDF:
 
-- `0x802E-0x81D4`: candidate `47x9` table.
+- `0x802E-0x81D4`: candidate `47x9` table and strongest unconfirmed
+  fuel/enrichment candidate from the MOD2 comparison. MOD2 changes `147 / 423`
+  cells, mostly coherent positive modulo-byte deltas.
 - `0x802E-0x8105`: split view of the upper `24x9` section of the `47x9` table.
+  MOD2 changes `75 / 216` cells, mostly by `+4`, `+5`, and `+6`.
 - `0x8106-0x81D4`: split view of the lower `23x9` section of the `47x9` table.
+  MOD2 changes `72 / 207` cells, mostly parent rows `35-46` and columns `0-5`.
 - `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
@@ -118,11 +126,13 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x89ED-0x89F2`: code-referenced control scalars.
 - `0x89F3-0x8A05`: code-confirmed `1x19` interpolation vector; part of a larger `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
-- `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank.
-- `0x8B41-0x8C18`: code-confirmed `24x9` 2D table bank.
+- `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank; likely
+  high-octane/default spark advance.
+- `0x8B41-0x8C18`: code-confirmed `24x9` 2D table bank; likely
+  low-octane/alternate spark advance.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
 - `0x8C19-0x8C30`: code-confirmed RPM-only vector used when `RAM 0x00A9 bit 0x20` bypasses the banked maps.
-- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice. A screenshot-assisted `raw / 230` scaled view is included as a correction-factor candidate.
+- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice. A screenshot-assisted `raw / 230` scaled view is included as a correction-factor candidate. Current trace shows it can seed `0x00D0`, then `0x00CE`, then the load/MAP-like axis `0x2034`, so it is probably correction/load-model related rather than proven main fuel.
 - `0x929E-0x92CD`: code-confirmed period/RPM axis for `0x2036`; count byte is `0x92CE = 0x18`.
 - `0x9291-0x9299`: code-referenced 9-byte axis vector; count byte is `0x929A = 0x09`.
 - `0x92CF-0x92D7`: code-referenced 9-byte axis/vector; nearby count byte is `0x92D8 = 0x09`.
@@ -156,6 +166,10 @@ Useful direct-reference hints from byte/opcode context:
 - `0x89ED`, `0x89F0`, `0x89F2`, `0x8A06`, and `0x8A08` are scalar/control bytes used around `0xBAA8-0xBB96`.
 - `0x8A69` / `0x8B41` are selected as 2D table banks around `0x48EE-0x4941`.
 - `0x800A` is loaded around `0xCBEF` and decremented before being stored to `0x20B1`.
+- Stock and MOD2 both have `0x800A = 0x00`, which underflows to runtime
+  `0x20B1 = 0xFF` and selects `0x8A69`. High-load numeric comparison also
+  points to `0x8A69` as likely high-octane/default and `0x8B41` as likely
+  low-octane/alternate.
 - `0x8A68` is sign-extended as an optional offset around `0x492A-0x493E`.
 - `0x8C19` is used by the `0x48F4` bypass path as an RPM-only vector.
 - `0x9187` is loaded as a 2D table base around `0x6344-0x636A`; stride comes from `0x929A`.
@@ -168,4 +182,7 @@ Useful direct-reference hints from byte/opcode context:
 Important caution:
 
 - The MOD2-touched blocks are stronger candidates than visual-only blocks, but they are still raw reverse-engineering views.
-- Do not label fuel, ignition, RPM, load, or temperature until code usage or live behavior confirms the meaning.
+- Do not label fuel, RPM, temperature, or the exact correction type until code
+  usage or live behavior confirms the meaning. Spark timing is now a strong
+  working label for `0x8A69`, `0x8B41`, and `0x8C19`, but octane-bank names
+  should remain "likely" until knock/fallback logic is fully traced.

@@ -192,6 +192,7 @@ They remain worth inspecting in TunerPro.
   - `0x8A68` as a code-confirmed signed offset byte
   - `0x8A69` and `0x8B41` as code-confirmed `24x9` 2D table banks
   - screenshot-assisted `0x8A69` and `0x8B41` scaled as likely spark advance with `raw / 2` degrees
+  - `0x8A69` as likely high-octane/default spark and `0x8B41` as likely low-octane/alternate spark, based on stock selector behavior and high-load timing comparison
   - likely spark advance x-axis labels changed from placeholder `0-8` to provisional load/MAP-like `0-1024`
   - `0x800A` as the calibration byte that seeds runtime spark-bank selector `0x20B1`; stock `0x00` underflows to `0xFF`, selecting the `0x8A69` bank
   - `0x8C19` as a likely RPM-only/WOT spark advance vector with `raw / 2` degrees
@@ -222,6 +223,10 @@ They remain worth inspecting in TunerPro.
   - `0x2044` is derived from `RAM 0x00D4` and clamped to `0x1200`
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
+- Current fuel/correction search status:
+  - `0x802E-0x81D4` is the strongest unconfirmed main-fuel/enrichment candidate; MOD2 changes `147 / 423` cells in coherent positive groups
+  - `0x9187-0x925E` is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
+  - `0x89F3-0x8A05` is a code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
 - Free-space scan:
   - `0xF021-0xFFD5` is the best current code-cave candidate, `4021` zero bytes before the vector table
   - `0xB600-0xB7FF` is `512` zero bytes and is skipped by the checksum routine
@@ -230,7 +235,7 @@ They remain worth inspecting in TunerPro.
 
 ## Things Not Yet Known
 
-- Which maps are fuel, ignition, idle, warmup, transient, limiter, or diagnostic.
+- Which maps are fuel, idle, warmup, transient, or diagnostic. The main spark maps are now strong likely labels, but octane-bank naming remains provisional until knock/fallback logic is fully traced.
 - Exact names for the larger parent tables that contain the old `0x88CD` and `0x86DB` visual slices.
 - Axis locations and axis scaling.
 - Byte scaling for physical units.
@@ -250,8 +255,8 @@ They remain worth inspecting in TunerPro.
    - legacy `15x9 @ 0x91D9` only for screenshot continuity
    - still-unconfirmed `47x9 @ 0x802E`
 3. Inspect the `Scaled / Likely Named Views` category next:
-   - likely spark advance bank A `24x9 @ 0x8A69`
-   - likely spark advance bank B `24x9 @ 0x8B41`
+   - likely spark advance high-octane/default `24x9 @ 0x8A69`
+   - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
    - these now use provisional load/MAP-like x labels `0, 128, ..., 1024`
    - spark bank selector config `0x800A`
    - likely WOT spark advance vector `1x24 @ 0x8C19`
@@ -273,7 +278,7 @@ They remain worth inspecting in TunerPro.
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
    - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
-6. Confirm table axes, units, and signedness before assigning fuel/spark names.
+6. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
 7. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
 8. Keep original BIN unchanged and create tuned copies with clear names.
 
@@ -294,4 +299,4 @@ axis, so the likely spark maps now use provisional mbar-style `0-1024` labels.
 
 ## Practical Caution
 
-This XDF is for reverse engineering and inspection only at this stage. Do not treat any candidate table as confirmed fuel or ignition until there is corroborating evidence from disassembly, known damos/map packs, live behavior, or controlled changes on a bench/test setup.
+This XDF is for reverse engineering and inspection only at this stage. Treat the spark labels as strong working names, but do not treat any fuel/correction candidate as confirmed main fuel until there is corroborating evidence from disassembly, known damos/map packs, live behavior, or controlled changes on a bench/test setup.
