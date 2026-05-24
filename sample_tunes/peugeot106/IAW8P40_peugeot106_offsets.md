@@ -45,6 +45,12 @@ What the XDF contains:
 - Added better-aligned row-based views:
   - `0x86DB` as `13x9`
   - `0x88CD` as `17x9`
+- Added code-confirmed disassembly views:
+  - `0x85BA` as `24x5`
+  - `0x8A0A` as `5x5`
+  - `0x8A69` and `0x8B41` as banked `24x9`
+  - `0x9187` as `24x9`
+  - the `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52`
 
 Recommended next steps:
 
@@ -93,12 +99,12 @@ MOD2-backed candidate offsets added to the XDF:
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
 - `0x87A0`: changed 16-bit threshold scalar, stock `0x07EF`, MOD2 `0xFFFF`.
 - `0x89ED-0x89F2`: code-referenced control scalars.
-- `0x89F3-0x8A05`: code-confirmed `1x19` interpolation vector.
+- `0x89F3-0x8A05`: code-confirmed `1x19` interpolation vector; part of a larger `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
 - `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank.
 - `0x8B41-0x8C18`: code-confirmed `24x9` 2D table bank.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
-- `0x91D9-0x925F`: candidate `15x9` table.
+- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice.
 
 Useful direct-reference hints from byte/opcode context:
 
@@ -108,6 +114,7 @@ Useful direct-reference hints from byte/opcode context:
 - `0x89ED`, `0x89F0`, `0x89F2`, `0x8A06`, and `0x8A08` are scalar/control bytes used around `0xBAA8-0xBB96`.
 - `0x8A69` / `0x8B41` are selected as 2D table banks around `0x48EE-0x4941`.
 - `0x8A68` is sign-extended as an optional offset around `0x492A-0x493E`.
+- `0x9187` is loaded as a 2D table base around `0x6344-0x636A`; stride comes from `0x929A`.
 - `0x925F` is referenced around `0x5E6B`.
 
 Important caution:

@@ -101,9 +101,9 @@ Top-level changed regions:
 | `0x800C-0x800F` | `4` | Checksum word and complement |
 | `0x802E-0x81D4` | `147` changed cells inside a `47x9` view | Large MOD2-touched table candidate |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
-| `0x89F2-0x8A05` | `17` changed cells inside a `1x20` vector view | Compact vector or mini table |
+| `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
-| `0x91D9-0x925F` | `62` changed cells inside a `15x9` view | Clean table-like block |
+| `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | The old `0x91D9` `15x9` view is a legacy misaligned slice |
 
 ## MOD2-Touched Candidate: 47x9 @ `0x802E`
 
@@ -156,7 +156,7 @@ Interpreted as big-endian 16-bit words:
 
 These words are directly referenced in code around `0x6F14-0x6F2A`. They may be thresholds, limits, or switch values. The stock values are close to each other, which suggests a paired low/high threshold or hysteresis pair, but the MOD2 values are unusual enough that the exact purpose should be confirmed by disassembly.
 
-## MOD2-Touched Vector @ `0x89F2`
+## Legacy Raw MOD2-Touched Vector View @ `0x89F2`
 
 Proposed view:
 
@@ -175,7 +175,7 @@ MOD2:  40 40 46 4D 52 5B 64 6F 7E 90 96 9A 9E A2 A7 AC AA A3 98 8C
 
 Evidence:
 
-- `17` of the `20` bytes change.
+- `16` bytes change in the corrected `0x89F3-0x8A05` vector.
 - A direct code reference to `0x89F2` was observed around `0xBB81` as part of an extended load sequence.
 - The values look like a compact breakpoint/vector/table region rather than executable code.
 
@@ -220,36 +220,35 @@ RAM[0x2036] -> descriptor bytes 2/3
 
 This is currently one of the strongest code-confirmed MOD2-backed map candidates, although the physical meaning of the axes is not yet known.
 
-## MOD2-Touched Candidate: 15x9 @ `0x91D9`
+## MOD2-Touched Code-Confirmed 24x9 @ `0x9187`
 
-Proposed view:
-
-```text
-start: 0x91D9
-shape: 15 rows x 9 columns
-end:   0x925F
-```
-
-Why this alignment is useful:
-
-- `0x91D9-0x925F` is exactly `135` bytes, or `15*9`.
-- Rows are visually smooth table-like data.
-- MOD2 changes `62` cells.
-- A direct reference to the last byte/area `0x925F` was observed around `0x5E6B`.
-
-Notable anomaly:
+Disassembly corrected the earlier `15x9 @ 0x91D9` view. The confirmed structure is:
 
 ```text
-0x91EC stock: 0xCD
-0x91EC MOD2:  0x6F
+start: 0x9187
+shape: 24 rows x 9 columns
+end:   0x925E
 ```
 
-In the `15x9` view this is row `2`, column `1`, and it is a `-94` raw-count change. It may be a deliberate smoothing correction, a copied tune artifact, or a suspicious outlier in the stock dump. It should not be assumed to be wrong until code usage and neighboring table meaning are known.
+The proving routine is at `0x6344-0x636A`:
 
-Regular delta patterns:
+```asm
+634B: F6 92 9A      LDAB $929A       ; stride = 9
+6351: CE 92 91      LDX #$9291       ; axis vector/helper input
+6354: BD B3 83      JSR $B383
+635A: FC 20 36      LDD $2036
+6360: CC 91 87      LDD #$9187       ; table base
+6366: BD B2 D6      JSR $B2D6
+```
 
-- Rows `4-8`: columns `1-4` increase by `+4`.
-- Rows `9-12`: columns `1-4` increase by `+4/+7`, columns `5-7` increase by `+3`.
+Notes:
+
+- `0x929A` is `0x09`, confirming a 9-column stride.
+- `0x9291-0x9299` is the supporting axis vector used by helper `0xB383`.
+- `RAM 0x2036` supplies the second interpolation axis.
+- MOD2 changes `62` bytes inside this confirmed table.
+- The old `0x91D9` view starts one byte after row 9 begins and is kept only for screenshot continuity.
+- `0x91EC: 0xCD -> 0x6F` is row 11, column 2 of this confirmed table, not a separate anomaly outside the map.
 - Row `13`: column `5` increases by `+32`, much larger than surrounding changes.
 - Row `14`: columns `2-7` increase by `+3`.
 
@@ -275,16 +274,17 @@ Current code-reference summary:
 | `0x879E` | `0x6F28` | Threshold/hysteresis flag-set compare |
 | `0x87A0` | `0x6F12` | Threshold/hysteresis flag-clear compare |
 | `0x89ED-0x89F2` | `0xBADA-0xBB92` | Control/scalar bytes |
-| `0x89F3` | `0xBAAB` | Code-confirmed 1D interpolation vector |
+| `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, `0x8A52` | `0xBA5D-0xBAB2` | Code-confirmed `0x2044`-indexed 1D vector family |
 | `0x8A68` | `0x492E` | Optional signed offset byte |
 | `0x8A69` / `0x8B41` | `0x4904-0x4927` | Code-confirmed banked 24x9 tables |
+| `0x9187` | `0x6344-0x636A` | Code-confirmed 24x9 table using stride byte `0x929A` |
 | `0x925F-0x9261` | `0x5E6A-0x5E9F` | Scalar/threshold bytes near 0x91xx descriptor region |
 
 Some earlier naive byte-reference hits were false positives. For example, the apparent `0x802E` hit around `0xC620` decodes as `CPD #$FF80` followed by a branch and is not a real table reference.
 
 ## XDF Updates Made
 
-`IAW8P40_peugeot106_firstpass.xdf` was updated to version `0.4`.
+`IAW8P40_peugeot106_firstpass.xdf` was updated to version `0.5`.
 
 New categories:
 
@@ -307,7 +307,7 @@ New MOD2-backed entries:
 - `Legacy Raw 1x20 View @ 0x89F2`
 - `Legacy Raw 0x8A68 Banked Block View 48x9`
 - `Legacy Raw 1x32 View @ 0x8C18`
-- `MOD2 Compared Candidate 15x9 Table @ 0x91D9`
+- `Legacy Misaligned MOD2 15x9 Slice @ 0x91D9`
 
 After TunerPro visual review, additional split views were added:
 
@@ -317,6 +317,16 @@ After TunerPro visual review, additional split views were added:
 - `Code-Confirmed Bank B 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
+- `Code-Confirmed 2D Table 24x9 @ 0x9187`
+- `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
+- `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
+- `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
+- `Code-Confirmed 1D Vector 1x19 @ 0x8A3A`
+- `Code-Confirmed 1D Vector 1x19 @ 0x8A52`
+- `Code-Referenced Scalar Block 1x5 @ 0x8A4D`
+- `Code-Referenced Scalar Block 1x3 @ 0x8A65`
+- `Code-Confirmed 2D Table 24x5 @ 0x85BA`
+- `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
 
 Rationale:
 
@@ -335,6 +345,13 @@ The `0x89F2` raw view was also refined:
 
 - `0x89ED-0x89F2` are code-referenced control/scalar bytes.
 - `0x89F3-0x8A05` is a code-confirmed `1x19` vector used by the 1D interpolation helper at `0xB2AB`.
+- The continuation pass confirmed the surrounding `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x8A27`, `0x8A3A`, and `0x8A52`.
+
+The `0x91D9` raw view was corrected:
+
+- The code-confirmed table starts at `0x9187`, not `0x91D9`.
+- It is a `24x9` B2D6 table with stride `9`.
+- The `0x91D9` view is now retained only as a legacy misaligned slice.
 
 The `0x879E/0x87A0` pair was confirmed as threshold/hysteresis data, not a map:
 
@@ -346,12 +363,14 @@ All new table entries are raw byte views. No fuel, ignition, RPM, load, or tempe
 
 ## Best Next Steps
 
-1. Disassemble the checksum routine around `0x5AD8-0x5B17` and confirm the exact loop initialization.
-2. Disassemble code around the direct references:
-   - `0x492F` for `0x8A68`
-   - `0xBB81` for `0x89F2`
-   - `0x6F14-0x6F2A` for `0x879E/0x87A0`
-   - `0x5E6B` for `0x925F`
-3. In TunerPro, inspect the new `MOD2 Compared Candidates` category first.
-4. Use the MOD2 deltas to infer which tables behave like fuel, spark, limiter, enrichment, or correction tables.
+1. Continue naming source variables for the confirmed axes:
+   - `0x00CE -> 0x2034`
+   - `0x00BA -> 0x2036`
+   - `0x00D4 -> 0x2044`
+2. Trace the outputs from the confirmed maps:
+   - `0x2147` for the `0x8A69/0x8B41` banked table result
+   - `0x2063` for the `0x85BA` table
+   - return value from the `0x9187` table routine at `0x6344`
+3. Decode the state/descriptor routine at `0x58F2`; it explains the nearby descriptor triples at `0x9131-0x9167`.
+4. In TunerPro, inspect the code-confirmed MOD2-touched maps first: `0x8A69`, `0x8B41`, `0x9187`, and `0x89F3`.
 5. Before burning any edited EPROM, recompute the checksum pair at `0x800C-0x800F`.

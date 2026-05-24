@@ -1,0 +1,846 @@
+# Marelli IAW 8P.40 Firmware Logic Notes
+
+Analysis date: 2026-05-24
+
+This file is a living description of the ECU firmware behavior while the Peugeot 106 1.3 Rallye Marelli `IAW 8P.40` ROM is being reverse engineered.
+
+Confidence labels used below:
+
+- Confirmed: directly supported by decoded instruction flow.
+- Strong inference: supported by code shape and 68HC11 register usage, but physical meaning is not fully named.
+- Open: visible in code, but not understood enough to name.
+
+## Firmware / CPU Model
+
+Confirmed:
+
+- The EPROM is a full `27C512` image, `0x10000` bytes.
+- `0x0000-0x3FFF` is zero-filled.
+- Real firmware and calibration content starts at `0x4000`.
+- The target CPU family is Motorola/Freescale `68HC11`.
+- The reset vector at `0xFFFE` points to `0xB800`.
+- The firmware uses the 68HC11 internal register block at `0x1000`.
+
+Important 68HC11 register addresses used by the ROM:
+
+| Address | 68HC11 role | Observed firmware use |
+| ---: | --- | --- |
+| `0x1000` | Port A | Output/input bit manipulation |
+| `0x1008` | Port D | Port/config use |
+| `0x1009` | DDRD | Direction setup |
+| `0x100B` | CFORC | Timer/output compare force use |
+| `0x100E` | TCNT | Main free-running timer / timebase |
+| `0x1014` | TIC3 | Captured timer value used in period calculation |
+| `0x101C` | TOC4 | Output compare scheduling |
+| `0x1023` | TFLG1 | Timer flag acknowledgement |
+| `0x1024` | TMSK2 | Timer interrupt mask / status logic |
+| `0x1025` | TFLG2 | Timer overflow flag acknowledgement |
+| `0x1030` | ADCTL | ADC conversion control |
+| `0x1031-0x1034` | ADR1-ADR4 | ADC result bytes copied into RAM |
+| `0x103A` | COPRST | Watchdog service writes `0x55` / `0xAA` |
+| `0x103D` | INIT | Register/RAM mapping setup at reset |
+
+The register names are from the standard 68HC11 register layout. Exact MCU mask/variant still requires PCB markings.
+
+## Boot / Reset Flow
+
+Confirmed reset entry:
+
+```text
+0xFFFE -> 0xB800
+```
+
+The reset path at `0xB800` performs these broad steps:
+
+1. Clears or initializes core status bytes such as `0x0094`, `0x008E`, `0x008F`, `0x0095-0x009B`.
+2. Loads the stack pointer from the word at `0x916A`.
+   - Bytes at `0x916A-0x916B` are `0x27 0xFF`.
+   - This makes the expected stack top `0x27FF`.
+3. Configures 68HC11 registers in the `0x1000` range.
+4. Services the watchdog with the standard `0x55`, `0xAA` sequence at `0x103A`.
+5. Copies the calibration/data window `0x8000-0x9314`.
+6. Calls a series of initialization routines.
+7. Enables runtime operation and jumps to the main runtime entry at `0xD2D9`.
+
+Calibration/window copy:
+
+```asm
+B843: CE 80 00      LDX #$8000
+B846: 18 CE 80 00   LDY #$8000
+B84A: 8C 93 15      CPX #$9315
+B84D: 27 0A         BEQ $B859
+B84F: A6 00         LDAA $00,X
+B851: 18 A7 00      STAA $00,Y
+B854: 08            INX
+B855: 18 08         INY
+B857: 20 F1         BRA $B84A
+```
+
+This is probably a calibration RAM overlay or mirrored logical memory window. The source and destination addresses are the same logical range, so board-level memory mapping matters here.
+
+High-confidence reset call groups:
+
+| Address | Current interpretation |
+| ---: | --- |
+| `0x4017`, `0x4034`, `0x4079`, `0x409C`, `0x40A8` | ADC/input preload and core RAM initialization |
+| `0xD6AC` | Main runtime variable initializer |
+| `0x956B` | Period/timer history initializer, including `0x00BA = 0xFFFF` |
+| `0x4421` | Initializes the `0x21xx` calculation/output block |
+| `0x5652` | Initializes/updates a mode or control block using timer/ADC state |
+| `0x67A3` | Initializes a state-machine/communication-looking block |
+| `0xBB98` | Initializes the `0x89xx/0x8Axx` vector output variables |
+| `0xB555` | Initializes a countdown/timer pair at `0x2469/0x246A` and flag `0x009C` |
+
+## Interrupt / Fault Vector Behavior
+
+Confirmed vector table:
+
+| Vector address | Target |
+| ---: | ---: |
+| `0xFFF0` | `0x95F3` |
+| `0xFFF2` | `0x6405` |
+| `0xFFF4` | `0xB94D` |
+| `0xFFF6` | `0xB94D` |
+| `0xFFF8` | `0xB948` |
+| `0xFFFA` | `0xB93D` |
+| `0xFFFC` | `0xB942` |
+| `0xFFFE` | `0xB800` |
+
+The short handlers at `0xB93D`, `0xB942`, `0xB948`, and `0xB94D` set bits in RAM byte `0x0094`.
+
+Observed behavior:
+
+- `0xB93D` sets `0x0094 bit 0x01`, then jumps back into reset flow near `0xB806`.
+- `0xB942` sets `0x0094 bit 0x02`, then jumps back into reset flow near `0xB806`.
+- `0xB948` sets `0x0094 bit 0x04`, then falls into the fatal path.
+- `0xB94D` sets `0x0094 bit 0x08`, zeros several I/O registers, and loops forever.
+
+Inference:
+
+- `0x0094` records reset/interrupt/fault cause bits.
+- Some vectors cause a soft restart.
+- Some vectors force a fail-safe stop loop.
+
+## Main Runtime Loop
+
+Confirmed:
+
+- Reset eventually jumps to `0xD2D9`.
+- `0xD2D9` performs scheduler/timebase checks, stack-integrity checks, watchdog service, and then enters the main ordered runtime body.
+- The loop eventually jumps back to `0xD2D9` through `0xD6A7`.
+
+### Runtime Entry / Guard @ `0xD2D9`
+
+Important behavior:
+
+- Reads the free-running timer at `0x100E`.
+- Updates timebase RAM values around `0x24E5`, `0x24E7`, and `0x24EA`.
+- Stores the stack pointer and compares it with the expected reset stack top at `0x916A`.
+- Services the watchdog through `0x103A`.
+- Depending on flags, either continues into runtime or jumps back into reset/init sections.
+
+Stack check pattern:
+
+```asm
+D2ED: BF 24 EA      STS $24EA
+D2F0: FE 24 EA      LDX $24EA
+D2F3: BC 91 6A      CPX $916A
+D2F6: 26 18         BNE $D310
+```
+
+Inference:
+
+- `0x916A` stores the expected stack top.
+- The main loop checks for stack imbalance/corruption.
+- A mismatch changes fault/status bits and can alter the runtime path.
+
+### Main Body Call Order @ `0xD36D-0xD6A7`
+
+The main loop has a long fixed call order. Some calls are still unnamed, but the execution shape is now visible.
+
+High-level order:
+
+```text
+D36D: enable/enter periodic section
+D370: call B476
+D373: call B48C
+D376: call C910
+D379: call 5828
+D37C: call B562
+D37F: call 650D
+
+D384-D3D6: decrement small RAM countdown/state blocks
+
+D3D9: call 42D0
+D3DC: call 4C5B
+D3DF: call 4ECD
+D3E2: call 9D25
+D3E5: call 4214
+
+D3E8-D40C: decrement descriptor/state timers in 0x0012-0x004A
+
+D40F: call 5AD6       ; checksum service/check
+D412: call 602F
+D415: call 6107
+D418: call 6133
+D41B: call 615B
+D41E: call 6187
+D421: call 62DC
+
+D426-D459: branch on mode/state byte 0x21A6
+           calls 6836, 68F3, 6BBE, 6A12, or 6D43
+
+D45D: call C000
+
+D46D-D498: build normalized axes 0x2036, 0x2044, 0x2046
+
+D4A9-D517: additional period/sensor/correction calculations
+
+D590-D6A6: final runtime calls, map helpers, output/state updates
+
+D6A7: JMP D2D9
+```
+
+Important caution:
+
+- Some byte patterns look like `JSR`/`JMP` if scanned naively, but are really operands inside other instructions.
+- The list above is based on alignment from the visible runtime flow, but individual callee meaning still needs confirmation.
+
+## ADC / Raw Input Preprocessing
+
+Confirmed:
+
+- ADC conversion control is written at `0x1030`.
+- ADC result bytes at `0x1031-0x1034` are copied into RAM.
+
+Examples:
+
+```asm
+4017: CE 10 00      LDX #$1000
+401D: B6 10 31      LDAA $1031
+4020: B7 20 08      STAA $2008
+4023: B6 10 33      LDAA $1033
+4026: B7 20 0D      STAA $200D
+4029: BD 41 55      JSR $4155
+402C: B6 10 34      LDAA $1034
+402F: B7 20 0A      STAA $200A
+```
+
+```asm
+4034: CE 10 00      LDX #$1000
+403A: B6 10 32      LDAA $1032
+403D: B7 20 0C      STAA $200C
+4040: B6 10 33      LDAA $1033
+4043: B7 20 07      STAA $2007
+4046: B7 21 97      STAA $2197
+4049: BD 5E 82      JSR $5E82
+404C: B7 20 13      STAA $2013
+4059: B6 10 34      LDAA $1034
+405C: B7 20 0E      STAA $200E
+```
+
+Strong inference:
+
+- RAM `0x2007-0x200E` contains raw or lightly processed ADC channel values.
+- The physical meanings are not named yet.
+- `0x2034` is later derived from the processed RAM word `0x00CE`.
+
+## Timebase / Engine Period Logic
+
+### Timer Delta `0x00BA`
+
+Confirmed:
+
+- `0x00BA` is a timer delta.
+- It is computed as current captured timer value minus previous captured timer value.
+
+Capture/update evidence:
+
+```asm
+7392: FC 10 14      LDD $1014
+7395: DD D9         STD $D9
+```
+
+```asm
+7701: DC D9         LDD $D9
+7703: DD B8         STD $B8
+```
+
+```asm
+7667: DC D9         LDD $D9
+7669: 93 B8         SUBD $B8
+766B: DD BA         STD $BA
+```
+
+Strong inference:
+
+- `0x1014` is a timer input-capture register.
+- `0x00BA` is an engine-period-like value.
+- Because it is a period delta, smaller values probably mean higher speed.
+
+### Normalized Axis `0x2036`
+
+Confirmed:
+
+`0x2036` is generated from `0x00BA` using helper `0xB3B9` and calibration data around `0x929E`.
+
+```asm
+D46D: CE 92 9E      LDX #$929E
+D470: F6 92 CE      LDAB $92CE
+...
+D47A: DC BA         LDD $BA
+D47C: BD B3 B9      JSR $B3B9
+D47F: FD 20 36      STD $2036
+```
+
+Interpretation:
+
+- `0x2036` is an 8.8-style normalized axis.
+- It feeds multiple 2D maps.
+- It is likely the speed/RPM axis, but the exact physical scaling is not confirmed.
+
+### Inverse/Speed-Like Value `0x00D4`
+
+Confirmed:
+
+- `0x00D4` is derived from the period value `0x00BA`.
+- The routine around `0x4292-0x42C8` divides the constant `0xE4E2` by `0x00BA`.
+
+```asm
+4292: FC 21 2D      LDD $212D
+4295: FD 21 2F      STD $212F
+4298: DC D4         LDD $D4
+429A: FD 21 2D      STD $212D
+...
+42A8: CC E4 E2      LDD #$E4E2
+42AB: DE BA         LDX $BA
+42AD: 02            IDIV
+...
+42B6: DD D4         STD $D4
+```
+
+Strong inference:
+
+- `0x00D4` is speed-like or RPM-like because it is inverse period.
+- The firmware stores previous values in `0x212D/0x212F`.
+
+### Normalized Axis `0x2044`
+
+Confirmed:
+
+`0x2044` is derived from `0x00D4` and clamped to `0x1200`.
+
+```asm
+D482: DC D4         LDD $D4
+D484: 1A 83 1C 20   CPD #$1C20
+D488: 25 05         BCS $D48F
+D48A: CC 12 00      LDD #$1200
+D48D: 20 09         BRA $D498
+D48F: CE 00 19      LDX #$0019
+D492: 02            IDIV
+D493: 8F            XGDX
+D494: 05            ASLD
+D495: 05            ASLD
+D496: 05            ASLD
+D497: 05            ASLD
+D498: FD 20 44      STD $2044
+```
+
+Interpretation:
+
+- `0x2044` is an 8.8-style index into 19-cell 1D vectors.
+- Max value is `0x1200`, integer index `18`.
+- This explains why 19-cell curves are common in the `0x89C7-0x8A67` vector family.
+
+### Normalized Axis `0x2034`
+
+Confirmed:
+
+`0x2034` is built from RAM word `0x00CE`, doubled, and clamped to `0x07FF`.
+
+```asm
+41A1: DC CE         LDD $CE
+41A3: 05            ASLD
+41A4: 1A 83 07 FF   CPD #$07FF
+41A8: 23 03         BLS $41AD
+41AA: CC 07 FF      LDD #$07FF
+41AD: FD 20 34      STD $2034
+```
+
+Strong inference:
+
+- `0x2034` is a load-like 8.8 axis.
+- It may represent throttle, pressure, or air/load after filtering.
+- The physical source of `0x00CE` is a high-priority next target.
+
+## Interpolation / Calibration Helpers
+
+### 1D Helper `0xB2AB`
+
+Confirmed:
+
+- `Y` points to a byte vector.
+- `D` is an 8.8 index.
+- `A` is integer index.
+- `B` is fraction.
+- Result returns in `A`.
+
+Formula:
+
+```text
+result = table[index] + ((table[index + 1] - table[index]) * fraction) / 256
+```
+
+The routine handles negative slopes.
+
+### 1D Helper Variant `0xB2BA`
+
+Confirmed:
+
+- Used similarly to `0xB2AB`.
+- Confirmed callers include `0x89C7`, `0x9303`, and `0x83F0` vectors.
+
+Open:
+
+- Exact behavioral difference from `0xB2AB` still needs final decode.
+
+### 2D Helper `0xB2D6`
+
+Confirmed descriptor layout at `Y`:
+
+| Offset | Meaning |
+| ---: | --- |
+| `Y+0` | X/column integer index |
+| `Y+1` | X/column fraction |
+| `Y+2` | Y/row integer index |
+| `Y+3` | Y/row fraction |
+| `Y+4..Y+5` | Table base pointer |
+| `Y+6` | Row stride / column count |
+
+Confirmed:
+
+- Used by code-confirmed 2D tables at `0x8A69`, `0x8B41`, `0x9187`, `0x85BA`, `0x8A0A`, and several others still being reviewed.
+- Returns an interpolated byte result in `A`.
+
+### Axis Lookup Helper `0xB383`
+
+Confirmed:
+
+- Called with `X` pointing at a breakpoint vector and `B` as count/stride metadata.
+- Produces an 8.8 index in `D`.
+- Used for the `0x9187` table axis via `0x9291`.
+
+Known caller for `0x9187`:
+
+```asm
+6351: CE 92 91      LDX #$9291
+6354: BD B3 83      JSR $B383
+6357: 18 ED 00      STD $00,Y
+```
+
+### Period Axis Helper `0xB3B9`
+
+Confirmed:
+
+- Only direct caller found so far is at `0xD47C`.
+- Converts period-like `0x00BA` into normalized axis `0x2036`.
+- Uses calibration area around `0x929E`.
+
+Open:
+
+- Exact breakpoint scaling and units.
+
+## Code-Confirmed Calibration Logic
+
+### Banked 2D Table Pair `0x8A69` / `0x8B41`
+
+Confirmed routine:
+
+```asm
+4904: CE 8A 69      LDX #$8A69
+4907: 7D 20 B1      TST $20B1
+490A: 26 03         BNE $490F
+490C: CE 8B 41      LDX #$8B41
+490F: 18 CE 21 3A   LDY #$213A
+4913: FC 20 34      LDD $2034
+4916: 18 ED 00      STD $00,Y
+4919: FC 20 36      LDD $2036
+491C: 18 ED 02      STD $02,Y
+491F: CD EF 04      STX $04,Y
+4922: 86 09         LDAA #$09
+4924: 18 A7 06      STAA $06,Y
+4927: BD B2 D6      JSR $B2D6
+```
+
+Confirmed behavior:
+
+- If `RAM 0x20B1 != 0`, use `24x9 @ 0x8A69`.
+- If `RAM 0x20B1 == 0`, use `24x9 @ 0x8B41`.
+- Axis 1: `0x2034`.
+- Axis 2: `0x2036`.
+- Output: RAM word around `0x2147`.
+- Optional signed offset byte: `0x8A68`.
+
+Special bypass:
+
+```asm
+48F4: 13 A9 20 0C   BRCLR $A9, #$20, $4904
+48F8: 18 CE 8C 19   LDY #$8C19
+48FC: FC 20 36      LDD $2036
+48FF: BD B2 AB      JSR $B2AB
+```
+
+If `RAM 0x00A9 bit 0x20` is set, the code bypasses the banked 2D maps and uses a 1D vector at `0x8C19` indexed by `0x2036`.
+
+Physical meaning:
+
+- Open. MOD2 touched these heavily, so they are high-priority tune-relevant maps.
+
+Downstream trace:
+
+- Direct references to `0x2147` cluster in `0x44xx-0x49xx`.
+- The routine family around `0x4421-0x477B` initializes and post-processes a calculation block using `0x2147`, `0x2148`, `0x2149`, `0x214C`, and nearby `0x215x` values.
+- `0x460A-0x463E` applies an additional correction to `0x2147` when `0x20B1` is zero/nonzero dependent.
+- `0x4642-0x468F` clamps or converts the `0x2147` word and writes related byte outputs including `0x2001` and `0x2148`.
+
+Interpretation:
+
+- `0x2147` is an intermediate command/correction value, not yet proven to be a final actuator register value.
+- It appears to be combined with other corrections and clamped before becoming smaller byte-sized runtime outputs.
+- Tracing from `0x2001`, `0x2148`, and the `0x44xx-0x49xx` block is the next step for naming the banked maps.
+
+### 2D Table `0x9187`
+
+Confirmed routine:
+
+```asm
+6344: B6 20 17      LDAA $2017
+6347: 18 CE 21 8D   LDY #$218D
+634B: F6 92 9A      LDAB $929A
+634E: 18 E7 06      STAB $06,Y
+6351: CE 92 91      LDX #$9291
+6354: BD B3 83      JSR $B383
+6357: 18 ED 00      STD $00,Y
+635A: FC 20 36      LDD $2036
+635D: 18 ED 02      STD $02,Y
+6360: CC 91 87      LDD #$9187
+6363: 18 ED 04      STD $04,Y
+6366: BD B2 D6      JSR $B2D6
+6369: 16            TAB
+636A: 39            RTS
+```
+
+Confirmed behavior:
+
+- Table base: `0x9187`.
+- Shape: `24x9`.
+- Stride: `0x929A = 9`.
+- Axis 1: generated by `0xB383` using vector `0x9291-0x9299`.
+- Axis 2: `0x2036`.
+- Direct callers found at `0x58EA` and `0x5E74`.
+
+Caller behavior:
+
+```asm
+58EA: BD 63 44      JSR $6344
+58ED: F7 21 0F      STAB $210F
+```
+
+```asm
+5E74: BD 63 44      JSR $6344
+5E77: D7 D0         STAB $D0
+```
+
+So the same `0x9187` lookup can feed at least:
+
+- RAM `0x210F`.
+- Direct RAM `0x00D0`.
+
+Physical meaning:
+
+- Open. MOD2 changes 62 bytes inside this table.
+- The old `15x9 @ 0x91D9` view is misaligned and should be treated as legacy only.
+
+### 2D Table `0x85BA`
+
+Confirmed routine:
+
+```asm
+6EAA: FC 20 34      LDD $2034
+...
+6EBA: FC 20 36      LDD $2036
+...
+6EC0: CE 85 BA      LDX #$85BA
+6EC3: CD EF 04      STX $04,Y
+6EC6: 86 05         LDAA #$05
+6EC8: 18 A7 06      STAA $06,Y
+6ECA: BD B2 D6      JSR $B2D6
+6ECD: B7 20 63      STAA $2063
+```
+
+Confirmed behavior:
+
+- Table base: `0x85BA`.
+- Shape currently exposed as `24x5`.
+- Axis 1: `0x2034`.
+- Axis 2: `0x2036`.
+- Output: `0x2063`.
+- MOD2 did not change this table.
+
+### 2D Table `0x8A0A`
+
+Confirmed routine:
+
+```asm
+BA35: FC 20 34      LDD $2034
+...
+BA47: FC 20 46      LDD $2046
+...
+BA4E: CC 8A 0A      LDD #$8A0A
+BA51: 18 ED 04      STD $04,Y
+BA54: C6 05         LDAB #$05
+BA56: 18 E7 06      STAB $06,Y
+BA57: BD B2 D6      JSR $B2D6
+BA5A: B7 20 BB      STAA $20BB
+```
+
+Confirmed behavior:
+
+- Table base: `0x8A0A`.
+- Shape currently exposed as `5x5`.
+- Axis 1: `0x2034`.
+- Axis 2: `0x2046`.
+- Output: `0x20BB`.
+- MOD2 did not change this table.
+
+### `0x2044`-Indexed Vector Family
+
+Confirmed:
+
+The routine around `0xBA5D-0xBAB2` uses `0x2044` to interpolate several vectors.
+
+| Vector | Helper | Output RAM | MOD2 changed? |
+| ---: | ---: | ---: | --- |
+| `0x89C7` | `0xB2BA` | `0x20E7` | no |
+| `0x89DA` | `0xB2AB` | `0x20E8` | no |
+| `0x89F3` | `0xB2AB` | `0x20BC` | yes |
+| `0x8A27` | `0xB2AB` | `0x20DD` | no |
+| `0x8A3A` | `0xB2AB` | `0x20D4` | no |
+| `0x8A52` | `0xB2AB` | `0x20E6` | no |
+
+Nearby scalar blocks:
+
+- `0x89ED-0x89F2`: direct control scalars.
+- `0x8A4D-0x8A51`: direct scalar/sentinel bytes.
+- `0x8A65-0x8A67`: direct scalar bytes.
+
+Physical meaning:
+
+- Open. Because `0x2044` is speed-like, these are speed-indexed correction curves or limits.
+- `0x89F3` is MOD2-touched and highest priority in this family.
+
+### Threshold / Hysteresis Pair `0x879E` / `0x87A0`
+
+Confirmed:
+
+- These are not maps.
+- They are 16-bit threshold constants.
+- They compare against `RAM 0x00BA`.
+- They control `RAM 0x00A4 bit 0x10`.
+
+Key logic:
+
+```asm
+6F01: DC BA         LDD $BA
+6F03: 13 A4 10 16   BRCLR $A4, #$10, $6F1D
+...
+6F12: 1A B3 87 A0   CPD $87A0
+6F16: 23 2A         BLS $6F42
+6F18: 15 A4 10      BCLR $A4, #$10
+...
+6F28: 1A B3 87 9E   CPD $879E
+6F2C: 24 05         BCC $6F33
+6F2E: 14 A4 10      BSET $A4, #$10
+```
+
+MOD2 changes:
+
+| Address | Stock | MOD2 |
+| ---: | ---: | ---: |
+| `0x879E` | `0x07EB` | `0x00FA` |
+| `0x87A0` | `0x07EF` | `0xFFFF` |
+
+Interpretation:
+
+- This is a hysteresis or latch transition against period-like `0x00BA`.
+- MOD2 lowers one threshold and effectively pushes the other very high.
+
+## State / Descriptor Logic Around `0x58F2`
+
+Confirmed:
+
+- Many routines call `0x58F2` with:
+  - `X` pointing to a small RAM state block.
+  - `Y` pointing to a compact descriptor around `0x9131-0x9167`.
+- Callers then call `0x5982` with a small numeric ID in `B`.
+
+Example:
+
+```asm
+5E3E: CE 00 1B      LDX #$001B
+5E41: 18 CE 91 3A   LDY #$913A
+5E45: BD 58 F2      JSR $58F2
+...
+5E4E: C6 03         LDAB #$03
+5E50: BD 59 82      JSR $5982
+```
+
+Observed descriptor pointers:
+
+```text
+0x9131, 0x9134, 0x9137, 0x913A, 0x913D,
+0x9143, 0x9146, 0x9149, 0x914C, 0x914F,
+0x9152, 0x9155, 0x9158, 0x915B, 0x915E,
+0x9161, 0x9164, 0x9167
+```
+
+Behavioral interpretation:
+
+- `0x58F2` appears to update a compact state byte and countdown/step byte.
+- It tests mode bits in `X[0]`.
+- It uses descriptor bytes at `Y+0`, `Y+1`, and `Y+2`.
+- It writes back to the RAM state block.
+- `0x5982` appears to log, queue, or update event/state output using an ID.
+
+Open:
+
+- Whether this is diagnostic status, limiter state, enrichment state, idle state, or general control-mode bookkeeping.
+- The routines using `0x9131-0x9167` need naming before these descriptors should be edited as calibrations.
+
+## Diagnostic / Communication-Looking Logic
+
+Open but structured:
+
+- The reset path calls `0x67A3`.
+- The main loop calls `0x650D`.
+- `0x67A3` initializes `0x21A8`, uses table-like data around `0x67B1-0x6837`, then dispatches through routines around `0x6836-0x69CF`.
+- Several routines manipulate RAM range `0x004B-0x005B`.
+- Helper routines `0x59A8`, `0x59CA`, and `0x59F4` also walk/update `0x004B-0x005B`.
+
+Strong inference:
+
+- This looks like a small queue/state-machine system.
+- It may be diagnostics, serial communication, fault/event logging, or service-mode command parsing.
+
+Important caution:
+
+- This block includes table-like bytes and code pointers close together.
+- Do not treat `0x67B1-0x6837` as normal calibration until its dispatch format is fully decoded.
+
+## Output Compare / Actuator Scheduling
+
+Confirmed:
+
+- Routines around `0xBC12` and `0xBC90` interact with timer output compare registers.
+- They use:
+  - `0x101C` / TOC4-like output compare register.
+  - `0x1023` / TFLG1-like timer flag register.
+  - RAM words `0x20EB`, `0x20ED`, `0x242B`, `0x242D`.
+
+Example pattern:
+
+```asm
+BC60: FC 24 2B      LDD $242B
+BC63: F3 20 EB      ADDD $20EB
+BC66: FD 10 1C      STD $101C
+...
+BC7A: 1A B3 20 EB   CPD $20EB
+BC7E: 24 07         BCC $BC87
+BC80: C6 10         LDAB #$10
+BC82: F7 10 23      STAB $1023
+```
+
+Strong inference:
+
+- These routines schedule timed output pulses or compare events.
+- Because this is an engine ECU, likely candidates are ignition/injection/idle-related outputs, but the exact actuator is not confirmed yet.
+
+Initialization:
+
+- `0xBB98` clears many `0x20xx` output-state variables.
+- It copies default values from vectors/scalars into runtime RAM.
+- It initializes `0x20EB`, `0x20ED`, `0x2426`, `0x2428`, and the `0x20C*` group.
+
+## Checksum / ROM Integrity Logic
+
+Confirmed:
+
+- Routine at `0x5AD8-0x5B18` sums ROM bytes using `X` and `Y`.
+- It skips `0xB600-0xB7FF`.
+- It compares the accumulated sum with the word at `0x800E`.
+- It sets or clears `RAM 0x0099 bit 0x04`.
+
+Main loop service:
+
+- `0xD40F` calls `0x5AD6`.
+- `0x5AD6` checks enable byte `0x916E`, then runs/steps the checksum routine.
+
+Checksum storage:
+
+| Address | Meaning |
+| ---: | --- |
+| `0x800C-0x800D` | Checksum word |
+| `0x800E-0x800F` | Checksum complement / byte-sum target |
+
+Repair formula:
+
+```text
+sum_without_checksum_pair = sum(bytes 0x4000-0xFFFF excluding 0x800C-0x800F)
+checksum_complement = (sum_without_checksum_pair + 0x01FE) & 0xFFFF
+checksum_word       = (~checksum_complement) & 0xFFFF
+```
+
+## Current Functional Picture
+
+Best current model:
+
+1. Reset configures 68HC11 hardware, stack, ADC/timer registers, and RAM.
+2. Startup copies/validates the calibration window.
+3. ADC channels are sampled into RAM `0x2007-0x200E`.
+4. Timer input capture builds period-like value `0x00BA`.
+5. Period-like `0x00BA` is converted into speed-like axes:
+   - `0x2036` via `0xB3B9`.
+   - `0x00D4` via inverse-period math.
+   - `0x2044` via clamp/divide from `0x00D4`.
+6. Load-like axis `0x2034` is built from `0x00CE`.
+7. The main loop runs a fixed sequence of state machines, diagnostics/fault logic, map calculations, and output scheduling.
+8. Important maps use common axes:
+   - `0x2034` and `0x2036` for several 2D tables.
+   - `0x2044` for speed-indexed 1D curves.
+9. Output compare routines schedule timed hardware events through `0x101C` and acknowledge flags at `0x1023`.
+10. The checksum routine runs as a runtime integrity service and updates `0x0099 bit 0x04`.
+
+## High-Priority Unknowns
+
+1. Name `0x00CE`.
+   - It is the source of axis `0x2034`.
+   - This is probably the key to identifying load/throttle/pressure axes.
+2. Name `0x20B1`.
+   - It selects between the `0x8A69` and `0x8B41` 24x9 banks.
+3. Trace `0x2147`.
+   - It is the output of the MOD2-touched banked 2D maps.
+   - Its downstream consumer may reveal whether those maps are fuel, ignition, or another correction.
+4. Trace callers of `0x6344`.
+   - Direct callers are `0x58EA` and `0x5E74`.
+   - This should reveal what the MOD2-touched `0x9187` table controls.
+5. Decode `0x58F2` and `0x5982`.
+   - They manage many descriptor triples in `0x9131-0x9167`.
+   - Understanding them will explain a large part of the control-state logic.
+6. Decode the output compare path around `0xBC12/0xBC90`.
+   - This is likely where calculated ECU quantities become physical output timing.
+7. Identify ADC channels.
+   - Map RAM `0x2007-0x200E` to sensors using code behavior and, ideally, bench/live data.
+
+## Editing Caution
+
+At this stage, only table structure and code usage are being confirmed. Physical labels such as fuel, ignition, throttle, RPM, MAP, coolant, air temperature, enrichment, and limiter should not be assigned in the XDF until downstream logic or live behavior confirms them.
