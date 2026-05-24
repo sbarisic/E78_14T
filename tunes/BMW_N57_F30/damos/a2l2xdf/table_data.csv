@@ -1,0 +1,3 @@
+Table Name,Category 1,Category 2,Category 3,Custom Name,company_email,customer_name,customer_address,customer_phone,customer_email,item1_name,item1_description,item1_quantity,item1_price,item1_total,item2_name,item2_description,item2_quantity,item2_price,item2_total,subtotal,tax_rate,tax_amount,total
+K_PR_WASTEGATEMN,,,,K_PR_WASTEGATEMN,billing@acmecorp.com,Bakery Shop,111 Pastry Lane San Bruno CA 94066,650-555-2345,owner@bakeryshop.com,Menu Design,Menu design and printing,1,$800.00,$800.00,Photography,Food photography session,1,$1200.00,$1200.00,$2000.00,10%,$200.00,"$2200.00 "
+,,,,,,,,,,,,,,,,,,,,,,,
