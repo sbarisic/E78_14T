@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-    <fileversion>0.10</fileversion>
+    <fileversion>0.11</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.10 labels the code-selected spark banks as likely high-octane/default and low-octane/alternate, keeps MAP/load-style spark x-axis labels, and documents the strongest MOD2-backed fuel/correction candidates.</description>
+    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.11 keeps the likely high-octane/default and low-octane/alternate spark-bank views, keeps MAP/load-style spark x-axis labels, documents the strongest MOD2-backed fuel/correction candidates, and adds raw diagnostic/service views for the code-confirmed event table and state descriptor triples.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -17,6 +17,7 @@
     <CATEGORY index="0x5" name="MOD2 Compared Candidates" />
     <CATEGORY index="0x6" name="Scaled / Likely Named Views" />
     <CATEGORY index="0x7" name="Code-Confirmed Additional Tables" />
+    <CATEGORY index="0x8" name="Diagnostics / Service Data" />
   </XDFHEADER>
 
   <XDFCONSTANT uniqueid="0x100">
@@ -1353,6 +1354,24 @@
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8F71" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x236" flags="0x30">
+    <title>Diagnostic Event Code Table 1x18 @ 0x55A0</title>
+    <description>Raw ROM view for the table indexed by routine 0x5982 before it inserts or removes entries in the diagnostic/event queue at RAM 0x004B-0x005B. Observed descriptor callers pass event IDs 0x00 through 0x11. This is service/status data, not a normal tune map.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>18</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" /><LABEL index="16" value="10" /><LABEL index="17" value="11" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="event" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x55A0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="18" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x237" flags="0x30">
+    <title>State Descriptor Triples 19x3 @ 0x9131</title>
+    <description>Raw ROM view for the 3-byte descriptor triples consumed by routine 0x58F2. Observed callers point at 0x9131, 0x9134, 0x9137, 0x913A, 0x913D, 0x9143, 0x9146, 0x9149, 0x914C, 0x914F, 0x9152, 0x9155, 0x9158, 0x915B, 0x915E, 0x9161, 0x9164, and 0x9167. The 19x3 view includes the apparent reserved slot at 0x9140 to keep row alignment. This is service/state data, not a normal tune map.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>3</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="Y+0" /><LABEL index="1" value="Y+1" /><LABEL index="2" value="Y+2" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>19</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="9131" /><LABEL index="1" value="9134" /><LABEL index="2" value="9137" /><LABEL index="3" value="913A" /><LABEL index="4" value="913D" /><LABEL index="5" value="9140" /><LABEL index="6" value="9143" /><LABEL index="7" value="9146" /><LABEL index="8" value="9149" /><LABEL index="9" value="914C" /><LABEL index="10" value="914F" /><LABEL index="11" value="9152" /><LABEL index="12" value="9155" /><LABEL index="13" value="9158" /><LABEL index="14" value="915B" /><LABEL index="15" value="915E" /><LABEL index="16" value="9161" /><LABEL index="17" value="9164" /><LABEL index="18" value="9167" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9131" mmedelementsizebits="8" mmedrowcount="19" mmedcolcount="3" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
 </XDFFORMAT>

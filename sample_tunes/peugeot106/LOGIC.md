@@ -252,8 +252,35 @@ Examples:
 Strong inference:
 
 - RAM `0x2007-0x200E` contains raw or lightly processed ADC channel values.
-- The physical meanings are not named yet.
 - `0x2034` is later derived from the processed RAM word `0x00CE`.
+- The physical meanings are still not fully named from static code alone, but
+  the copy and consumer paths now separate the raw channel groups.
+
+Current ADC channel matrix:
+
+| RAM | Source ADR path | Key consumers / transforms | Current status |
+| ---: | --- | --- | --- |
+| `0x2007` | `$1033` in the `0x4034/0x4146` group | Read by the `0x5E97/0x5EEC` load-model/state paths and by `0x96D3` | likely load/TPS/MAP-adjacent input, exact sensor unknown |
+| `0x2008` | `$1031` in the `0x4017/0x4113` group | Filter/processing around `0x40CE/0x4322`, consumers at `0x5C19` and `0x96E9` | raw sensor channel, likely analog ECU sensor |
+| `0x2009` | processed from the `0x2008` path | Used around `0x5BA0`, `0x5BC4`, and `0x5CE9` | filtered/derived copy of `0x2008` path |
+| `0x200A` | `$1034` in the `0x4017/0x411F` group | Filter/processing around `0x40B0/0x4372`, consumers at `0x5D1F`, `0x6D25`, `0x96F3` | raw sensor channel, likely correction-related |
+| `0x200B` | processed from the `0x200A` path | Consumers around `0x47F1` and `0x5D5D` | filtered/derived copy of `0x200A` path |
+| `0x200C` | `$1032` in the `0x4034/0x4140` group | Consumers around `0x5B1B` and `0x5B8E`; threshold checks near `0x52A8/0x53D9` | raw sensor channel |
+| `0x200D` | `$1033` in the `0x4017/0x4119` group | Helper around `0x415D`; threshold checks near `0x52B5/0x53E6` | raw sensor channel |
+| `0x200E` | `$1034` in the `0x4034/0x414C` group | Consumers around `0x4173`, `0x418E`, `0x42F7`, `0x5DA8`, `0x96DA` | raw sensor channel |
+| `0x2013` | helper result from `0x5E82` after `$1033` sample | Many later comparisons and mode checks | processed sensor/status value |
+
+Interpretation:
+
+- The code alternates ADC result groups rather than keeping a simple one-to-one
+  permanent `ADRn -> sensor` assignment.
+- MAP is still the best physical candidate behind the normalized `0x2034`
+  load axis because of the vehicle's 100 kPa PRT03-family MAP sensor and the
+  `0x2034` clamp/range, but the exact ADC byte that enters the pressure
+  transfer path is not yet proven.
+- TPS, IAT, CTS, lambda, and battery/other analog channels are all expected in
+  this matrix, but assigning those names now would be premature without tracing
+  the fallback thresholds and diagnostic event IDs to each channel.
 
 ## Timebase / Engine Period Logic
 
@@ -404,6 +431,24 @@ There is also an alternate state-machine path at `0x5E5C-0x5E5E` that stores
 So `0x2034` should be treated as a normalized air-charge/load axis whose source
 can be either the `0x9187` model path or a state-machine/substitute path.
 
+Producer/consumer split:
+
+| RAM | Producers now identified | Consumers now identified | Working name |
+| ---: | --- | --- | --- |
+| `0x00D0` | `0x5E77` from `0x9187` lookup or fallback byte `0x917C`; `0x5E5C` from the `0x58F2` state path | Direct users around `0x574A`, `0x57BD`, `0x5F07`, `0x5FAA`, `0x96DE`, `0x96F7`, `0x9953`, `0x99CC`, `0xBAB8`, `0xBE0E`, `0xD10F`, `0xD169`, `0xE5C1`; table cluster `0xD105-0xD15D` derives a `0x00D0 - 0x60` axis | load_model_byte / air-charge byte |
+| `0x00CE` | `0x5E7C` as `0x00D0 << 2`; `0x5E5E` from the `0x58F2` state path; earlier preload/update paths around `0x4073`, `0x409C`, `0x412B`, `0x42E1` | `0x41A1-0x41AD` builds `0x2034`; consumers around `0x45F3`, `0x97E7`, `0x992C`, `0x99DC`, `0x9CB0`, `0xE411`, `0xE5EB`, `0xE975` | raw_load_or_aircharge_word |
+| `0x2034` | `0x41A1-0x41AD` from clamped `0x00CE * 2` | First axis for banked spark maps `0x8A69/0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A`, and other B2D6 users | load/MAP-like_axis_8p8 |
+
+Resolved part:
+
+- `0x9187` is not the same subsystem as the `0x58F2` descriptors. It is a
+  normal B2D6 table lookup whose result can seed `0x00D0`.
+- `0x58F2` is a state/descriptor routine that can substitute or update the
+  same load-model RAM, but its descriptor data at `0x9131-0x9167` should not be
+  treated as fuel or spark maps.
+- `0x2034` is now strong enough to label as load/MAP-like in the XDF. The exact
+  pressure transfer and ADC source remain open.
+
 ## Interpolation / Calibration Helpers
 
 ### 1D Helper `0xB2AB`
@@ -538,8 +583,8 @@ Confirmed routine:
 
 Confirmed behavior:
 
-- If `RAM 0x20B1 != 0`, use `24x9 @ 0x8A69`.
-- If `RAM 0x20B1 == 0`, use `24x9 @ 0x8B41`.
+- If `spark_bank_selector_state` (`RAM 0x20B1`) is nonzero, use `24x9 @ 0x8A69`.
+- If `spark_bank_selector_state` (`RAM 0x20B1`) is zero, use `24x9 @ 0x8B41`.
 - Axis 1: `0x2034`.
 - Axis 2: `0x2036`.
 - Output: RAM word around `0x2147`.
@@ -556,7 +601,8 @@ CBFC: B7 20 B1      STAA $20B1
 CBFF: 39            RTS
 ```
 
-- Calibration byte `0x800A` seeds runtime bank selector `0x20B1`.
+- Calibration byte `0x800A` seeds runtime `spark_bank_selector_state`
+  (`0x20B1`).
 - The stock value is `0x00`, so the `DECA` step underflows it to `0xFF`.
 - Therefore stock runtime behavior should select the nonzero bank at `0x8A69`.
 - If `0x800A` were `0x01`, the stored selector would become `0x00` and the
@@ -605,15 +651,31 @@ Numeric support for the octane-bank naming:
 Downstream trace:
 
 - Direct references to `0x2147` cluster in `0x44xx-0x49xx`.
-- The routine family around `0x4421-0x477B` initializes and post-processes a calculation block using `0x2147`, `0x2148`, `0x2149`, `0x214C`, and nearby `0x215x` values.
-- `0x460A-0x463E` applies an additional correction to `0x2147` when `0x20B1` is zero/nonzero dependent.
-- `0x4642-0x468F` clamps or converts the `0x2147` word and writes related byte outputs including `0x2001` and `0x2148`.
+- `0x4481` seeds `0x2147` from a byte at `0x8C79` with `A = 0`.
+- `0x48F1` clears `0x2147` before the banked spark/WOT selection path.
+- `0x493B-0x493E` adds the banked-map or WOT-vector result into `0x2147`.
+- `0x454E`, `0x4602`, `0x462C`, `0x489A`, and `0x4978` add further
+  correction terms to `0x2147`.
+- `0x45C4`, `0x45E2`, `0x4684`, and `0x49B5` write post-processed values back
+  to `0x2147`.
+- `0x460A-0x463E` applies an additional correction dependent on
+  `spark_bank_selector_state` (`0x20B1`).
+- `0x4642-0x468F` clamps/converts the `0x2147` word and writes related byte
+  outputs including `0x2001` and `0x2148`.
+- `0x2149` is written at `0x46E5`, tested at `0x4702`, and read at `0x4772`.
+- `0x214C` is read at `0x48DD/0x48E6` and written at `0x496D`.
 
 Interpretation:
 
-- `0x2147` is an intermediate command/correction value, not yet proven to be a final actuator register value.
-- It appears to be combined with other corrections and clamped before becoming smaller byte-sized runtime outputs.
-- Tracing from `0x2001`, `0x2148`, and the `0x44xx-0x49xx` block is the next step for naming the banked maps.
+- `0x2147` is now best named a spark-angle accumulator/intermediate command.
+- The banked `0x8A69/0x8B41` tables and the `0x8C19` bypass vector feed this
+  accumulator, then later corrections and clamps produce byte-sized outputs.
+- `0x2001` and `0x2148` look like final or near-final spark-angle command bytes,
+  but the code path from those bytes to timer/output-compare hardware is not
+  fully closed yet.
+- No direct `0x2147 -> 0xBC12/0xBC90` path has been proven. The spark-map
+  interpretation is strong from values, scaling, selector behavior, and this
+  accumulator path, but the exact timer conversion routine still needs tracing.
 
 ### 2D Table `0x9187`
 
@@ -919,6 +981,29 @@ Observed descriptor pointers:
 0x9161, 0x9164, 0x9167
 ```
 
+Observed call table:
+
+| Call site | RAM state block in `X` | Descriptor in `Y` | Event ID passed to `0x5982` |
+| ---: | ---: | ---: | ---: |
+| `0x5A6C` | `0x0012` | `0x9131` | `0x00` |
+| `0x5C67` | `0x0015` | `0x9134` | `0x01` |
+| `0x5D4C` | `0x0018` | `0x9137` | `0x02` |
+| `0x5E45` | `0x001B` | `0x913A` | `0x03` |
+| `0x5EDB` | `0x001E` | `0x913D` | `0x04` |
+| `0x5F64` | `0x0024` | `0x9143` | `0x05` |
+| `0x5FCC` | `0x0027` | `0x9146` | `0x06` |
+| `0x604E` | `0x002A` | `0x9149` | `0x07` |
+| `0x609F` | `0x002D` | `0x914C` | `0x08` |
+| `0x60F5` | `0x0030` | `0x914F` | `0x09` |
+| `0x6124` | `0x0033` | `0x9152` | `0x0A` |
+| `0x6205` | `0x0036` | `0x9155` | `0x0B` |
+| `0x62FB` | `0x0039` | `0x9158` | `0x0C` |
+| `0x6331` | `0x003C` | `0x915B` | `0x0D` |
+| `0x6022` | `0x003F` | `0x915E` | `0x0E` |
+| `0x5B68` | `0x0042` | `0x9161` | `0x0F` |
+| `0x617A` | `0x0045` | `0x9164` | `0x10` |
+| `0x614E` | `0x0048` | `0x9167` | `0x11` |
+
 Behavioral interpretation:
 
 - `0x58F2` appears to update a compact state byte and countdown/step byte.
@@ -926,11 +1011,17 @@ Behavioral interpretation:
 - It uses descriptor bytes at `Y+0`, `Y+1`, and `Y+2`.
 - It writes back to the RAM state block.
 - `0x5982` appears to log, queue, or update event/state output using an ID.
+- Descriptor entries are 3 bytes wide. The raw range `0x9131-0x9169` therefore
+  covers the observed entries and one apparent unused/reserved 3-byte slot at
+  `0x9140`.
+- These descriptors belong to a state/event subsystem. They are code-confirmed
+  ROM data, but they are not normal fuel, spark, or axis maps.
 
 Open:
 
-- Whether this is diagnostic status, limiter state, enrichment state, idle state, or general control-mode bookkeeping.
-- The routines using `0x9131-0x9167` need naming before these descriptors should be edited as calibrations.
+- The external meaning of each event ID.
+- Which state blocks correspond to MAP, TPS, temperature, lambda, idle, limiter,
+  or other diagnostics.
 
 ## Diagnostic / Service Communication Logic
 
@@ -983,6 +1074,26 @@ Strong inference:
 - The table at `0x55A0` maps internal event IDs to service-visible codes/classes.
 
 Do not edit `0x55A0` as ordinary calibration yet. It is more likely a diagnostic/event code table.
+
+XDF handling:
+
+- `0x55A0-0x55B1` is now useful as an 18-byte raw diagnostic/event-code view
+  because observed event IDs run from `0x00` through `0x11`.
+- Stock bytes at `0x55A0-0x55B1`:
+  `6C 0C 0B 1B 11 21 17 62 65 6F 12 6A 19 13 24 2B 0D 1C`.
+- `0x9131-0x9169` is useful as a raw `19x3` state descriptor view. The observed
+  callers use 18 descriptor triples; the extra slot keeps the display aligned
+  across the gap at `0x9140`.
+- Notable descriptor bytes:
+  - `0x9131`: `01 01 01`.
+  - `0x9134/0x9137/0x913A`: `01 19 0A`.
+  - `0x913D`: `01 19 01`.
+  - `0x9143`: `20 61 40`.
+  - `0x9149`: `01 01 FE`.
+  - `0x914C/0x914F`: `01 05 02`.
+  - `0x9152`: `04 05 02`.
+- Both should live under a diagnostics/service category in the XDF, not under
+  normal calibration or likely-tune categories.
 
 ### Diagnostic State Machine `0x650D` / `0x67A3`
 
@@ -1235,6 +1346,19 @@ Strong inference:
 
 - These routines schedule timed output pulses or compare events.
 - Because this is an engine ECU, likely candidates are ignition/injection/idle-related outputs, but the exact actuator is not confirmed yet.
+- The code is using the 68HC11 timer/output-compare hardware directly, not
+  merely writing an abstract software flag.
+- `0xBC12` has a direct reset/setup call at `0xB8F2`. `0xBC90` behaves like a
+  second entry or continuation in the same timed-output family rather than a
+  widely direct-called public routine.
+- `0xBC64` schedules a compare as `TOC4 = 0x242B + 0x20EB`.
+- `0xBCAB` reads current `TOC4`, stores it to `0x242D`, adds `0x20ED`, and
+  writes the next compare to `TOC4`.
+- `0x1023` is written with `0x10` in this block, matching a TFLG1-style
+  output-compare flag acknowledge.
+- Current evidence identifies this as a timed actuator scheduler. It does not
+  yet prove whether the specific channel is ignition, injection, or another
+  output without tracing the upstream producers of `0x20EB/0x20ED`.
 
 Initialization:
 
@@ -1361,34 +1485,53 @@ Best current model:
 
 ## High-Priority Unknowns
 
-1. Fully name the `0x00D0 -> 0x00CE -> 0x2034` path.
-   - `0x00CE` is the source of axis `0x2034`.
-   - `0x00D0` can come from the `0x9187` lookup or from the alternate
-     `0x58F2` state-machine path.
-   - This is probably the key to identifying load/throttle/pressure axes.
-2. Name `0x20B1`.
-   - It selects between the `0x8A69` and `0x8B41` 24x9 banks.
-3. Trace `0x2147`.
-   - It is the output of the MOD2-touched banked 2D maps.
-   - Its downstream consumer may reveal whether those maps are fuel, ignition, or another correction.
-4. Continue tracing consumers of `0x00D0`.
-   - `0x5E74` proves that `0x9187` can seed `0x00D0`.
-   - `0x5E7C` proves that `0x00D0` can seed `0x00CE`, which then becomes
-     normalized axis `0x2034`.
-   - Remaining consumers of `0x00D0` should reveal whether the path is alpha-N
-     load, air-charge, VE, or another correction model.
-5. Decode the diagnostic/service protocol.
-   - SCI use is confirmed at `0x102B-0x102F`.
-   - The handshake path can enter special service loop `0xD80B`.
-   - Event/status queue `0x004B-0x005B` and table `0x55A0` need external code naming.
-6. Decode `0x58F2` and `0x5982`.
-   - They manage many descriptor triples in `0x9131-0x9167`.
-   - Understanding them will explain a large part of the control-state logic.
-7. Decode the output compare path around `0xBC12/0xBC90`.
-   - This is likely where calculated ECU quantities become physical output timing.
-8. Identify ADC channels.
-   - Map RAM `0x2007-0x200E` to sensors using code behavior and, ideally, bench/live data.
+Resolved or downgraded in this pass:
+
+1. `0x20B1` is now named `spark_bank_selector_state`.
+   - `nonzero -> 0x8A69` likely high-octane/default spark.
+   - `zero -> 0x8B41` likely low-octane/alternate spark.
+   - It is still worth tracing knock/fallback code, but it is no longer an
+     unnamed high-priority variable.
+2. `0x00D0 -> 0x00CE -> 0x2034` is now partly named.
+   - `0x00D0`: `load_model_byte / air-charge byte`.
+   - `0x00CE`: `raw_load_or_aircharge_word`.
+   - `0x2034`: `load/MAP-like_axis_8p8`.
+   - Remaining unknown: exact physical transfer from ADC/TPS/MAP and live units.
+3. `0x2147` is now a spark-angle accumulator/intermediate command.
+   - It receives the banked spark-map/WOT-vector result plus corrections.
+   - It feeds byte outputs including `0x2001` and `0x2148`.
+   - Remaining unknown: exact conversion from these command bytes into the
+     timer/output-compare scheduler.
+4. `0x58F2` / `0x5982` are now separated from fuel/spark maps.
+   - `0x58F2` consumes 3-byte descriptor triples at `0x9131-0x9167`.
+   - `0x5982` maps event IDs through `0x55A0` and manages queue
+     `0x004B-0x005B`.
+   - Remaining unknown: external meaning of each event ID and state block.
+5. Diagnostics are confirmed as a real SCI service protocol.
+   - SCI registers `0x102B-0x102F`, service mode `0x21A6`, handshake responses,
+     and special loop `0xD80B` are documented.
+   - Remaining unknown: full command table and external protocol naming.
+6. Output compare is confirmed as a 68HC11 timed-output scheduler.
+   - `0x101C` and `0x1023` are timer compare/flag registers.
+   - `0x20EB/0x20ED` and `0x242B/0x242D` are schedule words.
+   - Remaining unknown: actuator assignment and upstream producers for the
+     compare offsets.
+7. ADC channels are matrixed but not fully identified.
+   - `0x2007-0x200E` and `0x2013` have source/result and consumer notes.
+   - Remaining unknown: exact sensor-to-channel mapping for MAP, TPS, IAT,
+     CTS, lambda, battery, and any other analog inputs.
+
+Next best high-priority work:
+
+1. Trace writes and consumers of `0x20EB/0x20ED` back from `0xBC12/0xBC90`.
+2. Trace `0x2001` and `0x2148` forward to the timer conversion path.
+3. Decode the SCI command dispatch around `0xA7D8-0xAFxx` and status pointer
+   tables around `0x680F-0x6835`.
+4. Decode event IDs `0x00-0x11` by following each `0x58F2` caller's sensor
+   thresholds and fallback behavior.
+5. Continue fuel proof by finding a code consumer for the MOD2-touched
+   `0x802E-0x81D4` candidate and tying it to pulse-width or injection timing.
 
 ## Editing Caution
 
-At this stage, only table structure and code usage are being confirmed. Physical labels such as fuel, ignition, throttle, RPM, MAP, coolant, air temperature, enrichment, and limiter should not be assigned in the XDF until downstream logic or live behavior confirms them.
+At this stage, only table structure and code usage are being confirmed. The spark labels are strong working names because values, selector behavior, and the `0x2147` accumulator path all line up, but most other physical labels such as fuel, throttle, exact MAP scaling, coolant, air temperature, enrichment, and actuator assignment should not be finalized in the XDF until downstream logic or live behavior confirms them.

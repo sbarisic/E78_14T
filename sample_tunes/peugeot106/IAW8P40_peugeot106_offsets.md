@@ -41,6 +41,9 @@ What the XDF contains:
   likely octane/default labels because the selector path and high-load timing
   comparison both support that interpretation; fuel/correction candidates remain
   explicitly unconfirmed.
+- Diagnostic/service data is now separated from tune maps. The `0x55A0`
+  event-code table and `0x9131` state descriptor triples are exposed as raw
+  inspection views only.
 - Added compact views for packed structures:
   - `0x86DB` as `8x15`
   - `0x88CA` as `8x19`
@@ -136,6 +139,11 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x929E-0x92CD`: code-confirmed period/RPM axis for `0x2036`; count byte is `0x92CE = 0x18`.
 - `0x9291-0x9299`: code-referenced 9-byte axis vector; count byte is `0x929A = 0x09`.
 - `0x92CF-0x92D7`: code-referenced 9-byte axis/vector; nearby count byte is `0x92D8 = 0x09`.
+- `0x55A0-0x55B1`: raw diagnostic/event-code table indexed by `0x5982` for
+  observed event IDs `0x00-0x11`.
+- `0x9131-0x9169`: raw `19x3` state descriptor triples consumed by `0x58F2`.
+  Observed callers use 18 descriptors from `0x9131` through `0x9167`; the
+  extra row keeps the apparent `0x9140` reserved slot aligned.
 
 Free-space / cave candidates:
 
@@ -170,12 +178,21 @@ Useful direct-reference hints from byte/opcode context:
   `0x20B1 = 0xFF` and selects `0x8A69`. High-load numeric comparison also
   points to `0x8A69` as likely high-octane/default and `0x8B41` as likely
   low-octane/alternate.
+- `0x20B1` is now best named `spark_bank_selector_state`.
 - `0x8A68` is sign-extended as an optional offset around `0x492A-0x493E`.
 - `0x8C19` is used by the `0x48F4` bypass path as an RPM-only vector.
 - `0x9187` is loaded as a 2D table base around `0x6344-0x636A`; stride comes from `0x929A`.
 - The `0x9187` raw values become factor-like with `raw / 230`, but the exact correction type is still unconfirmed.
 - `0x5E74-0x5E7C` can store the `0x9187` lookup into `0x00D0`, then store `0x00CE = 0x00D0 << 2`.
 - `0x41A1-0x41AD` turns `0x00CE` into normalized axis `0x2034`.
+- `0x00D0` is now best treated as a load-model/air-charge byte, `0x00CE` as a
+  raw load/aircharge word, and `0x2034` as a load/MAP-like 8.8 axis until live
+  data or ADC transfer code proves exact pressure units.
+- `0x2147` is now best treated as a spark-angle accumulator/intermediate
+  command. It receives the banked-map or WOT-vector result plus corrections and
+  feeds byte outputs including `0x2001` and `0x2148`.
+- `0x5982` maps event IDs through `0x55A0` and manages queue `0x004B-0x005B`;
+  `0x58F2` consumes 3-byte state descriptors around `0x9131-0x9167`.
 - `0x925F` is referenced around `0x5E6B`.
 - `0x929E` is loaded by the `0x2036` axis builder at `0xD46D-0xD47F`.
 

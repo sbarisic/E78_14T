@@ -316,8 +316,8 @@ After TunerPro visual review, additional split views were added:
 
 - `MOD2 Compared 47x9 Upper Split 24x9 @ 0x802E`
 - `MOD2 Compared 47x9 Lower Split 23x9 @ 0x8106`
-- `Code-Confirmed Bank A 24x9 @ 0x8A69`
-- `Code-Confirmed Bank B 24x9 @ 0x8B41`
+- `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
+- `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
 - `Code-Confirmed 2D Table 24x9 @ 0x9187`
@@ -331,8 +331,8 @@ After TunerPro visual review, additional split views were added:
 - `Code-Confirmed 2D Table 24x5 @ 0x85BA`
 - `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
 - `Code-Confirmed RPM Axis 1x24 @ 0x929E`
-- `Likely Spark Advance Bank A 24x9 @ 0x8A69`
-- `Likely Spark Advance Bank B 24x9 @ 0x8B41`
+- `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`
+- `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
 - `Correction Factor Candidate 24x9 @ 0x9187`
@@ -347,10 +347,12 @@ After TunerPro visual review, additional split views were added:
 - `Code-Confirmed 2D Table 17x5 @ 0x8EC7`
 - `Code-Confirmed 2D Table 17x5 @ 0x8F1C`
 - `Code-Confirmed 2D Table 17x5 @ 0x8F71`
-- `Likely Spark Advance Bank A/B` x-axis labels changed from placeholder
+- likely spark advance x-axis labels changed from placeholder
   `0-8` to provisional load/MAP-like `0, 128, 256, 384, 512, 640, 768,
   896, 1024`.
 - `Spark Bank Selector Config @ 0x800A`
+- `Diagnostic Event Code Table 1x18 @ 0x55A0`
+- `State Descriptor Triples 19x3 @ 0x9131`
 
 Rationale:
 

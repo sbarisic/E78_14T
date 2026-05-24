@@ -9,7 +9,7 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.6`.
+  - TunerPro definition, now updated to comparison markup version `0.11`.
   - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
@@ -216,6 +216,15 @@ They remain worth inspecting in TunerPro.
   - `0x004B-0x005B` is an event/status queue managed by `0x5982`, `0x59A8`, `0x59CA`, and `0x59F4`.
   - `0xAA3F-0xAA78` maps command bytes such as `0xDD`, `0xF0`, `0x36`, `0x35`, `0x34`, `0xCC`, and `0x99` to response bytes.
   - The `0x55` response path enters special service mode `0xD80B` with `0x21A6 = 0x06`.
+- Current high-priority logic conclusions:
+  - `0x20B1` is now best named `spark_bank_selector_state`: nonzero selects likely high/default spark `0x8A69`, zero selects likely low/alternate spark `0x8B41`.
+  - `0x00D0 -> 0x00CE -> 0x2034` is now documented as a load-model path: `0x00D0` is a load/air-charge byte, `0x00CE` is a raw load/aircharge word, and `0x2034` is the load/MAP-like 8.8 axis.
+  - `0x2147` is now documented as a spark-angle accumulator/intermediate command that feeds byte outputs including `0x2001` and `0x2148`.
+  - `0x58F2` and `0x5982` are documented as state/descriptor and diagnostic/event queue routines, not fuel/spark maps.
+  - `0xBC12/0xBC90` are documented as 68HC11 timer output-compare scheduling, with actuator assignment still open.
+- New XDF diagnostic/service raw views:
+  - `0x55A0-0x55B1` as an 18-byte event-code table for observed event IDs `0x00-0x11`.
+  - `0x9131-0x9169` as `19x3` state descriptor triples consumed by `0x58F2`.
 - Current axis/source tracing:
   - `0x2034` is derived from `RAM 0x00CE`, doubled, and clamped to `0x07FF`
   - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9`
@@ -269,7 +278,10 @@ They remain worth inspecting in TunerPro.
    - `24x9 @ 0x888E`
    - `11x9 @ 0x9073`
    - `17x5 @ 0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71`
-5. Continue disassembling code around confirmed reference areas:
+5. Inspect the `Diagnostics / Service Data` category:
+   - `0x55A0-0x55B1` event-code table
+   - `0x9131-0x9169` state descriptor triples
+6. Continue disassembling code around confirmed reference areas:
    - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
    - `0x6344-0x636A` handles the code-confirmed `0x9187` 2D table
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
@@ -278,9 +290,9 @@ They remain worth inspecting in TunerPro.
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
    - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
-6. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
-7. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
-8. Keep original BIN unchanged and create tuned copies with clear names.
+7. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
+8. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
+9. Keep original BIN unchanged and create tuned copies with clear names.
 
 ## Custom Code Cave Notes
 

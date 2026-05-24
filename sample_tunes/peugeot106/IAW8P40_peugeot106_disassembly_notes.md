@@ -64,6 +64,49 @@ After initialization, reset calls many setup and runtime routines, including:
 0xB555
 ```
 
+## ADC / Raw Input Paths
+
+The reset/runtime setup calls two ADC preload routines that copy ADR result
+bytes into the `0x2007-0x200E` RAM channel area.
+
+Representative copies:
+
+```asm
+401D: B6 10 31      LDAA $1031
+4020: B7 20 08      STAA $2008
+4023: B6 10 33      LDAA $1033
+4026: B7 20 0D      STAA $200D
+402C: B6 10 34      LDAA $1034
+402F: B7 20 0A      STAA $200A
+
+403A: B6 10 32      LDAA $1032
+403D: B7 20 0C      STAA $200C
+4040: B6 10 33      LDAA $1033
+4043: B7 20 07      STAA $2007
+404C: B7 20 13      STAA $2013      ; after helper 0x5E82
+4059: B6 10 34      LDAA $1034
+405C: B7 20 0E      STAA $200E
+```
+
+Current raw/processed channel matrix:
+
+| RAM | Source | Main consumer clues | Status |
+| ---: | --- | --- | --- |
+| `0x2007` | `$1033` in second ADC group | `0x5E97`, `0x5EEC`, `0x96D3` | likely load/TPS/MAP-adjacent, not final |
+| `0x2008` | `$1031` in first ADC group | `0x40CE`, `0x4322`, `0x5C19`, `0x96E9` | raw analog channel |
+| `0x2009` | processed from `0x2008` path | `0x5BA0`, `0x5BC4`, `0x5CE9` | filtered/derived channel |
+| `0x200A` | `$1034` in first ADC group | `0x40B0`, `0x4372`, `0x5D1F`, `0x6D25`, `0x96F3` | raw analog channel |
+| `0x200B` | processed from `0x200A` path | `0x47F1`, `0x5D5D` | filtered/derived channel |
+| `0x200C` | `$1032` in second ADC group | `0x5B1B`, `0x5B8E`, thresholds near `0x52A8/0x53D9` | raw analog channel |
+| `0x200D` | `$1033` in first ADC group | helper `0x415D`, thresholds near `0x52B5/0x53E6` | raw analog channel |
+| `0x200E` | `$1034` in second ADC group | `0x4173`, `0x418E`, `0x42F7`, `0x5DA8`, `0x96DA` | raw analog channel |
+| `0x2013` | helper result from `$1033` path | multiple mode/threshold checks | processed sensor/status value |
+
+The code confirms the RAM channel structure but not exact sensor names. MAP is
+still the best candidate behind the normalized `0x2034` load axis because the
+vehicle uses a 100 kPa PRT03-family MAP sensor and the axis clamps near
+`0x0800`, but ADC transfer proof is still open.
+
 ## Checksum Routine @ `0x5AD8-0x5B18`
 
 The checksum routine is confirmed as 68HC11 code.
@@ -288,8 +331,30 @@ Status:
 - The online Peugeot 106 Rallye XDF screenshot shows spark tables in `0.5 deg/bit` units.
 - These two banks display in plausible spark advance ranges when scaled as `raw / 2`.
 - Stock selector behavior points at `0x8A69` as the normal/default active bank.
-  Exact physical bank naming, such as high octane vs low octane, is not confirmed yet.
+- Current working names are:
+  - `0x8A69`: likely high-octane/default spark advance bank.
+  - `0x8B41`: likely low-octane/alternate spark advance bank.
+  - `0x20B1`: likely `spark_bank_selector_state`.
+- This is still marked likely until the knock/fallback path is fully traced.
 - Because it is MOD2-touched and bilinear-interpolated, it is a high-priority map candidate.
+
+Downstream `0x2147` trace:
+
+| Address | Operation | Meaning |
+| ---: | --- | --- |
+| `0x4481` | `STD $2147` after loading `0x8C79` with `A = 0` | initial spark/correction seed |
+| `0x48F1` | `STD $2147` with zero | clear accumulator before map/vector selection |
+| `0x493B-0x493E` | `ADDD $2147`, `STD $2147` | add banked-map or WOT-vector result |
+| `0x454E`, `0x4602`, `0x462C`, `0x489A`, `0x4978` | `ADDD $2147` | add correction terms |
+| `0x45C4`, `0x45E2`, `0x4684`, `0x49B5` | writes to `$2147` | clamp/post-process accumulator |
+| `0x4642-0x468F` | reads `$2147`, writes `$2001` and `$2148` | near-final byte command outputs |
+
+Interpretation:
+
+- `0x2147` is best treated as a spark-angle accumulator or intermediate command.
+- `0x2001` and `0x2148` are likely final or near-final spark command bytes.
+- A direct path from these bytes into the `0xBC12/0xBC90` output-compare
+  scheduler is not yet proven.
 
 ## Shared Axis / Source Variable Tracing
 
@@ -337,6 +402,18 @@ An alternate state-machine path at `0x5E5C-0x5E5E` stores `B -> 0x00D0` and
 `X -> 0x00CE` after the `0x58F2` descriptor routine. This means the `0x9187`
 table is tied to normalized load-axis generation, not just to a final output
 correction.
+
+Current naming:
+
+| RAM | Producer evidence | Consumer evidence | Working name |
+| ---: | --- | --- | --- |
+| `0x00D0` | `0x5E77` from `0x9187` or fallback `0x917C`; `0x5E5C` from `0x58F2` path | consumers at `0x574A`, `0x57BD`, `0x5F07`, `0x5FAA`, `0x96DE`, `0x96F7`, `0x9953`, `0x99CC`, `0xBAB8`, `0xBE0E`, `0xD10F`, `0xD169`, `0xE5C1` | load_model_byte / air-charge byte |
+| `0x00CE` | `0x5E7C` as `0x00D0 << 2`; `0x5E5E` from state path | `0x41A1-0x41AD` builds `0x2034`; additional consumers at `0x45F3`, `0x97E7`, `0x992C`, `0x99DC`, `0x9CB0`, `0xE411`, `0xE5EB`, `0xE975` | raw_load_or_aircharge_word |
+| `0x2034` | clamped `0x00CE * 2` | first axis for `0x8A69/0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A` | load/MAP-like_axis_8p8 |
+
+This separates the normal `0x9187` lookup path from the `0x58F2`
+state/descriptor path. Both can influence the same load-model RAM, but they are
+not the same table subsystem.
 
 ### `RAM 0x2036`
 
@@ -656,6 +733,57 @@ The isolated `0x91EC: 0xCD -> 0x6F` change is no longer an out-of-context anomal
 
 The nearby `0x9131-0x9167` data still feeds the state/descriptor routine at `0x58F2`. That routine appears to manage small state machines or ramps using RAM state pointed to by `X` and 3-byte descriptors pointed to by `Y`; it is separate from the `0x9187` 2D map.
 
+Confirmed `0x58F2` descriptor calls:
+
+| Call site | State block | Descriptor | Event ID |
+| ---: | ---: | ---: | ---: |
+| `0x5A6C` | `0x0012` | `0x9131` | `0x00` |
+| `0x5C67` | `0x0015` | `0x9134` | `0x01` |
+| `0x5D4C` | `0x0018` | `0x9137` | `0x02` |
+| `0x5E45` | `0x001B` | `0x913A` | `0x03` |
+| `0x5EDB` | `0x001E` | `0x913D` | `0x04` |
+| `0x5F64` | `0x0024` | `0x9143` | `0x05` |
+| `0x5FCC` | `0x0027` | `0x9146` | `0x06` |
+| `0x604E` | `0x002A` | `0x9149` | `0x07` |
+| `0x609F` | `0x002D` | `0x914C` | `0x08` |
+| `0x60F5` | `0x0030` | `0x914F` | `0x09` |
+| `0x6124` | `0x0033` | `0x9152` | `0x0A` |
+| `0x6205` | `0x0036` | `0x9155` | `0x0B` |
+| `0x62FB` | `0x0039` | `0x9158` | `0x0C` |
+| `0x6331` | `0x003C` | `0x915B` | `0x0D` |
+| `0x6022` | `0x003F` | `0x915E` | `0x0E` |
+| `0x5B68` | `0x0042` | `0x9161` | `0x0F` |
+| `0x617A` | `0x0045` | `0x9164` | `0x10` |
+| `0x614E` | `0x0048` | `0x9167` | `0x11` |
+
+The descriptor entries are 3 bytes wide. A raw `19x3` XDF view from
+`0x9131-0x9169` keeps the observed entries aligned and includes the apparent
+reserved slot at `0x9140`.
+
+Raw descriptor bytes:
+
+```text
+0x9131: 01 01 01
+0x9134: 01 19 0A
+0x9137: 01 19 0A
+0x913A: 01 19 0A
+0x913D: 01 19 01
+0x9140: 01 01 01
+0x9143: 20 61 40
+0x9146: 01 01 01
+0x9149: 01 01 FE
+0x914C: 01 05 02
+0x914F: 01 05 02
+0x9152: 04 05 02
+0x9155: 01 01 01
+0x9158: 01 01 01
+0x915B: 01 01 01
+0x915E: 01 01 01
+0x9161: 01 01 01
+0x9164: 01 01 01
+0x9167: 01 01 01
+```
+
 ## `0x802E-0x81D4` Region
 
 The `47x9 @ 0x802E` region is MOD2-touched and table-like, but direct code usage has not been confirmed yet.
@@ -774,6 +902,17 @@ The runtime also has a fault/status queue:
 
 Queue entries appear to use the upper bits as class/severity bits and lower bits as an event number. `0x55A0` should therefore be treated as a diagnostic/event-code table candidate, not as normal calibration.
 
+Observed descriptor callers use event IDs `0x00-0x11`, so the XDF now exposes
+`0x55A0-0x55B1` as an 18-byte raw diagnostic/event-code view. This is for
+inspection only; changing it would likely change service-visible fault/status
+codes rather than normal engine tuning behavior.
+
+Stock event-code bytes:
+
+```text
+0x55A0: 6C 0C 0B 1B 11 21 17 62 65 6F 12 6A 19 13 24 2B 0D 1C
+```
+
 The dispatcher around `0x67A3` / `0x6836` includes a service-visible RAM list:
 
 ```text
@@ -784,15 +923,58 @@ The dispatcher around `0x67A3` / `0x6836` includes a service-visible RAM list:
 
 This strongly suggests the diagnostic protocol can expose fault queue bytes and status/reset/checksum flags.
 
+## Output Compare / Timed Actuator Scheduling
+
+The `0xBC12/0xBC90` block is confirmed as 68HC11 timer output-compare logic.
+
+Important register/RAM usage:
+
+| Address | Role |
+| ---: | --- |
+| `0x101C` | TOC4-like output compare register |
+| `0x1023` | TFLG1-like timer flag register |
+| `0x20EB` | scheduled offset word |
+| `0x20ED` | next scheduled offset word |
+| `0x242B` | previous/base compare time |
+| `0x242D` | captured/current compare time |
+
+Key scheduling patterns:
+
+```asm
+BC64: FC 24 2B      LDD $242B
+BC67: F3 20 EB      ADDD $20EB
+BC6A: FD 10 1C      STD $101C
+...
+BCAB: FC 10 1C      LDD $101C
+BCAE: FD 24 2D      STD $242D
+BCB1: F3 20 ED      ADDD $20ED
+BCB4: FD 10 1C      STD $101C
+```
+
+Flag acknowledge:
+
+```asm
+BC80: C6 10         LDAB #$10
+BC82: F7 10 23      STAB $1023
+```
+
+Interpretation:
+
+- This is a timed output scheduler, not a calibration table.
+- It likely controls an engine actuator pulse or compare event, but ignition vs
+  injection vs another output is still open.
+- The next useful trace is upstream from `0x20EB/0x20ED`, plus forward from the
+  spark command bytes `0x2001/0x2148`.
+
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.8` now includes the previous `0.4`, `0.5`, `0.6`, and `0.7` confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.11` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps and raw diagnostic/service views for code-confirmed descriptor data.
 
 Previously added in `0.4`:
 
 - `Code-Confirmed Signed Offset Byte @ 0x8A68`
-- `Code-Confirmed Bank A 24x9 @ 0x8A69`
-- `Code-Confirmed Bank B 24x9 @ 0x8B41`
+- `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
+- `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
 
@@ -814,8 +996,8 @@ It also renames the old `MOD2 Compared Candidate 15x9 Table @ 0x91D9` as a legac
 New in `0.6`:
 
 - `Code-Confirmed RPM Axis 1x24 @ 0x929E`, displayed as `15000000 / raw period`.
-- `Likely Spark Advance Bank A 24x9 @ 0x8A69`, displayed as `raw / 2` degrees.
-- `Likely Spark Advance Bank B 24x9 @ 0x8B41`, displayed as `raw / 2` degrees.
+- `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`, displayed as `raw / 2` degrees.
+- `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`, displayed as `raw / 2` degrees.
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`, displayed as `raw / 2` degrees.
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`, displayed as `15000000 / raw period`.
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
@@ -845,10 +1027,10 @@ Alignment notes for `0.7`:
 
 New in `0.8`:
 
-- `Likely Spark Advance Bank A 24x9 @ 0x8A69` x-axis labels changed from
+- likely spark advance high/default `24x9 @ 0x8A69` x-axis labels changed from
   placeholder `0-8` to provisional load/MAP-like `0, 128, 256, 384, 512, 640,
   768, 896, 1024`.
-- `Likely Spark Advance Bank B 24x9 @ 0x8B41` received the same x-axis labels.
+- likely spark advance low/alternate `24x9 @ 0x8B41` received the same x-axis labels.
 - This is based on the code-confirmed `0x2034` 8.8 axis range clamped near
   `0x0800`. The exact physical mbar scaling is still not proven.
 
@@ -860,6 +1042,24 @@ New in `0.9`:
   to Peugeot 106 TU2J2/MFZ 100 kPa MAP-sensor evidence.
 - The best current interpretation for spark-map x-axis labels is provisional
   MAP/load in mbar-like units, `0-1024`, pending ADC transfer confirmation.
+
+New in `0.10`:
+
+- Renamed the scaled spark views as:
+  - `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`.
+  - `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`.
+- Kept the `raw / 2` degree scaling and provisional `0-1024` MAP/load-style
+  x-axis labels.
+- Added the MOD2-backed `0x9187` correction-factor candidate view.
+
+New in `0.11`:
+
+- Added category `Diagnostics / Service Data`.
+- Added raw diagnostic/event view `0x55A0-0x55B1` for the `0x5982` event-code
+  table used by IDs `0x00-0x11`.
+- Added raw state descriptor view `0x9131-0x9169` as `19x3` triples for the
+  `0x58F2` descriptor subsystem.
+- No `.bin` files were edited.
 
 ## Free ROM Space / Custom Logic
 
@@ -884,25 +1084,23 @@ and no hidden runtime assumptions.
 
 Highest value next:
 
-1. Decode RAM variables:
-   - `0x00CE` as the source of `0x2034`.
-   - `0x00D4` as the source of `0x2044`.
-   - `0x00BA`, `0x00D9`, and `0x00B8` as the period source for `0x2036`.
-2. Decode the descriptor/state routine at `0x58F2` and its helper set around `0x5982`.
-3. Trace writes to output variables:
-   - `0x2147` for the banked 2D table result.
-   - `0x20BC`, `0x20BD-0x20C5`, `0x242F`, `0x2431` for the `0x89xx` routines.
-    - `0x2063` for the `0x85BA` table result.
-    - the caller/use sites of the `0x9187` table result returned through `A/B`.
-    - `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`, `0x24AC`,
-      `0x24AD`, and `0x24AF` for the newly exposed B2D6 tables.
-4. Continue from runtime scheduler calls after reset, especially:
-   - `0x67A3`
-   - `0xBB98`
-   - `0xB555`
-   - `0x5652`
-5. Decode the diagnostic/service protocol:
-   - SCI state tables at `0xA778`, `0xA792`, `0xA7A6`, `0xA7C0`, and `0xA7D8`
-   - event/status table `0x55A0`
-   - service-visible RAM list around `0x680F-0x682F`
-   - special service loop `0xD80B`
+1. Trace output scheduling:
+   - producers of `0x20EB/0x20ED`.
+   - consumers of `0x2001/0x2148`.
+   - whether the spark-angle command reaches `0xBC12/0xBC90` or a different
+     timer channel.
+2. Decode diagnostic/service protocol details:
+   - SCI state tables at `0xA778`, `0xA792`, `0xA7A6`, `0xA7C0`, and `0xA7D8`.
+   - event IDs `0x00-0x11` mapped through `0x55A0`.
+   - service-visible RAM list around `0x680F-0x682F`.
+   - special service loop `0xD80B`.
+3. Finish ADC channel naming:
+   - follow thresholds and fallback behavior for `0x2007-0x200E`.
+   - map channels to MAP, TPS, IAT, CTS, lambda, battery/other.
+4. Continue fuel proof:
+   - find a real consumer for `0x802E-0x81D4`.
+   - trace injection pulse-width/output code separately from spark.
+5. Keep tracing table outputs:
+   - `0x20BC`, `0x20BD-0x20C5`, `0x242F`, `0x2431`.
+   - `0x2063`, `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`,
+     `0x24AC`, `0x24AD`, and `0x24AF`.
