@@ -251,6 +251,9 @@ Notes:
 - `0x91EC: 0xCD -> 0x6F` is row 11, column 2 of this confirmed table, not a separate anomaly outside the map.
 - Row `13`: column `5` increases by `+32`, much larger than surrounding changes.
 - Row `14`: columns `2-7` increase by `+3`.
+- Screenshot-assisted scaling: `raw / 230` turns this into a factor-like surface of
+  roughly `0.00-1.10`. The XDF now includes `Correction Factor Candidate 24x9 @
+  0x9187`, but the exact strategy role remains unconfirmed.
 
 ## Earlier Candidates Revisited
 
@@ -284,7 +287,7 @@ Some earlier naive byte-reference hits were false positives. For example, the ap
 
 ## XDF Updates Made
 
-`IAW8P40_peugeot106_firstpass.xdf` was updated to version `0.5`.
+`IAW8P40_peugeot106_firstpass.xdf` was updated to version `0.5` in this pass and later to `0.6` after comparing against an online Peugeot 106 Rallye XDF screenshot.
 
 New categories:
 
@@ -327,6 +330,27 @@ After TunerPro visual review, additional split views were added:
 - `Code-Referenced Scalar Block 1x3 @ 0x8A65`
 - `Code-Confirmed 2D Table 24x5 @ 0x85BA`
 - `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
+- `Code-Confirmed RPM Axis 1x24 @ 0x929E`
+- `Likely Spark Advance Bank A 24x9 @ 0x8A69`
+- `Likely Spark Advance Bank B 24x9 @ 0x8B41`
+- `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`
+- `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
+- `Correction Factor Candidate 24x9 @ 0x9187`
+- `Alternate RPM Thresholds @ 0x87A2/0x87A4`
+- `Code-Referenced Axis Vector 1x9 @ 0x9291`
+- `Code-Referenced Axis Vector 1x9 @ 0x92CF`
+- `Code-Confirmed 2D Table 24x9 @ 0x869A`
+- `Code-Confirmed 2D Table 24x9 @ 0x87B1`
+- `Code-Confirmed 2D Table 24x9 @ 0x888E`
+- `Code-Confirmed 2D Table 11x9 @ 0x9073`
+- `Code-Confirmed 2D Table 17x5 @ 0x8E6F`
+- `Code-Confirmed 2D Table 17x5 @ 0x8EC7`
+- `Code-Confirmed 2D Table 17x5 @ 0x8F1C`
+- `Code-Confirmed 2D Table 17x5 @ 0x8F71`
+- `Likely Spark Advance Bank A/B` x-axis labels changed from placeholder
+  `0-8` to provisional load/MAP-like `0, 128, 256, 384, 512, 640, 768,
+  896, 1024`.
+- `Spark Bank Selector Config @ 0x800A`
 
 Rationale:
 
@@ -353,24 +377,68 @@ The `0x91D9` raw view was corrected:
 - It is a `24x9` B2D6 table with stride `9`.
 - The `0x91D9` view is now retained only as a legacy misaligned slice.
 
+Two older visual candidates were also corrected by the full B2D6 call scan:
+
+- The old `0x86DB` visual candidate is inside the code-confirmed `24x9`
+  parent table at `0x869A`.
+- The old `0x88CD` visual candidate is inside the code-confirmed `24x9`
+  parent table at `0x888E`.
+- Neither parent table is changed by MOD2, but both are active code-referenced
+  calibration lookups.
+
 The `0x879E/0x87A0` pair was confirmed as threshold/hysteresis data, not a map:
 
 - `0x879E` is used in the flag-set compare.
 - `0x87A0` is used in the flag-clear compare.
 - Both affect `RAM 0x00A4 bit 0x10`.
 
-All new table entries are raw byte views. No fuel, ignition, RPM, load, or temperature names have been asserted yet.
+Additional `0x9187` flow found:
+
+- `0x5E74` calls the `0x9187` lookup routine at `0x6344`.
+- `0x5E77` stores the returned byte to `0x00D0`.
+- `0x5E79-0x5E7C` stores `0x00CE = 0x00D0 << 2`.
+- `0x41A1-0x41AD` converts `0x00CE` into normalized axis `0x2034`.
+
+The likely spark views and limiter constants now have working names in the
+scaled category. The remaining correction-factor/load-model names are still
+hypotheses until more consumer paths are traced.
+
+Spark-bank selector trace:
+
+- `0xCBEF` loads calibration byte `0x800A`.
+- `0xCBFB-0xCBFC` decrements the value and stores it to runtime `0x20B1`.
+- `0x4907-0x490C` selects `0x8A69` when `0x20B1` is nonzero, otherwise `0x8B41`.
+- Stock and MOD2 both have `0x800A = 0x00`, so the stored selector underflows
+  to `0xFF`; stock runtime behavior should use the `0x8A69` spark bank.
+
+Free-space scan:
+
+- `0xF021-0xFFD5`: `4021` zero bytes and the best current code-cave candidate.
+- `0xB600-0xB7FF`: `512` zero bytes skipped by the checksum routine.
+- `0x0000-0x3FFF`: `16384` zero bytes in the file, but not assumed usable
+  without hardware memory-map confirmation.
+- Zero-filled active maps such as `0x87B1` and `0x9073` are not free space.
+
+External sensor scan:
+
+- TU2J2/MFZ wiring references list coolant temp, inlet air temp, VSS, knock,
+  heated oxygen, crank, MAP, and TPS sensors.
+- A Peugeot 106 1.3 Rallye donor listing identifies a PRT03-family MAP sensor,
+  and a PRT03/04 product sheet gives a `17-105 kPa` absolute range.
+- This supports interpreting the spark-table x-axis `0x2034` as MAP/load-like
+  and using provisional `0-1024` mbar-style labels.
 
 ## Best Next Steps
 
 1. Continue naming source variables for the confirmed axes:
-   - `0x00CE -> 0x2034`
+   - `0x00D0 -> 0x00CE -> 0x2034`
    - `0x00BA -> 0x2036`
    - `0x00D4 -> 0x2044`
 2. Trace the outputs from the confirmed maps:
-   - `0x2147` for the `0x8A69/0x8B41` banked table result
-   - `0x2063` for the `0x85BA` table
-   - return value from the `0x9187` table routine at `0x6344`
+    - `0x2147` for the `0x8A69/0x8B41` banked table result
+    - `0x2063` for the `0x85BA` table
+    - return value from the `0x9187` table routine at `0x6344`
+    - `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`, `0x24AC`, `0x24AD`, and `0x24AF` for the new B2D6 inventory
 3. Decode the state/descriptor routine at `0x58F2`; it explains the nearby descriptor triples at `0x9131-0x9167`.
 4. In TunerPro, inspect the code-confirmed MOD2-touched maps first: `0x8A69`, `0x8B41`, `0x9187`, and `0x89F3`.
 5. Before burning any edited EPROM, recompute the checksum pair at `0x800C-0x800F`.

@@ -381,7 +381,28 @@ Strong inference:
 
 - `0x2034` is a load-like 8.8 axis.
 - It may represent throttle, pressure, or air/load after filtering.
-- The physical source of `0x00CE` is a high-priority next target.
+- `0x00CE` is now partly traced: the routine at `0x5D8D-0x5E80` can update
+  `0x00D0` from the `0x9187` lookup and then write `0x00CE = 0x00D0 << 2`.
+
+Relevant producer path:
+
+```asm
+5E6A: B6 92 5F      LDAA $925F
+5E6D: 27 05         BEQ $5E74
+5E6F: F6 91 7C      LDAB $917C       ; fallback/calibrated value
+5E72: 20 03         BRA $5E77
+5E74: BD 63 44      JSR $6344        ; 0x9187 table lookup
+5E77: D7 D0         STAB $D0
+5E79: 4F            CLRA
+5E7A: 05            ASLD
+5E7B: 05            ASLD
+5E7C: DD CE         STD $CE          ; D0 * 4
+```
+
+There is also an alternate state-machine path at `0x5E5C-0x5E5E` that stores
+`B -> 0x00D0` and `X -> 0x00CE` after the `0x58F2` descriptor/state routine.
+So `0x2034` should be treated as a normalized air-charge/load axis whose source
+can be either the `0x9187` model path or a state-machine/substitute path.
 
 ## Interpolation / Calibration Helpers
 
@@ -454,11 +475,44 @@ Confirmed:
 
 - Only direct caller found so far is at `0xD47C`.
 - Converts period-like `0x00BA` into normalized axis `0x2036`.
-- Uses calibration area around `0x929E`.
+- Uses the 24-entry 16-bit breakpoint table at `0x929E`.
+- The count byte is `0x92CE = 0x18`, i.e. 24 entries.
 
-Open:
+Breakpoint interpretation:
 
-- Exact breakpoint scaling and units.
+The words at `0x929E-0x92CD` are timer periods. Using `15000000 / period` produces clean engine-speed breakpoints:
+
+| Index | Period | Approx RPM |
+| ---: | ---: | ---: |
+| 0 | `27273` | `550` |
+| 1 | `20000` | `750` |
+| 2 | `17647` | `850` |
+| 3 | `15789` | `950` |
+| 4 | `15000` | `1000` |
+| 5 | `12500` | `1200` |
+| 6 | `10714` | `1400` |
+| 7 | `9375` | `1600` |
+| 8 | `8333` | `1800` |
+| 9 | `7500` | `2000` |
+| 10 | `6521` | `2300` |
+| 11 | `5769` | `2600` |
+| 12 | `5172` | `2900` |
+| 13 | `4687` | `3200` |
+| 14 | `4285` | `3501` |
+| 15 | `3947` | `3800` |
+| 16 | `3571` | `4201` |
+| 17 | `3333` | `4500` |
+| 18 | `3000` | `5000` |
+| 19 | `2727` | `5501` |
+| 20 | `2500` | `6000` |
+| 21 | `2307` | `6502` |
+| 22 | `2142` | `7003` |
+| 23 | `2000` | `7500` |
+
+Strong inference:
+
+- `0x2036` is the main RPM-normalized table axis.
+- The online XDF screenshot uses a similar RPM axis concept, but this ROM's code-confirmed table has 24 RPM breakpoints rather than the 19-row screenshot table.
 
 ## Code-Confirmed Calibration Logic
 
@@ -491,6 +545,23 @@ Confirmed behavior:
 - Output: RAM word around `0x2147`.
 - Optional signed offset byte: `0x8A68`.
 
+Bank selector source:
+
+```asm
+CBEF: B6 80 0A      LDAA $800A
+CBF2: 26 08         BNE $CBFC
+...
+CBFB: 4A            DECA
+CBFC: B7 20 B1      STAA $20B1
+CBFF: 39            RTS
+```
+
+- Calibration byte `0x800A` seeds runtime bank selector `0x20B1`.
+- The stock value is `0x00`, so the `DECA` step underflows it to `0xFF`.
+- Therefore stock runtime behavior should select the nonzero bank at `0x8A69`.
+- If `0x800A` were `0x01`, the stored selector would become `0x00` and the
+  routine would select the `0x8B41` bank.
+
 Special bypass:
 
 ```asm
@@ -504,7 +575,13 @@ If `RAM 0x00A9 bit 0x20` is set, the code bypasses the banked 2D maps and uses a
 
 Physical meaning:
 
-- Open. MOD2 touched these heavily, so they are high-priority tune-relevant maps.
+- Screenshot-assisted inference: likely spark advance bank pair.
+- The raw values display in a plausible spark-advance range when scaled as `raw / 2` degrees.
+- This matches the online XDF screenshot convention for spark tables using `0.5 deg/bit`.
+- MOD2 touched these heavily, so they are high-priority tune-relevant maps.
+- Stock selector behavior points at `0x8A69` as the normal/default active bank.
+  The exact physical bank names, such as high octane vs low octane, are not
+  proven yet.
 
 Downstream trace:
 
@@ -569,6 +646,12 @@ So the same `0x9187` lookup can feed at least:
 Physical meaning:
 
 - Open. MOD2 changes 62 bytes inside this table.
+- The online XDF screenshot helps here: a `raw / 230` view turns this table into
+  factor-like values, roughly `0.00-1.10`, which resembles the displayed air/fuel
+  correction factor style more than an ignition-degree table.
+- This is now exposed in the XDF as `Correction Factor Candidate 24x9 @ 0x9187`.
+  The code confirms the lookup, axes, and consumers, but not yet whether the
+  factor is air density, VE, fuel, or another compensation path.
 - The old `15x9 @ 0x91D9` view is misaligned and should be treated as legacy only.
 
 ### 2D Table `0x85BA`
@@ -623,6 +706,33 @@ Confirmed behavior:
 - Output: `0x20BB`.
 - MOD2 did not change this table.
 
+### Additional `B2D6` Table Inventory
+
+The full scan currently finds 12 calls to the bilinear helper `0xB2D6`. The
+known MOD2-backed/spark-candidate calls are not the only real maps in the ROM.
+The newest XDF pass adds raw views for these additional code-confirmed tables:
+
+| Base | Shape exposed | Call site | Axes / source | Output / role clue |
+| ---: | ---: | ---: | --- | --- |
+| `0x869A` | `24x9` | `0x9B79-0x9BB4` | axis 1 derived from `0x2014`, axis 2 `0x2036` | stores `0x2391` |
+| `0x87B1` | `24x9` | `0x7254-0x729B` | `0x2034` by `0x2036` | updates `0x00BE`; stock table is all zero |
+| `0x888E` | `24x9` | `0xBE74-0xBE93` | `0x2034` by `0x2036` | stores `0x2484`, later combined with `0x8970` vector |
+| `0x9073` | `11x9` | `0xC282-0xC2BE` | `0x9291`-derived axis by transformed `0x2044` | compared with `0x243C` for ramp/state update |
+| `0x8E6F` | `17x5` | `0xD105-0xD134` | `0x00D0`-derived axis by `0x2044` | stores `0x24AB` |
+| `0x8F1C` | `17x5` | `0xD137-0xD140` | same descriptor as `0x8E6F` | stores `0x24AC` |
+| `0x8F71` | `17x5` | `0xD143-0xD151` | same descriptor as `0x8E6F` | shifted down four bits into `0x24AD` |
+| `0x8EC7` | `17x5` | `0xD154-0xD15D` | same descriptor as `0x8E6F` | stores `0x24AF` |
+
+Important alignment corrections:
+
+- The visually interesting old `0x86DB` candidate sits inside the larger
+  code-confirmed `0x869A` parent table, not as a standalone proven table.
+- The visually interesting old `0x88CD` candidate sits inside the larger
+  code-confirmed `0x888E` parent table.
+- The `0x8E6F/0x8EC7/0x8F1C/0x8F71` cluster is exposed as bounded `17x5`
+  views because those boundaries line up cleanly with adjacent table starts.
+  The code's `0x2044` source axis still needs live-range confirmation.
+
 ### `0x2044`-Indexed Vector Family
 
 Confirmed:
@@ -657,6 +767,8 @@ Confirmed:
 - They are 16-bit threshold constants.
 - They compare against `RAM 0x00BA`.
 - They control `RAM 0x00A4 bit 0x10`.
+- When `RAM 0x214F == 0`, the active pair is `0x879E` / `0x87A0`.
+- When `RAM 0x214F != 0`, the alternate pair is `0x87A2` / `0x87A4`.
 
 Key logic:
 
@@ -682,8 +794,31 @@ MOD2 changes:
 
 Interpretation:
 
-- This is a hysteresis or latch transition against period-like `0x00BA`.
-- MOD2 lowers one threshold and effectively pushes the other very high.
+- Strongly likely RPM limiter or RPM-related limiter hysteresis.
+- Using the same `15000000 / period` scaling as the `0x929E` axis, stock `0x879E` is about `7400 RPM` and stock `0x87A0` is about `7386 RPM`.
+- The alternate `0x87A2` / `0x87A4` pair is about `2500 RPM` / `2300 RPM` and is selected when `0x214F` is nonzero.
+- MOD2 changes the primary pair to about `60000 RPM` and `229 RPM`, which looks like an attempt to disable or greatly move the limiter behavior.
+
+### RPM-Only Bypass Vector `0x8C19`
+
+Confirmed:
+
+- If `RAM 0x00A9 bit 0x20` is set, the `0x48EE` routine bypasses the `0x8A69/0x8B41` 2D banked maps.
+- The bypass uses a 1D vector at `0x8C19`.
+- The vector is indexed by `0x2036`, now confirmed as the RPM-normalized axis.
+- The vector is unchanged by MOD2.
+
+Values:
+
+```text
+Raw: 10 16 19 1C 1E 24 28 2A 2D 2F 33 37 3A 3E 3E 3E 3E 3E 3E 3E 3E 3E 3E 3E
+Deg: 8.0 11.0 12.5 14.0 15.0 18.0 20.0 21.0 22.5 23.5 25.5 27.5 29.0 31.0 ...
+```
+
+Strong inference:
+
+- This is likely a wide-open-throttle spark advance vector or a spark fallback vector.
+- The online XDF screenshot lists a "spark advance wide open throttle" table, and this code path is the best current match.
 
 ## State / Descriptor Logic Around `0x58F2`
 
@@ -1066,6 +1201,72 @@ checksum_complement = (sum_without_checksum_pair + 0x01FE) & 0xFFFF
 checksum_word       = (~checksum_complement) & 0xFFFF
 ```
 
+## Free ROM Space / Custom Logic
+
+Measured zero-filled regions in `M27C512_original.BIN`:
+
+| Region | Size | Notes |
+| ---: | ---: | --- |
+| `0x0000-0x3FFF` | `16384` bytes | Zero-filled lower half. Do not assume this is usable executable ROM; 68HC11 internal RAM/registers and ECU memory decoding make low-address execution risky until hardware mapping is confirmed. |
+| `0xF021-0xFFD5` | `4021` bytes | Best current code-cave candidate. It starts immediately after an `RTS` at `0xF020` and ends before the interrupt/vector words at `0xFFD6-0xFFFF`. |
+| `0xB600-0xB7FF` | `512` bytes | Zero-filled and deliberately skipped by the checksum routine. Potential patch area, but use carefully because the skip itself is a special checksum behavior. |
+| `0xB584-0xB7FF` | `636` bytes | Larger contiguous zero run including the checksum-skipped block. Bytes before `0xB600` are included in checksum. |
+
+There are other zero-looking areas, but several are now known active calibration
+tables, for example `0x87B1-0x8888`, `0x9073-0x90D5`, and parts of the
+`0x8Fxx` table cluster. Those should not be treated as free space.
+
+Custom logic feasibility:
+
+- The stock image is a fixed `64 KiB` 27C512 address space. It cannot be
+  extended past `0xFFFF` without hardware/address-decoder changes.
+- Small custom routines can likely be added by placing 68HC11 machine code in a
+  real code cave, then patching an existing `JSR`/`JMP` hook into it.
+- The safest current cave is `0xF021-0xFFD5`.
+- Any patch outside the checksum-skipped `0xB600-0xB7FF` range requires repairing
+  the checksum words at `0x800C-0x800F`.
+- A compiled C routine is possible only if the compiler can emit plain
+  68HC11-compatible code for an absolute address with no runtime assumptions.
+  Hand-written assembly is much easier to make safe in this ECU because hooks
+  must preserve registers, flags, stack use, RAM variables, and cycle timing.
+- Before installing custom logic, decode the chosen hook's live register
+  contract and interrupt/timing context. A hook in spark/fuel scheduling code is
+  much more timing-sensitive than a slow diagnostic or state-machine hook.
+
+## External Sensor References
+
+External references for the Peugeot 106 I 1.3 Rallye TU2J2/MFZ with Magneti
+Marelli 8P list the following ECU-facing sensors/components:
+
+| Sensor / component | Component ID in wiring reference | Reverse-engineering relevance |
+| --- | --- | --- |
+| Coolant temperature sensor | `B24` | Warmup enrichment, fallback, fan/temperature diagnostics. |
+| Inlet air temperature sensor | `B25` | Air-density correction and IAT fallback. |
+| Vehicle speed sensor | `B33` | Likely tied to the speed-like `0x00D4 -> 0x2044` path. |
+| Knock sensor | `B69` | Marked for the 1.3; supports but does not prove knock/octane spark-bank logic. |
+| Heated oxygen sensor | `B72` | Closed-loop mixture and diagnostic adaptation. |
+| Crankshaft speed sensor | `B75` | Period/RPM source upstream of `0x00BA -> 0x2036`. |
+| MAP sensor | `B83` | Strong clue for the `0x2034` load/MAP axis. |
+| Throttle position sensor | `B147` | ADC channel, transient, idle, WOT, and plausibility logic. |
+
+MAP-specific clue:
+
+- A Peugeot 106 1.3 Rallye TU2J2/MFZ listing shows a Magneti Marelli PRT03-family
+  MAP sensor (`PRT03E04 3358AA`) removed from this exact vehicle family.
+- A Magneti Marelli `PRT03/04` product sheet describes a 1 bar absolute-pressure
+  sensor range of `17-105 kPa`.
+- The user's `PRT 03E/02 2624AL 100 kPa` marking is consistent with this
+  1 bar MAP family.
+
+Implication for maps:
+
+- The likely spark tables use `0x2034` on the x-axis.
+- `0x2034` is an 8.8 load-like axis clamped near `0x0800`.
+- A 100 kPa MAP sensor makes the provisional `0, 128, 256, 384, 512, 640, 768,
+  896, 1024` x-axis labels plausible as mbar-like MAP/load labels.
+- This is now the best working label for the XDF, but the exact ADC transfer and
+  physical unit conversion remain to be proved from code or live data.
+
 ## Current Functional Picture
 
 Best current model:
@@ -1079,6 +1280,8 @@ Best current model:
    - `0x00D4` via inverse-period math.
    - `0x2044` via clamp/divide from `0x00D4`.
 6. Load-like axis `0x2034` is built from `0x00CE`.
+   - One producer path sets `0x00D0` from the `0x9187` lookup and then stores
+     `0x00CE = 0x00D0 << 2`.
 7. The main loop runs a fixed sequence of state machines, diagnostics/fault logic, map calculations, and output scheduling.
 8. Important maps use common axes:
    - `0x2034` and `0x2036` for several 2D tables.
@@ -1088,17 +1291,22 @@ Best current model:
 
 ## High-Priority Unknowns
 
-1. Name `0x00CE`.
-   - It is the source of axis `0x2034`.
+1. Fully name the `0x00D0 -> 0x00CE -> 0x2034` path.
+   - `0x00CE` is the source of axis `0x2034`.
+   - `0x00D0` can come from the `0x9187` lookup or from the alternate
+     `0x58F2` state-machine path.
    - This is probably the key to identifying load/throttle/pressure axes.
 2. Name `0x20B1`.
    - It selects between the `0x8A69` and `0x8B41` 24x9 banks.
 3. Trace `0x2147`.
    - It is the output of the MOD2-touched banked 2D maps.
    - Its downstream consumer may reveal whether those maps are fuel, ignition, or another correction.
-4. Trace callers of `0x6344`.
-   - Direct callers are `0x58EA` and `0x5E74`.
-   - This should reveal what the MOD2-touched `0x9187` table controls.
+4. Continue tracing consumers of `0x00D0`.
+   - `0x5E74` proves that `0x9187` can seed `0x00D0`.
+   - `0x5E7C` proves that `0x00D0` can seed `0x00CE`, which then becomes
+     normalized axis `0x2034`.
+   - Remaining consumers of `0x00D0` should reveal whether the path is alpha-N
+     load, air-charge, VE, or another correction model.
 5. Decode the diagnostic/service protocol.
    - SCI use is confirmed at `0x102B-0x102F`.
    - The handshake path can enter special service loop `0xD80B`.

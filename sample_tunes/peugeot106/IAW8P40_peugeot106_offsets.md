@@ -51,6 +51,12 @@ What the XDF contains:
   - `0x8A69` and `0x8B41` as banked `24x9`
   - `0x9187` as `24x9`
   - the `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52`
+- Added screenshot-assisted scaled views:
+  - `0x929E` as the code-confirmed `24` point RPM axis, displayed as `15000000 / period`
+  - `0x8A69` and `0x8B41` as likely spark advance banks, displayed as `raw / 2` degrees
+  - `0x8C19` as a likely RPM-only/WOT spark advance vector, displayed as `raw / 2` degrees
+  - `0x879E`, `0x87A0`, `0x87A2`, and `0x87A4` as RPM-scaled period thresholds
+  - `0x9291` and `0x92CF` as code-referenced 9-byte axis vectors
 
 Recommended next steps:
 
@@ -90,32 +96,74 @@ Checksum offsets:
 - The two words sum to `0xFFFF`.
 - The complement matches the additive byte sum over `0x4000-0xFFFF`; `0xB600-0xB7FF` is zero-filled.
 
-MOD2-backed candidate offsets added to the XDF:
+Candidate and code-confirmed offsets added to the XDF:
 
 - `0x802E-0x81D4`: candidate `47x9` table.
 - `0x802E-0x8105`: split view of the upper `24x9` section of the `47x9` table.
 - `0x8106-0x81D4`: split view of the lower `23x9` section of the `47x9` table.
+- `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
 - `0x87A0`: changed 16-bit threshold scalar, stock `0x07EF`, MOD2 `0xFFFF`.
+- `0x87A2`: alternate period threshold, stock `0x1770`, about `2500 RPM`.
+- `0x87A4`: alternate period threshold, stock `0x1979`, about `2300 RPM`.
+- `0x869A-0x8771`: code-confirmed `24x9` 2D parent table; the old visual `0x86DB` slice lies inside it.
+- `0x87B1-0x8888`: code-confirmed `24x9` 2D table; stock table is all zero.
+- `0x888E-0x8965`: code-confirmed `24x9` 2D parent table; the old visual `0x88CD` slice lies inside it.
+- `0x8E6F-0x8EC3`: code-confirmed bounded `17x5` 2D table view.
+- `0x8EC7-0x8F1B`: code-confirmed bounded `17x5` 2D table view.
+- `0x8F1C-0x8F70`: code-confirmed bounded `17x5` 2D table view.
+- `0x8F71-0x8FC5`: code-confirmed bounded `17x5` 2D table view.
+- `0x9073-0x90D5`: code-confirmed `11x9` 2D table.
 - `0x89ED-0x89F2`: code-referenced control scalars.
 - `0x89F3-0x8A05`: code-confirmed `1x19` interpolation vector; part of a larger `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
 - `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank.
 - `0x8B41-0x8C18`: code-confirmed `24x9` 2D table bank.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
-- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice.
+- `0x8C19-0x8C30`: code-confirmed RPM-only vector used when `RAM 0x00A9 bit 0x20` bypasses the banked maps.
+- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice. A screenshot-assisted `raw / 230` scaled view is included as a correction-factor candidate.
+- `0x929E-0x92CD`: code-confirmed period/RPM axis for `0x2036`; count byte is `0x92CE = 0x18`.
+- `0x9291-0x9299`: code-referenced 9-byte axis vector; count byte is `0x929A = 0x09`.
+- `0x92CF-0x92D7`: code-referenced 9-byte axis/vector; nearby count byte is `0x92D8 = 0x09`.
+
+Free-space / cave candidates:
+
+- `0xF021-0xFFD5`: `4021` zero bytes; best current code-cave candidate before vectors at `0xFFD6-0xFFFF`.
+- `0xB600-0xB7FF`: `512` zero bytes skipped by the checksum routine.
+- `0x0000-0x3FFF`: `16384` zero bytes in the file, but not assumed usable without ECU memory-map confirmation.
+- Do not treat zero-looking active tables such as `0x87B1`, `0x9073`, or the `0x8Fxx` cluster as free space.
+
+External sensor clue:
+
+- Peugeot 106 TU2J2/MFZ references list a MAP sensor, coolant temp, inlet air
+  temp, TPS, VSS, crank sensor, knock sensor, and heated oxygen sensor.
+- MAP sensor evidence points to a Magneti Marelli PRT03-family 100 kPa / 1 bar
+  sensor, supporting the provisional `0x2034` MAP/load labels `0-1024` used on
+  the likely spark maps.
 
 Useful direct-reference hints from byte/opcode context:
 
 - `0x800E` is used by the checksum routine around `0x5AD8-0x5B17`.
 - `0x879E` / `0x87A0` are referenced around `0x6F14-0x6F2A`.
+- `0x87A2` / `0x87A4` are alternate thresholds in the same limiter-looking routine when `RAM 0x214F` is nonzero.
+- `0x869A` is loaded as a B2D6 table base around `0x9B79-0x9BAE`; result stores to `0x2391`.
+- `0x87B1` is loaded as a B2D6 table base around `0x7254-0x7270`; result updates `0x00BE`.
+- `0x888E` is loaded as a B2D6 table base around `0xBE74-0xBE90`; result stores to `0x2484`.
+- `0x9073` is loaded as a B2D6 table base around `0xC282-0xC2BE`; result is compared with `0x243C`.
+- `0x8E6F`, `0x8F1C`, `0x8F71`, and `0x8EC7` are loaded as B2D6 table bases around `0xD105-0xD15D`.
 - `0x89F3` is used as a 1D interpolation vector around `0xBAA8-0xBAB2`.
 - `0x89ED`, `0x89F0`, `0x89F2`, `0x8A06`, and `0x8A08` are scalar/control bytes used around `0xBAA8-0xBB96`.
 - `0x8A69` / `0x8B41` are selected as 2D table banks around `0x48EE-0x4941`.
+- `0x800A` is loaded around `0xCBEF` and decremented before being stored to `0x20B1`.
 - `0x8A68` is sign-extended as an optional offset around `0x492A-0x493E`.
+- `0x8C19` is used by the `0x48F4` bypass path as an RPM-only vector.
 - `0x9187` is loaded as a 2D table base around `0x6344-0x636A`; stride comes from `0x929A`.
+- The `0x9187` raw values become factor-like with `raw / 230`, but the exact correction type is still unconfirmed.
+- `0x5E74-0x5E7C` can store the `0x9187` lookup into `0x00D0`, then store `0x00CE = 0x00D0 << 2`.
+- `0x41A1-0x41AD` turns `0x00CE` into normalized axis `0x2034`.
 - `0x925F` is referenced around `0x5E6B`.
+- `0x929E` is loaded by the `0x2036` axis builder at `0xD46D-0xD47F`.
 
 Important caution:
 

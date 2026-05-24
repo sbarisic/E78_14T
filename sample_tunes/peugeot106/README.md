@@ -9,8 +9,8 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.5`.
-  - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, and 68HC11 vector markers.
+  - TunerPro definition, now updated to comparison markup version `0.6`.
+  - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
 - `IAW8P40_peugeot106_offsets.md`
@@ -191,11 +191,25 @@ They remain worth inspecting in TunerPro.
   - `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52` as a code-confirmed `0x2044`-indexed vector family
   - `0x8A68` as a code-confirmed signed offset byte
   - `0x8A69` and `0x8B41` as code-confirmed `24x9` 2D table banks
+  - screenshot-assisted `0x8A69` and `0x8B41` scaled as likely spark advance with `raw / 2` degrees
+  - likely spark advance x-axis labels changed from placeholder `0-8` to provisional load/MAP-like `0-1024`
+  - `0x800A` as the calibration byte that seeds runtime spark-bank selector `0x20B1`; stock `0x00` underflows to `0xFF`, selecting the `0x8A69` bank
+  - `0x8C19` as a likely RPM-only/WOT spark advance vector with `raw / 2` degrees
+  - `0x879E/0x87A0` as likely RPM limiter set/clear thresholds, stock about `7400/7386 RPM`
   - legacy raw `0x8A68` as `48x9`, now known to be off by one byte for true bank starts
   - `0x9187` as a code-confirmed `24x9` 2D table; the older `0x91D9` view is only a legacy misaligned slice
+  - screenshot-assisted `0x9187` scaled as a correction-factor candidate with `raw / 230`
 - New disassembly also confirms:
   - `0x85BA` as a code-confirmed `24x5` 2D table
   - `0x8A0A` as a code-confirmed `5x5` 2D table
+  - `0x869A` as a code-confirmed `24x9` parent table; the old visual `0x86DB` candidate is inside this parent
+  - `0x87B1` as a code-confirmed `24x9` table
+  - `0x888E` as a code-confirmed `24x9` parent table; the old visual `0x88CD` candidate is inside this parent
+  - `0x9073` as a code-confirmed `11x9` table
+  - `0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71` as a code-confirmed `17x5` table cluster
+- External sensor references are collected in `IAW8P40_peugeot106_sensor_references.md`:
+  - TU2J2/MFZ wiring lists coolant temp, inlet air temp, vehicle speed, knock, oxygen, crank, MAP, and throttle position sensors.
+  - Peugeot 106 1.3 Rallye MAP listings point to the Magneti Marelli PRT03 family; a PRT03/04 sheet gives `17-105 kPa`, supporting 100 kPa / 1 bar MAP-axis assumptions.
 - The ROM contains diagnostic/service communication code:
   - SCI serial registers `0x102B-0x102F` are used for a packet/state-machine protocol.
   - `0x004B-0x005B` is an event/status queue managed by `0x5982`, `0x59A8`, `0x59CA`, and `0x59F4`.
@@ -204,14 +218,20 @@ They remain worth inspecting in TunerPro.
 - Current axis/source tracing:
   - `0x2034` is derived from `RAM 0x00CE`, doubled, and clamped to `0x07FF`
   - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9`
+  - `0x929E-0x92CD` is the code-confirmed 24-entry period/RPM axis table for `0x2036`; `15000000 / period` gives about `550-7500 RPM`
   - `0x2044` is derived from `RAM 0x00D4` and clamped to `0x1200`
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
+  - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
+- Free-space scan:
+  - `0xF021-0xFFD5` is the best current code-cave candidate, `4021` zero bytes before the vector table
+  - `0xB600-0xB7FF` is `512` zero bytes and is skipped by the checksum routine
+  - `0x0000-0x3FFF` is zero-filled but should not be assumed usable without ECU memory-map confirmation
 - The current XDF is valid XML and was copied next to the BIN.
 
 ## Things Not Yet Known
 
 - Which maps are fuel, ignition, idle, warmup, transient, limiter, or diagnostic.
-- Whether `0x88CD` and `0x86DB` are active engine calibration tables or structured lookup constants.
+- Exact names for the larger parent tables that contain the old `0x88CD` and `0x86DB` visual slices.
 - Axis locations and axis scaling.
 - Byte scaling for physical units.
 - Whether any table values are signed.
@@ -229,8 +249,22 @@ They remain worth inspecting in TunerPro.
    - control scalars `1x6 @ 0x89ED`
    - legacy `15x9 @ 0x91D9` only for screenshot continuity
    - still-unconfirmed `47x9 @ 0x802E`
-3. Inspect `Candidate 17x9 Map @ 0x88CD` and `Candidate 13x9 Row Table @ 0x86DB` next; they are still visually structured but were not touched by MOD2.
-4. Continue disassembling code around confirmed reference areas:
+3. Inspect the `Scaled / Likely Named Views` category next:
+   - likely spark advance bank A `24x9 @ 0x8A69`
+   - likely spark advance bank B `24x9 @ 0x8B41`
+   - these now use provisional load/MAP-like x labels `0, 128, ..., 1024`
+   - spark bank selector config `0x800A`
+   - likely WOT spark advance vector `1x24 @ 0x8C19`
+   - likely RPM limiter thresholds `0x879E/0x87A0`
+   - correction factor candidate `24x9 @ 0x9187`
+   - RPM axis `1x24 @ 0x929E`
+4. Inspect the `Code-Confirmed Additional Tables` category:
+   - `24x9 @ 0x869A`
+   - `24x9 @ 0x87B1`
+   - `24x9 @ 0x888E`
+   - `11x9 @ 0x9073`
+   - `17x5 @ 0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71`
+5. Continue disassembling code around confirmed reference areas:
    - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
    - `0x6344-0x636A` handles the code-confirmed `0x9187` 2D table
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
@@ -238,9 +272,25 @@ They remain worth inspecting in TunerPro.
    - `0x5E33-0x5EA0` references descriptors around `0x913A` and scalars `0x925F-0x9261`
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
-5. Confirm table axes, units, and signedness before assigning fuel/spark names.
-6. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
-7. Keep original BIN unchanged and create tuned copies with clear names.
+   - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
+6. Confirm table axes, units, and signedness before assigning fuel/spark names.
+7. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
+8. Keep original BIN unchanged and create tuned copies with clear names.
+
+## Custom Code Cave Notes
+
+The stock EPROM image is fixed at `64 KiB`; it cannot be extended past `0xFFFF`
+without hardware/address-decoder changes. Small custom logic is feasible only by
+placing 68HC11 code into a verified cave, then patching an existing `JSR`/`JMP`
+hook. The current best cave is `0xF021-0xFFD5`. Any patch outside
+`0xB600-0xB7FF` requires checksum repair.
+
+## Sensor Reference Notes
+
+See `IAW8P40_peugeot106_sensor_references.md` for the current external sensor
+inventory and source links. The most important current takeaway is that the
+1.3 Rallye MAP sensor evidence supports treating `0x2034` as a MAP/load-like
+axis, so the likely spark maps now use provisional mbar-style `0-1024` labels.
 
 ## Practical Caution
 

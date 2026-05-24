@@ -227,6 +227,22 @@ else:
     table = 0x8B41
 ```
 
+Selector source:
+
+```asm
+CBEF: B6 80 0A      LDAA $800A
+CBF2: 26 08         BNE $CBFC
+...
+CBFB: 4A            DECA
+CBFC: B7 20 B1      STAA $20B1
+CBFF: 39            RTS
+```
+
+Stock and MOD2 both have `0x800A = 0x00`. Because the routine decrements the
+value before storing it, runtime `0x20B1` becomes `0xFF`, so stock runtime
+behavior should select the nonzero `0x8A69` bank. If `0x800A` were `0x01`, the
+stored selector would become `0x00` and the `0x8B41` bank would be selected.
+
 Inputs:
 
 ```text
@@ -260,7 +276,11 @@ This sign-extends byte `0x8A68` and adds it to the interpolated result when flag
 Status:
 
 - This is a real code-confirmed 2D calibration structure.
-- Exact physical meaning is not confirmed yet.
+- Screenshot-assisted inference: likely spark advance bank pair.
+- The online Peugeot 106 Rallye XDF screenshot shows spark tables in `0.5 deg/bit` units.
+- These two banks display in plausible spark advance ranges when scaled as `raw / 2`.
+- Stock selector behavior points at `0x8A69` as the normal/default active bank.
+  Exact physical bank naming, such as high octane vs low octane, is not confirmed yet.
 - Because it is MOD2-touched and bilinear-interpolated, it is a high-priority map candidate.
 
 ## Shared Axis / Source Variable Tracing
@@ -287,7 +307,28 @@ Meaning so far:
 - `0x2034` is an 8.8-style axis/index value.
 - It is derived from RAM word `0x00CE`.
 - It is doubled and clamped to `0x07FF`.
-- It is likely a load/throttle/pressure-style normalized axis, but the physical input is not named yet.
+- It is likely a load/throttle/pressure-style normalized axis.
+
+`0x00CE` is now partly traced. In the routine at `0x5D8D-0x5E80`, one path
+uses the `0x9187` lookup result as `0x00D0`, then stores `0x00CE = 0x00D0 << 2`:
+
+```asm
+5E6A: B6 92 5F      LDAA $925F
+5E6D: 27 05         BEQ $5E74
+5E6F: F6 91 7C      LDAB $917C       ; fallback/calibrated value
+5E72: 20 03         BRA $5E77
+5E74: BD 63 44      JSR $6344        ; 0x9187 table lookup
+5E77: D7 D0         STAB $D0
+5E79: 4F            CLRA
+5E7A: 05            ASLD
+5E7B: 05            ASLD
+5E7C: DD CE         STD $CE
+```
+
+An alternate state-machine path at `0x5E5C-0x5E5E` stores `B -> 0x00D0` and
+`X -> 0x00CE` after the `0x58F2` descriptor routine. This means the `0x9187`
+table is tied to normalized load-axis generation, not just to a final output
+correction.
 
 ### `RAM 0x2036`
 
@@ -308,7 +349,16 @@ Meaning so far:
 
 - `0x2036` is derived from `RAM 0x00BA`.
 - The helper at `0xB3B9` walks/interpolates against the table/vector area around `0x929E`.
-- This strongly suggests `0x2036` is a normalized axis generated from a timer period or engine-speed-related period.
+- `0x92CE = 0x18`, so the breakpoint table at `0x929E` has 24 entries.
+- The `0x929E-0x92CD` words are timer periods. Using `15000000 / period` gives clean RPM breakpoints:
+
+```text
+550, 750, 850, 950, 1000, 1200, 1400, 1600,
+1800, 2000, 2300, 2600, 2900, 3200, 3501, 3800,
+4201, 4500, 5000, 5501, 6000, 6502, 7003, 7500
+```
+
+This confirms `0x2036` as the main RPM-normalized axis used by the code-confirmed 2D maps.
 
 ### `RAM 0x2044`
 
@@ -486,6 +536,7 @@ Meaning:
 - `D = RAM[0x00BA]` is compared against thresholds.
 - `0x879E` is used on the flag-set side.
 - `0x87A0` is used on the flag-clear side.
+- `0x87A2` and `0x87A4` are alternate set/clear thresholds used when `RAM 0x214F` is nonzero.
 - This is a hysteresis-style threshold pair controlling `RAM[0x00A4] bit 0x10`.
 
 MOD2 changes:
@@ -495,7 +546,39 @@ MOD2 changes:
 0x87A0: 0x07EF -> 0xFFFF
 ```
 
-This is a significant behavior change, possibly lowering one threshold and effectively disabling or delaying the opposite transition. Exact physical meaning depends on naming `RAM[0x00BA]` and flag `0x00A4 bit 0x10`.
+Using the same `15000000 / period` scaling as the `0x929E` RPM axis:
+
+```text
+0x879E stock 0x07EB -> about 7400 RPM
+0x87A0 stock 0x07EF -> about 7386 RPM
+0x87A2 stock 0x1770 -> about 2500 RPM
+0x87A4 stock 0x1979 -> about 2300 RPM
+```
+
+This is now a strong RPM limiter or RPM-related limiter candidate. MOD2 changes the primary pair to about `60000 RPM` and `229 RPM`, which looks like an attempt to disable or greatly move the limiter behavior.
+
+## RPM-Only Bypass Vector @ `0x8C19`
+
+The banked `0x8A69/0x8B41` lookup has a bypass path:
+
+```asm
+48F4: 13 A9 20 0C   BRCLR $A9, #$20, $4904
+48F8: 18 CE 8C 19   LDY #$8C19
+48FC: FC 20 36      LDD $2036
+48FF: BD B2 AB      JSR $B2AB
+```
+
+When `RAM 0x00A9 bit 0x20` is set, the ECU skips the banked 2D table and uses a 1D vector indexed only by the RPM axis `0x2036`.
+
+The first 24 bytes at `0x8C19`, displayed as `raw / 2`, are:
+
+```text
+8.0, 11.0, 12.5, 14.0, 15.0, 18.0, 20.0, 21.0,
+22.5, 23.5, 25.5, 27.5, 29.0, 31.0, 31.0, 31.0,
+31.0, 31.0, 31.0, 31.0, 31.0, 31.0, 31.0, 31.0
+```
+
+This is a strong candidate for the online XDF's "spark advance wide open throttle" or a related RPM-only spark fallback.
 
 ## `0x91xx-0x92xx` Region
 
@@ -535,6 +618,14 @@ Axis / support bytes:
 `0x929A` is loaded as the row stride/column count. The `0x9291` vector is used by helper `0xB383` to generate the first interpolation axis. `RAM 0x2036` supplies the second axis, matching the banked `0x8A69/0x8B41` maps.
 
 Direct calls to this routine were found at `0x58EA` and `0x5E74`; those callers are now the best next places to trace the returned interpolated value into strategy state.
+
+The online XDF screenshot is useful as a scaling clue for this table. If the raw
+bytes are viewed as `raw / 230`, the result is a factor-like surface of roughly
+`0.00-1.10`, similar in range to the screenshot's correction-factor maps. The
+XDF now includes this as `Correction Factor Candidate 24x9 @ 0x9187`. This is
+still a physical-meaning hypothesis: the code proves the table and consumers,
+but not yet whether it is air density correction, VE correction, fuel correction,
+or another compensation path.
 
 MOD2 change pattern in the confirmed table:
 
@@ -680,7 +771,7 @@ This strongly suggests the diagnostic protocol can expose fault queue bytes and 
 
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.5` now includes the previous `0.4` confirmed entries plus the new continuation-pass findings.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.8` now includes the previous `0.4`, `0.5`, `0.6`, and `0.7` confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps.
 
 Previously added in `0.4`:
 
@@ -705,6 +796,75 @@ New in `0.5`:
 
 It also renames the old `MOD2 Compared Candidate 15x9 Table @ 0x91D9` as a legacy misaligned slice because the confirmed parent table begins at `0x9187`.
 
+New in `0.6`:
+
+- `Code-Confirmed RPM Axis 1x24 @ 0x929E`, displayed as `15000000 / raw period`.
+- `Likely Spark Advance Bank A 24x9 @ 0x8A69`, displayed as `raw / 2` degrees.
+- `Likely Spark Advance Bank B 24x9 @ 0x8B41`, displayed as `raw / 2` degrees.
+- `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`, displayed as `raw / 2` degrees.
+- `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`, displayed as `15000000 / raw period`.
+- `Alternate RPM Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
+- `Code-Referenced Axis Vector 1x9 @ 0x9291`.
+- `Code-Referenced Axis Vector 1x9 @ 0x92CF`.
+- `Correction Factor Candidate 24x9 @ 0x9187`, displayed as `raw / 230`.
+
+New in `0.7`:
+
+- `Code-Confirmed 2D Table 24x9 @ 0x869A`.
+- `Code-Confirmed 2D Table 24x9 @ 0x87B1`.
+- `Code-Confirmed 2D Table 24x9 @ 0x888E`.
+- `Code-Confirmed 2D Table 11x9 @ 0x9073`.
+- `Code-Confirmed 2D Table 17x5 @ 0x8E6F`.
+- `Code-Confirmed 2D Table 17x5 @ 0x8EC7`.
+- `Code-Confirmed 2D Table 17x5 @ 0x8F1C`.
+- `Code-Confirmed 2D Table 17x5 @ 0x8F71`.
+
+Alignment notes for `0.7`:
+
+- The old visual `0x86DB` candidate is inside the code-confirmed `0x869A`
+  parent table.
+- The old visual `0x88CD` candidate is inside the code-confirmed `0x888E`
+  parent table.
+- The `0x8E6F/0x8EC7/0x8F1C/0x8F71` cluster is exposed as bounded `17x5`
+  views because the table starts and ends line up cleanly at those boundaries.
+
+New in `0.8`:
+
+- `Likely Spark Advance Bank A 24x9 @ 0x8A69` x-axis labels changed from
+  placeholder `0-8` to provisional load/MAP-like `0, 128, 256, 384, 512, 640,
+  768, 896, 1024`.
+- `Likely Spark Advance Bank B 24x9 @ 0x8B41` received the same x-axis labels.
+- This is based on the code-confirmed `0x2034` 8.8 axis range clamped near
+  `0x0800`. The exact physical mbar scaling is still not proven.
+
+New in `0.9`:
+
+- Added external sensor-reference documentation in
+  `IAW8P40_peugeot106_sensor_references.md`.
+- Updated the likely spark-bank descriptions to tie the `0x2034` x-axis labels
+  to Peugeot 106 TU2J2/MFZ 100 kPa MAP-sensor evidence.
+- The best current interpretation for spark-map x-axis labels is provisional
+  MAP/load in mbar-like units, `0-1024`, pending ADC transfer confirmation.
+
+## Free ROM Space / Custom Logic
+
+Measured zero-filled regions:
+
+| Region | Size | Notes |
+| ---: | ---: | --- |
+| `0x0000-0x3FFF` | `16384` bytes | Lower half is zero-filled, but should not be assumed usable without ECU memory-map confirmation. |
+| `0xF021-0xFFD5` | `4021` bytes | Best current code-cave candidate; starts after an `RTS` at `0xF020` and stops before vectors at `0xFFD6-0xFFFF`. |
+| `0xB600-0xB7FF` | `512` bytes | Zero-filled and skipped by the checksum routine. Possible patch area, but special because checksum deliberately ignores it. |
+
+The apparent zero blocks at `0x87B1`, `0x9073`, and parts of `0x8Fxx` are not
+free space; they are code-confirmed calibration table regions.
+
+The stock 27C512 image cannot be extended past `0xFFFF`. Custom logic would
+need to be inserted into a code cave and reached by patching an existing call or
+jump. Any patch outside `0xB600-0xB7FF` needs checksum repair. Assembly is the
+most realistic route; compiled C would need a 68HC11 target, absolute placement,
+and no hidden runtime assumptions.
+
 ## Next Disassembly Targets
 
 Highest value next:
@@ -717,8 +877,10 @@ Highest value next:
 3. Trace writes to output variables:
    - `0x2147` for the banked 2D table result.
    - `0x20BC`, `0x20BD-0x20C5`, `0x242F`, `0x2431` for the `0x89xx` routines.
-   - `0x2063` for the `0x85BA` table result.
-   - the caller/use sites of the `0x9187` table result returned through `A/B`.
+    - `0x2063` for the `0x85BA` table result.
+    - the caller/use sites of the `0x9187` table result returned through `A/B`.
+    - `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`, `0x24AC`,
+      `0x24AD`, and `0x24AF` for the newly exposed B2D6 tables.
 4. Continue from runtime scheduler calls after reset, especially:
    - `0x67A3`
    - `0xBB98`
