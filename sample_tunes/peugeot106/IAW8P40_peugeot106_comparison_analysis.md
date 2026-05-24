@@ -99,12 +99,12 @@ Top-level changed regions:
 | Region | Changed bytes | Current interpretation |
 | --- | ---: | --- |
 | `0x800C-0x800F` | `4` | Checksum word and complement |
-| `0x802E-0x8105` | `75` changed cells inside a `24x9` view | Upper MOD2-touched tune candidate |
-| `0x8106-0x81D4` | `72` changed cells inside a `23x9` view | Lower adjacent MOD2-touched tune candidate |
+| `0x802E-0x8105` | `75` changed cells inside a `24x9` view | Low-confidence likely fuel/VE correction upper candidate |
+| `0x8106-0x81D4` | `72` changed cells inside a `23x9` view | Low-confidence likely fuel/enrichment lower adjacent candidate |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
-| `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | The old `0x91D9` `15x9` view is a legacy misaligned slice |
+| `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | Load-model / correction-factor candidate; old `0x91D9` view was misaligned |
 
 ## MOD2-Touched Split Region @ `0x802E-0x81D4`
 
@@ -251,13 +251,15 @@ Notes:
 - `0x9291-0x9299` is the supporting axis vector used by helper `0xB383`.
 - `RAM 0x2036` supplies the second interpolation axis.
 - MOD2 changes `62` bytes inside this confirmed table.
-- The old `0x91D9` view starts one byte after row 9 begins and is kept only for screenshot continuity.
+- The old `0x91D9` view starts one byte after row 9 begins and has been removed
+  from the normal XDF tree.
 - `0x91EC: 0xCD -> 0x6F` is row 11, column 2 of this confirmed table, not a separate anomaly outside the map.
 - Row `13`: column `5` increases by `+32`, much larger than surrounding changes.
 - Row `14`: columns `2-7` increase by `+3`.
 - Screenshot-assisted scaling: `raw / 230` turns this into a factor-like surface of
-  roughly `0.00-1.10`. The XDF now includes `Correction Factor Candidate 24x9 @
-  0x9187`, but the exact strategy role remains unconfirmed.
+  roughly `0.00-1.10`. The XDF now includes
+  `Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but the exact
+  strategy role remains unconfirmed.
 
 ## Earlier Candidates Revisited
 
@@ -310,19 +312,17 @@ New MOD2-backed entries:
 - `MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18`
 - `Code-Confirmed Signed Offset Byte @ 0x8A68`
 - `MOD2 Compared Scalar Block 1x8 @ 0x879C`
-- `Legacy Raw 1x20 View @ 0x89F2`
 - `Legacy Raw 0x8A68 Banked Block View 48x9`
 - `Legacy Raw 1x32 View @ 0x8C18`
-- `Legacy Misaligned MOD2 15x9 Slice @ 0x91D9`
 
 After TunerPro visual review, additional split views were added:
 
-- `MOD2 Compared Upper Tune Candidate 24x9 @ 0x802E`
-- `MOD2 Compared Lower Adjacent Tune Candidate 23x9 @ 0x8106`
+- `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`
+- `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
-- `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
+- `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -337,7 +337,7 @@ After TunerPro visual review, additional split views were added:
 - `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
-- `Correction Factor Candidate 24x9 @ 0x9187`
+- `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`
 - `Code-Referenced Axis Vector 1x9 @ 0x9291`
 - `Code-Referenced Axis Vector 1x9 @ 0x92CF`
@@ -359,8 +359,9 @@ After TunerPro visual review, additional split views were added:
 Rationale:
 
 - The old combined `47x9 @ 0x802E` view changes character after row `23`; it
-  has been removed from the XDF in favor of the `24x9 @ 0x802E` and
-  `23x9 @ 0x8106` split views.
+  has been removed from the XDF in favor of the low-confidence
+  `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` and
+  `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` split views.
 - The `48x9 @ 0x8A68` view has a clear visual break at row `24`, making two `24x9` subviews easier to inspect.
 - The original large views remain in the XDF for context, even where later disassembly refined the true boundaries.
 
@@ -374,14 +375,33 @@ After 68HC11 disassembly, the `0x8A68` split was corrected:
 The `0x89F2` raw view was also refined:
 
 - `0x89ED-0x89F2` are code-referenced control/scalar bytes.
-- `0x89F3-0x8A05` is a code-confirmed `1x19` vector used by the 1D interpolation helper at `0xB2AB`.
+- The old raw `1x20 @ 0x89F2` view has been removed from the normal XDF tree
+  because it mixed scalars and vector data in one misleading row.
+- `0x89F3-0x8A05` is now exposed as
+  `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`, a code-confirmed
+  `1x19` vector used by the 1D interpolation helper at `0xB2AB`.
 - The continuation pass confirmed the surrounding `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x8A27`, `0x8A3A`, and `0x8A52`.
 
 The `0x91D9` raw view was corrected:
 
 - The code-confirmed table starts at `0x9187`, not `0x91D9`.
 - It is a `24x9` B2D6 table with stride `9`.
-- The `0x91D9` view is now retained only as a legacy misaligned slice.
+- The `0x91D9` view has been removed from the normal XDF tree. It was a
+  misaligned screenshot-continuity slice, not a standalone map.
+
+Current confidence-tier candidate labels:
+
+| Range | Retained XDF label | Confidence | Notes |
+| --- | --- | --- | --- |
+| `0x802E-0x8105` | `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` | Low | MOD2-touched smooth RPM/load-like surface; no confirmed consumer. |
+| `0x8106-0x81D4` | `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` | Low | Adjacent tune-related lower structure; raw-indexed until axes are proven. |
+| `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes. |
+| `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells. |
+| `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; not proven main fuel. |
+
+Screenshots alone are no longer enough to keep a normal candidate view active
+when later code proves misalignment. Historical visual leads should now be folded
+into the corrected parent structures or documented outside the active XDF tree.
 
 Two older visual candidates were also corrected by the full B2D6 call scan:
 

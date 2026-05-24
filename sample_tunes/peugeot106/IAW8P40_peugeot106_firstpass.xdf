@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-    <fileversion>0.12</fileversion>
+    <fileversion>0.13</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.12 removes duplicate/legacy views for 0x802E, 0x86DB, 0x8A69, 0x8B41, and 0x9187; promotes the split 0x802E/0x8106 tune candidates; keeps single scaled spark-bank views; and keeps raw diagnostic/service views for the code-confirmed event table and state descriptor triples.</description>
+    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.13 adds confidence-tier working labels for likely fuel/correction candidates, removes misleading legacy 0x89F2 and 0x91D9 views, keeps public-index 21x9 entries as alignment probes, and keeps main fuel unconfirmed until a direct injection consumer is found.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -18,6 +18,7 @@
     <CATEGORY index="0x6" name="Scaled / Likely Named Views" />
     <CATEGORY index="0x7" name="Code-Confirmed Additional Tables" />
     <CATEGORY index="0x8" name="Diagnostics / Service Data" />
+    <CATEGORY index="0x9" name="Public Index Leads" />
   </XDFHEADER>
 
   <XDFCONSTANT uniqueid="0x100">
@@ -218,7 +219,7 @@
 
   <XDFCONSTANT uniqueid="0x116">
     <title>Likely RPM Limiter Set Threshold @ 0x879E</title>
-    <description>Code at 0x6F28 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and sets RAM 0x00A4 bit 0x10 if the period is below the threshold. Displayed as RPM using 15000000 / period. Stock 0x07EB is about 7400 RPM; MOD2 0x00FA is about 60000 RPM.</description>
+    <description>Code at 0x6F28 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and sets RAM 0x00A4 bit 0x10 if the period is below the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EB is about 7400 RPM; MOD2 0x00FA is about 60000 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
     <CATEGORYMEM index="0" category="6" />
     <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" />
     <units>rpm</units>
@@ -231,7 +232,7 @@
 
   <XDFCONSTANT uniqueid="0x117">
     <title>Likely RPM Limiter Clear Threshold @ 0x87A0</title>
-    <description>Code at 0x6F12 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and clears RAM 0x00A4 bit 0x10 when the period rises above the threshold. Displayed as RPM using 15000000 / period. Stock 0x07EF is about 7386 RPM; MOD2 0xFFFF is about 229 RPM.</description>
+    <description>Code at 0x6F12 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and clears RAM 0x00A4 bit 0x10 when the period rises above the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EF is about 7386 RPM; MOD2 0xFFFF is about 229 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
     <CATEGORYMEM index="0" category="6" />
     <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" />
     <units>rpm</units>
@@ -530,43 +531,6 @@
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0xFF00" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x20D" flags="0x30">
-    <title>Candidate Triangular Table 8x19 @ 0x88CA</title>
-    <description>Strong triangular-pattern structure from the 0x8800 block. Values are padded by repeated 0x01 and upper-limited by 0x26/0x38 style plateaus, suggesting this is not random code data.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>8</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" />
-      <LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>19</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" />
-      <LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" />
-      <LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x88CA" mmedelementsizebits="8" mmedrowcount="19" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-
   <XDFTABLE uniqueid="0x20E" flags="0x30">
     <title>Candidate Flag/Scalar Block 16x5 @ 0x8880</title>
     <description>Mixed block containing zeros, a short scalar cluster, and a long run of 0x01 values before the triangular structure begins. Useful for inspecting setup bytes separately from the packed table at 0x88CA.</description>
@@ -603,9 +567,9 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x210" flags="0x30">
-    <title>Candidate 17x9 Map @ 0x88CD</title>
-    <description>Better-aligned reinterpretation of the 0x8800 cluster as 17 rows of 9 bytes. This is the strongest map-like structure found so far; the layout stays coherent until 0x8966, where the data pattern clearly changes.</description>
-    <CATEGORYMEM index="0" category="2" />
+    <title>Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD</title>
+    <description>Historical visual slice retained only for screenshot continuity. This is not a standalone candidate map: later disassembly confirms the parent structure is the 24x9 B2D6 table at 0x888E, used around 0xBE74 with axes RAM 0x2034 and RAM 0x2036. Prefer the code-confirmed 24x9 @ 0x888E entry for analysis/editing.</description>
+    <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
       <indexcount>9</indexcount>
@@ -667,44 +631,6 @@
     </XDFAXIS>
     <XDFAXIS id="z">
       <EMBEDDEDDATA mmedaddress="0x879C" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x213" flags="0x30">
-    <title>Legacy Raw 1x20 View @ 0x89F2</title>
-    <description>Legacy raw view retained for context. Later disassembly shows this area is a mixture of control scalars and a 1D interpolation vector: direct scalar loads use 0x89ED, 0x89F0, 0x89F2, 0x8A06, and 0x8A08, while the 1D vector used through B2AB starts at 0x89F3.</description>
-    <CATEGORYMEM index="0" category="5" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>20</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" />
-      <LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" />
-      <LABEL index="18" value="18" /><LABEL index="19" value="19" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x89F2" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="20" mmedmajorstridebits="0" mmedminorstridebits="0" />
       <decimalpl>0</decimalpl>
       <min>0.000000</min>
       <max>255.000000</max>
@@ -804,47 +730,9 @@
     </XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x216" flags="0x30">
-    <title>Legacy Misaligned MOD2 15x9 Slice @ 0x91D9</title>
-    <description>Legacy comparison view retained for continuity with earlier screenshots. Disassembly now confirms the parent structure is a 24x9 table starting at 0x9187; this 0x91D9 view starts one byte after row 9 begins and should not be edited as a standalone map.</description>
-    <CATEGORYMEM index="0" category="5" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>9</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>15</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x91D9" mmedelementsizebits="8" mmedrowcount="15" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-
   <XDFTABLE uniqueid="0x217" flags="0x30">
-    <title>MOD2 Compared Upper Tune Candidate 24x9 @ 0x802E</title>
-    <description>Primary view of the upper structure in the MOD2-touched 0x802E-0x81D4 region. The old combined 47x9 view has been removed because the screenshot and byte pattern suggest two adjacent structures rather than one table. MOD2 changes 75 of 216 cells here, concentrated in rows 10, 11, 13-18, and 21-23, mostly by +4/+5/+6 raw counts. This is a strong tune-related fuel/correction candidate, but direct code usage is not confirmed and it is not proven main fuel. X/Y labels are provisional load/RPM-style labels borrowed from code-confirmed 24x9 table patterns.</description>
+    <title>Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E</title>
+    <description>Low-confidence working view for the upper structure in the MOD2-touched 0x802E-0x81D4 region. It is a smooth RPM/load-style 24x9 surface, MOD2 changes 75 of 216 cells, and the shape is plausible as fuel, VE, or enrichment correction. No direct code consumer has been confirmed yet, so this is not proven main fuel. X/Y labels are provisional load/RPM-style labels borrowed from code-confirmed 24x9 table patterns.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -868,8 +756,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x218" flags="0x30">
-    <title>MOD2 Compared Lower Adjacent Tune Candidate 23x9 @ 0x8106</title>
-    <description>Primary view of the lower adjacent structure after the upper 24x9 candidate at 0x802E. MOD2 changes 72 of 207 cells here, mostly columns 0-5 in parent rows 35-46. Several values wrap through 0xFF, so modulo-byte interpretation is likely relevant. This is tune-related, but direct code usage and physical meaning are not confirmed. It intentionally remains raw-indexed with parent row labels 24-46 instead of using the 24-point RPM axis.</description>
+    <title>Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106</title>
+    <description>Low-confidence working view for the lower adjacent structure after the upper 24x9 candidate at 0x802E. MOD2 changes 72 of 207 cells, mostly columns 0-5 in parent rows 35-46. Several values wrap through 0xFF, so modulo-byte interpretation may matter. It is likely tune-related and may be a continuation, secondary correction, or enrichment structure, but it is not proven main fuel. It intentionally remains raw-indexed with parent row labels 24-46 until a code consumer proves its axes.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -917,8 +805,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x21C" flags="0x30">
-    <title>Code-Confirmed 1D Vector 1x19 @ 0x89F3</title>
-    <description>The routine around 0xBAA8 loads Y with 0x89F3, loads D from RAM 0x2044, and calls the 1D interpolation helper at 0xB2AB. This confirms 0x89F3 is the start of a byte vector/table, separate from the control scalars at 0x89ED-0x89F2.</description>
+    <title>Likely Speed/Transient Correction Vector 1x19 @ 0x89F3</title>
+    <description>Medium-confidence working view for the code-confirmed 1D byte vector at 0x89F3. The routine around 0xBAA8 loads Y with 0x89F3, loads D from RAM 0x2044, and calls the 1D interpolation helper at 0xB2AB. MOD2 changes 16 of 19 cells, so it is likely a speed, transient, or enrichment correction vector, but RAM 0x2044 is not fully named yet. Keep raw scaling.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -1078,8 +966,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x22D" flags="0x30">
-    <title>Correction Factor Candidate 24x9 @ 0x9187</title>
-    <description>Single retained view for the code-confirmed 0x9187 24x9 table. The routine at 0x6344 builds a B2D6 descriptor at RAM 0x218D, derives one axis through helper 0xB383 using vector 0x9291 and count/stride byte 0x929A=9, loads the second axis from RPM-like RAM 0x2036, sets base 0x9187, and returns the interpolated byte. Known callers store the result at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display in a factor-like range with X / 230, broadly similar to online correction-factor examples, but current evidence points first to a correction/load-model role rather than proven main fuel.</description>
+    <title>Load Model / Correction Factor Candidate 24x9 @ 0x9187</title>
+    <description>Medium-high structural confidence view for the code-confirmed 0x9187 24x9 lookup. The routine at 0x6344 builds a B2D6 descriptor at RAM 0x218D, derives one axis through helper 0xB383 using vector 0x9291 and count/stride byte 0x929A=9, loads the second axis from RPM-like RAM 0x2036, sets base 0x9187, and returns the interpolated byte. Known callers store the result at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display with X / 230. Likely load-model, air, fuel, or correction factor; not proven main fuel.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1174,6 +1062,33 @@
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>3</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="Y+0" /><LABEL index="1" value="Y+1" /><LABEL index="2" value="Y+2" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>19</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="9131" /><LABEL index="1" value="9134" /><LABEL index="2" value="9137" /><LABEL index="3" value="913A" /><LABEL index="4" value="913D" /><LABEL index="5" value="9140" /><LABEL index="6" value="9143" /><LABEL index="7" value="9146" /><LABEL index="8" value="9149" /><LABEL index="9" value="914C" /><LABEL index="10" value="914F" /><LABEL index="11" value="9152" /><LABEL index="12" value="9155" /><LABEL index="13" value="9158" /><LABEL index="14" value="915B" /><LABEL index="15" value="915E" /><LABEL index="16" value="9161" /><LABEL index="17" value="9164" /><LABEL index="18" value="9167" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9131" mmedelementsizebits="8" mmedrowcount="19" mmedcolcount="3" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x238" flags="0x30">
+    <title>Public-Index Alignment Probe A 21x9 @ 0x802E</title>
+    <description>Raw alignment probe for the BTDig/Digital-Kaos lead that IAW8P40 may have two fuel/correction maps with 9 load sites and about 21 speed sites. This view starts at the same address as the MOD2 upper 24x9 candidate and covers the first 189 bytes only. The public lead also claimed zero is AFR 14.7, 0x00-0x7F richer, and 0xFF-0x80 leaner, but this XDF intentionally displays raw bytes until a local code consumer proves signedness and physical meaning. Do not treat this as confirmed fuel.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="128" /><LABEL index="2" value="256" /><LABEL index="3" value="384" /><LABEL index="4" value="512" /><LABEL index="5" value="640" /><LABEL index="6" value="768" /><LABEL index="7" value="896" /><LABEL index="8" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>21</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x802E" mmedelementsizebits="8" mmedrowcount="21" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x239" flags="0x30">
+    <title>Public-Index Alignment Probe B 21x9 @ 0x80EB</title>
+    <description>Second raw 21x9 alignment probe for the BTDig/Digital-Kaos two-map lead. This starts immediately after overlay A, so it overlaps the previous 24x9/23x9 split and leaves the tail of the MOD2-touched 0x802E-0x81D4 region outside the two-map hypothesis. That mismatch is intentional evidence to inspect, not a correction. Do not treat this as confirmed fuel until code references or live behavior prove it.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="128" /><LABEL index="2" value="256" /><LABEL index="3" value="384" /><LABEL index="4" value="512" /><LABEL index="5" value="640" /><LABEL index="6" value="768" /><LABEL index="7" value="896" /><LABEL index="8" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>21</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x80EB" mmedelementsizebits="8" mmedrowcount="21" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x23A" flags="0x30">
+    <title>Public-Index Alignment Probe Tail 5x9 @ 0x81A8</title>
+    <description>Tail bytes left after interpreting 0x802E as two adjacent 21x9 public-index probes. It covers 45 bytes from 0x81A8 through 0x81D4, the remainder of the MOD2-touched region. If the public two-map lead is correct, this tail may be a separate mini-table, clamp row block, or unrelated adjacent data. Keep raw and do not edit as fuel without more proof.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="tail0" /><LABEL index="1" value="tail1" /><LABEL index="2" value="tail2" /><LABEL index="3" value="tail3" /><LABEL index="4" value="tail4" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x81A8" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
 </XDFFORMAT>

@@ -735,24 +735,29 @@ Physical meaning:
 - The online XDF screenshot helps here: a `raw / 230` view turns this table into
   factor-like values, roughly `0.00-1.10`, which resembles the displayed air/fuel
   correction factor style more than an ignition-degree table.
-- This is now exposed in the XDF as `Correction Factor Candidate 24x9 @ 0x9187`.
+- This is now exposed in the XDF as
+  `Load Model / Correction Factor Candidate 24x9 @ 0x9187`.
   The code confirms the lookup, axes, and consumers, but not yet whether the
   factor is air density, VE, fuel, or another compensation path.
 - Current best interpretation is correction/load-model rather than final main
   fuel, because one confirmed path stores the lookup result to `0x00D0`, then
   stores `0x00CE = 0x00D0 << 2`, and `0x00CE` is later normalized into the
   load/MAP-like axis `0x2034`.
-- The old `15x9 @ 0x91D9` view is misaligned and should be treated as legacy only.
+- The old `15x9 @ 0x91D9` view is misaligned and has been removed from the
+  normal XDF candidate tree. Use the code-correct `0x9187` parent table instead.
 
 ### MOD2 Fuel/Corr Candidate Pass
 
 Using `1_3L_8V_IAW8P40_MOD2.bin` against `M27C512_original.BIN`, the current
-fuel-search priority is:
+fuel-search priority is now expressed as confidence-tier working labels:
 
-1. `0x802E-0x8105` upper `24x9` tune candidate.
-2. `0x8106-0x81D4` lower adjacent `23x9` tune candidate.
-3. `0x9187-0x925E` code-confirmed correction/load table.
-4. `0x89F3-0x8A05` code-confirmed `0x2044`-indexed vector.
+| Range | XDF working label | Confidence | Current interpretation |
+| --- | --- | --- | --- |
+| `0x802E-0x8105` | `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` | Low | MOD2-touched, smooth RPM/load-like surface; plausible fuel, VE, or enrichment correction, but no direct code consumer yet. |
+| `0x8106-0x81D4` | `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` | Low | Adjacent tune-related lower structure; likely continuation, secondary correction, or enrichment, but raw-indexed until code proves axes. |
+| `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes around the `0x2044` vector family. |
+| `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells; likely speed/transient/enrichment correction. |
+| `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; likely load-model, air, fuel, or correction factor. |
 
 `0x802E-0x81D4` is a strong MOD2-touched tune region, but it is now treated as
 two adjacent candidates rather than one combined table:
@@ -760,12 +765,14 @@ two adjacent candidates rather than one combined table:
 - The old combined `47x9 @ 0x802E` view was useful during discovery, but it has
   been removed from the XDF because the screenshot and byte pattern suggest two
   structures with different character.
-- Upper candidate `24x9 @ 0x802E`: `75 / 216` cells changed.
+- Upper candidate `24x9 @ 0x802E`: `75 / 216` cells changed; now visible as
+  `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`.
   - Changed rows: `10`, `11`, `13-18`, `21-23`.
   - Deltas are clean positive raw-count increases, mostly `+4`, `+5`, and `+6`.
 - The upper shape matches the ECU's common 24-row pattern and is shown in the
   XDF with provisional `0x2034` load-like and `0x2036` RPM-like labels.
-- Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` cells changed.
+- Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` cells changed; now
+  visible as `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`.
   - Parent rows `35-46` are touched, mostly columns `0-5`.
   - Most deltas are modulo-byte `+5`, with one row group at `+18`.
   - Several values wrap through `0xFF`, so unsigned display can look like a
@@ -778,6 +785,10 @@ two adjacent candidates rather than one combined table:
 - Fuel/enrichment remains a hypothesis only. Neither split is code-confirmed
   main fuel until a consumer path reaches pulse width, injection scheduling, or
   another fueling-specific calculation.
+- Screenshot continuity alone is no longer enough to keep a normal XDF view
+  active when later code proves misalignment. The misleading `0x89F2` and
+  `0x91D9` legacy views were removed; use the corrected scalar/vector and
+  `0x9187` parent-table entries instead.
 
 `0x9187` is code-confirmed and MOD2-touched, but is probably upstream of load:
 
@@ -871,6 +882,8 @@ Important alignment corrections:
   code-confirmed `0x869A` parent table, not as a standalone proven table.
 - The visually interesting old `0x88CD` candidate sits inside the larger
   code-confirmed `0x888E` parent table.
+- The older `0x88CA` `8x19` triangular XDF view was a misleading off-axis slice
+  and has been removed from XDF `0.13`.
 - The `0x8E6F/0x8EC7/0x8F1C/0x8F71` cluster is exposed as bounded `17x5`
   views because those boundaries line up cleanly with adjacent table starts.
   The code's `0x2044` source axis still needs live-range confirmation.
@@ -1477,11 +1490,23 @@ The integrated deep-research report is now treated as a secondary lead list,
 with verified public URLs recorded in
 `IAW8P40_peugeot106_external_evidence.md`.
 
+That external note also records a safe BTDig/public-index search. BTDig did not
+produce a usable public XDF, but it did expose filenames and identifiers such as
+`106 Rallye 1.3 100hp Magneti Marelli IAW 8P.40.ORI.BIN`, `Citroen Xantia 1.6L
+8v iaw 8p.40 (607C).std`, `PEUGEOT 106 1.6 IAW 8P.40 total.zip`, and forum
+terms `106RALL2`, `16143.124`, and `9620697280`. These are search leads only,
+not local offset evidence.
+
+XDF `0.13` exposes the forum's two-map idea as raw `21x9` alignment probes at
+`0x802E` and `0x80EB`, plus a `5x9` tail at `0x81A8`. Keep these in the
+public-index category; they are visual probes and should not be used as
+confirmed fuel maps until code or live behavior proves the alignment.
+
 Current cross-check status:
 
 | Public map family | Current local status |
 | --- | --- |
-| Main fuel multiplier | No confirmed offset. `0x802E-0x8105` and `0x8106-0x81D4` remain split tune-related candidates only. |
+| Main fuel multiplier | No confirmed offset. `0x802E-0x8105` and `0x8106-0x81D4` remain split low-confidence fuel/VE/enrichment candidates only. |
 | Spark high/low octane | `0x8A69` and `0x8B41` are code-confirmed banked spark lookups and likely high/default vs low/alternate. |
 | WOT spark | `0x8C19` is a code-confirmed RPM-only spark bypass vector and likely WOT/RPM-only spark. |
 | Spark correction/minimum/idle | Not yet matched to exact local offsets. |

@@ -670,7 +670,8 @@ This is a strong candidate for the online XDF's "spark advance wide open throttl
 The earlier `15x9 @ 0x91D9` view was visually useful but misaligned. The current disassembly confirms a larger parent table:
 
 - `0x9187-0x925E` is a code-confirmed `24x9` 2D byte table.
-- The old `0x91D9` slice starts one byte after row 9 begins.
+- The old `0x91D9` slice starts one byte after row 9 begins and has been
+  removed from the normal XDF tree.
 - MOD2 changes `62` bytes inside the confirmed `0x9187` table.
 - `0x925F`, `0x9260`, and `0x9261` remain direct scalar/flag/threshold bytes after the table.
 
@@ -970,7 +971,7 @@ Interpretation:
 
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.12` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, and a deduplicated table tree where each major structure has one best inspection entry.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.13` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, confidence-tier labels for likely fuel/correction candidates, and a deduplicated table tree where each major structure has one best inspection entry.
 
 Previously added in `0.4`:
 
@@ -978,12 +979,12 @@ Previously added in `0.4`:
 - code-confirmed spark-bank raw views at `0x8A69` and `0x8B41`, later
   condensed into the retained scaled likely spark entries
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
-- `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
+- `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
 
 New in `0.5`:
 
 - code-confirmed raw `24x9 @ 0x9187`, later condensed into the retained
-  `Correction Factor Candidate 24x9 @ 0x9187`
+  `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -994,7 +995,8 @@ New in `0.5`:
 - `Code-Confirmed 2D Table 24x5 @ 0x85BA`
 - `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
 
-It also renames the old `MOD2 Compared Candidate 15x9 Table @ 0x91D9` as a legacy misaligned slice because the confirmed parent table begins at `0x9187`.
+The old `MOD2 Compared Candidate 15x9 Table @ 0x91D9` was later removed from
+the normal XDF tree because the confirmed parent table begins at `0x9187`.
 
 New in `0.6`:
 
@@ -1006,7 +1008,7 @@ New in `0.6`:
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
 - `Code-Referenced Axis Vector 1x9 @ 0x9291`.
 - `Code-Referenced Axis Vector 1x9 @ 0x92CF`.
-- `Correction Factor Candidate 24x9 @ 0x9187`, displayed as `raw / 230`.
+- `Load Model / Correction Factor Candidate 24x9 @ 0x9187`, displayed as `raw / 230`.
 
 New in `0.7`:
 
@@ -1077,6 +1079,32 @@ New in `0.12`:
   candidate now carries the code-confirmed lookup evidence.
 - Removed the old duplicate `0x86DB` visual views because that region is inside
   the code-confirmed `0x869A` parent table.
+- Removed the misleading early `8x19 @ 0x88CA` triangular view and demoted the
+  old `17x9 @ 0x88CD` view to historical context inside the code-confirmed
+  `24x9 @ 0x888E` parent table.
+
+New in `0.13`:
+
+- Renamed the primary MOD2/correction candidates with confidence-tier working
+  labels:
+  - `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`
+  - `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
+  - `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
+  - `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
+- Removed the misleading legacy `0x89F2` and `0x91D9` views from the normal XDF
+  tree. Screenshots alone are no longer enough to keep an active view when later
+  code proves that it mixes structures or starts on a misaligned row.
+- Added category `Public Index Leads`.
+- Added raw BTDig/Digital-Kaos-derived alignment probe views:
+  - `21x9 @ 0x802E`
+  - `21x9 @ 0x80EB`
+  - `5x9 tail @ 0x81A8`
+- These probes test the public claim of two 9-load-site, about-21-speed-site
+  fuel/correction maps. They do not rename the region as fuel and do not
+  replace the primary MOD2 split views.
+- Updated the `0x879E/0x87A0` limiter descriptions to mention the public
+  `21000000 / value` formula as a lead only; the retained scaling remains the
+  locally supported `15000000 / period`.
 
 External evidence integration:
 

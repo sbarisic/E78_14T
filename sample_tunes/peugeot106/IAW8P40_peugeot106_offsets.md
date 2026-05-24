@@ -54,10 +54,11 @@ What the XDF contains:
   event-code table and `0x9131` state descriptor triples are exposed as raw
   inspection views only.
 - Added compact views for packed structures:
-  - `0x88CA` as `8x19`
+  - the old `0x88CA` as `8x19` view has now been removed because it was a
+    misleading off-axis slice inside the code-confirmed `0x888E` parent table
   - `0x8880` as `16x5`
 - Added better-aligned row-based views:
-  - `0x88CD` as `17x9`
+  - `0x88CD` as a historical `17x9` slice only
 - Added code-confirmed disassembly views:
   - `0x85BA` as `24x5`
   - `0x8A0A` as `5x5`
@@ -75,10 +76,14 @@ What the XDF contains:
 Recommended next steps:
 
 1. Open the BIN with the new XDF in TunerPro.
-2. Inspect code-confirmed and MOD2-touched views first, especially the split
-   `0x802E`/`0x8106` candidates, spark maps, and `0x9187`.
-3. Inspect `Candidate 17x9 Map @ 0x88CD` only as historical visual context,
-   because the later code-confirmed parent table starts at `0x888E`.
+2. Inspect code-confirmed and MOD2-touched views first, especially
+   `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`,
+   `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`,
+   the likely spark maps, and
+   `Load Model / Correction Factor Candidate 24x9 @ 0x9187`.
+3. Inspect `Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD` only as
+   historical visual context, because the later code-confirmed parent table
+   starts at `0x888E`. Do not use the removed `0x88CA` triangular alignment.
 4. Use `Candidate Flag/Scalar Block 16x5 @ 0x8880` to understand the header/setup bytes before the 0x88CD map.
 5. Then review `0x8E00` and `0x8300`.
 6. Look for recognizable axes:
@@ -114,12 +119,14 @@ Checksum offsets:
 
 Candidate and code-confirmed offsets added to the XDF:
 
-- `0x802E-0x8105`: upper `24x9` tune candidate from the MOD2 comparison.
+- `0x802E-0x8105`: `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`.
   MOD2 changes `75 / 216` cells, mostly by `+4`, `+5`, and `+6`.
-- `0x8106-0x81D4`: lower adjacent `23x9` tune candidate.
+- `0x8106-0x81D4`: `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`.
   MOD2 changes `72 / 207` cells, mostly parent rows `35-46` and columns `0-5`.
 - The old combined `47x9 @ 0x802E` XDF view was removed because the screenshot
   and byte pattern suggest two adjacent structures rather than one table.
+- These labels are low-confidence working names; neither split is confirmed
+  main fuel until a consumer path reaches injection pulse width or scheduling.
 - `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
@@ -135,7 +142,9 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x8F71-0x8FC5`: code-confirmed bounded `17x5` 2D table view.
 - `0x9073-0x90D5`: code-confirmed `11x9` 2D table.
 - `0x89ED-0x89F2`: code-referenced control scalars.
-- `0x89F3-0x8A05`: code-confirmed `1x19` interpolation vector; part of a larger `0x2044`-indexed vector family.
+- `0x89F3-0x8A05`: `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`;
+  code-confirmed `1x19` interpolation vector and part of a larger
+  `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
 - `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank; likely
   high-octane/default spark advance.
@@ -143,7 +152,13 @@ Candidate and code-confirmed offsets added to the XDF:
   low-octane/alternate spark advance.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
 - `0x8C19-0x8C30`: code-confirmed RPM-only vector used when `RAM 0x00A9 bit 0x20` bypasses the banked maps.
-- `0x9187-0x925E`: code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view is a legacy misaligned slice. A screenshot-assisted `raw / 230` scaled view is included as a correction-factor candidate. Current trace shows it can seed `0x00D0`, then `0x00CE`, then the load/MAP-like axis `0x2034`, so it is probably correction/load-model related rather than proven main fuel.
+- `0x9187-0x925E`: `Load Model / Correction Factor Candidate 24x9 @ 0x9187`;
+  code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view was a
+  legacy misaligned slice and has been removed from the normal XDF tree. The
+  retained view uses screenshot-assisted `raw / 230` scaling. Current trace
+  shows it can seed `0x00D0`, then `0x00CE`, then the load/MAP-like axis
+  `0x2034`, so it is probably correction/load-model related rather than proven
+  main fuel.
 - `0x929E-0x92CD`: code-confirmed period/RPM axis for `0x2036`; count byte is `0x92CE = 0x18`.
 - `0x9291-0x9299`: code-referenced 9-byte axis vector; count byte is `0x929A = 0x09`.
 - `0x92CF-0x92D7`: code-referenced 9-byte axis/vector; nearby count byte is `0x92D8 = 0x09`.

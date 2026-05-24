@@ -9,7 +9,7 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.12`.
+  - TunerPro definition, now updated to comparison markup version `0.13`.
   - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
@@ -114,6 +114,10 @@ Notes:
 - This was first viewed incorrectly as `8x19 @ 0x88CA`.
 - Re-aligning to `9` columns starting at `0x88CD` produced much cleaner row boundaries.
 - The pattern changes at `0x8966`, which supports `0x88CD-0x8965` as a likely table boundary.
+- Later disassembly superseded both early visual interpretations: the
+  code-confirmed parent table starts at `0x888E` and is `24x9`. The bad `8x19 @
+  0x88CA` XDF view has been removed, and the `17x9 @ 0x88CD` view is retained
+  only as a historical slice.
 - The values `0x01` and `0x26`/decimal `38` may be padding, lower/upper clamp values, or meaningful min/max calibration values.
 - No fuel/spark/RPM/load meaning has been assigned yet.
 
@@ -164,6 +168,8 @@ Notes:
 
 - The long run of `0x01` values suggests padding, masks, flags, or low-value calibration defaults.
 - `0x88CA-0x88CC` holds `4, 7, 12`; these were originally included in the triangular table, but the cleaner table start appears to be `0x88CD`.
+- The old `0x88CA` triangular XDF view was removed because it is a misleading
+  off-axis slice inside the later code-confirmed `0x888E` parent table.
 
 ## Other Candidate Areas
 
@@ -243,10 +249,12 @@ They remain worth inspecting in TunerPro.
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
 - Current fuel/correction search status:
-  - `0x802E-0x8105` is the upper `24x9` MOD2-touched tune candidate; `0x8106-0x81D4` is the lower adjacent `23x9` MOD2-touched tune candidate
+  - `0x802E-0x8105` is exposed as `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` with low confidence
+  - `0x8106-0x81D4` is exposed as `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` with low confidence
   - fuel/enrichment remains a hypothesis only; neither `0x802E` split is code-confirmed main fuel
-  - `0x9187-0x925E` is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
-  - `0x89F3-0x8A05` is a code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
+  - `0x9187-0x925E` is `Load Model / Correction Factor Candidate 24x9 @ 0x9187`; it is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
+  - `0x89F3-0x8A05` is `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
+  - screenshots alone are no longer enough to keep a view active when later code proves misalignment, so the misleading legacy `0x89F2` and `0x91D9` views were removed from the normal XDF tree
 - Free-space scan:
   - `0xF021-0xFFD5` is the best current code-cave candidate, `4021` zero bytes before the vector table
   - `0xB600-0xB7FF` is `512` zero bytes and is skipped by the checksum routine
@@ -273,8 +281,8 @@ They remain worth inspecting in TunerPro.
    - code-confirmed `1x19 @ 0x89F3`
    - surrounding `0x2044` vector family entries
    - control scalars `1x6 @ 0x89ED`
-   - legacy `15x9 @ 0x91D9` only for screenshot continuity
-   - upper `24x9 @ 0x802E` and lower adjacent `23x9 @ 0x8106`
+   - likely fuel/VE correction upper `24x9 @ 0x802E`
+   - likely fuel/enrichment lower adjacent `23x9 @ 0x8106`
 3. Inspect the `Scaled / Likely Named Views` category next:
    - likely spark advance high-octane/default `24x9 @ 0x8A69`
    - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
@@ -282,7 +290,7 @@ They remain worth inspecting in TunerPro.
    - spark bank selector config `0x800A`
    - likely WOT spark advance vector `1x24 @ 0x8C19`
    - likely RPM limiter thresholds `0x879E/0x87A0`
-   - correction factor candidate `24x9 @ 0x9187`
+   - load model / correction factor candidate `24x9 @ 0x9187`
    - RPM axis `1x24 @ 0x929E`
 4. Inspect the `Code-Confirmed Additional Tables` category:
    - `24x9 @ 0x869A`
@@ -329,6 +337,18 @@ deep-research-report follow-up. The checked public sources support the Peugeot
 8P-family sensor/pin context, the public OldSkullTuning map-family checklist,
 and the 100 kPa MAP-sensor clue. They do not publish exact map offsets, so
 local code references and MOD2 deltas remain the authority for XDF naming.
+The same file now also records BTDig/public-index filename leads such as
+`106RALL2`, `16143.124`, and `9620697280`; those are research search terms only,
+not downloadable evidence or offset proof.
+
+XDF `0.13` adds confidence-tier working labels and a separate `Public Index Leads`
+category with raw `21x9` alignment probes over the `0x802E-0x81D4` region for the public forum claim that there
+are two 9-load-site, about-21-speed-site fuel/correction maps. The existing
+`Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` and
+`Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` views remain
+the primary MOD2 split views; the 21x9 public-index entries are alignment probes
+only. The misleading legacy `0x89F2` and `0x91D9` views are intentionally
+removed from normal tuning workflow.
 
 ## Practical Caution
 

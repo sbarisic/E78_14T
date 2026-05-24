@@ -42,6 +42,54 @@ verified facts in this pass:
 These remain research leads. The local ROM currently provides stronger evidence
 for the 68HC11 execution model than the public material does.
 
+## BTDig / Public Index Search Leads
+
+BTDig was used only as a public filename/reference index. No torrent payloads,
+magnet links, commercial XDFs, or archive contents were downloaded.
+
+Checked query:
+
+- `https://btdig.com/search?q=%22IAW%208P.40%22`
+
+Observed BTDig filename leads:
+
+| Indexed title | Visible matching files | Usefulness | Evidence state |
+| --- | --- | --- | --- |
+| `ECU ORIGINAL MAPS 2001 TO 2019` | `106 Rallye 1.3 100hp Magneti Marelli IAW 8P.40.ORI.BIN`; `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).std` | Confirms that public indexes mention a 106 Rallye 1.3 IAW 8P.40 original binary and a Xantia 1.6 IAW 8P.40 `.std` definition/file. The `.std` extension may be an ECM/driver-style definition, not TunerPro XDF. | Deep-research / public-index lead only. Do not use as offset proof. |
+| `-=Scan Tool Programs=-` | `PEUGEOT 106 1.6 IAW 8P.40 total.zip` | Suggests a 106 1.6 8P.40 package exists in old scan/chip-tool collections, but contents are unknown. | Deep-research / public-index lead only. |
+
+Related public forum lead:
+
+- Digital-Kaos archived thread:
+  `https://www.digital-kaos.co.uk/forums/archive/index.php/t-206204.html`
+- The thread is about a Peugeot 106 Rallye 1.3 IAW 8P.40 `27C512` file with
+  checksum `B59A`, size `65536`, label `16143.124`, and OE `9620697280`.
+- One reply claims an ECM6.3 `Driver 106RALL2`; another says there are two fuel
+  maps with `9` load sites and about `21` speed sites, describes them as
+  correction maps around stoichiometric AFR, mentions ignition and WOT maps, and
+  gives an RPM-limiter formula of `21000000 / 16-bit value`.
+
+How to use these leads:
+
+- Treat `106RALL2`, `16143.124`, `9620697280`, `607C`, and `.std` as search
+  terms for future manual research.
+- The claimed `9` load-site fuel/correction maps are interesting because many
+  local code-confirmed tables use 9 load columns, but no local consumer has yet
+  proved a main fuel table.
+- The claimed `21000000 / value` limiter formula does not match the current
+  local period/RPM axis scaling (`15000000 / period`) used for `0x929E`, so it
+  should be treated as a variant/tool lead, not a replacement for local math.
+- Do not import addresses, scalings, or labels from these public-index/forum
+  references without local ROM evidence.
+
+XDF follow-up:
+
+- XDF version `0.13` adds a `Public Index Leads` category with raw `21x9`
+  overlays at `0x802E` and `0x80EB`, plus a `5x9` tail view at `0x81A8`.
+- Those views are deliberately labeled overlays. They are for visual alignment
+  testing against the public lead only and do not supersede the primary MOD2
+  split views at `0x802E` (`24x9`) and `0x8106` (`23x9`).
+
 ## Map-Family Checklist
 
 This table maps the public OldSkullTuning map-family list to the current local
