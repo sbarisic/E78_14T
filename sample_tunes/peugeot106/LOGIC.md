@@ -275,6 +275,19 @@ Current ADC channel matrix:
 | `0x200E` | `$1034` in the `0x4034/0x414C` group | Consumers around `0x4173`, `0x418E`, `0x42F7`, `0x5DA8`, `0x96DA` | raw sensor channel |
 | `0x2013` | helper result from `0x5E82` after `$1033` sample | Many later comparisons and mode checks | processed sensor/status value |
 
+Repeatable scan counts:
+
+| Address | Peugeot refs | First Peugeot sites | Xantia refs | Interpretation |
+| --- | ---: | --- | ---: | --- |
+| `0x1030` | `16` | `0x40E8`, `0x4133`, `0x51EF`, `0x52D1` | `14` | ADC control writes are a shared family pattern. |
+| `0x1031` | `8` | `0x401E`, `0x4113`, `0x53CC` | `6` | ADC result byte source. |
+| `0x1032` | `5` | `0x403B`, `0x4140`, `0x52A8` | `5` | ADC result byte source. |
+| `0x1033` | `7` | `0x4024`, `0x4041`, `0x4119` | `7` | ADC result byte source; feeds several Peugeot `0x2007/0x200D/0x2013` paths. |
+| `0x1034` | `7` | `0x402D`, `0x405A`, `0x411F` | `7` | ADC result byte source. |
+| `0x00CE` | `19` | `0x4073`, `0x409C`, `0x412B` | `10` | load/air-charge word path; exact physical units still open. |
+| `0x00D0` | `22` | `0x574A`, `0x57BD`, `0x5E5C` | `26` | load-model byte / air-charge byte family. |
+| `0x2034` | `8` | `0x41AD`, `0x4913`, `0x495F` | `3` | normalized load/MAP-like axis consumer. |
+
 Interpretation:
 
 - The code alternates ADC result groups rather than keeping a simple one-to-one
@@ -753,24 +766,33 @@ fuel-search priority is now expressed as confidence-tier working labels:
 
 | Range | XDF working label | Confidence | Current interpretation |
 | --- | --- | --- | --- |
-| `0x802E-0x8105` | `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` | Low | MOD2-touched, smooth RPM/load-like surface; plausible fuel, VE, or enrichment correction, but no direct code consumer yet. |
+| `0x802E-0x80EA` | `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` | Medium fuel-side candidate, code unconfirmed | Preferred public-index alignment. RPM-like rows `550-6000`, load/MAP-like columns `0-1024`; Peugeot raw `135-248`, about `52.9-97.3%` if viewed as `raw / 2.55`; Xantia 607C raw `144-214`, about `56.5-83.9%`. |
+| `0x802E-0x8105` | `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` | Boundary/debug only | Older 24-row view. First 21 rows are now preferred; rows `21-23` may be adjacent calibration or tail data until code proves otherwise. |
 | `0x8106-0x81D4` | `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` | Low | Adjacent tune-related lower structure; likely continuation, secondary correction, or enrichment, but raw-indexed until code proves axes. |
 | `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes around the `0x2044` vector family. |
 | `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells; likely speed/transient/enrichment correction. |
 | `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; likely load-model, air, fuel, or correction factor. |
 
-`0x802E-0x81D4` is a strong MOD2-touched tune region, but it is now treated as
-two adjacent candidates rather than one combined table:
+`0x802E-0x81D4` is a strong MOD2-touched fuel-side region. The preferred
+working view is now the first `21x9 @ 0x802E` surface rather than the older
+`24x9` split:
 
 - The old combined `47x9 @ 0x802E` view was useful during discovery, but it has
   been removed from the XDF because the screenshot and byte pattern suggest two
   structures with different character.
-- Upper candidate `24x9 @ 0x802E`: `75 / 216` cells changed; now visible as
-  `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`.
+- Primary candidate `21x9 @ 0x802E`: `57 / 189` cells changed in MOD2, with
+  selected Peugeot cells raised mostly by `+4` to `+6`.
+  - This is now visible as
+    `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
+  - Raw display is retained in the XDF.
+  - `raw / 2.55` is documented as a percent/VE-style visualization hypothesis,
+    not confirmed scaling.
+- Alternate boundary view `24x9 @ 0x802E`: `75 / 216` cells changed; now visible
+  as `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`.
   - Changed rows: `10`, `11`, `13-18`, `21-23`.
   - Deltas are clean positive raw-count increases, mostly `+4`, `+5`, and `+6`.
-- The upper shape matches the ECU's common 24-row pattern and is shown in the
-  XDF with provisional `0x2034` load-like and `0x2036` RPM-like labels.
+- Rows `21-23` may be adjacent calibration or tail data until code proves
+  otherwise.
 - Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` cells changed; now
   visible as `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`.
   - Parent rows `35-46` are touched, mostly columns `0-5`.
@@ -782,13 +804,63 @@ two adjacent candidates rather than one combined table:
 - No direct code reference to table base `0x802E` has been confirmed. The only
   raw address-byte occurrence in stock is around `0xC621`, and current 68HC11
   decoding treats it as an immediate compare sequence rather than a table base.
-- Fuel/enrichment remains a hypothesis only. Neither split is code-confirmed
-  main fuel until a consumer path reaches pulse width, injection scheduling, or
-  another fueling-specific calculation.
+- Fuel/enrichment remains a hypothesis only. `0x802E` is the strongest current
+  fuel/VE/air-charge candidate, but it is not confirmed main fuel until a
+  consumer path reaches pulse width, injection scheduling, lambda correction,
+  fuel time, or another fueling-specific calculation.
 - Screenshot continuity alone is no longer enough to keep a normal XDF view
   active when later code proves misalignment. The misleading `0x89F2` and
   `0x91D9` legacy views were removed; use the corrected scalar/vector and
   `0x9187` parent-table entries instead.
+
+Repeatable script pass:
+
+- `tools/iaw8p40_analyze.py` now loads the Peugeot stock, Peugeot folder
+  `Stok`, Peugeot MOD2, and Xantia 607C bins and prints Markdown-friendly
+  hash/checksum/diff/reference tables without modifying ROMs.
+- The script confirms Peugeot stock and folder `Stok` are byte-identical.
+- Checksum pairs:
+  - Peugeot stock and `Stok`: `0x4A65/0xB59A`, sum `0xFFFF`.
+  - Peugeot MOD2: `0x47BE/0xB841`, sum `0xFFFF`.
+  - Xantia 607C: `0x9F83/0x607C`, sum `0xFFFF`.
+- All four available bins use reset vector `0xB800`.
+- Peugeot stock vs MOD2: `479` differing bytes in `87` contiguous regions.
+  The changes remain concentrated in checksum/calibration-looking regions.
+- Peugeot stock vs Xantia 607C: `42021` differing bytes in `1038`
+  contiguous regions. Xantia is therefore useful as same-family comparative
+  evidence, but not as proof that a same offset has the same Peugeot function.
+
+Script-reported candidate stats:
+
+| Range | Shape | Peugeot stock | MOD2 cells/delta | Xantia same-offset | Interpretation impact |
+| --- | --- | --- | --- | --- | --- |
+| `0x802E-0x80EA` | `21x9` | raw `135-248`, avg `189.4` | `57 / 189`, `+4..+6`, avg `+5.6` | raw `144-214`, avg `174.5` | Strengthens fuel/VE/air-charge candidate; code unconfirmed. |
+| `0x802E-0x8105` | `24x9` | raw `135-248`, avg `187.8` | `75 / 216`, `+4..+6`, avg `+5.4` | raw `144-228`, avg `176.0` | Boundary/debug view only. |
+| `0x80EB-0x81A7` | `21x9` | raw `0-255`, avg `168.2` | `60 / 189`, modulo deltas include wraps | raw `0-255`, avg `164.4` | Lower-confidence adjacent probe. |
+| `0x81A8-0x81D4` | `5x9` | raw `0-254`, avg `165.1` | `30 / 45`, modulo deltas include wraps | raw `2-255`, avg `119.1` | Tail/alignment probe only. |
+
+Immediate-reference scan:
+
+- Peugeot has code-confirmed helper references for the spark/correction maps:
+  `0x8A69`, `0x8B41`, `0x8C19`, `0x9187`, `0x9291`, and `0x929E`.
+- The script's only raw `0x802E` byte-pattern hit is still the already decoded
+  false positive near `0xC620`; keep treating it as a byte-pattern hint, not a
+  table consumer.
+- No direct Peugeot code reference to `0x80EB` or `0x81A8` was found by the
+  immediate-base scan.
+- Xantia does not use the same Peugeot helper addresses or table-base literals
+  for the known Peugeot tables. Its helper targets need to be traced separately.
+
+Helper-call separation:
+
+| ROM | Helper / target | Script count | First call sites | Notes |
+| --- | --- | ---: | --- | --- |
+| Peugeot | `0xB2D6` | `12` | `0x4927`, `0x6366`, `0x6ECA`, `0x7270` | 2D helper family; nearby known literals include `0x9187`, `0x9291`, `0x869A`. |
+| Peugeot | `0xB2AB` | `53` | `0x4353`, `0x43A3`, `0x44B4`, `0x4599` | 1D/vector helper family; nearby known literals include spark/WOT bases. |
+| Peugeot | `0xB383` | `7` | `0x41E9`, `0x4349`, `0x4399`, `0x5CFC` | Axis/descriptor setup family. |
+| Peugeot | `0xB3B9` | `1` | `0xD47C` | RPM-axis path with `0x929E`. |
+| Xantia | `0xB2CB` | `7` | `0x5028`, `0x50F2`, `0x5283`, `0x5365` | Same-family helper candidate, but not same address/function proof. |
+| Xantia | `0xB349` | `4` | `0x4FF6`, `0x96B0`, `0xB88D`, `0xD973` | Likely helper candidate; needs separate tracing before comparison use. |
 
 `0x9187` is code-confirmed and MOD2-touched, but is probably upstream of load:
 
@@ -883,7 +955,7 @@ Important alignment corrections:
 - The visually interesting old `0x88CD` candidate sits inside the larger
   code-confirmed `0x888E` parent table.
 - The older `0x88CA` `8x19` triangular XDF view was a misleading off-axis slice
-  and has been removed from XDF `0.13`.
+  and has been removed from the normal XDF tree.
 - The `0x8E6F/0x8EC7/0x8F1C/0x8F71` cluster is exposed as bounded `17x5`
   views because those boundaries line up cleanly with adjacent table starts.
   The code's `0x2044` source axis still needs live-range confirmation.
@@ -1383,6 +1455,22 @@ Strong inference:
   yet prove whether the specific channel is ignition, injection, or another
   output without tracing the upstream producers of `0x20EB/0x20ED`.
 
+The repeatable RAM scan gives the current producer/consumer boundary:
+
+| RAM | Script refs | Stores / setup | Loads / math | Meaning so far |
+| --- | ---: | --- | --- | --- |
+| `0x20EB` | `4` | `0xBB9A`, `0xBD39` | `0xBC67`, `0xBC7A` | scheduled offset word used by `TOC4 = 0x242B + 0x20EB` |
+| `0x20ED` | `4` | `0xBB9D`, `0xBD4F` | `0xBCB1`, `0xBCC1` | next scheduled offset word used after reading current TOC4 |
+| `0x242B` | `3` | `0xBD1B` | `0xBC64`, `0xBC76` | previous/base compare time |
+| `0x242D` | `2` | `0xBCAE` | `0xBCBD` | captured/current compare time |
+| `0x20BC` | `2` | `0xBAB1`, `0xBBEC` | none in simple scan | output-state byte, exact actuator unknown |
+| `0x242F` | `5` | `0xBAB5`, `0xBAC6` | `0xBABE`, `0xBB49`, `0xBB53` | adjacent scheduler/state word |
+| `0x2431` | `2` | `0xBB68`, `0xBB79` | none in simple scan | adjacent state byte/flag |
+
+This still points at a timed actuator family rather than a final fuel proof.
+The next proof step is to trace the values written at `0xBB9A/0xBB9D` and
+`0xBD39/0xBD4F` back to any fuel-time or spark-angle calculations.
+
 Initialization:
 
 - `0xBB98` clears many `0x20xx` output-state variables.
@@ -1497,21 +1585,22 @@ produce a usable public XDF, but it did expose filenames and identifiers such as
 terms `106RALL2`, `16143.124`, and `9620697280`. These are search leads only,
 not local offset evidence.
 
-XDF `0.13` exposes the forum's two-map idea as raw `21x9` alignment probes at
-`0x802E` and `0x80EB`, plus a `5x9` tail at `0x81A8`. Keep these in the
-public-index category; they are visual probes and should not be used as
-confirmed fuel maps until code or live behavior proves the alignment.
+XDF `0.14` promotes the forum's first `21x9 @ 0x802E` alignment to
+`Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`. The second
+`21x9 @ 0x80EB` and `5x9 @ 0x81A8` tail remain lower-confidence adjacent
+fuel/correction probes. Keep all of these unconfirmed until code or live
+behavior proves the alignment and scaling.
 
 Current cross-check status:
 
 | Public map family | Current local status |
 | --- | --- |
-| Main fuel multiplier | No confirmed offset. `0x802E-0x8105` and `0x8106-0x81D4` remain split low-confidence fuel/VE/enrichment candidates only. |
+| Main fuel multiplier | No confirmed offset. `21x9 @ 0x802E` is now the strongest fuel/VE/air-charge correction candidate, but not confirmed main fuel. |
 | Spark high/low octane | `0x8A69` and `0x8B41` are code-confirmed banked spark lookups and likely high/default vs low/alternate. |
 | WOT spark | `0x8C19` is a code-confirmed RPM-only spark bypass vector and likely WOT/RPM-only spark. |
 | Spark correction/minimum/idle | Not yet matched to exact local offsets. |
 | Dwell | Not yet matched to an exact local offset. |
-| Air density / VE correction | Not yet matched. `0x9187` is code-confirmed but currently correction/load-model related, not proven air density or main fuel. |
+| Air density / VE correction | `21x9 @ 0x802E` is the strongest local VE/air-charge-style candidate; `0x9187` is code-confirmed but currently correction/load-model related. Neither is proven main fuel. |
 | RPM axis | `0x929E` is code-confirmed. |
 | Load/mbar axis | `0x2034` is code-confirmed as a load/MAP-like axis, with exact mbar scaling still provisional. |
 | RPM limiter | `0x879E` / `0x87A0` remain likely limiter thresholds from code reference and MOD2 deltas. |

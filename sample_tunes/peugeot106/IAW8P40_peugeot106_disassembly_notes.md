@@ -785,11 +785,56 @@ Raw descriptor bytes:
 0x9167: 01 01 01
 ```
 
+## Repeatable Multi-BIN Analysis Script
+
+`tools/iaw8p40_analyze.py` is a read-only support script for this reverse
+engineering pass. It loads the four available 64 KiB binaries:
+
+- `M27C512_original.BIN`.
+- `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_Stok.bin`.
+- `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin`.
+- `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin`.
+
+The script reports hashes, checksum words, reset vectors, diff regions,
+candidate-table statistics, same-offset Peugeot/Xantia comparisons, immediate
+table-base byte-pattern hints, helper-call sites, and RAM/register references.
+It does not modify BIN files.
+
+Confirmed by the script:
+
+| BIN | SHA256 | Checksum pair | Sum | Reset |
+| --- | --- | --- | --- | --- |
+| Peugeot stock | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xFFFF` | `0xB800` |
+| Peugeot `Stok` | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xFFFF` | `0xB800` |
+| Peugeot MOD2 | `D3E4A451EDD236104C79190372FA1BE1E45AAD09398EABE6F7B7E1479D810855` | `0x47BE/0xB841` | `0xFFFF` | `0xB800` |
+| Xantia 607C | `05470171F86B8525F962F13370846E6D4A1A6FBABC0107D90E1497F88A5DFE89` | `0x9F83/0x607C` | `0xFFFF` | `0xB800` |
+
+Diff summary:
+
+- Peugeot stock vs folder `Stok`: `0` differing bytes.
+- Peugeot stock vs MOD2: `479` differing bytes in `87` contiguous regions.
+- Peugeot stock vs Xantia 607C: `42021` differing bytes in `1038`
+  contiguous regions.
+
+Scanner limitation:
+
+- The immediate-reference scan is a byte-pattern scanner. Hits must be decoded
+  in alignment before they are treated as code evidence.
+- The apparent Peugeot `0x802E` hit remains the known false positive around
+  `0xC620`, not a confirmed table-base load.
+- Peugeot helper references and Xantia helper references are deliberately kept
+  separate. Peugeot uses the already traced `0xB2D6`, `0xB2AB`, `0xB383`, and
+  `0xB3B9` helper family; the script's focused Xantia helper candidates are
+  `0xB2CB` with `7` calls and `0xB349` with `4` calls. Those Xantia helpers
+  need separate local tracing before any Xantia table role is used as evidence
+  for the Peugeot ROM.
+
 ## `0x802E-0x81D4` Region
 
 The `0x802E-0x81D4` region is MOD2-touched and table-like, but direct code
-usage has not been confirmed yet. It is now treated as two adjacent tune-related
-candidate structures rather than one combined `47x9` table.
+usage has not been confirmed yet. The preferred working view is now the
+`21x9 @ 0x802E` surface, which looks like a fuel/VE/air-charge correction
+candidate rather than spark.
 
 Important correction:
 
@@ -807,13 +852,25 @@ Status:
 
 - The old combined `47x9 @ 0x802E` view was removed from the XDF because the
   screenshot and byte pattern suggest a split after row 23.
-- Upper candidate `24x9 @ 0x802E`: `75 / 216` changed cells, mostly `+4`,
-  `+5`, and `+6` raw-count increases. This is the better candidate for a
-  normal RPM/load-style table and uses provisional load/RPM labels in the XDF.
+- Primary candidate `21x9 @ 0x802E`: `57 / 189` changed cells, mostly `+4`,
+  `+5`, and `+6` raw-count increases. It uses RPM-like rows `550-6000` and
+  load/MAP-like columns `0-1024`.
+- Peugeot stock raw values are `135-248`, roughly `52.9-97.3%` under the
+  unconfirmed `raw / 2.55` visualization hypothesis. Xantia 607C at the same
+  offset is `144-214`, roughly `56.5-83.9%`.
+- Alternate boundary view `24x9 @ 0x802E`: `75 / 216` changed cells. Rows
+  `21-23` may be adjacent calibration or tail data until code proves otherwise.
+- Adjacent probe `21x9 @ 0x80EB`: the script reports `60 / 189` MOD2-touched
+  cells and full Peugeot/Xantia same-offset disagreement. The modulo-byte wraps
+  and lack of direct code reference keep it below the primary `0x802E` surface.
+- Tail probe `5x9 @ 0x81A8`: the script reports `30 / 45` MOD2-touched cells;
+  this remains a tail/alignment probe rather than a normal tune map.
 - Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` changed cells, mostly
   parent rows `35-46` and columns `0-5`, with modulo-byte `+5` changes and one
   `+18` group. This remains raw-indexed.
-- Do not call either split code-confirmed main fuel yet.
+- Do not call `0x802E` code-confirmed main fuel yet. The next proof must be a
+  consumer path into injection pulse width, fuel time, lambda correction,
+  air-charge calculation, or scheduling.
 - It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
 
 ## Diagnostic / Service Routines
@@ -966,12 +1023,18 @@ Interpretation:
 - This is a timed output scheduler, not a calibration table.
 - It likely controls an engine actuator pulse or compare event, but ignition vs
   injection vs another output is still open.
-- The next useful trace is upstream from `0x20EB/0x20ED`, plus forward from the
-  spark command bytes `0x2001/0x2148`.
+- The repeatable scanner finds `0x20EB` stores at `0xBB9A` and `0xBD39`, then
+  loads/math at `0xBC67` and `0xBC7A`.
+- It finds `0x20ED` stores at `0xBB9D` and `0xBD4F`, then loads/math at
+  `0xBCB1` and `0xBCC1`.
+- `0x242B` is stored at `0xBD1B` and consumed at `0xBC64/0xBC76`.
+- `0x242D` is captured from TOC4 at `0xBCAE` and consumed at `0xBCBD`.
+- The next useful trace is upstream from `0xBB9A/0xBB9D` and `0xBD39/0xBD4F`,
+  plus forward from the spark command bytes `0x2001/0x2148`.
 
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.13` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, confidence-tier labels for likely fuel/correction candidates, and a deduplicated table tree where each major structure has one best inspection entry.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.14` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, confidence-tier labels for likely fuel/correction candidates, public-index alignment probes, and a deduplicated table tree where each major structure has one best inspection entry.
 
 Previously added in `0.4`:
 
@@ -1085,9 +1148,10 @@ New in `0.12`:
 
 New in `0.13`:
 
-- Renamed the primary MOD2/correction candidates with confidence-tier working
-  labels:
-  - `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`
+- Renamed the then-primary MOD2/correction candidates with confidence-tier
+  working labels:
+  - `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`, later demoted
+    in `0.14` to a boundary/debug view
   - `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
   - `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
   - `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
@@ -1100,11 +1164,25 @@ New in `0.13`:
   - `21x9 @ 0x80EB`
   - `5x9 tail @ 0x81A8`
 - These probes test the public claim of two 9-load-site, about-21-speed-site
-  fuel/correction maps. They do not rename the region as fuel and do not
-  replace the primary MOD2 split views.
+  fuel/correction maps. In `0.14`, the first `21x9 @ 0x802E` probe was promoted
+  to the primary fuel/VE/air-charge candidate; the second `21x9` and tail views
+  remain lower-confidence adjacent probes.
 - Updated the `0x879E/0x87A0` limiter descriptions to mention the public
   `21000000 / value` formula as a lead only; the retained scaling remains the
   locally supported `15000000 / period`.
+
+New in `0.14`:
+
+- Promoted `21x9 @ 0x802E` to
+  `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
+- Demoted the overlapping `24x9 @ 0x802E` to
+  `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`.
+- Kept `raw` display for `0x802E`; `raw / 2.55` is documented only as a
+  percent/VE visualization hypothesis.
+- Kept `21x9 @ 0x80EB` and `5x9 @ 0x81A8` as lower-confidence adjacent
+  fuel/correction probes.
+- Main fuel remains unconfirmed until a code consumer path reaches injection or
+  fuel-specific calculations.
 
 External evidence integration:
 

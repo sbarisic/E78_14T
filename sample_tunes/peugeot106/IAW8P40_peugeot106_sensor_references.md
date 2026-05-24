@@ -65,6 +65,24 @@ Reverse-engineering implications:
 
 ## Next Sensor-Mapping Targets
 
+Repeatable scanner evidence from `tools/iaw8p40_analyze.py`:
+
+| Address | Peugeot refs | Xantia refs | Sensor-trace relevance |
+| --- | ---: | ---: | --- |
+| `0x1030` | `16` | `14` | ADC conversion control writes. |
+| `0x1031` | `8` | `6` | ADC result byte source. |
+| `0x1032` | `5` | `5` | ADC result byte source. |
+| `0x1033` | `7` | `7` | ADC result byte source feeding several `0x2007/0x200D/0x2013` paths. |
+| `0x1034` | `7` | `7` | ADC result byte source. |
+| `0x2007-0x200E` | `4-7` each | `3-10` each | Raw or lightly processed ADC channel RAM. |
+| `0x2013` | `11` | `13` | Processed sensor/status byte with many comparisons. |
+| `0x00CE` | `19` | `10` | Load/air-charge word path. |
+| `0x00D0` | `22` | `26` | Load-model byte / air-charge byte family. |
+| `0x2034` | `8` | `3` | Normalized load/MAP-like axis consumer. |
+
+The scan confirms the same general ADC/register family in Peugeot and Xantia,
+but the exact channel meanings still need local Peugeot consumer/fallback proof.
+
 1. Decode the ADC sampling order for RAM `0x2007-0x200E`.
 2. Match ADC channels to `B24`, `B25`, `B83`, and `B147`.
 3. Trace coolant and inlet-air fallback constants. These often reveal NTC lookup
@@ -75,7 +93,11 @@ Reverse-engineering implications:
    screenshot shows a `24x9` RPM-by-temperature `Air density correction factor
    by temperature` table, but that exact byte matrix was not found in the local
    stock or MOD2 Peugeot 106 dumps using likely scalings and orientations.
-6. Use live data if available:
+6. Trace the `0x802E` fuel-side candidate toward injection logic. The preferred
+   `21x9` view uses RPM-like rows and load/MAP-like columns, and the Peugeot vs
+   Xantia difference supports a fuel/VE/air-charge interpretation, but sensor
+   and injector consumers are still needed before calling it main fuel.
+7. Use live data if available:
    - key-on engine-off MAP should be near barometric pressure,
    - warm idle MAP should be much lower than WOT,
    - TPS should sweep monotonically with throttle,
@@ -90,6 +112,14 @@ under `raw / 230`, `raw / 100`, `raw / 128`, or `raw / 200`, including reversed
 and transposed views. The closest meaningful local correction candidate remains
 `0x9187`, but its bytes are different and its confirmed path currently feeds the
 load-model chain `0x00D0 -> 0x00CE -> 0x2034`.
+
+## Fuel/VE Candidate Sensor Boundary
+
+`Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` now looks like
+the strongest fuel-side table candidate. Its columns follow the same provisional
+load/MAP-like `0-1024` idea used elsewhere, but no ADC or injection path has
+confirmed the physical inputs or output role. Keep `raw / 2.55` as a viewing
+hypothesis only until sensor traces or live data prove the scale.
 
 ## Source URLs
 

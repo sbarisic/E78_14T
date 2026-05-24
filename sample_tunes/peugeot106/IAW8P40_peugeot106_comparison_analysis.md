@@ -11,20 +11,25 @@ Compared files:
 | `M27C512_original.BIN` | `65536` | `09e5d927bd6951ecf7b57f351ccd5d396dc95c191d12164f71671725b751a681` | Original local read |
 | `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_Stok.bin` | `65536` | `09e5d927bd6951ecf7b57f351ccd5d396dc95c191d12164f71671725b751a681` | Byte-identical to `M27C512_original.BIN` |
 | `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin` | `65536` | `d3e4a451edd236104c79190372fa1be1e45aad09398eabe6f7b7e1479d810855` | Same ROM family, modified calibration/checksum bytes |
+| `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin` | `65536` | `05470171f86b8525f962f13370846e6d4a1a6fbabc0107d90e1497f88a5dfe89` | Same-family comparison binary, not Peugeot offset proof |
 
 Important result: the internet `Stok` BIN is exactly the same as the local original read. The `MOD2` file is therefore useful as a direct tuned-vs-stock comparison.
 
+The repeatable script `tools/iaw8p40_analyze.py` now reproduces these hashes,
+checksum words, diff counts, known table stats, same-offset Xantia comparisons,
+helper-call scans, and RAM/register reference scans.
+
 ## Shared ROM Structure
 
-All three files:
+All four available files:
 
 - Are exactly `0x10000` bytes / `64 KiB`.
 - Have a zero-filled prefix from `0x0000-0x3FFF`.
 - Have real content from `0x4000`.
 - Have a zero-filled internal hole at `0xB600-0xB7FF`.
-- Share the same 68HC11 vector values.
+- Share reset vector `0xB800` and a similar 68HC11 vector layout.
 
-Vector values:
+Peugeot vector values:
 
 | Address | Value |
 | --- | --- |
@@ -38,6 +43,10 @@ Vector values:
 | `0xFFFE` | `0xB800` |
 
 `0xFFFE = 0xB800` remains the likely reset vector.
+
+The Xantia 607C comparison file also uses reset vector `0xB800`, but differs
+from the Peugeot stock file in `42021` bytes across `1038` contiguous regions.
+It is therefore useful same-family evidence, not a direct map-offset authority.
 
 ## Checksum Discovery
 
@@ -60,6 +69,7 @@ Observed byte sums:
 | --- | --- | --- | --- |
 | Stock | `0xB59A` | `0xB59A` | `0x4A65` |
 | MOD2 | `0xB841` | `0xB841` | `0x47BE` |
+| Xantia 607C | `0x607C` | `0x607C` | `0x9F83` |
 
 The checksum routine appears to sum bytes down through the ROM while skipping `0xB600-0xB7FF`; that skipped range is zero-filled, so the practical sum is the same as summing `0x4000-0xFFFF`.
 
@@ -99,12 +109,22 @@ Top-level changed regions:
 | Region | Changed bytes | Current interpretation |
 | --- | ---: | --- |
 | `0x800C-0x800F` | `4` | Checksum word and complement |
-| `0x802E-0x8105` | `75` changed cells inside a `24x9` view | Low-confidence likely fuel/VE correction upper candidate |
+| `0x802E-0x80EA` | `57` changed cells inside the preferred `21x9` view | Strongest current likely fuel/VE/air-charge correction candidate; code unconfirmed |
+| `0x802E-0x8105` | `75` changed cells inside the alternate `24x9` boundary view | Boundary/debug view for the `0x802E` candidate |
 | `0x8106-0x81D4` | `72` changed cells inside a `23x9` view | Low-confidence likely fuel/enrichment lower adjacent candidate |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
 | `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | Load-model / correction-factor candidate; old `0x91D9` view was misaligned |
+
+Repeatable script table stats for the current fuel-side candidate family:
+
+| Range | Shape | Peugeot stock raw | MOD2 changes | Xantia same-offset raw | Current use |
+| --- | --- | --- | --- | --- | --- |
+| `0x802E-0x80EA` | `21x9` | `135-248`, avg `189.4` | `57 / 189`, `+4..+6`, avg `+5.6` | `144-214`, avg `174.5` | Strongest fuel/VE/air-charge candidate, code unconfirmed |
+| `0x802E-0x8105` | `24x9` | `135-248`, avg `187.8` | `75 / 216`, `+4..+6`, avg `+5.4` | `144-228`, avg `176.0` | Boundary/debug view |
+| `0x80EB-0x81A7` | `21x9` | `0-255`, avg `168.2` | `60 / 189`, includes modulo wraps | `0-255`, avg `164.4` | Lower-confidence adjacent probe |
+| `0x81A8-0x81D4` | `5x9` | `0-254`, avg `165.1` | `30 / 45`, includes modulo wraps | `2-255`, avg `119.1` | Tail/alignment probe |
 
 ## MOD2-Touched Split Region @ `0x802E-0x81D4`
 
@@ -117,10 +137,11 @@ end:   0x81D4
 ```
 
 That alignment was useful for discovery, but it is no longer the active XDF
-view. The screenshot and byte pattern show a strong break after parent row 23,
-so the XDF now exposes two adjacent candidates instead:
+view. The current preferred alignment is the public-index `21x9 @ 0x802E`
+surface, with the older `24x9` retained only as a boundary/debug view:
 
-- Upper candidate: `24x9 @ 0x802E-0x8105`.
+- Primary candidate: `21x9 @ 0x802E-0x80EA`.
+- Alternate boundary view: `24x9 @ 0x802E-0x8105`.
 - Lower adjacent candidate: `23x9 @ 0x8106-0x81D4`.
 
 Changed parent row indexes:
@@ -317,7 +338,8 @@ New MOD2-backed entries:
 
 After TunerPro visual review, additional split views were added:
 
-- `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`
+- `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`
+- `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`
 - `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
@@ -359,9 +381,9 @@ After TunerPro visual review, additional split views were added:
 Rationale:
 
 - The old combined `47x9 @ 0x802E` view changes character after row `23`; it
-  has been removed from the XDF in favor of the low-confidence
-  `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` and
-  `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` split views.
+  has been removed from the XDF. The preferred active view is now
+  `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`; the older
+  `24x9 @ 0x802E` alignment is retained only as a boundary/debug view.
 - The `48x9 @ 0x8A68` view has a clear visual break at row `24`, making two `24x9` subviews easier to inspect.
 - The original large views remain in the XDF for context, even where later disassembly refined the true boundaries.
 
@@ -393,7 +415,8 @@ Current confidence-tier candidate labels:
 
 | Range | Retained XDF label | Confidence | Notes |
 | --- | --- | --- | --- |
-| `0x802E-0x8105` | `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` | Low | MOD2-touched smooth RPM/load-like surface; no confirmed consumer. |
+| `0x802E-0x80EA` | `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` | Medium fuel-side candidate, code unconfirmed | Preferred RPM/load-like surface; Peugeot/Xantia ranges fit a fuel/VE/air-charge hypothesis; no confirmed consumer. |
+| `0x802E-0x8105` | `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` | Boundary/debug only | Rows `21-23` may be adjacent calibration or tail data. |
 | `0x8106-0x81D4` | `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` | Low | Adjacent tune-related lower structure; raw-indexed until axes are proven. |
 | `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes. |
 | `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells. |
@@ -455,16 +478,23 @@ Spark-bank octane/default naming pass:
 
 Fuel/correction candidate pass:
 
-- `0x802E-0x81D4` remains a strong unconfirmed tune-related region, but it is
-  now treated as two adjacent candidate structures rather than one table.
-- The upper candidate `24x9 @ 0x802E` changes `75 / 216` cells, mostly rows
-  `10`, `11`, `13-18`, and `21-23` by `+4`, `+5`, or `+6`.
+- `0x802E` is now the strongest fuel-side candidate in the local XDF, with the
+  public-index `21x9` alignment preferred over the older `24x9` view.
+- The primary `21x9 @ 0x802E` candidate changes `57 / 189` cells in MOD2,
+  mostly by `+4`, `+5`, or `+6`.
+- Peugeot stock raw values are `135-248`, about `52.9-97.3%` if viewed as
+  `raw / 2.55`; Xantia 607C at the same offset is `144-214`, about
+  `56.5-83.9%`. This supports an engine-specific fuel/VE/air-charge
+  interpretation without proving the function.
+- The alternate `24x9 @ 0x802E` boundary view changes `75 / 216` cells, mostly
+  rows `10`, `11`, `13-18`, and `21-23`. Rows `21-23` may be adjacent
+  calibration or tail data until code proves otherwise.
 - The lower adjacent candidate `23x9 @ 0x8106` changes `72 / 207` cells,
   mostly parent rows `35-46` and columns `0-5`. Most deltas are modulo-byte
   `+5`, with one `+18` group.
 - Direct code usage for `0x802E` is still not confirmed. The only raw address
   byte occurrence currently seen is the earlier false hit around `0xC621`.
-- Fuel/enrichment remains a hypothesis only; neither split is code-confirmed
+- Fuel/enrichment remains a hypothesis only; `0x802E` is not code-confirmed
   main fuel.
 - `0x9187-0x925E` is code-confirmed and MOD2 changes `62 / 216` cells, but the
   traced path can feed `0x00D0 -> 0x00CE -> 0x2034`, so it currently looks more

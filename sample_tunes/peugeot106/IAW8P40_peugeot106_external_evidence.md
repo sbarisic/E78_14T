@@ -84,11 +84,24 @@ How to use these leads:
 
 XDF follow-up:
 
-- XDF version `0.13` adds a `Public Index Leads` category with raw `21x9`
-  overlays at `0x802E` and `0x80EB`, plus a `5x9` tail view at `0x81A8`.
-- Those views are deliberately labeled overlays. They are for visual alignment
-  testing against the public lead only and do not supersede the primary MOD2
-  split views at `0x802E` (`24x9`) and `0x8106` (`23x9`).
+- XDF version `0.14` promotes the first public-index `21x9` alignment at
+  `0x802E` to `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
+- The older `24x9 @ 0x802E` view is retained only as an alternate boundary view.
+- `21x9 @ 0x80EB` and `5x9 @ 0x81A8` remain lower-confidence adjacent
+  fuel/correction probes.
+- Raw display is retained; `raw / 2.55` is only a percent/VE visualization
+  hypothesis until code or live behavior confirms scaling.
+
+Local multi-BIN analysis follow-up:
+
+- `tools/iaw8p40_analyze.py` confirms the Xantia 607C file has checksum pair
+  `0x9F83/0x607C` and reset vector `0xB800`.
+- Peugeot stock vs Xantia differs by `42021` bytes across `1038` regions, so
+  Xantia same-offset comparisons are supporting evidence only.
+- The preferred Peugeot `21x9 @ 0x802E` surface is raw `135-248`, avg `189.4`;
+  the Xantia same-offset surface is raw `144-214`, avg `174.5`.
+- That same-family difference fits an engine-specific fuel/VE/air-charge
+  interpretation, but it still does not confirm Peugeot main fuel.
 
 ## Map-Family Checklist
 
@@ -98,7 +111,7 @@ have been matched to exact local offsets.
 
 | Public map family | Current local candidate/status | Evidence state |
 | --- | --- | --- |
-| Main fuel multiplier | No confirmed offset yet. Split `0x802E-0x8105` and `0x8106-0x81D4` remain tune-related candidates. | Still unconfirmed. Do not call either split "main fuel" yet. |
+| Main fuel multiplier | No confirmed main-fuel offset yet. `21x9 @ 0x802E` is the strongest current fuel/VE/air-charge correction candidate, but no injection consumer is proven. | Still unconfirmed. Do not call it "main fuel" yet. |
 | Spark advance high octane | `0x8A69-0x8B40`, `24x9`, `raw / 2` degrees. | Locally code-confirmed lookup; likely high/default from selector and high-load comparison. |
 | Spark advance low octane | `0x8B41-0x8C18`, `24x9`, `raw / 2` degrees. | Locally code-confirmed lookup; likely low/alternate. |
 | Spark advance WOT | `0x8C19-0x8C30`, RPM-only vector, `raw / 2` degrees. | Locally code-confirmed bypass path; likely WOT/RPM-only spark. |
@@ -107,7 +120,7 @@ have been matched to exact local offsets.
 | Spark advance idle | No confirmed local offset. | Still unconfirmed. |
 | Dwell | No confirmed local offset. | Still unconfirmed. |
 | Air density correction by temperature | Public screenshot shows a `24x9` RPM-by-temperature factor table, but the visible data was not found verbatim in the local stock or MOD2 dumps. `0x9187-0x925E` may be correction/load-model related, but is not proven air density. | Still unconfirmed. |
-| Volumetric efficiency correction | No confirmed local offset. `0x802E`/`0x8106` remain possible tune-related structures. | Still unconfirmed. |
+| Volumetric efficiency correction | `21x9 @ 0x802E` is the strongest local VE/air-charge-style candidate. Peugeot and Xantia same-offset ranges are plausible under `raw / 2.55`, but scaling and consumer path are unconfirmed. | Strong candidate, still unconfirmed. |
 | RPM axis | `0x929E-0x92CD`, code-confirmed 24-point period/RPM axis for `0x2036`. | Locally code-confirmed axis. |
 | Load/mbar axis | `0x2034` is a load/MAP-like 8.8 axis; XDF labels use `0, 128, ..., 1024`. | Locally code-confirmed axis path, exact pressure scaling still provisional. |
 | RPM limiter | `0x879E` / `0x87A0`, likely limiter set/clear period thresholds. | Locally code-referenced and MOD2-touched; meaning likely but still verify on hardware/logs. |

@@ -9,7 +9,7 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.13`.
+  - TunerPro definition, now updated to comparison markup version `0.14`.
   - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
@@ -38,6 +38,16 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - `1.3L_8V_IAW8P40_Stok.bin` is byte-identical to `M27C512_original.BIN`.
   - `1.3L_8V_IAW8P40_MOD2.bin` is the same ROM family with modified calibration/checksum bytes.
 
+- `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin`
+  - Same-family IAW 8P.40 comparison binary.
+  - Used only as comparative support; it does not confirm Peugeot offsets by itself.
+
+- `tools/iaw8p40_analyze.py`
+  - Read-only repeatable analysis script for all four available 64 KiB BINs.
+  - Emits Markdown-friendly hashes, checksum words, reset vectors, diff regions,
+    known-table stats, same-offset Peugeot/Xantia comparisons, immediate
+    reference hints, helper-call scans, and RAM/register reference scans.
+
 ## Main ROM Observations
 
 - The BIN is exactly `64 KiB`, consistent with a full `27C512` EPROM image.
@@ -46,6 +56,12 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
 - The image contains dense code/data through most of `0x4000-0xEFFF`.
 - The end of the file contains valid-looking `68HC11` interrupt/reset vectors.
 - This strongly suggests the EPROM contains ECU executable firmware plus calibration data, not just map/calibration bytes.
+- `tools/iaw8p40_analyze.py` confirms:
+  - Peugeot stock and folder `Stok` are byte-identical.
+  - Peugeot stock checksum words are `0x4A65/0xB59A`, summing to `0xFFFF`.
+  - MOD2 checksum words are `0x47BE/0xB841`, also summing to `0xFFFF`.
+  - Xantia 607C checksum words are `0x9F83/0x607C`, also summing to `0xFFFF`.
+  - All four available BINs use reset vector `0xB800`.
 
 ## 68HC11 Vector Area
 
@@ -83,9 +99,27 @@ After inspecting TunerPro screenshots, `0x8600` and `0x8800` were clearly not no
 
 ## Current Strongest Candidates
 
+The current strongest fuel-side candidate is
+`Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`. It uses
+RPM-like rows from `550` to `6000` and load/MAP-like columns `0-1024`. Peugeot
+stock values are `135-248`, or about `52.9-97.3%` under the working
+`raw / 2.55` visualization hypothesis. The Xantia 607C sibling file has the
+same-address surface at `144-214`, about `56.5-83.9%`, which supports an
+engine-specific fuel/VE/air-charge interpretation without proving the function.
+It is not spark and it is not confirmed main fuel until a code consumer reaches
+injection pulse width, fuel time, lambda correction, or air-charge calculation.
+
+The repeatable analysis script currently reports `57 / 189` MOD2-touched cells
+inside the preferred `21x9 @ 0x802E` view, all clean positive raw-count changes
+from `+4` to `+6`. The same-offset Xantia surface differs in all `189` cells,
+with lower average raw value than the Peugeot Rallye file. That strengthens the
+fuel/VE/air-charge hypothesis but still does not prove main fuel.
+
 ### Candidate 17x9 Map @ `0x88CD`
 
-This is currently the strongest map-like structure found.
+Historical note: this was an early strong visual candidate, but later
+disassembly showed it is a slice inside the code-confirmed `0x888E` parent
+table. It is no longer the strongest candidate.
 
 The region aligns well as `17` rows by `9` columns:
 
@@ -249,9 +283,11 @@ They remain worth inspecting in TunerPro.
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
 - Current fuel/correction search status:
-  - `0x802E-0x8105` is exposed as `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` with low confidence
+  - `0x802E` is now exposed as `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`; this is the preferred working alignment and strongest current fuel-side candidate
+  - `0x802E-0x8105` is retained as `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` for boundary/debug inspection only
   - `0x8106-0x81D4` is exposed as `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` with low confidence
-  - fuel/enrichment remains a hypothesis only; neither `0x802E` split is code-confirmed main fuel
+  - `raw / 2.55` is a useful percent/VE-style visualization hypothesis, but the XDF keeps raw display to avoid implying confirmed scaling
+  - fuel/enrichment remains a hypothesis only; `0x802E` is not code-confirmed main fuel
   - `0x9187-0x925E` is `Load Model / Correction Factor Candidate 24x9 @ 0x9187`; it is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
   - `0x89F3-0x8A05` is `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
   - screenshots alone are no longer enough to keep a view active when later code proves misalignment, so the misleading legacy `0x89F2` and `0x91D9` views were removed from the normal XDF tree
@@ -273,17 +309,21 @@ They remain worth inspecting in TunerPro.
 
 ## Recommended Next Steps
 
-1. Open `M27C512_original.BIN` in TunerPro with `IAW8P40_peugeot106_firstpass.xdf`.
-2. Inspect the `MOD2 Compared Candidates` category first:
+1. Run `python tools/iaw8p40_analyze.py --section all` after adding any new
+   same-family BIN, then compare the emitted table/reference stats with these
+   notes.
+2. Open `M27C512_original.BIN` in TunerPro with `IAW8P40_peugeot106_firstpass.xdf`.
+3. Inspect the `MOD2 Compared Candidates` category first:
    - code-confirmed `24x9 @ 0x8A69`
    - code-confirmed `24x9 @ 0x8B41`
    - code-confirmed `24x9 @ 0x9187`
    - code-confirmed `1x19 @ 0x89F3`
    - surrounding `0x2044` vector family entries
    - control scalars `1x6 @ 0x89ED`
-   - likely fuel/VE correction upper `24x9 @ 0x802E`
+   - likely fuel/VE/air-charge correction `21x9 @ 0x802E`
+   - alternate 24-row boundary view for `0x802E`
    - likely fuel/enrichment lower adjacent `23x9 @ 0x8106`
-3. Inspect the `Scaled / Likely Named Views` category next:
+4. Inspect the `Scaled / Likely Named Views` category next:
    - likely spark advance high-octane/default `24x9 @ 0x8A69`
    - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
    - these now use provisional load/MAP-like x labels `0, 128, ..., 1024`
@@ -292,16 +332,16 @@ They remain worth inspecting in TunerPro.
    - likely RPM limiter thresholds `0x879E/0x87A0`
    - load model / correction factor candidate `24x9 @ 0x9187`
    - RPM axis `1x24 @ 0x929E`
-4. Inspect the `Code-Confirmed Additional Tables` category:
+5. Inspect the `Code-Confirmed Additional Tables` category:
    - `24x9 @ 0x869A`
    - `24x9 @ 0x87B1`
    - `24x9 @ 0x888E`
    - `11x9 @ 0x9073`
    - `17x5 @ 0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71`
-5. Inspect the `Diagnostics / Service Data` category:
+6. Inspect the `Diagnostics / Service Data` category:
    - `0x55A0-0x55B1` event-code table
    - `0x9131-0x9169` state descriptor triples
-6. Continue disassembling code around confirmed reference areas:
+7. Continue disassembling code around confirmed reference areas:
    - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
    - `0x6344-0x636A` handles the code-confirmed `0x9187` 2D table
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
@@ -310,9 +350,9 @@ They remain worth inspecting in TunerPro.
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
    - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
-7. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
-8. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
-9. Keep original BIN unchanged and create tuned copies with clear names.
+8. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
+9. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
+10. Keep original BIN unchanged and create tuned copies with clear names.
 
 ## Custom Code Cave Notes
 
@@ -341,14 +381,15 @@ The same file now also records BTDig/public-index filename leads such as
 `106RALL2`, `16143.124`, and `9620697280`; those are research search terms only,
 not downloadable evidence or offset proof.
 
-XDF `0.13` adds confidence-tier working labels and a separate `Public Index Leads`
-category with raw `21x9` alignment probes over the `0x802E-0x81D4` region for the public forum claim that there
-are two 9-load-site, about-21-speed-site fuel/correction maps. The existing
-`Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E` and
-`Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` views remain
-the primary MOD2 split views; the 21x9 public-index entries are alignment probes
-only. The misleading legacy `0x89F2` and `0x91D9` views are intentionally
-removed from normal tuning workflow.
+XDF `0.14` promotes the public-index `21x9 @ 0x802E` alignment to
+`Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`. This is now the
+primary working view for the visible fuel-side surface. The overlapping `24x9`
+view is retained only as `Alternate 24-Row Boundary View for 0x802E Fuel/VE
+Candidate`; rows `21-23` may be adjacent calibration or tail data until code
+proves otherwise. The `21x9 @ 0x80EB` and `5x9 @ 0x81A8` public-index entries
+remain lower-confidence adjacent fuel/correction probes. The misleading legacy
+`0x89F2` and `0x91D9` views are intentionally removed from normal tuning
+workflow.
 
 ## Air-Density Screenshot Lead
 
