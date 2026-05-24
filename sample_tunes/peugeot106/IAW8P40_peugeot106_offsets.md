@@ -12,6 +12,15 @@ High-confidence observations:
 - The last 16 bytes contain valid-looking `68HC11` vectors.
 - This strongly suggests the EPROM contains executable firmware plus calibration data.
 
+External evidence note:
+
+- `IAW8P40_peugeot106_external_evidence.md` now records the checked public
+  sources from the deep-research report integration. Public material supports
+  the Peugeot 106 1.3 Rallye / IAW 8P.40 application, `27C512` media, generic
+  8P-family sensor/pin context, OldSkullTuning's public map-family checklist,
+  and the 100 kPa MAP clue. It does not publish exact map offsets, so the
+  offsets below remain local reverse-engineering findings.
+
 Important vector values:
 
 - `0xFFF8 = 0xB948`
@@ -45,11 +54,9 @@ What the XDF contains:
   event-code table and `0x9131` state descriptor triples are exposed as raw
   inspection views only.
 - Added compact views for packed structures:
-  - `0x86DB` as `8x15`
   - `0x88CA` as `8x19`
   - `0x8880` as `16x5`
 - Added better-aligned row-based views:
-  - `0x86DB` as `13x9`
   - `0x88CD` as `17x9`
 - Added code-confirmed disassembly views:
   - `0x85BA` as `24x5`
@@ -68,8 +75,10 @@ What the XDF contains:
 Recommended next steps:
 
 1. Open the BIN with the new XDF in TunerPro.
-2. Inspect `Candidate 17x9 Map @ 0x88CD` first.
-3. Inspect `Candidate 13x9 Row Table @ 0x86DB` next.
+2. Inspect code-confirmed and MOD2-touched views first, especially the split
+   `0x802E`/`0x8106` candidates, spark maps, and `0x9187`.
+3. Inspect `Candidate 17x9 Map @ 0x88CD` only as historical visual context,
+   because the later code-confirmed parent table starts at `0x888E`.
 4. Use `Candidate Flag/Scalar Block 16x5 @ 0x8880` to understand the header/setup bytes before the 0x88CD map.
 5. Then review `0x8E00` and `0x8300`.
 6. Look for recognizable axes:
@@ -105,13 +114,12 @@ Checksum offsets:
 
 Candidate and code-confirmed offsets added to the XDF:
 
-- `0x802E-0x81D4`: candidate `47x9` table and strongest unconfirmed
-  fuel/enrichment candidate from the MOD2 comparison. MOD2 changes `147 / 423`
-  cells, mostly coherent positive modulo-byte deltas.
-- `0x802E-0x8105`: split view of the upper `24x9` section of the `47x9` table.
+- `0x802E-0x8105`: upper `24x9` tune candidate from the MOD2 comparison.
   MOD2 changes `75 / 216` cells, mostly by `+4`, `+5`, and `+6`.
-- `0x8106-0x81D4`: split view of the lower `23x9` section of the `47x9` table.
+- `0x8106-0x81D4`: lower adjacent `23x9` tune candidate.
   MOD2 changes `72 / 207` cells, mostly parent rows `35-46` and columns `0-5`.
+- The old combined `47x9 @ 0x802E` XDF view was removed because the screenshot
+  and byte pattern suggest two adjacent structures rather than one table.
 - `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.

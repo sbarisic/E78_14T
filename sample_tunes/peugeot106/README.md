@@ -9,7 +9,7 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.11`.
+  - TunerPro definition, now updated to comparison markup version `0.12`.
   - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
@@ -27,6 +27,11 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
 - `LOGIC.md`
   - Living firmware-logic map.
   - Describes boot flow, main loop, timer/ADC preprocessing, normalized axes, interpolation helpers, confirmed table usage, output scheduling, and open reverse-engineering targets.
+
+- `IAW8P40_peugeot106_external_evidence.md`
+  - Verified public-source notes from the deep-research report integration.
+  - Separates public evidence, report-only leads, local code confirmation, and
+    still-unconfirmed map-family targets.
 
 - `1_3L_8V_IAW8P40/`
   - Internet comparison files.
@@ -112,7 +117,7 @@ Notes:
 - The values `0x01` and `0x26`/decimal `38` may be padding, lower/upper clamp values, or meaningful min/max calibration values.
 - No fuel/spark/RPM/load meaning has been assigned yet.
 
-### Candidate 13x9 Row Table @ `0x86DB`
+### Legacy Visual Slice @ `0x86DB`
 
 This region also aligns better as `9` columns.
 
@@ -136,6 +141,8 @@ Notes:
 
 - This was first viewed as `8x15 @ 0x86DB`.
 - The `13x9` view lines up better and ends before the zero-filled area at `0x8750`.
+- This is no longer an active XDF entry because later disassembly confirmed it
+  sits inside the larger `24x9 @ 0x869A` parent table.
 - It may be a correction table, limiter table, or structured constant block.
 - No physical units are known yet.
 
@@ -180,26 +187,25 @@ They remain worth inspecting in TunerPro.
   - Stock: `0x800C = 0x4A65`, `0x800E = 0xB59A`
   - MOD2: `0x800C = 0x47BE`, `0x800E = 0xB841`
 - The checksum complement matches the additive byte sum over `0x4000-0xFFFF`; the internal `0xB600-0xB7FF` hole is zero-filled.
-- At least two packed table-like structures have been identified:
-  - `0x88CD` as `17x9`
-  - `0x86DB` as `13x9`
+- Early visual table-like structures were identified at `0x88CD` and `0x86DB`,
+  but later disassembly showed those are inside larger code-confirmed parent
+  tables. The duplicate `0x86DB` visual XDF views have been removed.
 - MOD2 comparison adds stronger tune-touched candidates:
-  - `0x802E` as `47x9`
-  - `0x802E` as upper split `24x9` and `0x8106` as lower split `23x9`
+  - `0x802E` as upper `24x9` tune candidate and `0x8106` as lower adjacent
+    `23x9` tune candidate
   - `0x879E` / `0x87A0` as a code-confirmed threshold/hysteresis pair
   - `0x89ED-0x89F2` as code-referenced control scalars
   - `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52` as a code-confirmed `0x2044`-indexed vector family
   - `0x8A68` as a code-confirmed signed offset byte
-  - `0x8A69` and `0x8B41` as code-confirmed `24x9` 2D table banks
-  - screenshot-assisted `0x8A69` and `0x8B41` scaled as likely spark advance with `raw / 2` degrees
+  - `0x8A69` and `0x8B41` as single retained code-confirmed/scaled likely
+    spark advance entries with `raw / 2` degrees
   - `0x8A69` as likely high-octane/default spark and `0x8B41` as likely low-octane/alternate spark, based on stock selector behavior and high-load timing comparison
   - likely spark advance x-axis labels changed from placeholder `0-8` to provisional load/MAP-like `0-1024`
   - `0x800A` as the calibration byte that seeds runtime spark-bank selector `0x20B1`; stock `0x00` underflows to `0xFF`, selecting the `0x8A69` bank
   - `0x8C19` as a likely RPM-only/WOT spark advance vector with `raw / 2` degrees
   - `0x879E/0x87A0` as likely RPM limiter set/clear thresholds, stock about `7400/7386 RPM`
   - legacy raw `0x8A68` as `48x9`, now known to be off by one byte for true bank starts
-  - `0x9187` as a code-confirmed `24x9` 2D table; the older `0x91D9` view is only a legacy misaligned slice
-  - screenshot-assisted `0x9187` scaled as a correction-factor candidate with `raw / 230`
+  - `0x9187` as a single retained code-confirmed correction/load candidate with `raw / 230`; the older `0x91D9` view is only a legacy misaligned slice
 - New disassembly also confirms:
   - `0x85BA` as a code-confirmed `24x5` 2D table
   - `0x8A0A` as a code-confirmed `5x5` 2D table
@@ -225,6 +231,10 @@ They remain worth inspecting in TunerPro.
 - New XDF diagnostic/service raw views:
   - `0x55A0-0x55B1` as an 18-byte event-code table for observed event IDs `0x00-0x11`.
   - `0x9131-0x9169` as `19x3` state descriptor triples consumed by `0x58F2`.
+- XDF deduplication:
+  - Removed the old combined `47x9 @ 0x802E` view.
+  - Removed duplicate raw spark entries at `0x8A69` and `0x8B41`.
+  - Removed duplicate raw `0x9187` and old duplicate `0x86DB` visual views.
 - Current axis/source tracing:
   - `0x2034` is derived from `RAM 0x00CE`, doubled, and clamped to `0x07FF`
   - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9`
@@ -233,7 +243,8 @@ They remain worth inspecting in TunerPro.
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
 - Current fuel/correction search status:
-  - `0x802E-0x81D4` is the strongest unconfirmed main-fuel/enrichment candidate; MOD2 changes `147 / 423` cells in coherent positive groups
+  - `0x802E-0x8105` is the upper `24x9` MOD2-touched tune candidate; `0x8106-0x81D4` is the lower adjacent `23x9` MOD2-touched tune candidate
+  - fuel/enrichment remains a hypothesis only; neither `0x802E` split is code-confirmed main fuel
   - `0x9187-0x925E` is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
   - `0x89F3-0x8A05` is a code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
 - Free-space scan:
@@ -245,7 +256,8 @@ They remain worth inspecting in TunerPro.
 ## Things Not Yet Known
 
 - Which maps are fuel, idle, warmup, transient, or diagnostic. The main spark maps are now strong likely labels, but octane-bank naming remains provisional until knock/fallback logic is fully traced.
-- Exact names for the larger parent tables that contain the old `0x88CD` and `0x86DB` visual slices.
+- Exact names for the larger parent tables that contain old visual slices such
+  as `0x88CD` and `0x86DB`.
 - Axis locations and axis scaling.
 - Byte scaling for physical units.
 - Whether any table values are signed.
@@ -262,7 +274,7 @@ They remain worth inspecting in TunerPro.
    - surrounding `0x2044` vector family entries
    - control scalars `1x6 @ 0x89ED`
    - legacy `15x9 @ 0x91D9` only for screenshot continuity
-   - still-unconfirmed `47x9 @ 0x802E`
+   - upper `24x9 @ 0x802E` and lower adjacent `23x9 @ 0x8106`
 3. Inspect the `Scaled / Likely Named Views` category next:
    - likely spark advance high-octane/default `24x9 @ 0x8A69`
    - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
@@ -308,6 +320,15 @@ See `IAW8P40_peugeot106_sensor_references.md` for the current external sensor
 inventory and source links. The most important current takeaway is that the
 1.3 Rallye MAP sensor evidence supports treating `0x2034` as a MAP/load-like
 axis, so the likely spark maps now use provisional mbar-style `0-1024` labels.
+
+## External Evidence Notes
+
+See `IAW8P40_peugeot106_external_evidence.md` for the integrated
+deep-research-report follow-up. The checked public sources support the Peugeot
+106 1.3 Rallye / IAW 8P.40 application, `27C512` EPROM workflow, generic
+8P-family sensor/pin context, the public OldSkullTuning map-family checklist,
+and the 100 kPa MAP-sensor clue. They do not publish exact map offsets, so
+local code references and MOD2 deltas remain the authority for XDF naming.
 
 ## Practical Caution
 

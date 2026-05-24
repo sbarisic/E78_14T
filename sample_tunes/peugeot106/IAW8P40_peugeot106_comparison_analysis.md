@@ -99,15 +99,16 @@ Top-level changed regions:
 | Region | Changed bytes | Current interpretation |
 | --- | ---: | --- |
 | `0x800C-0x800F` | `4` | Checksum word and complement |
-| `0x802E-0x81D4` | `147` changed cells inside a `47x9` view | Large MOD2-touched table candidate |
+| `0x802E-0x8105` | `75` changed cells inside a `24x9` view | Upper MOD2-touched tune candidate |
+| `0x8106-0x81D4` | `72` changed cells inside a `23x9` view | Lower adjacent MOD2-touched tune candidate |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
 | `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | The old `0x91D9` `15x9` view is a legacy misaligned slice |
 
-## MOD2-Touched Candidate: 47x9 @ `0x802E`
+## MOD2-Touched Split Region @ `0x802E-0x81D4`
 
-Proposed view:
+The earlier combined view was:
 
 ```text
 start: 0x802E
@@ -115,14 +116,14 @@ shape: 47 rows x 9 columns
 end:   0x81D4
 ```
 
-Why this alignment is useful:
+That alignment was useful for discovery, but it is no longer the active XDF
+view. The screenshot and byte pattern show a strong break after parent row 23,
+so the XDF now exposes two adjacent candidates instead:
 
-- `0x802E + 47*9 - 1 = 0x81D4`.
-- `0x81D5` begins a different-looking block.
-- MOD2 changes selected cells in coherent row/column groups.
-- Deltas are mostly `+4`, `+5`, `+6`, with one row group at `+18` if interpreted modulo 8-bit.
+- Upper candidate: `24x9 @ 0x802E-0x8105`.
+- Lower adjacent candidate: `23x9 @ 0x8106-0x81D4`.
 
-Changed row indexes in this view:
+Changed parent row indexes:
 
 ```text
 10, 11, 13, 14, 15, 16, 17, 18,
@@ -132,11 +133,14 @@ Changed row indexes in this view:
 
 Notable pattern:
 
-- Rows `14-17` are changed across all 9 columns by `+6`.
-- Rows `35-44` mostly change columns `0-5` by `+5`.
-- Row `45` changes columns `0-5` by `+18`.
+- Upper rows `14-17` are changed across all 9 columns by `+6`.
+- Lower parent rows `35-44` mostly change columns `0-5` by `+5`.
+- Lower parent row `45` changes columns `0-5` by `+18`.
 
-The raw values wrap through `0xFF` in this region, so signed or modulo interpretation may matter. Do not assign physical units yet.
+The lower structure wraps through `0xFF`, so signed or modulo interpretation may
+matter. The upper `24x9` shape is a plausible RPM/load-style table, but direct
+code usage is not confirmed. Do not assign physical units or confirmed fuel
+meaning yet.
 
 ## MOD2-Touched Scalars @ `0x879E` and `0x87A0`
 
@@ -305,7 +309,6 @@ New MOD2-backed entries:
 - `MOD2 Changed 16-bit Scalar B @ 0x87A0`
 - `MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18`
 - `Code-Confirmed Signed Offset Byte @ 0x8A68`
-- `MOD2 Compared Candidate 47x9 Table @ 0x802E`
 - `MOD2 Compared Scalar Block 1x8 @ 0x879C`
 - `Legacy Raw 1x20 View @ 0x89F2`
 - `Legacy Raw 0x8A68 Banked Block View 48x9`
@@ -314,13 +317,12 @@ New MOD2-backed entries:
 
 After TunerPro visual review, additional split views were added:
 
-- `MOD2 Compared 47x9 Upper Split 24x9 @ 0x802E`
-- `MOD2 Compared 47x9 Lower Split 23x9 @ 0x8106`
+- `MOD2 Compared Upper Tune Candidate 24x9 @ 0x802E`
+- `MOD2 Compared Lower Adjacent Tune Candidate 23x9 @ 0x8106`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
-- `Code-Confirmed 2D Table 24x9 @ 0x9187`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -356,7 +358,9 @@ After TunerPro visual review, additional split views were added:
 
 Rationale:
 
-- The `47x9 @ 0x802E` view changes character after row `23`; the lower section contains wraparound-looking values when viewed unsigned.
+- The old combined `47x9 @ 0x802E` view changes character after row `23`; it
+  has been removed from the XDF in favor of the `24x9 @ 0x802E` and
+  `23x9 @ 0x8106` split views.
 - The `48x9 @ 0x8A68` view has a clear visual break at row `24`, making two `24x9` subviews easier to inspect.
 - The original large views remain in the XDF for context, even where later disassembly refined the true boundaries.
 
@@ -431,15 +435,17 @@ Spark-bank octane/default naming pass:
 
 Fuel/correction candidate pass:
 
-- `0x802E-0x81D4` remains the strongest unconfirmed fuel/enrichment candidate.
-  MOD2 changes `147 / 423` cells in the `47x9` view.
-- The upper split `24x9 @ 0x802E` changes `75 / 216` cells, mostly rows
+- `0x802E-0x81D4` remains a strong unconfirmed tune-related region, but it is
+  now treated as two adjacent candidate structures rather than one table.
+- The upper candidate `24x9 @ 0x802E` changes `75 / 216` cells, mostly rows
   `10`, `11`, `13-18`, and `21-23` by `+4`, `+5`, or `+6`.
-- The lower split `23x9 @ 0x8106` changes `72 / 207` cells, mostly parent rows
-  `35-46` and columns `0-5`. Most deltas are modulo-byte `+5`, with one
-  `+18` group.
+- The lower adjacent candidate `23x9 @ 0x8106` changes `72 / 207` cells,
+  mostly parent rows `35-46` and columns `0-5`. Most deltas are modulo-byte
+  `+5`, with one `+18` group.
 - Direct code usage for `0x802E` is still not confirmed. The only raw address
   byte occurrence currently seen is the earlier false hit around `0xC621`.
+- Fuel/enrichment remains a hypothesis only; neither split is code-confirmed
+  main fuel.
 - `0x9187-0x925E` is code-confirmed and MOD2 changes `62 / 216` cells, but the
   traced path can feed `0x00D0 -> 0x00CE -> 0x2034`, so it currently looks more
   like a correction/load-model table than final main fuel.
@@ -463,6 +469,16 @@ External sensor scan:
   and a PRT03/04 product sheet gives a `17-105 kPa` absolute range.
 - This supports interpreting the spark-table x-axis `0x2034` as MAP/load-like
   and using provisional `0-1024` mbar-style labels.
+
+External evidence integration:
+
+- The checked public-source summary now lives in
+  `IAW8P40_peugeot106_external_evidence.md`.
+- Public sources support the vehicle/ECU match, `27C512` EPROM workflow,
+  generic 8P-family sensors/pins, the public OldSkullTuning map-family list,
+  and the 100 kPa MAP clue.
+- Public sources still do not disclose exact IAW 8P.40 map addresses. The
+  MOD2 comparison and disassembly remain the authority for local offsets.
 
 ## Best Next Steps
 

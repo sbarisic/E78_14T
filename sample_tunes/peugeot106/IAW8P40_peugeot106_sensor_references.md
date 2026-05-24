@@ -49,6 +49,9 @@ External evidence:
   absolute pressure sensor with a pressure range of `17-105 kPa`.
 - The user also found a related `PRT 03E/02 2624AL 100 kPa` marking. This is
   consistent with the same PRT03-family 1 bar MAP-sensor class.
+- A checked EuroFrance listing for `PRT03E/02` / `1920P2` also lists the part
+  as a Magneti Marelli 3-pin MAP/vacuum sensor for Citroen/Fiat/Peugeot with
+  `100kPa` marking.
 
 Reverse-engineering implications:
 
@@ -88,5 +91,7 @@ Reverse-engineering implications:
   https://www.proxyparts.com/car-parts-stock/information/part-number/prt03e04/part/mapping-sensor-%28intake-manifold%29/partid/21378782/
 - Magneti Marelli PRT03/04 product sheet:
   https://www.compsystems.com.au/index.php/store/download-pdf?product_id=423
+- Magneti Marelli PRT03E/02 100 kPa listing:
+  https://eurofrance.ie/map-manifold-pressure-sensor-prt03e-02-1920p2-citroen-peugeot-fiat.html
 - BossECU IAW 8P fitment reference:
   https://bossgarage.eu/en-ww/products/bossecu-psa-nfw

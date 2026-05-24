@@ -4,6 +4,11 @@ Analysis date: 2026-05-24
 
 This file is a living description of the ECU firmware behavior while the Peugeot 106 1.3 Rallye Marelli `IAW 8P.40` ROM is being reverse engineered.
 
+External public research is summarized in
+`IAW8P40_peugeot106_external_evidence.md`. That file is useful for vehicle,
+EPROM, sensor, and public map-family context, but this `LOGIC.md` remains the
+source of truth for local code paths, offsets, and XDF naming confidence.
+
 Confidence labels used below:
 
 - Confirmed: directly supported by decoded instruction flow.
@@ -744,30 +749,35 @@ Physical meaning:
 Using `1_3L_8V_IAW8P40_MOD2.bin` against `M27C512_original.BIN`, the current
 fuel-search priority is:
 
-1. `0x802E-0x81D4` candidate `47x9`.
-2. `0x9187-0x925E` code-confirmed correction/load table.
-3. `0x89F3-0x8A05` code-confirmed `0x2044`-indexed vector.
+1. `0x802E-0x8105` upper `24x9` tune candidate.
+2. `0x8106-0x81D4` lower adjacent `23x9` tune candidate.
+3. `0x9187-0x925E` code-confirmed correction/load table.
+4. `0x89F3-0x8A05` code-confirmed `0x2044`-indexed vector.
 
-`0x802E` is the strongest unconfirmed fuel/enrichment candidate:
+`0x802E-0x81D4` is a strong MOD2-touched tune region, but it is now treated as
+two adjacent candidates rather than one combined table:
 
-- Shape used in the XDF: `47x9`, split as upper `24x9 @ 0x802E` and lower
-  `23x9 @ 0x8106`.
-- MOD2 changes `147 / 423` cells.
-- Upper split: `75 / 216` cells changed.
+- The old combined `47x9 @ 0x802E` view was useful during discovery, but it has
+  been removed from the XDF because the screenshot and byte pattern suggest two
+  structures with different character.
+- Upper candidate `24x9 @ 0x802E`: `75 / 216` cells changed.
   - Changed rows: `10`, `11`, `13-18`, `21-23`.
   - Deltas are clean positive raw-count increases, mostly `+4`, `+5`, and `+6`.
-- Lower split: `72 / 207` cells changed.
+- The upper shape matches the ECU's common 24-row pattern and is shown in the
+  XDF with provisional `0x2034` load-like and `0x2036` RPM-like labels.
+- Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` cells changed.
   - Parent rows `35-46` are touched, mostly columns `0-5`.
   - Most deltas are modulo-byte `+5`, with one row group at `+18`.
   - Several values wrap through `0xFF`, so unsigned display can look like a
     negative drop even though modulo-byte interpretation is an increase.
+- The lower shape is kept raw-indexed in the XDF because it does not fit the
+  24-point RPM axis cleanly.
 - No direct code reference to table base `0x802E` has been confirmed. The only
   raw address-byte occurrence in stock is around `0xC621`, and current 68HC11
   decoding treats it as an immediate compare sequence rather than a table base.
-- Because the edited pattern is broad, coherent, and mostly positive in a
-  tuned 100 hp 1.3 Rallye file, `0x802E` remains the best main-fuel or
-  enrichment candidate, but it must stay unconfirmed until a consumer path is
-  found.
+- Fuel/enrichment remains a hypothesis only. Neither split is code-confirmed
+  main fuel until a consumer path reaches pulse width, injection scheduling, or
+  another fueling-specific calculation.
 
 `0x9187` is code-confirmed and MOD2-touched, but is probably upstream of load:
 
@@ -1460,6 +1470,30 @@ Implication for maps:
   896, 1024` x-axis labels plausible as mbar-like MAP/load labels.
 - This is now the best working label for the XDF, but the exact ADC transfer and
   physical unit conversion remain to be proved from code or live data.
+
+## External Research Checklist
+
+The integrated deep-research report is now treated as a secondary lead list,
+with verified public URLs recorded in
+`IAW8P40_peugeot106_external_evidence.md`.
+
+Current cross-check status:
+
+| Public map family | Current local status |
+| --- | --- |
+| Main fuel multiplier | No confirmed offset. `0x802E-0x8105` and `0x8106-0x81D4` remain split tune-related candidates only. |
+| Spark high/low octane | `0x8A69` and `0x8B41` are code-confirmed banked spark lookups and likely high/default vs low/alternate. |
+| WOT spark | `0x8C19` is a code-confirmed RPM-only spark bypass vector and likely WOT/RPM-only spark. |
+| Spark correction/minimum/idle | Not yet matched to exact local offsets. |
+| Dwell | Not yet matched to an exact local offset. |
+| Air density / VE correction | Not yet matched. `0x9187` is code-confirmed but currently correction/load-model related, not proven air density or main fuel. |
+| RPM axis | `0x929E` is code-confirmed. |
+| Load/mbar axis | `0x2034` is code-confirmed as a load/MAP-like axis, with exact mbar scaling still provisional. |
+| RPM limiter | `0x879E` / `0x87A0` remain likely limiter thresholds from code reference and MOD2 deltas. |
+
+No XDF labels should be promoted from external-source names alone. Public
+sources can guide search priority, but exact map naming still needs local code,
+MOD2 delta, axis, or live-behavior proof.
 
 ## Current Functional Picture
 

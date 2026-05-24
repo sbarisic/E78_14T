@@ -786,7 +786,9 @@ Raw descriptor bytes:
 
 ## `0x802E-0x81D4` Region
 
-The `47x9 @ 0x802E` region is MOD2-touched and table-like, but direct code usage has not been confirmed yet.
+The `0x802E-0x81D4` region is MOD2-touched and table-like, but direct code
+usage has not been confirmed yet. It is now treated as two adjacent tune-related
+candidate structures rather than one combined `47x9` table.
 
 Important correction:
 
@@ -802,15 +804,15 @@ C623: FD 24 56      STD $2456
 
 Status:
 
-- Keep `0x802E-0x81D4` as MOD2-backed data and the strongest unconfirmed
-  fuel/enrichment candidate.
-- MOD2 changes `147 / 423` cells in the `47x9` view.
-- Upper split `24x9 @ 0x802E`: `75 / 216` changed cells, mostly `+4`, `+5`,
-  and `+6` raw-count increases.
-- Lower split `23x9 @ 0x8106`: `72 / 207` changed cells, mostly parent rows
-  `35-46` and columns `0-5`, with modulo-byte `+5` changes and one `+18`
-  group.
-- Do not call it code-confirmed yet.
+- The old combined `47x9 @ 0x802E` view was removed from the XDF because the
+  screenshot and byte pattern suggest a split after row 23.
+- Upper candidate `24x9 @ 0x802E`: `75 / 216` changed cells, mostly `+4`,
+  `+5`, and `+6` raw-count increases. This is the better candidate for a
+  normal RPM/load-style table and uses provisional load/RPM labels in the XDF.
+- Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` changed cells, mostly
+  parent rows `35-46` and columns `0-5`, with modulo-byte `+5` changes and one
+  `+18` group. This remains raw-indexed.
+- Do not call either split code-confirmed main fuel yet.
 - It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
 
 ## Diagnostic / Service Routines
@@ -968,19 +970,20 @@ Interpretation:
 
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.11` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps and raw diagnostic/service views for code-confirmed descriptor data.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.12` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, and a deduplicated table tree where each major structure has one best inspection entry.
 
 Previously added in `0.4`:
 
 - `Code-Confirmed Signed Offset Byte @ 0x8A68`
-- `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
-- `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
+- code-confirmed spark-bank raw views at `0x8A69` and `0x8B41`, later
+  condensed into the retained scaled likely spark entries
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89F3`
 
 New in `0.5`:
 
-- `Code-Confirmed 2D Table 24x9 @ 0x9187`
+- code-confirmed raw `24x9 @ 0x9187`, later condensed into the retained
+  `Correction Factor Candidate 24x9 @ 0x9187`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -1060,6 +1063,30 @@ New in `0.11`:
 - Added raw state descriptor view `0x9131-0x9169` as `19x3` triples for the
   `0x58F2` descriptor subsystem.
 - No `.bin` files were edited.
+
+New in `0.12`:
+
+- Removed the combined `47x9 @ 0x802E` view.
+- Promoted `0x802E-0x8105` as the upper `24x9` tune candidate with provisional
+  load/RPM-style labels.
+- Kept `0x8106-0x81D4` as the lower adjacent `23x9` tune candidate with raw
+  parent-row labels.
+- Removed duplicate raw spark-bank views at `0x8A69` and `0x8B41`; the retained
+  scaled spark entries now carry the code-confirmed lookup evidence.
+- Removed the duplicate raw `0x9187` view; the retained `raw / 230` correction
+  candidate now carries the code-confirmed lookup evidence.
+- Removed the old duplicate `0x86DB` visual views because that region is inside
+  the code-confirmed `0x869A` parent table.
+
+External evidence integration:
+
+- Added `IAW8P40_peugeot106_external_evidence.md` as a public-source and
+  deep-research-report cross-check.
+- The checked sources support the Peugeot 106 1.3 Rallye / IAW 8P.40
+  application, `27C512` media, generic 8P-family sensors/pins, the public
+  OldSkullTuning map-family checklist, and the 100 kPa MAP clue.
+- No XDF names or offsets were promoted from external sources alone. The local
+  disassembly remains the authority for code-confirmed structures.
 
 ## Free ROM Space / Custom Logic
 
