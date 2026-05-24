@@ -350,6 +350,26 @@ the primary MOD2 split views; the 21x9 public-index entries are alignment probes
 only. The misleading legacy `0x89F2` and `0x91D9` views are intentionally
 removed from normal tuning workflow.
 
+## Air-Density Screenshot Lead
+
+The public TunerPro screenshot labelled `Air density correction factor by
+temperature` was checked against the local Peugeot dumps as a `24x9` table.
+The visible axes are RPM-like rows from about `750` to `9004` and temperature
+columns from `-5` to `80` deg C, with factor-like cells from about `0.10` to
+`1.11`.
+
+No exact table match was found in `M27C512_original.BIN`,
+`1.3L_8V_IAW8P40_Stok.bin`, or `1.3L_8V_IAW8P40_MOD2.bin`. The scan tried
+normal, reversed, and transposed orientations with likely display equations
+including `raw / 230`, `raw / 100`, `raw / 128`, and `raw / 200`.
+
+The nearest functional local candidate remains
+`Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but its bytes do not
+match the screenshot. Loose numeric matches around `0x8A9C` fall inside the
+code-confirmed spark bank and are false positives. Do not rename any local table
+as air-density correction until the IAT/CTS ADC path reaches a confirmed table
+consumer.
+
 ## Practical Caution
 
 This XDF is for reverse engineering and inspection only at this stage. Treat the spark labels as strong working names, but do not treat any fuel/correction candidate as confirmed main fuel until there is corroborating evidence from disassembly, known damos/map packs, live behavior, or controlled changes on a bench/test setup.

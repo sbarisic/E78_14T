@@ -182,6 +182,9 @@ External sensor clue:
 - MAP sensor evidence points to a Magneti Marelli PRT03-family 100 kPa / 1 bar
   sensor, supporting the provisional `0x2034` MAP/load labels `0-1024` used on
   the likely spark maps.
+- A public air-density screenshot shows a `24x9` RPM-by-temperature factor map,
+  but the displayed matrix was not found in the local stock or MOD2 dumps. This
+  is a map-family lead only, not an offset.
 
 Useful direct-reference hints from byte/opcode context:
 
@@ -206,6 +209,10 @@ Useful direct-reference hints from byte/opcode context:
 - `0x8C19` is used by the `0x48F4` bypass path as an RPM-only vector.
 - `0x9187` is loaded as a 2D table base around `0x6344-0x636A`; stride comes from `0x929A`.
 - The `0x9187` raw values become factor-like with `raw / 230`, but the exact correction type is still unconfirmed.
+- The public air-density screenshot does not match `0x9187` byte-for-byte. Its
+  first row under `raw / 230` would be approximately
+  `115 104 83 62 48 51 46 46 44`, while local `0x9187` begins
+  `186 199 220 227 247 252 254 254 254`.
 - `0x5E74-0x5E7C` can store the `0x9187` lookup into `0x00D0`, then store `0x00CE = 0x00D0 << 2`.
 - `0x41A1-0x41AD` turns `0x00CE` into normalized axis `0x2034`.
 - `0x00D0` is now best treated as a load-model/air-charge byte, `0x00CE` as a
@@ -226,3 +233,5 @@ Important caution:
   usage or live behavior confirms the meaning. Spark timing is now a strong
   working label for `0x8A69`, `0x8B41`, and `0x8C19`, but octane-bank names
   should remain "likely" until knock/fallback logic is fully traced.
+- The air-density screenshot should stay on the checklist, but no local offset
+  should be named from it until IAT/CTS ADC paths reach a confirmed table.

@@ -1580,6 +1580,38 @@ Resolved or downgraded in this pass:
    - Remaining unknown: exact sensor-to-channel mapping for MAP, TPS, IAT,
      CTS, lambda, battery, and any other analog inputs.
 
+## Air-Density Screenshot Search
+
+A public TunerPro screenshot labelled `Air density correction factor by
+temperature` was tested as a local map lead. The visible table is `24x9`, with
+RPM-like rows from about `750` to `9004` and temperature columns
+`-5, 10, 20, 30, 40, 50, 60, 70, 80`. Displayed values are factor-like, roughly
+`0.10-1.11`.
+
+Search result:
+
+- No exact match was found in `M27C512_original.BIN`,
+  `1.3L_8V_IAW8P40_Stok.bin`, or `1.3L_8V_IAW8P40_MOD2.bin`.
+- The search tried normal, reversed-row, reversed-column, row/column-reversed,
+  and transposed orientations.
+- Candidate equations tried included `raw / 230`, `raw / 100`, `raw / 128`, and
+  `raw / 200`.
+- With `raw / 230`, the screenshot's first row would encode approximately
+  `115 104 83 62 48 51 46 46 44`; local `0x9187` begins
+  `186 199 220 227 247 252 254 254 254`, so it is not the same data.
+- The best loose numeric matches are misaligned offsets inside the
+  code-confirmed spark-bank region around `0x8A9C`; those are false positives,
+  not air-density tables.
+
+Current conclusion:
+
+- The screenshot is useful external evidence that a public IAW8P40 XDF family
+  may contain an RPM-by-temperature air-density correction table.
+- It does not confirm a local offset in this Peugeot 106 1.3 Rallye dump.
+- `0x9187` remains the nearest functional local correction/load-model candidate,
+  but it must not be renamed as air density until the IAT/CTS ADC path reaches
+  a table consumer.
+
 Next best high-priority work:
 
 1. Trace writes and consumers of `0x20EB/0x20ED` back from `0xBC12/0xBC90`.
@@ -1590,6 +1622,9 @@ Next best high-priority work:
    thresholds and fallback behavior.
 5. Continue fuel proof by finding a code consumer for the MOD2-touched
    `0x802E-0x81D4` candidate and tying it to pulse-width or injection timing.
+6. Trace IAT and CTS ADC consumers into correction logic, looking specifically
+   for a `24x9` RPM-by-temperature table or a temperature axis/vector that could
+   explain the public air-density screenshot.
 
 ## Editing Caution
 

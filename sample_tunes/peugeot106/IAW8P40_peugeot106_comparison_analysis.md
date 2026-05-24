@@ -500,6 +500,22 @@ External evidence integration:
 - Public sources still do not disclose exact IAW 8P.40 map addresses. The
   MOD2 comparison and disassembly remain the authority for local offsets.
 
+Air-density screenshot lead:
+
+- A public TunerPro screenshot labelled `Air density correction factor by
+  temperature` shows a `24x9` RPM-by-temperature factor table.
+- The visible cells were converted back into likely byte values and searched
+  against stock, Stok, and MOD2 dumps.
+- Tried equations/orientations: `raw / 230`, `raw / 100`, `raw / 128`,
+  `raw / 200`; normal, reversed rows/columns, both reversed, and transposed.
+- No exact local match was found.
+- `0x9187` remains the nearest functional correction/load-model candidate, but
+  its bytes do not match the screenshot.
+- Loose numeric matches near `0x8A9C` sit inside the code-confirmed spark bank
+  and are false positives.
+- Do not promote an air-density XDF name until IAT/CTS ADC consumers prove a
+  table path.
+
 ## Best Next Steps
 
 1. Continue naming source variables for the confirmed axes:
@@ -513,4 +529,6 @@ External evidence integration:
     - `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`, `0x24AC`, `0x24AD`, and `0x24AF` for the new B2D6 inventory
 3. Decode the state/descriptor routine at `0x58F2`; it explains the nearby descriptor triples at `0x9131-0x9167`.
 4. In TunerPro, inspect the code-confirmed MOD2-touched maps first: `0x8A69`, `0x8B41`, `0x9187`, and `0x89F3`.
-5. Before burning any edited EPROM, recompute the checksum pair at `0x800C-0x800F`.
+5. Trace IAT/CTS ADC consumers for the public air-density map family before
+   adding any air-density XDF name.
+6. Before burning any edited EPROM, recompute the checksum pair at `0x800C-0x800F`.

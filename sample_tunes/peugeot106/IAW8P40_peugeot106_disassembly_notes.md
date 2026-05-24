@@ -1116,6 +1116,22 @@ External evidence integration:
 - No XDF names or offsets were promoted from external sources alone. The local
   disassembly remains the authority for code-confirmed structures.
 
+Air-density screenshot lead:
+
+- A public TunerPro screenshot labelled `Air density correction factor by
+  temperature` was tested as a `24x9` table lead.
+- The visible axes are RPM-like rows and temperature columns
+  `-5, 10, 20, 30, 40, 50, 60, 70, 80`.
+- The matrix was not found verbatim in stock, Stok, or MOD2 dumps using likely
+  equations `raw / 230`, `raw / 100`, `raw / 128`, or `raw / 200`, including
+  reversed and transposed orientations.
+- `0x9187` remains the closest functional correction/load-model candidate, but
+  the screenshot data does not match its bytes.
+- Loose numerical matches around `0x8A9C` are inside the code-confirmed spark
+  bank and should be ignored for air-density naming.
+- Next proof path: follow IAT/CTS ADC channels and fallback thresholds into
+  table lookups before adding an air-density XDF entry.
+
 ## Free ROM Space / Custom Logic
 
 Measured zero-filled regions:
@@ -1152,6 +1168,8 @@ Highest value next:
 3. Finish ADC channel naming:
    - follow thresholds and fallback behavior for `0x2007-0x200E`.
    - map channels to MAP, TPS, IAT, CTS, lambda, battery/other.
+   - specifically trace IAT/CTS consumers for any RPM-by-temperature correction
+     table matching the public air-density map family.
 4. Continue fuel proof:
    - find a real consumer for `0x802E-0x81D4`.
    - trace injection pulse-width/output code separately from spark.

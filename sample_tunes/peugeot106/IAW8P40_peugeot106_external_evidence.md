@@ -106,7 +106,7 @@ have been matched to exact local offsets.
 | Spark advance minimum | No confirmed local offset. | Still unconfirmed. |
 | Spark advance idle | No confirmed local offset. | Still unconfirmed. |
 | Dwell | No confirmed local offset. | Still unconfirmed. |
-| Air density correction by temperature | `0x9187-0x925E` may be correction/load-model related, but not proven to be air density. | Still unconfirmed. |
+| Air density correction by temperature | Public screenshot shows a `24x9` RPM-by-temperature factor table, but the visible data was not found verbatim in the local stock or MOD2 dumps. `0x9187-0x925E` may be correction/load-model related, but is not proven air density. | Still unconfirmed. |
 | Volumetric efficiency correction | No confirmed local offset. `0x802E`/`0x8106` remain possible tune-related structures. | Still unconfirmed. |
 | RPM axis | `0x929E-0x92CD`, code-confirmed 24-point period/RPM axis for `0x2036`. | Locally code-confirmed axis. |
 | Load/mbar axis | `0x2034` is a load/MAP-like 8.8 axis; XDF labels use `0, 128, ..., 1024`. | Locally code-confirmed axis path, exact pressure scaling still provisional. |
@@ -123,6 +123,33 @@ have been matched to exact local offsets.
   but they must not be treated as exact 8P.40 wiring proof.
 - The 100 kPa MAP evidence supports the MAP/load-like interpretation of
   `0x2034`, but the ADC transfer and pressure conversion still need decoding.
+- The public air-density screenshot is evidence for a map family name only. It
+  does not confirm a local offset in this ROM.
+
+## Air-Density Screenshot Lead
+
+The TunerPro screenshot labelled `Air density correction factor by temperature`
+was converted into byte candidates and searched against:
+
+- `M27C512_original.BIN`
+- `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_Stok.bin`
+- `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin`
+
+The search treated it as a `24x9` table with RPM-like rows and temperature
+columns. It tried likely display equations and orientations:
+
+- `raw / 230`, matching the current local `0x9187` correction-factor display.
+- `raw / 100`, `raw / 128`, and `raw / 200`.
+- Normal, row-reversed, column-reversed, both-reversed, and transposed layouts.
+
+No exact local match was found. The nearest functional local candidate remains
+`Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but the byte values
+do not match the screenshot. Loose numeric matches around `0x8A9C` are inside
+the code-confirmed spark bank, so they are false positives.
+
+Actionable conclusion: keep `Air density correction by temperature` on the
+checklist, but do not rename an XDF table from this screenshot alone. The next
+proof path is static tracing from IAT/CTS ADC channels into correction lookups.
 
 ## Bench / EPROM Workflow Cautions
 

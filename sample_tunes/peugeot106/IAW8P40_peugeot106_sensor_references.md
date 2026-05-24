@@ -71,11 +71,25 @@ Reverse-engineering implications:
    tables and can identify which ADC byte is which.
 4. Trace the knock path around the `0x20B1` spark-bank selector and nearby
    routines at `0xBF0A`, `0xBF30`, and `0xCBEF`.
-5. Use live data if available:
+5. Trace IAT/CTS correction consumers before naming an air-density map. A public
+   screenshot shows a `24x9` RPM-by-temperature `Air density correction factor
+   by temperature` table, but that exact byte matrix was not found in the local
+   stock or MOD2 Peugeot 106 dumps using likely scalings and orientations.
+6. Use live data if available:
    - key-on engine-off MAP should be near barometric pressure,
    - warm idle MAP should be much lower than WOT,
    - TPS should sweep monotonically with throttle,
    - IAT/CTS should move predictably with temperature.
+
+## Air-Density Screenshot Boundary
+
+The screenshot is useful because it tells us what to hunt for: an RPM-by-IAT or
+RPM-by-temperature correction surface. It is not local offset proof. Searches
+against the current dumps did not find the displayed values as a `24x9` table
+under `raw / 230`, `raw / 100`, `raw / 128`, or `raw / 200`, including reversed
+and transposed views. The closest meaningful local correction candidate remains
+`0x9187`, but its bytes are different and its confirmed path currently feeds the
+load-model chain `0x00D0 -> 0x00CE -> 0x2034`.
 
 ## Source URLs
 
