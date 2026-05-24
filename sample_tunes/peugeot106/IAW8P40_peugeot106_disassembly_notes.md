@@ -579,6 +579,105 @@ Status:
 - Do not call it code-confirmed yet.
 - It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
 
+## Diagnostic / Service Routines
+
+The ROM contains confirmed diagnostic/service communication code. This does not yet prove there is a full interactive developer debugger, but it does show factory/service style protocol handling.
+
+Confirmed hardware blocks:
+
+- SCI serial registers:
+  - `0x102B`: BAUD
+  - `0x102C`: SCCR1
+  - `0x102D`: SCCR2
+  - `0x102E`: SCSR
+  - `0x102F`: SCDR
+- SPI registers:
+  - `0x1028`: SPCR
+  - `0x1029`: SPSR
+  - `0x102A`: SPDR
+
+Startup initializes SCI/service state through `0xA6E5` and `0xA696`:
+
+```asm
+A6B2: B6 80 0B      LDAA $800B
+A6B7: 86 00         LDAA #$00
+A6B9: B7 21 A6      STAA $21A6
+A6BC: B6 80 09      LDAA $8009
+A6BF: B7 10 2B      STAA $102B       ; BAUD
+...
+A72D: B7 10 2C      STAA $102C       ; SCCR1 = 0
+A732: B7 10 2D      STAA $102D       ; SCCR2 = 0x24
+A740: B7 10 2B      STAA $102B       ; BAUD = 0x33 in this path
+```
+
+The main serial state machine is in `0xA7D8-0xAFxx`. It reads/writes SCDR using the expected SCI sequence:
+
+```asm
+A9C6: F6 10 2E      LDAB $102E       ; read SCI status
+A9C9: B7 10 2F      STAA $102F       ; transmit byte
+...
+A9F5: B6 10 2F      LDAA $102F       ; receive byte
+```
+
+`0xAA3F-0xAA78` is a compact command/response decoder:
+
+```text
+RX DD -> response 33
+RX F0 -> response AA
+RX 36 -> response 15
+RX 35 -> response 14
+RX 34 -> response 16
+RX CC -> response 66
+RX 99 -> response 55
+```
+
+The `0x55` response path is especially important because it changes the ECU into mode `0x06` and jumps to `0xD80B`:
+
+```asm
+AAE0: 86 06         LDAA #$06
+AAE2: B7 21 A6      STAA $21A6
+AAE5: BE 91 6A      LDS $916A
+AAE8: 7E D8 0B      JMP $D80B
+```
+
+`0xD80B` is a special service loop. It sets up a separate context, services the watchdog, and keeps running only while `0x21A6 == 0x06`; otherwise it jumps to the fail-stop path `0xB94D`.
+
+```asm
+D80B: 0F            SEI
+D80C: 8D 1B         BSR $D829
+D80E: 0E            CLI
+D80F: B6 21 A6      LDAA $21A6
+D812: 81 06         CMPA #$06
+D816: 7E B9 4D      JMP $B94D        ; if not mode 6
+D819: 86 55         LDAA #$55
+D81B: B7 10 3A      STAA $103A
+D81E: 43            COMA
+D81F: B7 10 3A      STAA $103A
+D822: 8D 72         BSR $D896
+D824: BD D9 41      JSR $D941
+D827: 20 E6         BRA $D80F
+```
+
+The runtime also has a fault/status queue:
+
+- `0x5982` maps an event ID through table `0x55A0`.
+- `0x59A8` inserts/updates entries in queue RAM `0x004B-0x005B`.
+- `0x59CA` removes/compacts entries.
+- `0x59F4` updates queue summary flags in `RAM 0x00A4`.
+- `0x005B` is the moving end pointer.
+
+Queue entries appear to use the upper bits as class/severity bits and lower bits as an event number. `0x55A0` should therefore be treated as a diagnostic/event-code table candidate, not as normal calibration.
+
+The dispatcher around `0x67A3` / `0x6836` includes a service-visible RAM list:
+
+```text
+0x680F-0x682F:
+004B 004C 004D 004E 004F 0050 0051 0052
+0053 0054 0055 0056 0057 0058 0094 009A 0099
+```
+
+This strongly suggests the diagnostic protocol can expose fault queue bytes and status/reset/checksum flags.
+
 ## Practical XDF Changes From This Pass
 
 `IAW8P40_peugeot106_firstpass.xdf` version `0.5` now includes the previous `0.4` confirmed entries plus the new continuation-pass findings.
@@ -625,3 +724,8 @@ Highest value next:
    - `0xBB98`
    - `0xB555`
    - `0x5652`
+5. Decode the diagnostic/service protocol:
+   - SCI state tables at `0xA778`, `0xA792`, `0xA7A6`, `0xA7C0`, and `0xA7D8`
+   - event/status table `0x55A0`
+   - service-visible RAM list around `0x680F-0x682F`
+   - special service loop `0xD80B`

@@ -196,6 +196,11 @@ They remain worth inspecting in TunerPro.
 - New disassembly also confirms:
   - `0x85BA` as a code-confirmed `24x5` 2D table
   - `0x8A0A` as a code-confirmed `5x5` 2D table
+- The ROM contains diagnostic/service communication code:
+  - SCI serial registers `0x102B-0x102F` are used for a packet/state-machine protocol.
+  - `0x004B-0x005B` is an event/status queue managed by `0x5982`, `0x59A8`, `0x59CA`, and `0x59F4`.
+  - `0xAA3F-0xAA78` maps command bytes such as `0xDD`, `0xF0`, `0x36`, `0x35`, `0x34`, `0xCC`, and `0x99` to response bytes.
+  - The `0x55` response path enters special service mode `0xD80B` with `0x21A6 = 0x06`.
 - Current axis/source tracing:
   - `0x2034` is derived from `RAM 0x00CE`, doubled, and clamped to `0x07FF`
   - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9`
@@ -231,6 +236,8 @@ They remain worth inspecting in TunerPro.
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
    - `0x6F14-0x6F2A` references `0x879E/0x87A0`
    - `0x5E33-0x5EA0` references descriptors around `0x913A` and scalars `0x925F-0x9261`
+   - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
+   - `0xD80B-D941` handles a special service loop entered by the serial handshake
 5. Confirm table axes, units, and signedness before assigning fuel/spark names.
 6. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
 7. Keep original BIN unchanged and create tuned copies with clear names.

@@ -35,6 +35,14 @@ Important 68HC11 register addresses used by the ROM:
 | `0x1023` | TFLG1 | Timer flag acknowledgement |
 | `0x1024` | TMSK2 | Timer interrupt mask / status logic |
 | `0x1025` | TFLG2 | Timer overflow flag acknowledgement |
+| `0x1028` | SPCR | SPI control setup / transfer setup |
+| `0x1029` | SPSR | SPI status polling |
+| `0x102A` | SPDR | SPI data transfer |
+| `0x102B` | BAUD | SCI baud setup for service/diagnostic comms |
+| `0x102C` | SCCR1 | SCI control setup |
+| `0x102D` | SCCR2 | SCI transmit/receive enable and interrupt setup |
+| `0x102E` | SCSR | SCI status read before serial data access |
+| `0x102F` | SCDR | SCI receive/transmit data register |
 | `0x1030` | ADCTL | ADC conversion control |
 | `0x1031-0x1034` | ADR1-ADR4 | ADC result bytes copied into RAM |
 | `0x103A` | COPRST | Watchdog service writes `0x55` / `0xAA` |
@@ -90,6 +98,8 @@ High-confidence reset call groups:
 | `0x67A3` | Initializes a state-machine/communication-looking block |
 | `0xBB98` | Initializes the `0x89xx/0x8Axx` vector output variables |
 | `0xB555` | Initializes a countdown/timer pair at `0x2469/0x246A` and flag `0x009C` |
+| `0xA6E5` | Initializes SCI/service buffers and packet state |
+| `0xA696` | Initializes SCI diagnostic mode from calibration/config bytes at `0x8009/0x800B` |
 
 ## Interrupt / Fault Vector Behavior
 
@@ -717,25 +727,281 @@ Open:
 - Whether this is diagnostic status, limiter state, enrichment state, idle state, or general control-mode bookkeeping.
 - The routines using `0x9131-0x9167` need naming before these descriptors should be edited as calibrations.
 
-## Diagnostic / Communication-Looking Logic
+## Diagnostic / Service Communication Logic
 
-Open but structured:
+Short answer:
 
-- The reset path calls `0x67A3`.
-- The main loop calls `0x650D`.
-- `0x67A3` initializes `0x21A8`, uses table-like data around `0x67B1-0x6837`, then dispatches through routines around `0x6836-0x69CF`.
-- Several routines manipulate RAM range `0x004B-0x005B`.
-- Helper routines `0x59A8`, `0x59CA`, and `0x59F4` also walk/update `0x004B-0x005B`.
+- Yes, the ROM has real diagnostic/service logic.
+- It does not yet look like a modern source-level debugger.
+- It does look like a factory service/diagnostic protocol with serial framing, state machines, RAM status exposure, and a fault/event queue.
+
+### Fault / Event Queue `0x004B-0x005B`
+
+Confirmed:
+
+- `0x5982` is called by the descriptor/state routines with a small event ID in `B`.
+- `0x5982` indexes table `0x55A0`, then either inserts or removes an event byte.
+- `0x59A8` inserts/updates an entry in queue RAM `0x004B-0x005B`.
+- `0x59CA` removes/compacts an entry from the same queue.
+- `0x59F4` scans the queue and updates status bits in `RAM 0x00A4`.
+- `0x005B` is the moving end pointer for the queue.
+
+Important queue code shape:
+
+```asm
+5982: CE 55 A0      LDX #$55A0
+5985: 3A            ABX              ; B selects event descriptor byte
+...
+5999: BD 59 A8      JSR $59A8        ; insert/update event
+599E: A6 00         LDAA $00,X
+59A0: BD 59 CA      JSR $59CA        ; remove event
+59A3: BD 59 F4      JSR $59F4        ; update queue summary flags
+```
+
+```asm
+59A8: CE 00 4B      LDX #$004B
+...
+59C3: DF 5B         STX $5B
+59C6: A7 00         STAA $00,X
+```
+
+`0x59F4` behavior:
+
+- Clears `0x00A4 bits 0x80` and `0x40`.
+- Sets both bits if any queued entry is `>= 0xC0`.
+- Sets `0x40` for some entries in the `0x80-0xBF` range depending on the `0x55A0` table.
 
 Strong inference:
 
-- This looks like a small queue/state-machine system.
-- It may be diagnostics, serial communication, fault/event logging, or service-mode command parsing.
+- `0x004B-0x005B` is an active fault/status/event queue.
+- Entries carry severity/class bits in the upper two bits and an event number in the lower bits.
+- The table at `0x55A0` maps internal event IDs to service-visible codes/classes.
 
-Important caution:
+Do not edit `0x55A0` as ordinary calibration yet. It is more likely a diagnostic/event code table.
 
-- This block includes table-like bytes and code pointers close together.
-- Do not treat `0x67B1-0x6837` as normal calibration until its dispatch format is fully decoded.
+### Diagnostic State Machine `0x650D` / `0x67A3`
+
+Confirmed:
+
+- Main loop calls `0x650D` every cycle.
+- Reset/startup calls `0x67A3`.
+- State byte `0x21A6` controls major diagnostic/service modes.
+- `0x21A9` is the start of a small state/packet descriptor used by the dispatch routines.
+- `0x21AF`, `0x21B0`, `0x21B1`, `0x21B2`, `0x21B4`, `0x21B6`, `0x21B9`, `0x21BA`, and `0x21BC` are nearby service state variables.
+
+`0x650D` runtime service:
+
+```asm
+650D: B6 21 A6      LDAA $21A6
+6510: 81 FF         CMPA #$FF
+6514: 81 07         CMPA #$07
+6518: 18 CE 21 A9   LDY #$21A9
+...
+6531: 7C 21 A7      INC $21A7
+653D: 13 B0 80 09   BRCLR $B0,#$80,$654A
+6541: B6 21 A8      LDAA $21A8
+6546: 4A            DECA
+6547: B7 21 A8      STAA $21A8
+```
+
+This routine mostly maintains timers, flags, and mode counters. Other entry points in the same block initialize or clear the diagnostic/event queue, set `0x21A6 = 0xFE`, and prepare `0x21A9`.
+
+`0x67A3` startup service:
+
+```asm
+67A3: 14 B0 80      BSET $B0,#$80
+67A6: 86 17         LDAA #$17
+67A8: B7 21 A8      STAA $21A8
+67AB: CE 10 00      LDX #$1000
+67AE: 1C 40 04      BSET $40,X,#$04
+67B1: 39            RTS
+```
+
+The bytes after `0x67B1` are not straight-line code. They include a compact dispatch/data region. The service dispatcher later uses pointer tables around `0x6830` and `0x68E9`.
+
+Particularly important table-like region:
+
+```text
+0x680F-0x682F: 004B 004C 004D 004E 004F 0050 0051 0052
+              0053 0054 0055 0056 0057 0058 0094 009A 0099
+0x6830-0x6835: 6849 686C 687E
+```
+
+Strong inference:
+
+- The diagnostic dispatcher can expose or encode RAM status bytes including queue entries `0x004B-0x0058` and reset/checksum/status flags `0x0094`, `0x009A`, `0x0099`.
+- This is diagnostic/status reporting, not normal fuel/ignition calibration.
+
+### SCI Serial Service Protocol
+
+Confirmed:
+
+- The ROM uses the 68HC11 SCI registers at `0x102B-0x102F`.
+- `0xA6E5` initializes serial buffers and packet pointers:
+  - receive/transmit buffers around `0x2200` and `0x2280`.
+  - pointers/counters around `0x23EE-0x240A`.
+- `0xA696` initializes the diagnostic mode and writes the SCI baud register.
+- `0xA7D8-0xAFxx` is a serial receive/transmit state-machine block.
+- `0xD80B` is a special service loop entered after a command handshake.
+
+SCI initialization:
+
+```asm
+A6B2: B6 80 0B      LDAA $800B
+A6B5: 26 13         BNE $A6CA
+A6B7: 86 00         LDAA #$00
+A6B9: B7 21 A6      STAA $21A6
+A6BC: B6 80 09      LDAA $8009
+A6BF: B7 10 2B      STAA $102B       ; BAUD
+...
+A72D: B7 10 2C      STAA $102C       ; SCCR1 = 0
+A730: 86 24
+A732: B7 10 2D      STAA $102D       ; SCCR2
+...
+A73E: 86 33
+A740: B7 10 2B      STAA $102B       ; BAUD = 0x33 in this path
+```
+
+Serial data access follows the expected SCI pattern:
+
+```asm
+A9C6: F6 10 2E      LDAB $102E       ; read SCSR/status
+A9C9: B7 10 2F      STAA $102F       ; write SCDR/data
+...
+A9F5: B6 10 2F      LDAA $102F       ; read received byte
+```
+
+Protocol/framing bytes seen in the SCI parser:
+
+| Byte | Observed use |
+| ---: | --- |
+| `0x05` | Command/control byte checked before jumping to `0xAB5C` |
+| `0x0D` | Command/control byte checked before jumping to `0xAB5C` |
+| `0x0F` | Framing/state byte in receive path |
+| `0x10` | Serial framing/ack byte; also transmitted |
+| `0x16` | Serial framing/ack byte; also transmitted |
+| `0x41` | Serial framing/ack byte; also transmitted |
+| `0x81` | Alternate command byte in the `0xAB5C` path |
+| `0xF0` | Command/framing byte with response handling |
+
+Challenge/response-looking decoder at `0xAA3F-0xAA78`:
+
+```asm
+AA3F: 81 DD         CMPA #$DD
+AA43: 86 33         LDAA #$33
+AA47: 81 F0         CMPA #$F0
+AA4B: 86 AA         LDAA #$AA
+AA4F: 81 36         CMPA #$36
+AA53: 86 15         LDAA #$15
+AA57: 81 35         CMPA #$35
+AA5B: 86 14         LDAA #$14
+AA5F: 81 34         CMPA #$34
+AA63: 86 16         LDAA #$16
+AA67: 81 CC         CMPA #$CC
+AA6B: 86 66         LDAA #$66
+AA6F: 81 99         CMPA #$99
+AA76: 86 55         LDAA #$55
+```
+
+This maps received bytes to response bytes:
+
+| RX byte | Response byte |
+| ---: | ---: |
+| `0xDD` | `0x33` |
+| `0xF0` | `0xAA` |
+| `0x36` | `0x15` |
+| `0x35` | `0x14` |
+| `0x34` | `0x16` |
+| `0xCC` | `0x66` |
+| `0x99` | `0x55` |
+
+Strong inference:
+
+- This is a diagnostic/service serial protocol handshake.
+- It may include a session unlock or mode-switch handshake.
+- Exact external protocol name is not confirmed yet.
+
+### Special Service Loop `0xD80B`
+
+Confirmed:
+
+`0xAAE0` handles response byte `0x55` by setting `0x21A6 = 0x06`, loading the stack from `0x916A`, and jumping to `0xD80B`.
+
+```asm
+AAE0: 86 06         LDAA #$06
+AAE2: B7 21 A6      STAA $21A6
+AAE5: BE 91 6A      LDS $916A
+AAE8: 7E D8 0B      JMP $D80B
+```
+
+`0xD80B` disables interrupts, initializes a separate hardware/service context, then loops while servicing the watchdog:
+
+```asm
+D80B: 0F            SEI
+D80C: 8D 1B         BSR $D829
+D80E: 0E            CLI
+D80F: B6 21 A6      LDAA $21A6
+D812: 81 06         CMPA #$06
+D816: 7E B9 4D      JMP $B94D        ; fail-stop if mode changed
+D819: 86 55         LDAA #$55
+D81B: B7 10 3A      STAA $103A
+D81E: 43            COMA
+D81F: B7 10 3A      STAA $103A
+D822: 8D 72         BSR $D896
+D824: BD D9 41      JSR $D941
+D827: 20 E6         BRA $D80F
+```
+
+`0xD829` sets up hardware and SCI differently:
+
+```asm
+D887: B7 10 2B      STAA $102B       ; BAUD = 0x30
+D88C: B7 10 2D      STAA $102D       ; SCCR2 = 0xAC
+D88F: 7F 10 2C      CLR $102C        ; SCCR1 = 0
+D892: FC 10 2E      LDD $102E        ; read SCI status/data window
+```
+
+Strong inference:
+
+- `0xD80B` is a special diagnostic/service mode.
+- It is entered through the serial handshake path, not through normal runtime.
+- It may be a test, programming, or factory diagnostic monitor, but that exact role is still open.
+
+### SPI Communication Block
+
+Confirmed:
+
+- The ROM also uses the 68HC11 SPI registers at `0x1028-0x102A`.
+- Routines around `0x9EAF-0xA012` poll `0x1029`, read/write `0x102A`, and configure `0x1028`.
+
+Example:
+
+```asm
+9EEC: B6 10 29      LDAA $1029       ; SPSR
+9EEF: B6 10 2A      LDAA $102A       ; SPDR
+9EF4: B7 10 28      STAA $1028       ; SPCR
+...
+A016: B6 10 29      LDAA $1029
+A019: 86 5C         LDAA #$5C
+A01B: B7 10 28      STAA $1028
+A01E: B7 10 28      STAA $1028
+```
+
+Open:
+
+- The SPI block may be external peripheral communication rather than the user-facing diagnostic interface.
+- It should be kept separate from the SCI diagnostic protocol until the external circuit is known.
+
+### Diagnostics Reverse-Engineering Targets
+
+Highest value next steps for this area:
+
+1. Decode the SCI state tables at `0xA778`, `0xA792`, `0xA7A6`, `0xA7C0`, and `0xA7D8`.
+2. Trace all reads and writes of `0x102F` to reconstruct packet framing.
+3. Decode the meaning of `0x21A6` modes: confirmed values include `0x00`, `0x01`, `0x02`, `0x05`, `0x06`, `0x07`, `0x08`, `0x09`, `0x0A`, `0x0C`, `0x0D`, `0xFE`, and `0xFF`.
+4. Decode the queue/event code table at `0x55A0`.
+5. Decode the status exposure table around `0x680F-0x682F`.
+6. Trace service buffers `0x2200`, `0x2280`, `0x23EE-0x240A`, and the special service context around `0x2640`.
 
 ## Output Compare / Actuator Scheduling
 
@@ -833,12 +1099,16 @@ Best current model:
 4. Trace callers of `0x6344`.
    - Direct callers are `0x58EA` and `0x5E74`.
    - This should reveal what the MOD2-touched `0x9187` table controls.
-5. Decode `0x58F2` and `0x5982`.
+5. Decode the diagnostic/service protocol.
+   - SCI use is confirmed at `0x102B-0x102F`.
+   - The handshake path can enter special service loop `0xD80B`.
+   - Event/status queue `0x004B-0x005B` and table `0x55A0` need external code naming.
+6. Decode `0x58F2` and `0x5982`.
    - They manage many descriptor triples in `0x9131-0x9167`.
    - Understanding them will explain a large part of the control-state logic.
-6. Decode the output compare path around `0xBC12/0xBC90`.
+7. Decode the output compare path around `0xBC12/0xBC90`.
    - This is likely where calculated ECU quantities become physical output timing.
-7. Identify ADC channels.
+8. Identify ADC channels.
    - Map RAM `0x2007-0x200E` to sensors using code behavior and, ideally, bench/live data.
 
 ## Editing Caution
