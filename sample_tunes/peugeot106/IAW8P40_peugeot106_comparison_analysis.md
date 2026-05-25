@@ -120,7 +120,7 @@ Top-level changed regions:
 | `0x800C-0x800F` | `4` | Checksum word and complement |
 | `0x802E-0x80EA` | `57` changed cells inside the preferred `21x9` view | Strongest current likely fuel/VE/air-charge correction candidate; code unconfirmed |
 | `0x802E-0x8105` | `75` changed cells inside the alternate `24x9` boundary view | Boundary/debug view for the `0x802E` candidate |
-| `0x8106-0x81D4` | `72` changed cells inside a `23x9` view | Low-confidence likely fuel/enrichment lower adjacent candidate |
+| `0x80F1-0x81D1` | `90` changed cells inside a signed `25x9` view | Low-confidence likely signed fuel/enrichment adjacent candidate; replaces bad `0x8106` slice |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
@@ -151,7 +151,7 @@ surface, with the older `24x9` retained only as a boundary/debug view:
 
 - Primary candidate: `21x9 @ 0x802E-0x80EA`.
 - Alternate boundary view: `24x9 @ 0x802E-0x8105`.
-- Lower adjacent candidate: `23x9 @ 0x8106-0x81D4`.
+- Adjacent signed candidate: `25x9 @ 0x80F1-0x81D1`.
 
 Changed parent row indexes:
 
@@ -349,7 +349,7 @@ After TunerPro visual review, additional split views were added:
 
 - `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`
 - `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`
-- `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
+- `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
@@ -426,7 +426,7 @@ Current confidence-tier candidate labels:
 | --- | --- | --- | --- |
 | `0x802E-0x80EA` | `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` | Medium fuel-side candidate, code unconfirmed | Preferred RPM/load-like surface; Peugeot/Xantia ranges fit a fuel/VE/air-charge hypothesis; no confirmed consumer. |
 | `0x802E-0x8105` | `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` | Boundary/debug only | Rows `21-23` may be adjacent calibration or tail data. |
-| `0x8106-0x81D4` | `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` | Low | Adjacent tune-related lower structure; raw-indexed until axes are proven. |
+| `0x80F1-0x81D1` | `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1` | Low | Adjacent tune-related signed structure; replaces the bad `0x8106` mid-row slice. |
 | `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes. |
 | `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells. |
 | `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; not proven main fuel. |
@@ -485,6 +485,19 @@ Spark-bank octane/default naming pass:
   copy. At high load, however, it is mostly more conservative, which fits the
   low-octane/alternate interpretation.
 
+Spark offset sanity pass across comparison ROMs:
+
+- Peugeot stock, `1.3L_8V_IAW8P40_Stok.bin`, and MOD2 use the local
+  code-confirmed bundle at `0x8A69`, `0x8B41`, and `0x8C19`.
+- `RALLY13.ORI` carries an exact byte-for-byte copy of the Peugeot stock spark
+  bundle shifted by `+0x1B`: high bank `0x8A84`, low bank `0x8B5C`, WOT vector
+  `0x8C34`. Loading it with the stock XDF at `0x8A69` produces apparent
+  row-boundary garbage before the true bank.
+- `Peug.106Rally.org.bin` keeps the same Peugeot spark offsets. Its WOT vector
+  at `0x8C19` is unchanged, but the two 2D spark banks are heavily altered; the
+  high low-RPM cells visible in TunerPro are data content, not by themselves an
+  offset proof.
+
 Fuel/correction candidate pass:
 
 - `0x802E` is now the strongest fuel-side candidate in the local XDF, with the
@@ -498,9 +511,12 @@ Fuel/correction candidate pass:
 - The alternate `24x9 @ 0x802E` boundary view changes `75 / 216` cells, mostly
   rows `10`, `11`, `13-18`, and `21-23`. Rows `21-23` may be adjacent
   calibration or tail data until code proves otherwise.
-- The lower adjacent candidate `23x9 @ 0x8106` changes `72 / 207` cells,
-  mostly parent rows `35-46` and columns `0-5`. Most deltas are modulo-byte
-  `+5`, with one `+18` group.
+- The adjacent signed candidate `25x9 @ 0x80F1` changes `90 / 225` cells.
+  The previous `0x8106` view started three bytes into a row. At `0x80F1`, the
+  first MOD2 change block is exactly two full 9-cell rows and later changes
+  align as repeated row chunks. It displays as signed 8-bit with TunerPro
+  native signed data flags; most MOD2 deltas become signed `+5`, with one `+18`
+  group.
 - Direct code usage for `0x802E` is still not confirmed. The only raw address
   byte occurrence currently seen is the earlier false hit around `0xC621`.
 - Fuel/enrichment remains a hypothesis only; `0x802E` is not code-confirmed
@@ -526,8 +542,9 @@ External sensor scan:
   heated oxygen, crank, MAP, and TPS sensors.
 - A Peugeot 106 1.3 Rallye donor listing identifies a PRT03-family MAP sensor,
   and a PRT03/04 product sheet gives a `17-105 kPa` absolute range.
-- This supports interpreting the spark-table x-axis `0x2034` as MAP/load-like
-  and using provisional `0-1024` mbar-style labels.
+- This supports interpreting the spark-table x-axis `0x2034` as MAP/load-like.
+  XDF `0.21` displays that runtime axis as a rounded provisional `0-100 kPa`
+  MAP/load estimate; exact ADC transfer remains open.
 
 External evidence integration:
 

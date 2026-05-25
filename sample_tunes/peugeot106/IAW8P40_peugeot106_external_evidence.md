@@ -84,13 +84,19 @@ How to use these leads:
 
 XDF follow-up:
 
-- XDF version `0.14` promotes the first public-index `21x9` alignment at
+- XDF version `0.21` keeps the `0.14` promotion of the first public-index `21x9` alignment at
   `0x802E` to `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
+- It restores the `Confirmed` category/category 10 memberships for
+  code-confirmed spark maps and supporting axes, and displays the 2D spark-bank
+  `0x2034` axis as rounded provisional `0-100 kPa` MAP/load labels.
 - The older `24x9 @ 0x802E` view is retained only as an alternate boundary view.
 - `21x9 @ 0x80EB` and `5x9 @ 0x81A8` remain lower-confidence adjacent
   fuel/correction probes.
-- Raw display is retained; `raw / 2.55` is only a percent/VE visualization
-  hypothesis until code or live behavior confirms scaling.
+- The lower adjacent signed view is now `25x9 @ 0x80F1`; the earlier
+  `23x9 @ 0x8106` view was a mid-row slice.
+- Raw display is retained for the primary `0x802E` view; `raw / 2.55` is only
+  a percent/VE visualization hypothesis until code or live behavior confirms
+  scaling.
 
 Local multi-BIN analysis follow-up:
 
@@ -112,9 +118,9 @@ have been matched to exact local offsets.
 | Public map family | Current local candidate/status | Evidence state |
 | --- | --- | --- |
 | Main fuel multiplier | No confirmed main-fuel offset yet. `21x9 @ 0x802E` is the strongest current fuel/VE/air-charge correction candidate, but no injection consumer is proven. | Still unconfirmed. Do not call it "main fuel" yet. |
-| Spark advance high octane | `0x8A69-0x8B40`, `24x9`, `raw / 2` degrees. | Locally code-confirmed lookup; likely high/default from selector and high-load comparison. |
-| Spark advance low octane | `0x8B41-0x8C18`, `24x9`, `raw / 2` degrees. | Locally code-confirmed lookup; likely low/alternate. |
-| Spark advance WOT | `0x8C19-0x8C30`, RPM-only vector, `raw / 2` degrees. | Locally code-confirmed bypass path; likely WOT/RPM-only spark. |
+| Spark advance high octane | `0x8A69-0x8B40`, `24x9`, `raw / 2` degrees. | Locally code-confirmed for Peugeot stock/MOD2; likely high/default from selector and high-load comparison. `RALLY13.ORI` shifts the same stock bundle to `0x8A84`. |
+| Spark advance low octane | `0x8B41-0x8C18`, `24x9`, `raw / 2` degrees. | Locally code-confirmed for Peugeot stock/MOD2; likely low/alternate. `RALLY13.ORI` shifts the same stock bundle to `0x8B5C`. |
+| Spark advance WOT | `0x8C19-0x8C30`, RPM-only vector, `raw / 2` degrees. | Locally code-confirmed bypass path; likely WOT/RPM-only spark. `RALLY13.ORI` shifts this vector to `0x8C34`; `Peug.106Rally.org.bin` leaves it unchanged at `0x8C19`. |
 | Spark advance correction | No final public-name match. `0x9187-0x925E` and `0x89F3-0x8A05` are correction/load candidates. | Still unconfirmed. |
 | Spark advance minimum | No confirmed local offset. | Still unconfirmed. |
 | Spark advance idle | No confirmed local offset. | Still unconfirmed. |

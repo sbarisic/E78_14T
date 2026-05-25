@@ -93,6 +93,12 @@ What the XDF contains:
   - `0x8A69` as likely high-octane/default spark advance, displayed as `raw / 2` degrees
   - `0x8B41` as likely low-octane/alternate spark advance, displayed as `raw / 2` degrees
   - `0x8C19` as a likely RPM-only/WOT spark advance vector, displayed as `raw / 2` degrees
+  - XDF `0.21` restores the `Confirmed` category/category 10 memberships for code-confirmed spark entries plus `0x929E`, `0x9291`, and `0x92CF`; rounded integer kPa labels are retained because TunerPro RT loaded them successfully.
+  - The 2D spark-bank X labels now display runtime `0x2034` as rounded integer `0-100 kPa` MAP/load estimates rather than raw `0-1024`; this is display-only until the ADC transfer is fully proven.
+  - Same-family comparison caveat: `RALLY13.ORI` carries this stock spark
+    bundle shifted by `+0x1B` (`0x8A84`, `0x8B5C`, `0x8C34`), while
+    `Peug.106Rally.org.bin` keeps these Peugeot offsets but has heavily
+    altered bank values.
   - `0x879E`, `0x87A0`, `0x87A2`, and `0x87A4` as RPM-scaled period thresholds
   - `0x9291` and `0x92CF` as code-referenced 9-byte axis vectors
 
@@ -102,7 +108,7 @@ Recommended next steps:
 2. Inspect code-confirmed and MOD2-touched views first, especially
    `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`,
    `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`,
-   `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`,
+   `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`,
    the likely spark maps, and
    `Load Model / Correction Factor Candidate 24x9 @ 0x9187`.
 3. Inspect `Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD` only as
@@ -162,8 +168,11 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x81A8-0x81D4`: `Public-Index Alignment Probe Tail 5x9 @ 0x81A8`.
   Script pass reports `30 / 45` MOD2-touched cells; keep as tail/alignment
   evidence only.
-- `0x8106-0x81D4`: `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`.
-  MOD2 changes `72 / 207` cells, mostly parent rows `35-46` and columns `0-5`.
+- `0x80F1-0x81D1`: `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`.
+  MOD2 changes `90 / 225` cells. The old `0x8106` view was a bad mid-row slice;
+  at `0x80F1`, the first changed block is two full 9-cell rows and later
+  changes align as repeated row chunks. This view displays signed 8-bit values
+  with TunerPro native signed data flags.
 - The old combined `47x9 @ 0x802E` XDF view was removed because the screenshot
   and byte pattern suggest two adjacent structures rather than one table.
 - These labels are working names. `0x802E` is the strongest current fuel-side
@@ -190,9 +199,13 @@ Candidate and code-confirmed offsets added to the XDF:
   `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
 - `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank; likely
-  high-octane/default spark advance.
+  high-octane/default spark advance. XDF displays the `0x2034` load axis as
+  rounded integer `0-100 kPa` MAP/load estimate and Z values as `raw / 2`
+  degrees.
 - `0x8B41-0x8C18`: code-confirmed `24x9` 2D table bank; likely
-  low-octane/alternate spark advance.
+  low-octane/alternate spark advance. XDF displays the `0x2034` load axis as
+  rounded integer `0-100 kPa` MAP/load estimate and Z values as `raw / 2`
+  degrees.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
 - `0x8C19-0x8C30`: code-confirmed RPM-only vector used when `RAM 0x00A9 bit 0x20` bypasses the banked maps.
 - `0x9187-0x925E`: `Load Model / Correction Factor Candidate 24x9 @ 0x9187`;
@@ -202,9 +215,9 @@ Candidate and code-confirmed offsets added to the XDF:
   shows it can seed `0x00D0`, then `0x00CE`, then the load/MAP-like axis
   `0x2034`, so it is probably correction/load-model related rather than proven
   main fuel.
-- `0x929E-0x92CD`: code-confirmed period/RPM axis for `0x2036`; count byte is `0x92CE = 0x18`.
-- `0x9291-0x9299`: code-referenced 9-byte axis vector; count byte is `0x929A = 0x09`.
-- `0x92CF-0x92D7`: code-referenced 9-byte axis/vector; nearby count byte is `0x92D8 = 0x09`.
+- `0x929E-0x92CD`: code-confirmed period/RPM axis for runtime `0x2036`; count byte is `0x92CE = 0x18`; in the XDF `Confirmed` category.
+- `0x9291-0x9299`: code-referenced 9-byte helper breakpoint vector; count byte is `0x929A = 0x09`; in the XDF `Confirmed` category with physical units provisional.
+- `0x92CF-0x92D7`: code-referenced 9-byte helper breakpoint vector; nearby count byte is `0x92D8 = 0x09`; in the XDF `Confirmed` category with physical units provisional.
 - `0x55A0-0x55B1`: raw diagnostic/event-code table indexed by `0x5982` for
   observed event IDs `0x00-0x11`.
 - `0x9131-0x9169`: raw `19x3` state descriptor triples consumed by `0x58F2`.
@@ -223,8 +236,8 @@ External sensor clue:
 - Peugeot 106 TU2J2/MFZ references list a MAP sensor, coolant temp, inlet air
   temp, TPS, VSS, crank sensor, knock sensor, and heated oxygen sensor.
 - MAP sensor evidence points to a Magneti Marelli PRT03-family 100 kPa / 1 bar
-  sensor, supporting the provisional `0x2034` MAP/load labels `0-1024` used on
-  the likely spark maps.
+  sensor, supporting the rounded display-only `0x2034` MAP/load labels
+  `0-100 kPa` used on the likely spark maps.
 - A public air-density screenshot shows a `24x9` RPM-by-temperature factor map,
   but the displayed matrix was not found in the local stock or MOD2 dumps. This
   is a map-family lead only, not an offset.

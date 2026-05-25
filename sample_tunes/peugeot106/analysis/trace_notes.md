@@ -1,25 +1,41 @@
 ## Targeted Trace Notes
 
-- `0x802E` `21x9`: Peugeot immediate word-reference hits `1`.
+- `0x802E` `21x9` (raw): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `57/189` cells (`+4..+6`, avg `+5.6`).
   - `xantia_607c` differs in `189/189` cells (`-76..+62`, avg `-14.9`).
   - `peug_106rally_org` differs in `0/189` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `116/189` cells (`-13..+38`, avg `+0.5`).
-- `0x802E` `24x9`: Peugeot immediate word-reference hits `1`.
+- `0x802E` `24x9` (raw): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `75/216` cells (`+4..+6`, avg `+5.4`).
   - `xantia_607c` differs in `216/216` cells (`-76..+82`, avg `-11.8`).
   - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `133/216` cells (`-25..+68`, avg `-0.1`).
-- `0x80EB` `21x9`: Peugeot immediate word-reference hits `0`.
+- `0x80EB` `21x9` (raw): Peugeot immediate word-reference hits `0`.
   - `peugeot_mod2` differs in `60/189` cells (`-251..+5`, avg `+0.7`).
   - `xantia_607c` differs in `189/189` cells (`-240..+245`, avg `-3.8`).
   - `peug_106rally_org` differs in `0/189` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `126/189` cells (`-184..+250`, avg `-1.5`).
-- `0x81A8` `5x9`: Peugeot immediate word-reference hits `0`.
+- `0x80F1` `25x9` (signed8): Peugeot immediate word-reference hits `0`.
+  - `peugeot_mod2` differs in `90/225` cells (`+5..+18`, avg `+5.9`).
+  - `xantia_607c` differs in `225/225` cells (`-91..+100`, avg `+21.2`).
+  - `peug_106rally_org` differs in `0/225` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `150/225` cells (`-50..+146`, avg `+1.2`).
+- `0x81A8` `5x9` (raw): Peugeot immediate word-reference hits `0`.
   - `peugeot_mod2` differs in `30/45` cells (`-251..+18`, avg `-60.7`).
   - `xantia_607c` differs in `45/45` cells (`-245..+239`, avg `-46.0`).
   - `peug_106rally_org` differs in `0/45` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `30/45` cells (`-161..+254`, avg `+1.5`).
+
+Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:
+
+| ROM | Best high-bank start | Shift vs 0x8A69 | RMSE high | RMSE low | RMSE WOT | Notes |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| `peugeot_stock` | `0x8A69` | `+0` | 0.0 | 0.0 | 0.0 | same-offset |
+| `peugeot_stok` | `0x8A69` | `+0` | 0.0 | 0.0 | 0.0 | same-offset |
+| `peugeot_mod2` | `0x8A69` | `+0` | 3.6 | 6.9 | 0.0 | same-offset |
+| `xantia_607c` | `0x89BB` | `-174` | 19.8 | 16.7 | 12.7 | same-family offset candidate only |
+| `peug_106rally_org` | `0x8A69` | `+0` | 23.8 | 27.7 | 0.0 | same-offset but heavily altered spark banks; WOT vector unchanged |
+| `rally13_ori` | `0x8A84` | `+27` | 0.0 | 0.0 | 0.0 | exact stock spark bundle shifted +0x1B |
 
 - `0x20EB`: `4` scanned refs; stores/clears at 0xBB9A, 0xBD39; loads/math at 0xBC67, 0xBC7A.
 - `0x20ED`: `4` scanned refs; stores/clears at 0xBB9D, 0xBD4F; loads/math at 0xBCB1, 0xBCC1.

@@ -9,8 +9,8 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Size: `65536` bytes / `0x10000`, matching a full `27C512`.
 
 - `IAW8P40_peugeot106_firstpass.xdf`
-  - TunerPro definition, now updated to comparison markup version `0.14`.
-  - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, scaled likely spark views, axis views, and 68HC11 vector markers.
+  - TunerPro definition, now updated to comparison markup version `0.21`.
+  - Contains raw table views, candidate table views, checksum constants, MOD2-touched candidate views, a `Confirmed` category for code-confirmed spark/supporting axis views, axis views, and 68HC11 vector markers.
   - This is an inspection XDF, not a fully decoded calibration definition yet.
 
 - `IAW8P40_peugeot106_offsets.md`
@@ -261,8 +261,8 @@ They remain worth inspecting in TunerPro.
   but later disassembly showed those are inside larger code-confirmed parent
   tables. The duplicate `0x86DB` visual XDF views have been removed.
 - MOD2 comparison adds stronger tune-touched candidates:
-  - `0x802E` as upper `24x9` tune candidate and `0x8106` as lower adjacent
-    `23x9` tune candidate
+  - `0x802E` as upper `24x9` tune candidate and `0x80F1` as an adjacent
+    signed `25x9` tune/correction candidate
   - `0x879E` / `0x87A0` as a code-confirmed threshold/hysteresis pair
   - `0x89ED-0x89F2` as code-referenced control scalars
   - `0x89C7`, `0x89DA`, `0x89F3`, `0x8A27`, `0x8A3A`, and `0x8A52` as a code-confirmed `0x2044`-indexed vector family
@@ -270,7 +270,8 @@ They remain worth inspecting in TunerPro.
   - `0x8A69` and `0x8B41` as single retained code-confirmed/scaled likely
     spark advance entries with `raw / 2` degrees
   - `0x8A69` as likely high-octane/default spark and `0x8B41` as likely low-octane/alternate spark, based on stock selector behavior and high-load timing comparison
-  - likely spark advance x-axis labels changed from placeholder `0-8` to provisional load/MAP-like `0-1024`
+  - same-family spark alignment caveat: `RALLY13.ORI` carries the stock spark bundle shifted by `+0x1B` (`0x8A84`, `0x8B5C`, `0x8C34`), while `Peug.106Rally.org.bin` keeps the Peugeot stock offsets but heavily alters the two 2D spark banks
+  - likely spark advance x-axis labels changed from placeholder `0-8` to rounded display-only MAP/load `0-100 kPa` labels
   - `0x800A` as the calibration byte that seeds runtime spark-bank selector `0x20B1`; stock `0x00` underflows to `0xFF`, selecting the `0x8A69` bank
   - `0x8C19` as a likely RPM-only/WOT spark advance vector with `raw / 2` degrees
   - `0x879E/0x87A0` as likely RPM limiter set/clear thresholds, stock about `7400/7386 RPM`
@@ -306,17 +307,19 @@ They remain worth inspecting in TunerPro.
   - Removed duplicate raw spark entries at `0x8A69` and `0x8B41`.
   - Removed duplicate raw `0x9187` and old duplicate `0x86DB` visual views.
 - Current axis/source tracing:
-  - `0x2034` is derived from `RAM 0x00CE`, doubled, and clamped to `0x07FF`
-  - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9`
+  - `0x2034` is derived from `RAM 0x00CE`, doubled, clamped to `0x07FF`, and best named `MAP/load kPa estimate`; the spark XDF labels display it as rounded integer `0-100 kPa` while exact ADC transfer remains open
+  - `0x2036` is derived from period-like `RAM 0x00BA` through helper `0xB3B9` and best named the RPM-normalized axis
   - `0x929E-0x92CD` is the code-confirmed 24-entry period/RPM axis table for `0x2036`; `15000000 / period` gives about `550-7500 RPM`
   - `0x2044` is derived from `RAM 0x00D4` and clamped to `0x1200`
+  - `0x2046` is a secondary transient/state axis currently confirmed as an `0x8A0A` table axis
+  - `0x9291` and `0x92CF` are code-referenced 9-point helper breakpoint vectors; their physical units remain provisional
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
 - Current fuel/correction search status:
   - `0x802E` is now exposed as `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`; this is the preferred working alignment and strongest current fuel-side candidate
   - `0x802E-0x8105` is retained as `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` for boundary/debug inspection only
-  - `0x8106-0x81D4` is exposed as `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106` with low confidence
-  - `raw / 2.55` is a useful percent/VE-style visualization hypothesis, but the XDF keeps raw display to avoid implying confirmed scaling
+  - `0x80F1-0x81D1` is exposed as `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1` with low confidence; it uses TunerPro native signed 8-bit display and replaces the bad `0x8106` mid-row slice
+  - `raw / 2.55` is a useful percent/VE-style visualization hypothesis for `0x802E`, but the XDF keeps that primary fuel/VE candidate raw to avoid implying confirmed scaling
   - fuel/enrichment remains a hypothesis only; `0x802E` is not code-confirmed main fuel
   - `0x9187-0x925E` is `Load Model / Correction Factor Candidate 24x9 @ 0x9187`; it is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
   - `0x89F3-0x8A05` is `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`; MOD2 changes `16 / 19` cells and it remains a plausible enrichment/correction vector
@@ -352,26 +355,28 @@ They remain worth inspecting in TunerPro.
    - control scalars `1x6 @ 0x89ED`
    - likely fuel/VE/air-charge correction `21x9 @ 0x802E`
    - alternate 24-row boundary view for `0x802E`
-   - likely fuel/enrichment lower adjacent `23x9 @ 0x8106`
-4. Inspect the `Scaled / Likely Named Views` category next:
+   - likely signed fuel/enrichment adjacent `25x9 @ 0x80F1`
+4. Inspect the `Confirmed` category next:
    - likely spark advance high-octane/default `24x9 @ 0x8A69`
    - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
-   - these now use provisional load/MAP-like x labels `0, 128, ..., 1024`
-   - spark bank selector config `0x800A`
+   - these now use rounded display-only MAP/load x labels `0, 13, 25, 38, 50, 63, 75, 88, 100 kPa`
    - likely WOT spark advance vector `1x24 @ 0x8C19`
+   - code-confirmed RPM axis `1x24 @ 0x929E`
+   - code-referenced helper axes `1x9 @ 0x9291` and `1x9 @ 0x92CF`
+5. Inspect the `Scaled / Likely Named Views` category for remaining non-confirmed named views:
+   - spark bank selector config `0x800A`
    - likely RPM limiter thresholds `0x879E/0x87A0`
    - load model / correction factor candidate `24x9 @ 0x9187`
-   - RPM axis `1x24 @ 0x929E`
-5. Inspect the `Code-Confirmed Additional Tables` category:
+6. Inspect the `Code-Confirmed Additional Tables` category:
    - `24x9 @ 0x869A`
    - `24x9 @ 0x87B1`
    - `24x9 @ 0x888E`
    - `11x9 @ 0x9073`
    - `17x5 @ 0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71`
-6. Inspect the `Diagnostics / Service Data` category:
+7. Inspect the `Diagnostics / Service Data` category:
    - `0x55A0-0x55B1` event-code table
    - `0x9131-0x9169` state descriptor triples
-7. Continue disassembling code around confirmed reference areas:
+8. Continue disassembling code around confirmed reference areas:
    - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
    - `0x6344-0x636A` handles the code-confirmed `0x9187` 2D table
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
@@ -380,9 +385,9 @@ They remain worth inspecting in TunerPro.
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
    - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
-8. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
-9. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
-10. Keep original BIN unchanged and create tuned copies with clear names.
+9. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
+10. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
+11. Keep original BIN unchanged and create tuned copies with clear names.
 
 ## Custom Code Cave Notes
 
@@ -397,7 +402,9 @@ hook. The current best cave is `0xF021-0xFFD5`. Any patch outside
 See `IAW8P40_peugeot106_sensor_references.md` for the current external sensor
 inventory and source links. The most important current takeaway is that the
 1.3 Rallye MAP sensor evidence supports treating `0x2034` as a MAP/load-like
-axis, so the likely spark maps now use provisional mbar-style `0-1024` labels.
+axis, so the confirmed spark-map views now display it as a provisional
+rounded integer `0-100 kPa` MAP/load estimate. The raw `0x2034` ADC transfer
+is still open.
 
 ## External Evidence Notes
 
@@ -420,6 +427,16 @@ proves otherwise. The `21x9 @ 0x80EB` and `5x9 @ 0x81A8` public-index entries
 remain lower-confidence adjacent fuel/correction probes. The misleading legacy
 `0x89F2` and `0x91D9` views are intentionally removed from normal tuning
 workflow.
+
+XDF `0.21` keeps the `0x802E` fuel-side interpretation unchanged, keeps the
+`0.16` replacement of the bad lower `23x9 @ 0x8106` mid-row slice with a
+smoother signed `25x9 @ 0x80F1` view, and documents the same-family spark
+alignment caveat, and changes the signed `0x80F1` view to TunerPro native
+signed storage flags instead of modulo math. It restores the `Confirmed`
+category for code-confirmed spark/supporting axis entries after TunerPro RT
+loaded the rounded integer labels successfully. The spark load-axis display
+remains a rounded integer `0-100 kPa` view of runtime `0x2034`. The `0x8106`
+start was three bytes into the row.
 
 ## Air-Density Screenshot Lead
 

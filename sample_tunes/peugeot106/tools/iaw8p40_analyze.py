@@ -11,6 +11,7 @@ import argparse
 import contextlib
 import hashlib
 import io
+import math
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
@@ -74,6 +75,7 @@ KNOWN_TABLES = [
     ("fuel_ve_boundary_24x9", 0x802E, 24, 9, "raw"),
     ("public_probe_b_21x9", 0x80EB, 21, 9, "raw"),
     ("public_probe_tail_5x9", 0x81A8, 5, 9, "raw"),
+    ("adjacent_signed_correction_25x9", 0x80F1, 25, 9, "signed8"),
     ("spark_high_default_24x9", 0x8A69, 24, 9, "raw/2 deg"),
     ("spark_low_alternate_24x9", 0x8B41, 24, 9, "raw/2 deg"),
     ("wot_spark_vector_1x24", 0x8C19, 1, 24, "raw/2 deg"),
@@ -273,7 +275,18 @@ def table_bytes(data: bytes, addr: int, rows: int, cols: int) -> bytes:
     return data[addr : addr + rows * cols]
 
 
-def byte_stats(values: bytes) -> dict[str, float]:
+def signed8(value: int) -> int:
+    return value - 0x100 if value & 0x80 else value
+
+
+def table_values(data: bytes, addr: int, rows: int, cols: int, notes: str) -> list[int]:
+    values = list(table_bytes(data, addr, rows, cols))
+    if notes == "signed8":
+        return [signed8(value) for value in values]
+    return values
+
+
+def byte_stats(values: list[int]) -> dict[str, float]:
     if not values:
         return {"min": 0, "max": 0, "avg": 0.0, "zeros": 0, "ff": 0}
     return {
@@ -285,9 +298,63 @@ def byte_stats(values: bytes) -> dict[str, float]:
     }
 
 
-def same_offset_table_delta(a: bytes, b: bytes, addr: int, length: int) -> tuple[int, int, int, float]:
-    av = a[addr : addr + length]
-    bv = b[addr : addr + length]
+def fmt_stats(stats: dict[str, float]) -> str:
+    return f"{stats['min']:.0f}..{stats['max']:.0f} avg {stats['avg']:.1f}"
+
+
+def rmse(left: bytes | list[int], right: bytes | list[int]) -> float:
+    if not left:
+        return 0.0
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(left, right)) / len(left))
+
+
+def table_roughness(values: bytes | list[int], rows: int, cols: int) -> float:
+    total = 0
+    count = 0
+    for row in range(rows):
+        for col in range(cols):
+            idx = row * cols + col
+            if col + 1 < cols:
+                total += abs(values[idx + 1] - values[idx])
+                count += 1
+            if row + 1 < rows:
+                total += abs(values[idx + cols] - values[idx])
+                count += 1
+    return total / count if count else 0.0
+
+
+def spark_alignment_score(stock: bytes, candidate: bytes, start: int) -> tuple[float, float, float, float]:
+    stock_high = stock[0x8A69 : 0x8A69 + 216]
+    stock_low = stock[0x8B41 : 0x8B41 + 216]
+    stock_wot = stock[0x8C19 : 0x8C19 + 24]
+    high = candidate[start : start + 216]
+    low = candidate[start + 216 : start + 432]
+    wot = candidate[start + 432 : start + 456]
+    high_rmse = rmse(stock_high, high)
+    low_rmse = rmse(stock_low, low)
+    wot_rmse = rmse(stock_wot, wot)
+    rough = table_roughness(high, 24, 9) + table_roughness(low, 24, 9)
+    score = high_rmse + low_rmse + (wot_rmse * 0.5) + (rough * 0.15)
+    return score, high_rmse, low_rmse, wot_rmse
+
+
+def best_spark_alignment(stock: bytes, candidate: bytes) -> tuple[int, float, float, float, float]:
+    best: tuple[int, float, float, float, float] | None = None
+    for start in range(0x8900, 0x8D00):
+        score, high_rmse, low_rmse, wot_rmse = spark_alignment_score(stock, candidate, start)
+        row = (start, score, high_rmse, low_rmse, wot_rmse)
+        if best is None or score < best[1]:
+            best = row
+    assert best is not None
+    return best
+
+
+def same_offset_table_delta(a: bytes, b: bytes, addr: int, length: int, notes: str = "raw") -> tuple[int, int, int, float]:
+    av = list(a[addr : addr + length])
+    bv = list(b[addr : addr + length])
+    if notes == "signed8":
+        av = [signed8(value) for value in av]
+        bv = [signed8(value) for value in bv]
     diffs = [bb - aa for aa, bb in zip(av, bv) if aa != bb]
     if not diffs:
         return 0, 0, 0, 0.0
@@ -419,24 +486,24 @@ def print_known_table_stats(roms: dict[str, bytes]) -> None:
     stock = roms["peugeot_stock"]
     print("## Known Table / Candidate Stats")
     print()
-    comparison_headers = " | ".join(f"{key} raw min-max avg / delta" for key in COMPARISON_KEYS)
-    print(f"| Name | Range | Shape | Peugeot raw min-max avg | {comparison_headers} | Notes |")
+    comparison_headers = " | ".join(f"{key} values / delta" for key in COMPARISON_KEYS)
+    print(f"| Name | Range | Shape | Peugeot values | {comparison_headers} | Notes |")
     print(f"| --- | --- | --- | --- | {' | '.join('---' for _ in COMPARISON_KEYS)} | --- |")
     for name, addr, rows, cols, notes in KNOWN_TABLES:
         length = rows * cols
-        s = byte_stats(table_bytes(stock, addr, rows, cols))
+        s = byte_stats(table_values(stock, addr, rows, cols, notes))
         comparison_cells = []
         for key in COMPARISON_KEYS:
             other = roms[key]
-            stats = byte_stats(table_bytes(other, addr, rows, cols))
-            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, other, addr, length)
+            stats = byte_stats(table_values(other, addr, rows, cols, notes))
+            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, other, addr, length, notes)
             comparison_cells.append(
-                f"`{stats['min']:.0f}-{stats['max']:.0f} avg {stats['avg']:.1f}; "
+                f"`{fmt_stats(stats)}; "
                 f"{count} cells {delta_min:+d}..{delta_max:+d} avg {delta_avg:+.1f}`"
             )
         print(
             f"| `{name}` | `{fmt_addr(addr)}-{fmt_addr(addr + length - 1)}` | `{rows}x{cols}` | "
-            f"`{s['min']:.0f}-{s['max']:.0f} avg {s['avg']:.1f}` | "
+            f"`{fmt_stats(s)}` | "
             f"{' | '.join(comparison_cells)} | {notes} |"
         )
     print()
@@ -521,15 +588,42 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     print("## Targeted Trace Notes")
     print()
 
-    for addr, rows, cols in ((0x802E, 21, 9), (0x802E, 24, 9), (0x80EB, 21, 9), (0x81A8, 5, 9)):
+    for addr, rows, cols, notes in (
+        (0x802E, 21, 9, "raw"),
+        (0x802E, 24, 9, "raw"),
+        (0x80EB, 21, 9, "raw"),
+        (0x80F1, 25, 9, "signed8"),
+        (0x81A8, 5, 9, "raw"),
+    ):
         length = rows * cols
         refs = find_word_refs(stock, addr)
         print(
-            f"- `{fmt_addr(addr)}` `{rows}x{cols}`: Peugeot immediate word-reference hits `{len(refs)}`."
+            f"- `{fmt_addr(addr)}` `{rows}x{cols}` ({notes}): Peugeot immediate word-reference hits `{len(refs)}`."
         )
         for key in COMPARISON_KEYS:
-            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, roms[key], addr, length)
+            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, roms[key], addr, length, notes)
             print(f"  - `{key}` differs in `{count}/{length}` cells (`{delta_min:+d}..{delta_max:+d}`, avg `{delta_avg:+.1f}`).")
+
+    print()
+    print("Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:")
+    print()
+    print("| ROM | Best high-bank start | Shift vs 0x8A69 | RMSE high | RMSE low | RMSE WOT | Notes |")
+    print("| --- | --- | ---: | ---: | ---: | ---: | --- |")
+    for spec in ROMS:
+        key = spec.key
+        start, score, high_rmse, low_rmse, wot_rmse = best_spark_alignment(stock, roms[key])
+        shift = start - 0x8A69
+        notes = "same-offset"
+        if key == "rally13_ori" and shift == 0x1B and high_rmse == 0 and low_rmse == 0 and wot_rmse == 0:
+            notes = "exact stock spark bundle shifted +0x1B"
+        elif key == "peug_106rally_org" and shift == 0:
+            notes = "same-offset but heavily altered spark banks; WOT vector unchanged"
+        elif shift != 0:
+            notes = "same-family offset candidate only"
+        print(
+            f"| `{key}` | `{fmt_addr(start)}` | `{shift:+d}` | "
+            f"{high_rmse:.1f} | {low_rmse:.1f} | {wot_rmse:.1f} | {notes} |"
+        )
 
     ram_refs = scan_ram_refs(stock, RAM_TARGETS)
     print()

@@ -293,6 +293,11 @@ Working bank naming:
 - Reasoning: stock selector behavior defaults to `0x8A69`, and a stock
   table-to-table comparison shows `0x8B41` is usually lower in high-load
   columns even though it has a mid-load advance ridge.
+- Same-family alignment warning: these are Peugeot stock/MOD2 offsets.
+  `RALLY13.ORI` carries the same stock spark bundle shifted by `+0x1B`
+  (`0x8A84`, `0x8B5C`, `0x8C34`). `Peug.106Rally.org.bin` keeps the Peugeot
+  offsets but heavily alters the two 2D spark banks while leaving the WOT
+  vector unchanged.
 
 Inputs:
 
@@ -380,7 +385,9 @@ Meaning so far:
 - `0x2034` is an 8.8-style axis/index value.
 - It is derived from RAM word `0x00CE`.
 - It is doubled and clamped to `0x07FF`.
-- It is likely a load/throttle/pressure-style normalized axis.
+- It is best named a MAP/load-style normalized axis. The XDF spark views
+  display it as rounded integer `0-100 kPa`; exact ADC channel and transfer
+  remain open.
 
 `0x00CE` is now partly traced. In the routine at `0x5D8D-0x5E80`, one path
 uses the `0x9187` lookup result as `0x00D0`, then stores `0x00CE = 0x00D0 << 2`:
@@ -504,6 +511,38 @@ Meaning so far:
 - `0x00BA` is a delta between two captured timer values, `0x00D9 - 0x00B8`.
 - It is very likely period-like rather than raw RPM.
 - `0x2036` appears to be the map-axis conversion of this period-like value.
+
+## Axis Inventory and Current Names
+
+This table keeps the XDF labels, code notes, and physical guesses aligned.
+Confirmed means the axis or table lookup is confirmed from instruction flow;
+physical units remain qualified where the transfer path is still incomplete.
+
+| Axis/source | Current name | Producer / calibration | Confirmed consumers | Physical confidence |
+| --- | --- | --- | --- | --- |
+| `0x2036` | `rpm_axis_8p8` | Built by `0xB3B9` from period-like `0x00BA` using `0x929E-0x92CD`, count `0x92CE = 0x18` | `0x8A69`, `0x8B41`, `0x8C19`, `0x9187`, `0x85BA`, `0x869A` | High; `15000000 / period` gives the displayed RPM labels. |
+| `0x2034` | `MAP/load_kPa_estimate_axis_8p8` | `0x41A1-0x41AD` from clamped/doubled `0x00CE`, fed by `0x00D0` and load-model/state paths | `0x8A69`, `0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A` | Medium-high MAP/load; XDF displays spark labels as rounded integer `0-100 kPa`, exact ADC transfer unproven. |
+| `0x2044` | `vehicle_speed_or_transient_axis_8p8` | Derived from inverse-period-like `0x00D4`, clamped to `0x1200` | `0x89C7-0x8A67` vector family, `0x9073`, `0x8E6F/0x8EC7/0x8F1C/0x8F71` | Medium; likely vehicle-speed/transient from consumers and table shapes. |
+| `0x2046` | `secondary_transient_state_axis_8p8` | Built in the same normalized-axis runtime block as `0x2036` and `0x2044` | `0x8A0A` | Low-medium; exact source still needs tracing. |
+| `0x9291-0x9299` | `9_point_helper_breakpoint_vector_A` | EPROM vector used by `0xB383`, count/stride byte `0x929A = 0x09` | `0x9187`, `0x9073`, helper calls around `0x41E0` | High structural, physical units provisional. |
+| `0x92CF-0x92D7` | `9_point_helper_breakpoint_vector_B` | EPROM vector near count byte `0x92D8 = 0x09` | Helper groups around `0x4340`, `0x5D00`, `0x5D7B` | Medium structural, physical units provisional. |
+| `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
+
+Current confirmed consumer map:
+
+| Table/vector | Axes | Current role |
+| --- | --- | --- |
+| `0x8A69` | `0x2034` MAP/load kPa estimate by `0x2036` RPM | Likely high-octane/default spark bank; in XDF `Confirmed` category with rounded integer MAP/load labels. |
+| `0x8B41` | `0x2034` MAP/load kPa estimate by `0x2036` RPM | Likely low-octane/alternate spark bank; in XDF `Confirmed` category with rounded integer MAP/load labels. |
+| `0x8C19` | `0x2036` RPM only | Likely WOT/fallback spark vector; in XDF `Confirmed` category. |
+| `0x9187` | `0x9291`-derived axis by `0x2036` RPM | Load-model/correction factor candidate that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
+| `0x85BA` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x5` table; exact physical role still open. |
+| `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x9` zero table that updates `0x00BE`. |
+| `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x9` table stored to `0x2484`, later combined with `0x8970` vector output. |
+| `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
+| `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
+| `0x9073` | `0x9291`-derived axis by transformed `0x2044` | Code-confirmed `11x9` state/ramp table. |
+| `0x8E6F/0x8EC7/0x8F1C/0x8F71` | `0x00D0`-derived axis by `0x2044` | Code-confirmed `17x5` table cluster feeding output bytes such as `0x24AB`. |
 
 ## Code-Confirmed 1D Vector @ `0x89F3`
 
@@ -882,9 +921,12 @@ Status:
   and lack of direct code reference keep it below the primary `0x802E` surface.
 - Tail probe `5x9 @ 0x81A8`: the script reports `30 / 45` MOD2-touched cells;
   this remains a tail/alignment probe rather than a normal tune map.
-- Lower adjacent candidate `23x9 @ 0x8106`: `72 / 207` changed cells, mostly
-  parent rows `35-46` and columns `0-5`, with modulo-byte `+5` changes and one
-  `+18` group. This remains raw-indexed.
+- Adjacent signed candidate `25x9 @ 0x80F1`: `90 / 225` changed cells. This
+  replaces the earlier `23x9 @ 0x8106` view, which starts three bytes into a
+  row. At `0x80F1`, the first MOD2 change block is exactly two full 9-cell rows
+  and later changes align as repeated row chunks. The table is displayed as
+  signed 8-bit using TunerPro native signed data flags; most deltas are signed
+  `+5`, with one `+18` group. Axes remain unproven.
 - Do not call `0x802E` code-confirmed main fuel yet. The next proof must be a
   consumer path into injection pulse width, fuel time, lambda correction,
   air-charge calculation, or scheduling.
@@ -1098,7 +1140,7 @@ Interpretation:
 
 ## Practical XDF Changes From This Pass
 
-`IAW8P40_peugeot106_firstpass.xdf` version `0.14` now includes the previous confirmed entries plus provisional load/MAP-like x-axis labels for the likely spark maps, raw diagnostic/service views for code-confirmed descriptor data, confidence-tier labels for likely fuel/correction candidates, public-index alignment probes, and a deduplicated table tree where each major structure has one best inspection entry.
+`IAW8P40_peugeot106_firstpass.xdf` version `0.21` restores the `Confirmed` category/category 10 memberships for the code-confirmed spark maps and supporting axes after TunerPro RT loaded the rounded integer labels successfully. The 2D spark banks keep rounded display-only `0-100 kPa` MAP/load x-axis labels, raw diagnostic/service views for code-confirmed descriptor data, confidence-tier labels for likely fuel/correction candidates, public-index alignment probes, TunerPro-native signed display for the `0x80F1` adjacent candidate, same-family spark alignment caveats, and a deduplicated table tree where each major structure has one best inspection entry.
 
 Previously added in `0.4`:
 
@@ -1160,11 +1202,11 @@ Alignment notes for `0.7`:
 New in `0.8`:
 
 - likely spark advance high/default `24x9 @ 0x8A69` x-axis labels changed from
-  placeholder `0-8` to provisional load/MAP-like `0, 128, 256, 384, 512, 640,
-  768, 896, 1024`.
+  placeholder `0-8` to provisional load/MAP-like labels. In XDF `0.21`, these
+  are displayed as rounded integers `0, 13, 25, 38, 50, 63, 75, 88, 100 kPa`.
 - likely spark advance low/alternate `24x9 @ 0x8B41` received the same x-axis labels.
 - This is based on the code-confirmed `0x2034` 8.8 axis range clamped near
-  `0x0800`. The exact physical mbar scaling is still not proven.
+  `0x0800`. The exact ADC transfer is still not proven.
 
 New in `0.9`:
 
@@ -1173,16 +1215,27 @@ New in `0.9`:
 - Updated the likely spark-bank descriptions to tie the `0x2034` x-axis labels
   to Peugeot 106 TU2J2/MFZ 100 kPa MAP-sensor evidence.
 - The best current interpretation for spark-map x-axis labels is provisional
-  MAP/load in mbar-like units, `0-1024`, pending ADC transfer confirmation.
+  MAP/load displayed as rounded integer `0-100 kPa`, pending ADC transfer
+  confirmation.
 
 New in `0.10`:
 
 - Renamed the scaled spark views as:
   - `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`.
   - `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`.
-- Kept the `raw / 2` degree scaling and provisional `0-1024` MAP/load-style
-  x-axis labels.
+- Kept the `raw / 2` degree scaling. XDF `0.21` now displays the provisional
+  MAP/load axis as rounded integer `0-100 kPa`.
 - Added the MOD2-backed `0x9187` correction-factor candidate view.
+
+New in `0.21`:
+
+- Restored the `Confirmed` category/category 10 memberships after TunerPro RT
+  loaded XDF `0.20` successfully with rounded integer labels.
+- Moved the code-confirmed spark tables `0x8A69`, `0x8B41`, and `0x8C19`, plus
+  supporting axes `0x929E`, `0x9291`, and `0x92CF`, into `Confirmed`.
+- Kept the two 2D spark-bank x-axis labels as rounded display-only
+  `0-100 kPa` MAP/load labels. Runtime axis source remains `0x2034`; exact ADC
+  transfer remains open.
 
 New in `0.11`:
 
@@ -1198,8 +1251,8 @@ New in `0.12`:
 - Removed the combined `47x9 @ 0x802E` view.
 - Promoted `0x802E-0x8105` as the upper `24x9` tune candidate with provisional
   load/RPM-style labels.
-- Kept `0x8106-0x81D4` as the lower adjacent `23x9` tune candidate with raw
-  parent-row labels.
+- Replaced the bad `0x8106-0x81D4` lower adjacent slice with
+  `0x80F1-0x81D1` as a signed `25x9` tune/correction candidate.
 - Removed duplicate raw spark-bank views at `0x8A69` and `0x8B41`; the retained
   scaled spark entries now carry the code-confirmed lookup evidence.
 - Removed the duplicate raw `0x9187` view; the retained `raw / 230` correction
@@ -1216,7 +1269,7 @@ New in `0.13`:
   working labels:
   - `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`, later demoted
     in `0.14` to a boundary/debug view
-  - `Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106`
+  - `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`
   - `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
   - `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
 - Removed the misleading legacy `0x89F2` and `0x91D9` views from the normal XDF
