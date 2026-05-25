@@ -1,4 +1,4 @@
-# Marelli IAW 8P.40 External Evidence Notes
+﻿# Marelli IAW 8P.40 External Evidence Notes
 
 This file integrates the downloaded deep-research report as a set of leads and
 cross-checks. It is intentionally separate from `LOGIC.md`: the firmware notes
@@ -90,7 +90,7 @@ XDF follow-up:
   candidates with raw `0x92CF` temperature-like X labels and confirmed
   `0x929E` RPM Y labels. The addendum's `0x92D9` wording is not adopted without
   separate local proof.
-- It adds signed main fuel trim/multiplier candidates at `0x821C` and `0x8318`,
+- It adds signed fuel quantity trim candidates at `0x821C` and `0x8318`,
   plus the RPM-only bypass vector at `0x83F0`. These feed `$2084 -> $00C1`
   through the local `$E38B/$E715` path.
 - It restores the `Confirmed` category/category 10 memberships for
@@ -119,15 +119,15 @@ have been matched to exact local offsets.
 
 | Public map family | Current local candidate/status | Evidence state |
 | --- | --- | --- |
-| Main fuel multiplier | No pure VE/base table is proven yet. The old `0x802E` visual lead is demoted; `0x821C/0x8318` are now the strongest signed main fuel trim/multiplier candidates and `$00C1/$00C3/$00BC` are the strongest pulse/event-width path candidates. | OC1/OC3 scheduling is strong software evidence; exact driver/pin remains hardware-level proof. |
+| Main fuel multiplier | No pure VE/base table is proven yet. The old `0x802E` visual lead is demoted; `0x821C/0x8318` are now the strongest signed fuel quantity trim candidates. `$00C1 -> $00C3 -> $00BC` is pulse width/duration, while `$87B1 -> $00BE -> $21C6` is event phase. | OC1 schedules `TOC1 = $00B8 + $21C6`, OC3 handles the pulse edge, and exact driver/pin plus tick-to-ms/degree proof remains hardware-level. |
 | Spark advance high octane | `0x8A69-0x8B40`, `24x9`, `raw / 2` degrees. | Locally code-confirmed for Peugeot stock/MOD2; likely high/default from selector and high-load comparison. `RALLY13.ORI` shifts the same stock bundle to `0x8A84`. |
 | Spark advance low octane | `0x8B41-0x8C18`, `24x9`, `raw / 2` degrees. | Locally code-confirmed for Peugeot stock/MOD2; likely low/alternate. `RALLY13.ORI` shifts the same stock bundle to `0x8B5C`. |
 | Spark advance WOT | `0x8C19-0x8C30`, RPM-only vector, `raw / 2` degrees. | Locally code-confirmed bypass path; likely WOT/RPM-only spark. `RALLY13.ORI` shifts this vector to `0x8C34`; `Peug.106Rally.org.bin` leaves it unchanged at `0x8C19`. |
-| Spark advance correction | No final public-name match. `0x9187-0x925E` and `0x89F3-0x8A05` are correction/load candidates. | Still unconfirmed. |
+| Spark advance correction | No final public-name match. `0x89F3-0x8A05` is now grouped with ignition output/retard strategy; `0x9187-0x925E` is load/air-charge modelling, not spark. | Still unconfirmed. |
 | Spark advance minimum | No confirmed local offset. | Still unconfirmed. |
 | Spark advance idle | No confirmed local offset. | Still unconfirmed. |
 | Dwell | No confirmed local offset. | Still unconfirmed. |
-| Air density correction by temperature | Public screenshot shows a `24x9` RPM-by-temperature factor table, but the visible data was not found verbatim in the local stock or MOD2 dumps. `0x9187-0x925E` may be correction/load-model related, but is not proven air density. | Still unconfirmed. |
+| Air density correction by temperature | Public screenshot shows a `24x9` RPM-by-temperature factor table, but the visible data was not found verbatim in the local stock or MOD2 dumps. `0x9187-0x925E` may be load/air-charge model related, but is not proven air density. | Still unconfirmed. |
 | Volumetric efficiency correction | No confirmed local VE table. `0x802B/0x8103` are signed temp-like/RPM fuel correction candidates, not proven VE. | Still unconfirmed. |
 | RPM axis | `0x929E-0x92CD`, code-confirmed 24-point period/RPM axis for `0x2036`. | Locally code-confirmed axis. |
 | Load/mbar axis | `0x2034` is a load/MAP-like 8.8 axis; XDF labels use `0, 128, ..., 1024`. | Locally code-confirmed axis path, exact pressure scaling still provisional. |
@@ -159,12 +159,12 @@ was converted into byte candidates and searched against:
 The search treated it as a `24x9` table with RPM-like rows and temperature
 columns. It tried likely display equations and orientations:
 
-- `raw / 230`, matching the current local `0x9187` correction-factor display.
+- `raw / 230`, matching the current local `0x9187` load/air-charge factor display.
 - `raw / 100`, `raw / 128`, and `raw / 200`.
 - Normal, row-reversed, column-reversed, both-reversed, and transposed layouts.
 
 No exact local match was found. The nearest functional local candidate remains
-`Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but the byte values
+`Load / Air-Charge Model Factor 24x9 @ 0x9187`, but the byte values
 do not match the screenshot. Loose numeric matches around `0x8A9C` are inside
 the code-confirmed spark bank, so they are false positives.
 

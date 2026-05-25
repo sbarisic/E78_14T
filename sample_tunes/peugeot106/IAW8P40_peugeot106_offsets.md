@@ -1,4 +1,4 @@
-# Marelli IAW 8P.40 Peugeot 106 First-Pass Markup
+﻿# Marelli IAW 8P.40 Peugeot 106 First-Pass Markup
 
 BIN analyzed:
 
@@ -107,11 +107,11 @@ Recommended next steps:
 1. Open the BIN with the new XDF in TunerPro.
 2. Inspect code-confirmed and MOD2-touched views first, especially
 signed temp-like/RPM fuel correction candidates `24x9 @ 0x802B` and `24x9 @ 0x8103`,
-   signed main fuel trim/multiplier candidates `24x9 @ 0x821C`, `24x9 @ 0x8318`,
+   signed fuel quantity trim views `24x9 @ 0x821C`, `24x9 @ 0x8318`,
    and the RPM-only bypass vector `1x24 @ 0x83F0`,
    legacy alignment probes around `0x802E`, `0x80EB`, `0x80F1`, and `0x81A8`,
    the likely spark maps, and
-   `Load Model / Correction Factor Candidate 24x9 @ 0x9187`.
+   `Load / Air-Charge Model Factor 24x9 @ 0x9187`.
 3. Inspect `Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD` only as
    historical visual context, because the later code-confirmed parent table
    starts at `0x888E`. Do not use the removed `0x88CA` triangular alignment.
@@ -160,12 +160,13 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x8103-0x81DA`: `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103`.
   Paired signed correction table using the same raw temp-like and RPM axes.
   Output is `$204D`.
-- `0x821C-0x82F3`: `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C`.
-  Signed load/RPM trim candidate selected by `$E38B`; X is runtime `$2034`,
-  Y is runtime `$2036`, and output `$2084` is applied to `$00C1` by `$E715`.
-- `0x8318-0x83EF`: `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318`.
-  Paired signed load/RPM trim candidate selected by `$E38B`; exact selector
-  semantics remain provisional.
+- `0x821C-0x82F3`: `Signed Fuel Quantity Trim A 24x9 @ 0x821C`.
+  Signed load/RPM trim selected by `$E38B`; X is runtime `$2034`,
+  Y is runtime `$2036`, and output `$2084` is applied to `$00C1` by `$E715`
+  as roughly `fuel += fuel * signed_trim / 256`.
+- `0x8318-0x83EF`: `Signed Fuel Quantity Trim B 24x9 @ 0x8318`.
+  Paired signed load/RPM trim selected by `$E38B`; exact selector semantics
+  remain provisional.
 - `0x83F0-0x8407`: `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0`.
   Signed RPM-only bypass vector that can also feed `$2084`.
 - `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1` are retained only as legacy
@@ -173,9 +174,10 @@ Candidate and code-confirmed offsets added to the XDF:
   signed boundary slice at `0x802B+0xC0` crossing into `0x8103`. Do not tune
   them as VE or main fuel.
 - A pure VE/base fuel table is still not proven, but `$821C/$8318` are now the
-  strongest main fuel trim/multiplier candidates. `$00C1/$00C3/$00BC` are the
-  strongest fuel pulse/event-width path candidates. OC1/OC3 scheduling is
-  strong software evidence; exact driver/pin proof remains hardware-level.
+  strongest signed fuel quantity trim candidates. `$00C1 -> $00C3 -> $00BC` is
+  the strongest pulse-width/event-width path, while `$87B1 -> $00BE -> $21C6` is
+  event phase. OC1 schedules `TOC1 = $00B8 + $21C6`, OC3 handles the pulse edge,
+  and exact driver/pin plus tick-to-ms/degree proof remains hardware-level.
 - `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
@@ -183,15 +185,17 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x87A2`: alternate period threshold, stock `0x1770`, about `2500 RPM`.
 - `0x87A4`: alternate period threshold, stock `0x1979`, about `2300 RPM`.
 - `0x869A-0x8771`: code-confirmed `24x9` 2D parent table; the old visual `0x86DB` slice lies inside it.
-- `0x87B1-0x8888`: code-confirmed `24x9` 2D table; stock table is all zero.
+- `0x87B1-0x8888`: injector/event phase offset `24x9`; stock table is all
+  zero, output updates `$00BE -> $21C6`, and changes affect phase/timing rather
+  than fuel quantity.
 - `0x888E-0x8965`: code-confirmed `24x9` 2D parent table; the old visual `0x88CD` slice lies inside it.
 - `0x8E6F-0x8EC3`: code-confirmed bounded `17x5` 2D table view.
 - `0x8EC7-0x8F1B`: code-confirmed bounded `17x5` 2D table view.
 - `0x8F1C-0x8F70`: code-confirmed bounded `17x5` 2D table view.
 - `0x8F71-0x8FC5`: code-confirmed bounded `17x5` 2D table view.
-- `0x9073-0x90D5`: code-confirmed `11x9` 2D table.
+- `0x9073-0x90D5`: closed-loop/adaptive ramp/target `11x9` 2D table.
 - `0x89ED-0x89F2`: code-referenced control scalars.
-- `0x89F3-0x8A05`: `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`;
+- `0x89F3-0x8A05`: `Per-event Retard / Gain Candidate 1x19 @ 0x89F3`;
   code-confirmed `1x19` interpolation vector and part of a larger
   RPM-derived `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
@@ -205,12 +209,12 @@ Candidate and code-confirmed offsets added to the XDF:
   degrees.
 - `0x8C18`: final cell of the `0x8B41` bank, stock `0x38`, MOD2 `0x3C`.
 - `0x8C19-0x8C30`: code-confirmed RPM-only vector used when `RAM 0x00A9 bit 0x20` bypasses the banked maps.
-- `0x9187-0x925E`: `Load Model / Correction Factor Candidate 24x9 @ 0x9187`;
+- `0x9187-0x925E`: `Load / Air-Charge Model Factor 24x9 @ 0x9187`;
   code-confirmed `24x9` 2D table. The older `0x91D9-0x925F` `15x9` view was a
   legacy misaligned slice and has been removed from the normal XDF tree. The
   retained view uses screenshot-assisted `raw / 230` scaling. Current trace
   shows it can seed `0x00D0`, then `0x00CE`, then the load/MAP-like axis
-  `0x2034`, so it is probably correction/load-model related rather than proven
+  `0x2034`, so it is probably load/air-charge model related rather than proven
   main fuel.
 - `0x929E-0x92CD`: code-confirmed period/RPM axis for runtime `0x2036`; count byte is `0x92CE = 0x18`; in the XDF `Confirmed` category.
 - `0x9291-0x9299`: code-referenced 9-byte helper breakpoint vector; count byte is `0x929A = 0x09`; in the XDF `Confirmed` category with physical units provisional.

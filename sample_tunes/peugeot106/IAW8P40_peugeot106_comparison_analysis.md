@@ -1,4 +1,4 @@
-# Marelli IAW 8P.40 Peugeot 106 Stock vs MOD2 Analysis
+﻿# Marelli IAW 8P.40 Peugeot 106 Stock vs MOD2 Analysis
 
 Analysis date: 2026-05-23
 
@@ -120,12 +120,12 @@ Top-level changed regions:
 | `0x800C-0x800F` | `4` | Checksum word and complement |
 | `0x802B-0x8102` | `75` changed cells inside signed `24x9` view | Code-referenced temp-like/RPM fuel correction A; X raw `0x92CF`, Y `0x929E` RPM, output `$204A` into `$204B -> $00C1` |
 | `0x8103-0x81DA` | `72` changed cells inside signed `24x9` view | Code-referenced temp-like/RPM fuel correction B; X raw `0x92CF`, Y `0x929E` RPM, output `$204D` into `$204E/$204F` |
-| `0x821C/0x8318/0x83F0` | signed fuel-trim candidate family | Code-referenced main fuel trim/multiplier candidates; `$E38B` selects `$2084`, and `$E715` applies it to `$00C1` |
+| `0x821C/0x8318/0x83F0` | signed fuel quantity trim family | Code-referenced proportional trim candidates; `$E38B` selects `$2084`, and `$E715` applies it to `$00C1` as roughly `fuel += fuel * signed_trim / 256` |
 | `0x802E/0x80EB/0x81A8/0x80F1` | overlapping changed legacy views | Alignment/debug probes only; do not tune as VE or main fuel |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
-| `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | Load-model / correction-factor candidate; old `0x91D9` view was misaligned |
+| `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | Load / air-charge model factor; old `0x91D9` view was misaligned |
 
 Repeatable script table stats for the corrected signed correction family:
 
@@ -291,8 +291,8 @@ Notes:
 - Row `14`: columns `2-7` increase by `+3`.
 - Screenshot-assisted scaling: `raw / 230` turns this into a factor-like surface of
   roughly `0.00-1.10`. The XDF now includes
-  `Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but the exact
-  strategy role remains unconfirmed.
+  `Load / Air-Charge Model Factor 24x9 @ 0x9187`; it is not treated as main
+  fuel.
 
 ## Earlier Candidates Revisited
 
@@ -352,14 +352,14 @@ After TunerPro visual review, additional split views were added:
 
 - `Signed Fuel Temp-like/RPM Correction A 24x9 @ 0x802B`
 - `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103`
-- `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C`
-- `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318`
+- `Signed Fuel Quantity Trim A 24x9 @ 0x821C`
+- `Signed Fuel Quantity Trim B 24x9 @ 0x8318`
 - `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0`
 - legacy alignment probes around `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
-- `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`
+- `Per-event Retard / Gain Candidate 1x19 @ 0x89F3`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -374,14 +374,14 @@ After TunerPro visual review, additional split views were added:
 - `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
-- `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
+- `Load / Air-Charge Model Factor 24x9 @ 0x9187`
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`
 - `Code-Referenced Axis Vector 1x9 @ 0x9291`
 - `Code-Referenced Axis Vector 1x9 @ 0x92CF`
 - `Code-Confirmed 2D Table 24x9 @ 0x869A`
 - `Code-Confirmed 2D Table 24x9 @ 0x87B1`
 - `Code-Confirmed 2D Table 24x9 @ 0x888E`
-- `Code-Confirmed 2D Table 11x9 @ 0x9073`
+- `Closed-Loop Ramp / Target Table 11x9 @ 0x9073`
 - `Code-Confirmed 2D Table 17x5 @ 0x8E6F`
 - `Code-Confirmed 2D Table 17x5 @ 0x8EC7`
 - `Code-Confirmed 2D Table 17x5 @ 0x8F1C`
@@ -415,7 +415,7 @@ The `0x89F2` raw view was also refined:
 - The old raw `1x20 @ 0x89F2` view has been removed from the normal XDF tree
   because it mixed scalars and vector data in one misleading row.
 - `0x89F3-0x8A05` is now exposed as
-  `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`, a code-confirmed
+  `Per-event Retard / Gain Candidate 1x19 @ 0x89F3`, a code-confirmed
   `1x19` vector used by the 1D interpolation helper at `0xB2AB`.
 - The continuation pass confirmed the surrounding `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x8A27`, `0x8A3A`, and `0x8A52`.
 
@@ -432,13 +432,13 @@ Current confidence-tier candidate labels:
 | --- | --- | --- | --- |
 | `0x802B-0x8102` | `Signed Fuel Temp-like/RPM Correction A 24x9 @ 0x802B` | Code-referenced | X raw `0x92CF` temp-like labels, Y `0x929E` RPM labels, output `$204A` into `$204B -> $00C1`. |
 | `0x8103-0x81DA` | `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103` | Code-referenced | Same axes as `0x802B`; output `$204D` feeds `$204E/$204F` blend path. |
-| `0x821C-0x82F3` | `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C` | Code-referenced | Signed load/RPM trim candidate selected by `$E38B`; X=`$2034`, Y=`$2036`, output `$2084` applied to `$00C1` by `$E715`. |
-| `0x8318-0x83EF` | `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318` | Code-referenced | Paired signed load/RPM trim candidate selected by `$E38B`; exact selector semantics remain provisional. |
+| `0x821C-0x82F3` | `Signed Fuel Quantity Trim A 24x9 @ 0x821C` | Code-referenced | Signed load/RPM trim selected by `$E38B`; X=`$2034`, Y=`$2036`, output `$2084` applied to `$00C1` by `$E715` as roughly `fuel += fuel * signed_trim / 256`. |
+| `0x8318-0x83EF` | `Signed Fuel Quantity Trim B 24x9 @ 0x8318` | Code-referenced | Paired signed load/RPM trim selected by `$E38B`; exact selector semantics remain provisional. |
 | `0x83F0-0x8407` | `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0` | Code-referenced | Signed RPM-only bypass vector that can feed `$2084`; not a standalone VE table. |
 | `0x802E/0x80EB/0x81A8/0x80F1` | Legacy alignment probes | Debug only | Overlap the signed correction region; do not tune as VE or main fuel. |
 | `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes. |
-| `0x89F3-0x8A05` | `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3` | Medium-high structure | Code-confirmed `0x2044`-indexed vector; X sites are `0-7200 rpm` in 400 rpm steps; MOD2 changes `16 / 19` cells. |
-| `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; not proven main fuel. |
+| `0x89F3-0x8A05` | `Per-event Retard / Gain Candidate 1x19 @ 0x89F3` | Medium-high structure | Code-confirmed `0x2044`-indexed vector; X sites are `0-7200 rpm` in 400 rpm steps; MOD2 changes `16 / 19` cells. |
+| `0x9187-0x925E` | `Load / Air-Charge Model Factor 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; not proven main fuel. |
 
 Screenshots alone are no longer enough to keep a normal candidate view active
 when later code proves misalignment. Historical visual leads should now be folded
@@ -467,7 +467,7 @@ Additional `0x9187` flow found:
 - `0x41A1-0x41AD` converts `0x00CE` into normalized axis `0x2034`.
 
 The likely spark views and limiter constants now have working names in the
-scaled category. The remaining correction-factor/load-model names are still
+scaled category. The remaining load/air-charge model names are still
 hypotheses until more consumer paths are traced.
 
 Spark-bank selector trace:
@@ -514,9 +514,10 @@ Fuel/correction candidate pass:
 - `0x802E` is a `+3` misaligned slice inside `0x802B`; it remains useful only
   as legacy visual context.
 - A pure VE/base fuel table is still not proven, but `$821C/$8318` are now the
-  strongest main fuel trim/multiplier candidates and `$00C1/$00C3/$00BC` are
-  the strongest fuel pulse/event-width path candidates. OC1/OC3 scheduling is
-  strong software evidence; exact driver/pin proof remains hardware-level.
+  strongest signed fuel quantity trim candidates. `$00C1 -> $00C3 -> $00BC` is
+  the strongest pulse-width/event-width path, while `$87B1 -> $00BE -> $21C6` is
+  event phase. OC1 schedules `TOC1 = $00B8 + $21C6`, OC3 handles the pulse edge,
+  and exact driver/pin plus tick-to-ms/degree proof remains hardware-level.
   calibration or tail data until code proves otherwise.
 - The adjacent signed candidate `25x9 @ 0x80F1` changes `90 / 225` cells.
   The previous `0x8106` view started three bytes into a row. At `0x80F1`, the
@@ -530,7 +531,7 @@ Fuel/correction candidate pass:
   main fuel.
 - `0x9187-0x925E` is code-confirmed and MOD2 changes `62 / 216` cells, but the
   traced path can feed `0x00D0 -> 0x00CE -> 0x2034`, so it currently looks more
-  like a correction/load-model table than final main fuel.
+  like a load/air-charge model table than final main fuel.
 - `0x89F3-0x8A05` is a code-confirmed `1x19` vector indexed by RPM-derived
   `0x2044`; MOD2 changes `16 / 19` cells. It remains a plausible
   load-model/transient/enrichment vector, not a vehicle-speed map.
@@ -572,7 +573,7 @@ Air-density screenshot lead:
 - Tried equations/orientations: `raw / 230`, `raw / 100`, `raw / 128`,
   `raw / 200`; normal, reversed rows/columns, both reversed, and transposed.
 - No exact local match was found.
-- `0x9187` remains the nearest functional correction/load-model candidate, but
+- `0x9187` remains the nearest functional load/air-charge model candidate, but
   its bytes do not match the screenshot.
 - Loose numeric matches near `0x8A9C` sit inside the code-confirmed spark bank
   and are false positives.

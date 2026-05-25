@@ -125,32 +125,31 @@ After inspecting TunerPro screenshots, `0x8600` and `0x8800` were clearly not no
 
 ## Current Strongest Candidates
 
-The corrected view of the old `0x802E` region is now the signed temp-like/RPM
+The corrected view of the old `0x802E` region is now the signed likely IAT/RPM
 fuel correction pair at `0x802B` and `0x8103`. Both are code-referenced `24x9`
 signed correction candidates.
 Their X axis uses raw `0x92D9` helper labels into runtime `$2038`, their Y axis
 uses the confirmed `0x929E` RPM labels into `$2036`, and their outputs are
 `$204A` and `$204D`. These outputs feed the `$204B -> $00C1 -> $2051/$00C3`
-fuel/charge time-path candidate. The exact temperature sensor identity and
+fuel/charge time-path candidate. `$2038/$203A` is now the best likely
+IAT/air-temperature axis by consumers, but exact pin/bench proof remains open.
 final injector output channel remain provisional.
 
-The strongest main fuel trim/multiplier candidates are now the signed load/RPM
+The strongest signed fuel quantity trim candidates are now the signed load/RPM
 tables at `0x821C` and `0x8318`, plus the RPM-only bypass vector at `0x83F0`.
 Routine `$E38B` stores their selected signed result in `$2084`, and `$E715`
 applies it to `$00C1`. A pure VE/base fuel table is still not proven.
 
 `0x802E` is retained only as a legacy misaligned slice inside `0x802B`. The
 smooth unsigned surface was a useful visual clue, but it should not be tuned as
-VE or main fuel. `$00C1/$00C3/$00BC` are now the strongest fuel pulse/event-width
-path candidates. OC1 schedules the interrupt, then OC3/PA5 is used as the timed
-pulse-output channel; the exact driver transistor/connector pin remains
-hardware-level proof.
+VE or main fuel. Fuel quantity/duration and phase are now separated: `$00C1 -> $00C3 -> $00BC` is the pulse-width/event-width path, while `$87B1 -> $00BE -> $21C6` is the event-phase path. OC1 schedules `TOC1 = $00B8 + $21C6`, then OC3/PA5 is used as the timed pulse-output channel; `$2086` is only an edge-offset/deadtime-style support term. The exact driver transistor/connector pin and tick-to-ms/degree conversion remain hardware-level proof.
 
 ### Candidate 17x9 Map @ `0x88CD`
 
 Historical note: this was an early strong visual candidate, but later
 disassembly showed it is a slice inside the code-confirmed `0x888E` parent
-table. It is no longer the strongest candidate.
+table. `0x888E` is now best treated as an idle-air / idle-bypass target table,
+not fuel quantity.
 
 The region aligns well as `17` rows by `9` columns:
 
@@ -284,7 +283,7 @@ They remain worth inspecting in TunerPro.
   - `0x869A` as a code-confirmed `24x9` parent table; the old visual `0x86DB` candidate is inside this parent
   - `0x87B1` as a code-confirmed `24x9` table
   - `0x888E` as a code-confirmed `24x9` parent table; the old visual `0x88CD` candidate is inside this parent
-  - `0x9073` as a code-confirmed `11x9` table
+  - `0x9073` as the closed-loop ramp/target `11x9` table
   - `0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71` as a code-confirmed `17x5` table cluster
 - External sensor references are collected in `IAW8P40_peugeot106_sensor_references.md`:
   - TU2J2/MFZ references list coolant temp, inlet air temp, knock, oxygen, crank, MAP, and throttle position sensors. Some generic sources mention vehicle speed, but the current `0x00D4 -> 0x2044` path is crank/RPM-derived.
@@ -313,18 +312,22 @@ They remain worth inspecting in TunerPro.
   - `0x929E-0x92CD` is the code-confirmed 24-entry period/RPM axis table for `0x2036`; `15000000 / period` gives about `550-7500 RPM`
   - `0x2044` is derived from RPM-like `RAM 0x00D4` and clamped to `0x1200`; it indexes 19-cell curves at 400 rpm sites from `0-7200 rpm`
   - `0x2046` is a secondary transient/state axis currently confirmed as an `0x8A0A` table axis
-  - `0x92D9` raw labels `12, 20, 34, 57, 93, 142, 191, 227, 246` are used for the temperature-like `$2038` X axis on signed `0x802B/0x8103`
-  - `0x92D9` and `0x92CF` are paired temperature-like helper breakpoint vectors; exact sensor assignments remain provisional
+  - `0x92D9` raw labels `12, 20, 34, 57, 93, 142, 191, 227, 246` are used for the likely IAT `$2038` X axis on signed `0x802B/0x8103`
+  - `0x92D9` and `0x92CF` are paired temperature-style helper breakpoint vectors; consumers now make `0x92D9 -> $2038/$203A` the best likely IAT path and `0x92CF -> $203C/$203E` the best likely CTS/coolant path
   - `0x00BA` appears to be a timer delta, `0x00D9 - 0x00B8`
   - `0x00CE` can be produced from `0x00D0 << 2`, where `0x00D0` can come from the `0x9187` lookup
 - Current fuel/correction search status:
-  - `0x802B` and `0x8103` are code-referenced signed `24x9` temp-like/RPM fuel correction candidates with X=`0x92D9` raw temp-like labels, Y=`0x929E` RPM labels, and outputs `$204A/$204D`
+  - `0x802B` and `0x8103` are code-referenced signed `24x9` likely IAT/RPM fuel correction candidates with X=`0x92D9` raw labels, Y=`0x929E` RPM labels, and outputs `$204A/$204D`
   - `0x802E` is retained only as a legacy misaligned slice inside the signed `0x802B` table; do not tune it as VE or main fuel
   - `0x80EB` is now treated as a signed boundary slice starting at `0x802B+0xC0` and crossing into `0x8103`; `0x81A8` and `0x80F1` remain legacy/alignment probes
-  - `0x821C` and `0x8318` are the strongest signed load/RPM main fuel trim/multiplier candidates; `0x83F0` is the RPM-only bypass candidate
-  - `$00C1/$00C3/$00BC` are the strongest fuel pulse/event-width path candidates; OC1 schedules the ISR and OC3/PA5 behaves like the timed pulse output, but exact driver/pin proof is still hardware-level
-  - `0x9187-0x925E` is `Load Model / Correction Factor Candidate 24x9 @ 0x9187`; it is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks more like a correction/load-model table than proven main fuel
-  - `0x89F3-0x8A05` is `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`; MOD2 changes `16 / 19` cells and it remains a plausible load-model/transient/enrichment vector
+  - `0x821C` and `0x8318` are signed fuel quantity trims, not VE/base-fuel tables; raw values are applied roughly as `fuel += fuel * raw / 256`. `0x83F0` is the RPM-only trim/bypass vector, and guarded low-RPM `4x9` trims live at `0x81F8` and `0x82F4`
+  - `0x84E3` is the current strongest lambda/closed-loop fuel correction vector candidate: `$200C -> $00CC -> $2040 -> $84E3 -> $2049 -> $00C1`
+  - `$20B9` is a slow adaptive fuel trim centred at `$8000`; `0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71` feed the closed-loop/adaptive trim state machine
+  - `0x888E` and `0x8970` are idle-air / idle-bypass target/cap candidates, shaping `$202B` rather than fuel quantity
+  - `$00C1 -> $00C3 -> $00BC` is the strongest fuel pulse-width/event-width path, while `$87B1 -> $00BE -> $21C6` is the event-phase path; OC1 schedules `TOC1 = $00B8 + $21C6`, OC3/PA5 behaves like the timed pulse output, and exact driver/pin plus tick-to-ms/degree proof remains hardware-level
+  - `0x9187-0x925E` is `Load / Air-Charge Model Factor 24x9 @ 0x9187`; it is code-confirmed and MOD2-touched, but currently traces into `0x00D0 -> 0x00CE -> 0x2034`, so it looks like upstream load/air-charge modelling, not main fuel
+  - `0x89F3-0x8A05` is now `Per-event Retard/Gain Candidate 1x19 @ 0x89F3`; MOD2 changes `16 / 19` cells and it belongs in the ignition output/retard category
+  - `0x89C7`, `0x89DA`, and `0x8A52` now fit ignition output/per-event retard strategy: phase factor, width/dwell factor, and retard cap respectively
   - screenshots alone are no longer enough to keep a view active when later code proves misalignment, so the misleading legacy `0x89F2` and `0x91D9` views were removed from the normal XDF tree
 - Free-space scan:
   - `0xF021-0xFFD5` is the best current code-cave candidate, `4021` zero bytes before the vector table
@@ -352,7 +355,7 @@ They remain worth inspecting in TunerPro.
    - code-confirmed `24x9 @ 0x8A69`
    - code-confirmed `24x9 @ 0x8B41`
    - code-confirmed `24x9 @ 0x9187`
-   - code-confirmed `1x19 @ 0x89F3`
+  - code-confirmed per-event/gain vector `1x19 @ 0x89F3`
    - surrounding `0x2044` vector family entries
    - control scalars `1x6 @ 0x89ED`
    - legacy signed/misaligned probes around `0x802E`, `0x80EB`, `0x80F1`, and `0x81A8`
@@ -361,24 +364,26 @@ They remain worth inspecting in TunerPro.
    - likely spark advance low-octane/alternate `24x9 @ 0x8B41`
    - these now use rounded display-only MAP/load x labels `0, 13, 25, 38, 50, 63, 75, 88, 100 kPa`
    - likely WOT spark advance vector `1x24 @ 0x8C19`
-   - signed temp-like/RPM fuel correction candidates `24x9 @ 0x802B` and `24x9 @ 0x8103`
-   - signed main fuel trim/multiplier candidates `24x9 @ 0x821C`, `24x9 @ 0x8318`, and RPM-only bypass vector `1x24 @ 0x83F0`
+   - signed likely IAT/RPM fuel correction candidates `24x9 @ 0x802B` and `24x9 @ 0x8103`
+   - signed fuel quantity trim views `24x9 @ 0x821C`, `24x9 @ 0x8318`, and RPM-only bypass vector `1x24 @ 0x83F0`
    - code-confirmed RPM axis `1x24 @ 0x929E`
    - code-referenced helper axes `1x9 @ 0x9291` and `1x9 @ 0x92CF`
-5. Inspect the `Scaled / Likely Named Views` category for remaining non-confirmed named views:
+5. Inspect the `Fuel Quantity / Trim` category for the user-facing percent and multiplier trim views:
+   - signed fuel trim percent/multiplier views for `0x821C`, `0x8318`, `0x81F8`, `0x82F4`, and `0x83F0`
+6. Inspect the `Lambda / Closed Loop` category for fast lambda, adaptive dynamics, and the `0x9000-0x90EF` closed-loop calibration views:
+   - `0x84E3`, `0x8E6F/0x8EC7/0x8F1C/0x8F71`, `0x9000/0x9011/0x9022`, `0x9033/0x9044`, `0x9068`, `0x9073`, `0x90D6`, and `0x90EF`
+7. Inspect the `Scaled / Likely Named Views` category for remaining non-confirmed named views:
    - spark bank selector config `0x800A`
    - likely RPM limiter thresholds `0x879E/0x87A0`
-   - load model / correction factor candidate `24x9 @ 0x9187`
-6. Inspect the `Code-Confirmed Additional Tables` category:
+   - load / air-charge model factor `24x9 @ 0x9187`
+8. Inspect the `Code-Confirmed Additional Tables` category:
    - `24x9 @ 0x869A`
-   - `24x9 @ 0x87B1`
-   - `24x9 @ 0x888E`
-   - `11x9 @ 0x9073`
-   - `17x5 @ 0x8E6F`, `0x8EC7`, `0x8F1C`, and `0x8F71`
-7. Inspect the `Diagnostics / Service Data` category:
+9. Inspect `Fuel Output / Timing`, `Idle / Actuator`, and ignition categories separately:
+   - injector/event phase offset `0x87B1`, high-load duration support `0x85BA`, scheduler support views `0x92FA/0x877E/0x8787/0x8789`, idle-air views `0x888E/0x8970`, and ignition output/retard vectors `0x89C7/0x89DA/0x89F3/0x8A52`
+10. Inspect the `Diagnostics / Service Data` category:
    - `0x55A0-0x55B1` event-code table
    - `0x9131-0x9169` state descriptor triples
-8. Continue disassembling code around confirmed reference areas:
+11. Continue disassembling code around confirmed reference areas:
    - `0x48EE-0x4941` handles the banked `0x8A69/0x8B41` 2D table
    - `0x6344-0x636A` handles the code-confirmed `0x9187` 2D table
    - `0xBAA8-0xBB96` handles the `0x89ED-0x8A08` scalar/vector area
@@ -387,9 +392,9 @@ They remain worth inspecting in TunerPro.
    - `0xA7D8-0xAFxx` handles SCI diagnostic/service protocol state
    - `0xD80B-D941` handles a special service loop entered by the serial handshake
    - `0x5D8D-0x5E80` ties the `0x9187` lookup to `0x00D0 -> 0x00CE -> 0x2034`
-9. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
-10. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
-11. Keep original BIN unchanged and create tuned copies with clear names.
+12. Confirm table axes, units, and signedness before assigning fuel names or removing the "likely" qualifier from spark/octane labels.
+13. Recompute the checksum pair at `0x800C-0x800F` before burning or testing any edited EPROM.
+14. Keep original BIN unchanged and create tuned copies with clear names.
 
 ## Custom Code Cave Notes
 
@@ -420,11 +425,13 @@ The same file now also records BTDig/public-index filename leads such as
 `106RALL2`, `16143.124`, and `9620697280`; those are research search terms only,
 not downloadable evidence or offset proof.
 
-XDF `0.31` labels the signed `0x802B` and `0x8103` tables as temp-like/RPM fuel
-correction candidates with raw `0x92D9` temperature-like X labels and confirmed
-`0x929E` RPM Y labels. It also adds signed main fuel trim/multiplier candidates
+XDF `0.34` labels the signed `0x802B` and `0x8103` tables as likely IAT/RPM fuel
+correction candidates with raw `0x92D9` X labels and confirmed
+`0x929E` RPM Y labels. It also adds signed fuel quantity trim views
 at `0x821C`, `0x8318`, the RPM-only bypass vector at `0x83F0`, sensor-axis views
-for `0x92D9/0x92CF/0x400E`, and RPM-only mode spark vectors. Legacy and
+for likely IAT/CTS `0x92D9/0x92CF`, lambda vector `0x84E3`, idle-air views
+`0x888E/0x8970`, the SPI pointer frame at `0x8010`, RPM-only mode spark vectors,
+ignition output/retard vectors, adaptive trim dynamics, named `0x9000-0x90EF` closed-loop calibration views, and warmup/transient fuel vectors. Legacy and
 historical probe tables now sit in the `Legacy` category so they can be filtered
 out of normal tuning workflow. The old `0x802E`, `0x80EB`, `0x81A8`, and
 `0x80F1` views remain legacy/alignment probes rather than primary fuel/VE
@@ -456,7 +463,7 @@ normal, reversed, and transposed orientations with likely display equations
 including `raw / 230`, `raw / 100`, `raw / 128`, and `raw / 200`.
 
 The nearest functional local candidate remains
-`Load Model / Correction Factor Candidate 24x9 @ 0x9187`, but its bytes do not
+`Load / Air-Charge Model Factor 24x9 @ 0x9187`, but its bytes do not
 match the screenshot. Loose numeric matches around `0x8A9C` fall inside the
 code-confirmed spark bank and are false positives. Do not rename any local table
 as air-density correction until the IAT/CTS ADC path reaches a confirmed table

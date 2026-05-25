@@ -35,21 +35,21 @@
   - `xantia_607c` differs in `45/45` cells (`-245..+239`, avg `-46.0`).
   - `peug_106rally_org` differs in `0/45` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `30/45` cells (`-161..+254`, avg `+1.5`).
-- `0x81F8` `24x9` (signed8 alt-base): Peugeot immediate word-reference hits `1`.
-  - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
-  - `xantia_607c` differs in `214/216` cells (`-119..+114`, avg `+2.1`).
-  - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
-  - `rally13_ori` differs in `202/216` cells (`-131..+129`, avg `-0.4`).
+- `0x81F8` `4x9` (signed8 low-rpm): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/36` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `36/36` cells (`-18..+52`, avg `+9.2`).
+  - `peug_106rally_org` differs in `0/36` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `30/36` cells (`-37..+23`, avg `+0.1`).
 - `0x821C` `24x9` (signed8): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `214/216` cells (`-119..+114`, avg `+3.4`).
   - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `206/216` cells (`-131..+129`, avg `-0.9`).
-- `0x82F4` `24x9` (signed8 alt-base): Peugeot immediate word-reference hits `1`.
-  - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
-  - `xantia_607c` differs in `210/216` cells (`-70..+113`, avg `+21.9`).
-  - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
-  - `rally13_ori` differs in `171/216` cells (`-74..+76`, avg `+0.7`).
+- `0x82F4` `4x9` (signed8 low-rpm): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/36` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `36/36` cells (`-18..+80`, avg `+3.7`).
+  - `peug_106rally_org` differs in `0/36` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `30/36` cells (`-37..+52`, avg `+2.6`).
 - `0x8318` `24x9` (signed8): Peugeot immediate word-reference hits `6`.
   - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `210/216` cells (`-70..+123`, avg `+30.9`).
@@ -60,16 +60,101 @@
   - `xantia_607c` differs in `24/24` cells (`-35..+38`, avg `-0.1`).
   - `peug_106rally_org` differs in `0/24` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `23/24` cells (`-93..+38`, avg `-11.5`).
+- `0x8408` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `13/17` cells (`-65..+41`, avg `+0.8`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `16/17` cells (`-83..+65`, avg `+16.4`).
+- `0x845B` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `11/17` cells (`-239..+143`, avg `+7.7`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-231..+228`, avg `-22.1`).
+- `0x846C` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-185..+117`, avg `-4.3`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-159..+164`, avg `-0.6`).
+- `0x847D` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-173..+69`, avg `+28.1`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-173..+74`, avg `-25.3`).
+- `0x848E` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-140..+52`, avg `+3.2`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-223..+31`, avg `-27.7`).
+- `0x849F` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `1/17` cells (`+78..+78`, avg `+78.0`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`+46..+255`, avg `+120.4`).
+- `0x84B0` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `3/17` cells (`+47..+47`, avg `+47.0`).
+- `0x84C1` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `15/17` cells (`-161..-2`, avg `-92.0`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-225..-40`, avg `-141.6`).
+- `0x84D2` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `15/17` cells (`-26..+134`, avg `+28.6`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `14/17` cells (`-16..+209`, avg `+64.1`).
+- `0x84E3` `1x19` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `16/19` cells (`-187..+145`, avg `+31.4`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `19/19` cells (`-148..+221`, avg `+25.7`).
+- `0x8596` `1x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`-87..+26`, avg `-42.2`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-160..+157`, avg `-34.2`).
+- `0x85AF` `1x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`-122..+26`, avg `-53.6`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-138..+74`, avg `-2.8`).
 - `0x85BA` `24x5` (raw): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/120` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `19/120` cells (`-25..+40`, avg `-11.8`).
   - `peug_106rally_org` differs in `0/120` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `46/120` cells (`-25..+202`, avg `+28.0`).
+- `0x877E` `1x9` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`-37..+44`, avg `-9.0`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-37..-37`, avg `-37.0`).
+- `0x8787` `1x1` (word16 raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/1` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `1/1` cells (`+7242..+7242`, avg `+7242.0`).
+  - `peug_106rally_org` differs in `0/1` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `1/1` cells (`-725..-725`, avg `-725.0`).
+- `0x8789` `1x10` (word16 raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/10` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `10/10` cells (`+6882..+54529`, avg `+12173.3`).
+  - `peug_106rally_org` differs in `0/10` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `10/10` cells (`-1085..+50674`, avg `+8237.1`).
 - `0x87B1` `24x9` (raw): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `19/216` cells (`+2..+214`, avg `+33.8`).
   - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `38/216` cells (`+1..+246`, avg `+56.0`).
+- `0x888E` `24x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `213/216` cells (`-38..+254`, avg `+40.3`).
+  - `peug_106rally_org` differs in `0/216` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `208/216` cells (`-38..+99`, avg `-4.9`).
+- `0x8970` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-254..+4`, avg `-128.8`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-253..+38`, avg `-139.4`).
 - `0x8C31` `1x24` (raw/2 deg): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/24` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `24/24` cells (`-52..+244`, avg `+138.0`).
@@ -100,6 +185,101 @@
   - `xantia_607c` differs in `9/9` cells (`+29..+144`, avg `+110.1`).
   - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `9/9` cells (`-30..-10`, avg `-17.6`).
+- `0x8DD9` `1x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`-234..+20`, avg `-50.7`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-255..-1`, avg `-71.4`).
+- `0x8E6F` `17x5` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `30/85` cells (`+6..+6`, avg `+6.0`).
+  - `peug_106rally_org` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `83/85` cells (`-16..+245`, avg `+17.5`).
+- `0x8EC7` `17x5` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `76/85` cells (`-16..-16`, avg `-16.0`).
+  - `peug_106rally_org` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `82/85` cells (`-16..+239`, avg `+52.9`).
+- `0x8F1C` `17x5` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `75/85` cells (`-21..+250`, avg `+69.6`).
+  - `peug_106rally_org` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `81/85` cells (`-16..+242`, avg `+32.1`).
+- `0x8F71` `17x5` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `80/85` cells (`+1..+254`, avg `+46.4`).
+  - `peug_106rally_org` differs in `0/85` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `85/85` cells (`+10..+64`, avg `+16.6`).
+- `0x89C7` `1x19` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `19/19` cells (`+1..+22`, avg `+11.1`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `19/19` cells (`+15..+126`, avg `+36.8`).
+- `0x89DA` `1x19` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `16/19` cells (`-14..+24`, avg `+3.6`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `18/19` cells (`-31..+215`, avg `+21.1`).
+- `0x89F3` `1x19` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `16/19` cells (`+2..+18`, avg `+7.0`).
+  - `xantia_607c` differs in `19/19` cells (`-142..-17`, avg `-77.2`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `19/19` cells (`-138..-48`, avg `-94.7`).
+- `0x8A23` `1x4` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/4` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `4/4` cells (`-76..+38`, avg `-27.2`).
+  - `peug_106rally_org` differs in `0/4` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `4/4` cells (`-118..+156`, avg `-22.5`).
+- `0x8A52` `1x19` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `19/19` cells (`+21..+84`, avg `+60.2`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `18/19` cells (`-12..+12`, avg `+0.4`).
+- `0x9000` `1x17` (raw): Peugeot immediate word-reference hits `3`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-63..+54`, avg `+1.5`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-80..-5`, avg `-47.1`).
+- `0x9011` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-87..+62`, avg `+4.1`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-141..-7`, avg `-52.6`).
+- `0x9022` `1x17` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-103..+208`, avg `+52.2`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-141..-9`, avg `-53.8`).
+- `0x9033` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`-32..+191`, avg `+20.4`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `15/17` cells (`-33..+16`, avg `-3.0`).
+- `0x9044` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`+2..+142`, avg `+20.1`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`-8..-2`, avg `-4.4`).
+- `0x9068` `1x11` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/11` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `8/11` cells (`-3..+144`, avg `+41.8`).
+  - `peug_106rally_org` differs in `0/11` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `2/11` cells (`-8..-3`, avg `-5.5`).
+- `0x9073` `11x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/99` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `95/99` cells (`+1..+255`, avg `+39.3`).
+  - `peug_106rally_org` differs in `0/99` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `46/99` cells (`+1..+255`, avg `+77.9`).
+- `0x90D6` `1x9` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `5/9` cells (`-215..-19`, avg `-100.0`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `8/9` cells (`-255..-175`, avg `-218.1`).
+- `0x90EF` `1x17` (raw): Peugeot immediate word-reference hits `1`.
+  - `peugeot_mod2` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `17/17` cells (`+93..+244`, avg `+183.3`).
+  - `peug_106rally_org` differs in `0/17` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `17/17` cells (`+19..+145`, avg `+55.6`).
 - `0x92CF` `1x9` (raw): Peugeot immediate word-reference hits `3`.
   - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `9/9` cells (`-122..+23`, avg `-31.6`).
@@ -110,20 +290,34 @@
   - `xantia_607c` differs in `9/9` cells (`-230..+223`, avg `-11.9`).
   - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `9/9` cells (`-192..+121`, avg `+14.6`).
+- `0x92FA` `1x19` (signed8): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `18/19` cells (`-100..+48`, avg `-14.8`).
+  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `19/19` cells (`-137..+85`, avg `-9.4`).
 - `0x400E` `1x9` (raw): Peugeot immediate word-reference hits `5`.
   - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
 
-Sensor-axis split note: `0x200A -> 0x2124 -> 0x92D9` builds runtime `0x2038/0x203A`, while `0x2008 -> 0x2122 -> 0x92CF` builds runtime `0x203C/0x203E`. Both breakpoint vectors currently carry raw labels `12,20,34,57,93,142,191,227,246`, and `0x400E` is the shared transfer/display vector. Exact CTS/IAT assignment remains provisional.
-Signed temp-like/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 -> 0x2038` temperature-like axis and RPM labels from `0x929E -> 0x2036`; outputs are `0x204A`/`0x204D`.
+Sensor-axis split note: `0x200A -> 0x2124 -> 0x92D9` builds runtime `0x2038/0x203A`, while `0x2008 -> 0x2122 -> 0x92CF` builds runtime `0x203C/0x203E`. Both breakpoint vectors carry raw labels `12,20,34,57,93,142,191,227,246`, and `0x400E` is the shared transfer/display vector. By consumers, `0x2038/0x203A` is now the best likely IAT/air-temperature axis and `0x203C/0x203E` is the best likely CTS/coolant axis; pin or bench proof is still pending.
+Signed IAT/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 -> 0x2038` likely IAT axis and RPM labels from `0x929E -> 0x2036`; outputs are `0x204A`/`0x204D`.
 Legacy boundary note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is only an alignment probe.
 
-Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed temp-like/RPM corrections; `0x821C/0x8318` signed load/RPM trim candidates, or `0x83F0` RPM-only bypass, feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC -> 0x1016/0x101A` is the current strongest software pulse/event-width scheduler path.
-Output timing note: OC1 schedules the interrupt at `0x1016`, then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x87B1 -> 0x00BE -> 0x21C6` is phase/offset, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.
+Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed likely IAT/RPM corrections; `0x821C/0x8318` signed fuel quantity trims, guarded low-RPM `0x81F8/0x82F4` 4x9 trims, or `0x83F0` RPM-only trim feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC` is the current strongest software fuel pulse-width / event-width path. `0xE715` scale is roughly fuel += fuel * signed_trim / 256, so raw 64 is about +25%.
+Lambda/closed-loop note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` is the current strongest lambda fuel correction candidate. The `0x200C` physical O2/lambda assignment still needs scope or harness proof.
+Closed-loop/adaptive note: `0x9000-0x912B` is now best grouped as lambda / closed-loop / adaptive calibration. `0x9000/0x9011/0x9022` are CTS-like base vectors, `0x9033/0x9044/0x90EF` are delay/timer vectors, `0x9068` is dynamic load-change correction, and `0x9073` is a ramp/target table compared with `0x243C`.
+Adaptive trim note: `0x20B9` is a slow closed-loop/adaptive fuel trim centred at `0x8000`. RAM cells `0x0060/0x0069` are learned adaptive trim cells interpolated by `0xC94B`; the `0x8E6F/0x8EC7/0x8F1C/0x8F71` 17x5 cluster feeds `0x24AB/0x24AF/0x24AC/0x24AD`, which are consumed by the `0xCC00-0xD0C6` adaptive state machine.
+Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x00C6` active correction terms. `0x8408-0x84D2` are CTS warmup/afterstart fuel support maps, while `0x8596/0x85AF` feed additive transient fuel terms `0x2055/0x2057` via the `0xEB16` helper.
+Idle/actuator note: `0x888E` is best treated as an idle-air / idle-bypass target table, not fuel. It combines with likely CTS vector `0x8970` into `0x2484/0x2486`, shapes `0x202B`, and toggles external bit `0x1050.04`; actuator hardware proof remains open.
+SPI frame note: `0x8010-0x8027` is a pointer frame consumed by `0x9F02-0xA001` to stream live RAM/status bytes through SPI data register `0x102A`. It is not calibration; the signed fuel correction table starts at `0x802B`.
+Fuel output timing note: `0x87B1 -> 0x00BE -> 0x21C6` is injector/event phase. OC1 schedules the interrupt at `TOC1=0x00B8+0x21C6` (`0x1016`), then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x00C3 -> 0x00BC` is pulse width / scheduled event width, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.
+Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x10 word vector that feeds `$2086`, an OC3 edge-offset/deadtime-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.
+Ignition event note: `0x7CDA` and `0x7CEA` are compact event selector data tables, not executable code and not tune maps. They feed four 12-byte ignition event records at `0x2312/0x231E/0x232A/0x2336`, built from final per-event spark values `0x20E2-0x20E5`.
+Ignition output note: `0x2147 -> 0x2001 -> 0x00B6 -> 0x20E2-0x20E5 -> 0x2312/0x231E/0x232A/0x2336` is the current best software spark command/event chain. `0x89C7 -> 0x20E7 -> 0x20EB` looks like ignition phase, `0x89DA -> 0x20E8 -> 0x20ED` like width/dwell-window, `0x89F3 -> 0x20BC` is per-event retard/gain candidate, and `0x8A23-0x8A51` holds retard strategy scalars. OC2/OC4 at `0x1018/0x101C` are the strongest software ignition-output candidates; exact coil driver/pin proof remains open.
 
-Main fuel status: a pure VE/base table is still not proven, but `0x821C/0x8318` are now the strongest main fuel trim/multiplier candidates. `0x81F8/0x82F4` are alternate bases selected by `0xE38B` and are kept out of the normal XDF tuning tree for now. OC1/OC3 scheduling is strong software evidence; the exact driver/pin remains a hardware-level proof item. The old `0x802E` VE-looking surface remains a legacy misaligned slice inside the signed `0x802B` table.
+Main fuel status: a pure VE/base table is still not proven, but `0x821C/0x8318` are now the strongest signed fuel quantity trim tables. `0x81F8/0x82F4` are guarded low-RPM 4x9 trims selected by `0xE38B`, and `0x83F0` is an RPM-only trim/bypass vector. Fuel quantity/duration and fuel timing/phase are now separated: `$00C3/$00BC` is duration, `$21C6` is phase, and `$2086` is edge-offset support. The exact injector driver/pin remains a hardware-level proof item. The old `0x802E` VE-looking surface remains a legacy misaligned slice inside the signed `0x802B` table.
 
 Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:
 
@@ -136,10 +330,20 @@ Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:
 | `peug_106rally_org` | `0x8A69` | `+0` | 23.8 | 27.7 | 0.0 | same-offset but heavily altered spark banks; WOT vector unchanged |
 | `rally13_ori` | `0x8A84` | `+27` | 0.0 | 0.0 | 0.0 | exact stock spark bundle shifted +0x1B |
 
+- `0x00B6`: `20` scanned refs; stores/clears at 0x4424, 0x46D0, 0x48AA, 0x67F1, 0x96D7, 0x9733, 0xB179; loads/math at 0xB0F0, 0xB13C, 0xB160, 0xB187, 0xB1E4, 0xB208, 0xB22C, 0xB250, 0xC03C, 0xD0E6.
 - `0x00BC`: `24` scanned refs; stores/clears at 0x6F6F, 0x6F84, 0x6F9F, 0x6FA6, 0x6FF4, 0x7014, 0x702C, 0x7037, 0x7052, 0x7057; loads/math at 0x6F89, 0x6F91, 0x7032, 0x703C, 0x7048, 0x7072, 0x707A, 0x70A2, 0x70CA, 0x70D2.
 - `0x00BF`: `7` scanned refs; stores/clears at 0xD5D5, 0xD5FE; loads/math at 0x6E9A, 0x6F7D, 0x6F86, 0x6F9D, 0x721D.
 - `0x00C1`: `39` scanned refs; stores/clears at 0xE5F1, 0xE617, 0xE625, 0xE645, 0xE650, 0xE676, 0xE67F, 0xE69F, 0xE6B9, 0xE6C2; loads/math at 0x58DA, 0x6E9E, 0x6ED6, 0x6EDD, 0x6EE8, 0xAE2B, 0xE605, 0xE611, 0xE61A, 0xE637.
 - `0x00C3`: `11` scanned refs; stores/clears at 0x6EEA, 0x79B5, 0x9B46, 0xDFC8, 0xE6D3, 0xE7AC; loads/math at 0x6F6C, 0x6F73, 0x6FA3, 0x7010, 0x7029.
+- `0x00C5`: `11` scanned refs; stores/clears at 0x9676, 0xE7D7, 0xE9C7, 0xEA26, 0xEA8B, 0xEA92; loads/math at 0xE647, 0xEA21, 0xEA49, 0xEA78, 0xEA7D.
+- `0x00C6`: `10` scanned refs; stores/clears at 0xA52F, 0xE7D9, 0xE9C9; loads/math at 0x5C55, 0x63EE, 0xA2B1, 0xA2D1, 0xA53B, 0xEA43, 0xEA6E.
+- `0x00CC`: `13` scanned refs; stores/clears at 0x43D5, 0xD6E3; loads/math at 0x43C7, 0x43F3, 0x6084, 0x60DA, 0x9387, 0x93A9, 0x93E6, 0x945D, 0xB898, 0xE302.
+- `0x2001`: `8` scanned refs; stores/clears at 0x4687, 0x4693, 0x476D, 0x5270, 0x5482, 0x5C4F, 0x5ECE, 0xD7BC; loads/math at -.
+- `0x2002`: `4` scanned refs; stores/clears at 0x4892, 0x7E44, 0xA9C1, 0xC710; loads/math at -.
+- `0x202B`: `10` scanned refs; stores/clears at 0x9714, 0xBEE7, 0xCB89; loads/math at 0x9728, 0xBE5F, 0xBED8, 0xCE67, 0xCF0B, 0xE8E9, 0xE8F9.
+- `0x202C`: `2` scanned refs; stores/clears at 0xBEEF, 0xBEF7; loads/math at -.
+- `0x2040`: `6` scanned refs; stores/clears at 0x4400; loads/math at 0x9525, 0xD5DF, 0xD5EF, 0xD6F5, 0xE83E.
+- `0x2049`: `4` scanned refs; stores/clears at 0xE79E, 0xE848; loads/math at 0x6F70, 0xE6A6.
 - `0x204A`: `3` scanned refs; stores/clears at 0xE786, 0xE869; loads/math at 0xE928.
 - `0x204B`: `2` scanned refs; stores/clears at 0xE959; loads/math at 0xE5E8.
 - `0x204D`: `3` scanned refs; stores/clears at 0xE78C, 0xE88A; loads/math at 0xE95D.
@@ -150,13 +354,71 @@ Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:
 - `0x2053`: `5` scanned refs; stores/clears at 0xE5E5, 0xE7B4; loads/math at 0xCC57, 0xE684, 0xE68A.
 - `0x2055`: `5` scanned refs; stores/clears at 0xE7A6, 0xEAA7, 0xEAC4; loads/math at 0xE654, 0xEAB5.
 - `0x2057`: `4` scanned refs; stores/clears at 0xE7A9, 0xEB02, 0xEB0E; loads/math at 0xE659.
+- `0x2059`: `15` scanned refs; stores/clears at 0x713D, 0x729F, 0xE9E3, 0xEA0A, 0xEA96; loads/math at 0x5B7D, 0x5B95, 0x7101, 0x9818, 0x999A, 0x9A9B, 0x9CA5, 0xBE14, 0xCC14, 0xE9A8.
+- `0x2060`: `4` scanned refs; stores/clears at 0x7153, 0xE9F9, 0xEA02; loads/math at 0xE9FC.
+- `0x2062`: `3` scanned refs; stores/clears at 0xE792, 0xE9DB; loads/math at 0xE9D5.
 - `0x2084`: `2` scanned refs; stores/clears at 0xE3E1, 0xE798; loads/math at -.
+- `0x2085`: `3` scanned refs; stores/clears at 0xE79B, 0xE83B; loads/math at 0xE63B.
 - `0x2086`: `6` scanned refs; stores/clears at 0xD5D7, 0xD60A, 0xD6DC; loads/math at 0x706C, 0x707F, 0x70A4.
+- `0x2090`: `10` scanned refs; stores/clears at 0xC0E4, 0xC19E, 0xCAFE; loads/math at 0x5685, 0xC03D, 0xC1AA, 0xC1DF, 0xC86C, 0xC931, 0xC97C.
+- `0x2093`: `1` scanned refs; stores/clears at 0xC03A; loads/math at -.
+- `0x2094`: `3` scanned refs; stores/clears at 0xCB4D; loads/math at 0xC588, 0xC734.
+- `0x2095`: `3` scanned refs; stores/clears at 0xCB57; loads/math at 0xC594, 0xC744.
+- `0x2096`: `9` scanned refs; stores/clears at 0xC0F3, 0xC124; loads/math at 0xC08B, 0xC0C0, 0xC1EE, 0xC361, 0xC8E7.
+- `0x2099`: `2` scanned refs; stores/clears at 0xC227; loads/math at -.
+- `0x209A`: `5` scanned refs; stores/clears at 0xC263, 0xC32F, 0xCAE3; loads/math at 0xC255.
+- `0x209B`: `16` scanned refs; stores/clears at 0xC0EA, 0xC187, 0xC457, 0xC4A3, 0xC4BB, 0xC510, 0xC53A, 0xC9B1, 0xCAE6; loads/math at 0xC4F2, 0xC56B, 0xC99A, 0xC9A8.
+- `0x20A2`: `3` scanned refs; stores/clears at 0xC5F6; loads/math at 0xC1BD, 0xC77E.
+- `0x20A4`: `12` scanned refs; stores/clears at 0x6CD8, 0x6DB7, 0x96EC, 0xC1C3, 0xC5F9, 0xC731, 0xC784, 0xCA2F, 0xCB5E; loads/math at 0x56BA, 0x975C, 0xC9FA.
+- `0x20A6`: `7` scanned refs; stores/clears at 0xC106, 0xC1C0, 0xC705, 0xC72E, 0xC781; loads/math at 0xC71A, 0xC79A.
+- `0x20B9`: `15` scanned refs; stores/clears at 0xCBB1, 0xCBC7, 0xCC98, 0xCDC8, 0xCDDF, 0xCDFB; loads/math at 0xCDBC, 0xCDD3, 0xCDEA, 0xCE0E, 0xCF89, 0xD04C, 0xE62D.
+- `0x20D3`: `7` scanned refs; stores/clears at 0xB0EE, 0xB13A, 0xBBB3; loads/math at 0xB087, 0xB134, 0xB1AC, 0xB1C8.
+- `0x20D4`: `7` scanned refs; stores/clears at 0xBA8E, 0xBBE0; loads/math at 0xB0FF, 0xB156, 0xB16F, 0xB188, 0xB1A1.
+- `0x20D9`: `5` scanned refs; stores/clears at 0x9E48, 0xB19E, 0xBBB0; loads/math at 0xB193, 0xB1C0.
+- `0x20DA`: `4` scanned refs; stores/clears at 0xB153, 0xBBA7; loads/math at 0xB148, 0xB1B1.
+- `0x20DB`: `4` scanned refs; stores/clears at 0xB16C, 0xBBAA; loads/math at 0xB161, 0xB1B6.
+- `0x20DC`: `4` scanned refs; stores/clears at 0xB185, 0xBBAD; loads/math at 0xB17A, 0xB1BB.
+- `0x20DE`: `6` scanned refs; stores/clears at 0xB24D, 0xB269, 0xBBBF; loads/math at 0x4858, 0xE5B8.
+- `0x20DF`: `6` scanned refs; stores/clears at 0xB1E1, 0xB260, 0xBBB6; loads/math at 0x4849, 0xA52D, 0xE5A0.
+- `0x20E0`: `6` scanned refs; stores/clears at 0xB205, 0xB263, 0xBBB9; loads/math at 0x484E, 0xE5A8.
+- `0x20E1`: `6` scanned refs; stores/clears at 0xB229, 0xB266, 0xBBBC; loads/math at 0x4853, 0xE5B0.
+- `0x20E2`: `5` scanned refs; stores/clears at 0x48D2, 0x95E8, 0xB258; loads/math at 0x7D5D, 0x7D66.
+- `0x20E3`: `7` scanned refs; stores/clears at 0x48B4, 0x95DF, 0xB1EC; loads/math at 0x7A8E, 0x7B16, 0x7CFD, 0x7D06.
+- `0x20E4`: `5` scanned refs; stores/clears at 0x48BE, 0x95E2, 0xB210; loads/math at 0x7D3D, 0x7D46.
+- `0x20E5`: `6` scanned refs; stores/clears at 0x48C8, 0x95E5, 0xB234; loads/math at 0x7A89, 0x7D1D, 0x7D26.
+- `0x20E6`: `13` scanned refs; stores/clears at 0xBA9B, 0xBBE6; loads/math at 0xB11A, 0xB1DE, 0xB202, 0xB226, 0xB24A, 0xB25D.
+- `0x20E7`: `3` scanned refs; stores/clears at 0xBA74, 0xBBD4; loads/math at 0xBD1E.
+- `0x20E8`: `4` scanned refs; stores/clears at 0xBA81, 0xBBDA; loads/math at 0xBD40, 0xBD46.
+- `0x20EB`: `4` scanned refs; stores/clears at 0xBB9A, 0xBD39; loads/math at 0xBC67, 0xBC7A.
+- `0x20ED`: `4` scanned refs; stores/clears at 0xBB9D, 0xBD4F; loads/math at 0xBCB1, 0xBCC1.
+- `0x2132`: `6` scanned refs; stores/clears at 0x4427, 0x467F, 0x4690; loads/math at 0x4653, 0x465E, 0x4675.
+- `0x2134`: `2` scanned refs; stores/clears at 0x442B, 0x49C5; loads/math at -.
 - `0x21C6`: `5` scanned refs; stores/clears at 0x724C, 0x7298, 0x72A9; loads/math at 0x6FC0, 0x6FD1.
 - `0x21C8`: `9` scanned refs; stores/clears at 0x6F65, 0x6FB0, 0x7024; loads/math at 0x7075, 0x708A, 0x709C, 0x70CD, 0x70DF, 0x70F0.
 - `0x21CB`: `6` scanned refs; stores/clears at 0x7062; loads/math at 0x707C, 0x7090, 0x70C4, 0x70E5, 0x70F6.
 - `0x21CD`: `3` scanned refs; stores/clears at 0x70A7, 0x70ED; loads/math at 0x704A.
 - `0x21CF`: `4` scanned refs; stores/clears at 0x712C, 0x7219; loads/math at 0x6FF1, 0x7034.
+- `0x2312`: `3` scanned refs; stores/clears at 0x9587; loads/math at 0x7583, 0x7CF9.
+- `0x231E`: `3` scanned refs; stores/clears at 0x958A; loads/math at 0x7570, 0x7D39.
+- `0x232A`: `3` scanned refs; stores/clears at 0x958D; loads/math at 0x757D, 0x7D19.
+- `0x2336`: `3` scanned refs; stores/clears at 0x9590; loads/math at 0x756A, 0x7D59.
+- `0x243C`: `10` scanned refs; stores/clears at 0xC260, 0xC2E1, 0xC2F9, 0xC301; loads/math at 0xC2EE, 0xC2FC, 0xC304.
+- `0x243E`: `3` scanned refs; stores/clears at 0xC2AC; loads/math at 0xC31A, 0xC31F.
+- `0x243F`: `6` scanned refs; stores/clears at 0xC131, 0xC93E; loads/math at 0xC0A3, 0xC0B5, 0xC1E9, 0xC938.
+- `0x244C`: `2` scanned refs; stores/clears at 0xC13E; loads/math at 0xC1F8.
+- `0x245E`: `3` scanned refs; stores/clears at 0xC141, 0xC1FB; loads/math at -.
+- `0x2483`: `4` scanned refs; stores/clears at 0xBEEA, 0xCB8C; loads/math at 0xBEF2.
+- `0x2484`: `3` scanned refs; stores/clears at 0xBE93, 0xCB86; loads/math at 0xBEAF.
+- `0x2486`: `2` scanned refs; stores/clears at 0xBEA0, 0xCB7D; loads/math at -.
+- `0x2488`: `1` scanned refs; stores/clears at 0xBECB; loads/math at -.
+- `0x248D`: `3` scanned refs; stores/clears at 0xBF19, 0xBF20; loads/math at 0xBF49.
+- `0x248E`: `2` scanned refs; stores/clears at 0xBF3F, 0xBF46; loads/math at -.
+- `0x249B`: `6` scanned refs; stores/clears at 0xCBB4, 0xCBCA, 0xCC9B, 0xCE14; loads/math at 0xCE04, 0xCE5B.
+- `0x24AB`: `2` scanned refs; stores/clears at 0xD134; loads/math at 0xCD51.
+- `0x24AC`: `2` scanned refs; stores/clears at 0xD140; loads/math at 0xCD04.
+- `0x24AD`: `2` scanned refs; stores/clears at 0xD151; loads/math at 0xCD0A.
+- `0x24AF`: `2` scanned refs; stores/clears at 0xD15D; loads/math at 0xCD8C.
+- `0x24B0`: `6` scanned refs; stores/clears at 0xCDB9, 0xCDCB, 0xCDE2, 0xCDFE; loads/math at 0xCDC3, 0xCDDA.
 - `0x2584`: `3` scanned refs; stores/clears at 0xE4F9, 0xE58D; loads/math at 0xE663.
 - `0x2590`: `3` scanned refs; stores/clears at 0xE3F4, 0xE4DB; loads/math at 0xE65E.
 - `0x2596`: `6` scanned refs; stores/clears at 0xE780, 0xE924; loads/math at 0xE903, 0xE913, 0xE921, 0xE92E.
@@ -165,12 +427,16 @@ Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:
 - `0x100B`: `3` scanned refs; stores/clears at 0x75B7, 0xB549, 0xD346; loads/math at -.
 - `0x100E`: `30` scanned refs; stores/clears at -; loads/math at 0x4FA7, 0x4FD3, 0x51BE, 0x53A3, 0x5880, 0x6CEC, 0x6EF5, 0x6FC8, 0x705F, 0x71D0.
 - `0x1016`: `3` scanned refs; stores/clears at 0x6EFB, 0x6FC5; loads/math at 0x4E13.
+- `0x1018`: `18` scanned refs; stores/clears at 0x75CF, 0x75E3, 0x7984, 0x79B9, 0x79FE, 0x7A24, 0x7C29, 0x7C52, 0x7F57, 0x7F86; loads/math at 0x7F52, 0x7FA8, 0x7FBE, 0x7FC6, 0x7FD9.
 - `0x101A`: `13` scanned refs; stores/clears at 0x6CEF, 0x7085, 0x7096, 0x70D7, 0x70F9, 0x71D3, 0xA939, 0xAC32, 0xAC54, 0xACAD; loads/math at 0x70C1, 0x70D4, 0x70E8.
+- `0x101C`: `9` scanned refs; stores/clears at 0x4FAD, 0x4FD9, 0x5045, 0xBC6A, 0xBC8C, 0xBCB4, 0xDEFD; loads/math at 0x503F, 0xBCAB.
 - `0x1020`: `8` scanned refs; stores/clears at 0x6D3C, 0x6DB2, 0xB544, 0xB951, 0xD82C; loads/math at 0x5BB3, 0x6BD5.
 - `0x1022`: `5` scanned refs; stores/clears at 0x4F1D, 0x6BF0, 0x6DAC, 0xD82F; loads/math at 0x6BCF.
 - `0x1023`: `39` scanned refs; stores/clears at 0x4FB2, 0x4FDE, 0x504A, 0x50D6, 0x5145, 0x519A, 0x51A7, 0x538C, 0x54B2, 0x5561; loads/math at 0x512C, 0x5183, 0x5259, 0x546B, 0x54A3.
-- `0x20EB`: `4` scanned refs; stores/clears at 0xBB9A, 0xBD39; loads/math at 0xBC67, 0xBC7A.
-- `0x20ED`: `4` scanned refs; stores/clears at 0xBB9D, 0xBD4F; loads/math at 0xBCB1, 0xBCC1.
+- `0x1028`: `4` scanned refs; stores/clears at 0x9EF4, 0x9EFC, 0xA01B, 0xA01E; loads/math at -.
+- `0x1029`: `20` scanned refs; stores/clears at -; loads/math at 0x9EEC, 0x9F06, 0x9F1C, 0x9F34, 0x9F44, 0x9F52, 0x9F60, 0x9F6E, 0x9F7C, 0x9F8A.
+- `0x102A`: `19` scanned refs; stores/clears at 0x9F37, 0x9F47, 0x9F55, 0x9F63, 0x9F71, 0x9F7F, 0x9F8D, 0x9F9B, 0x9FAA, 0x9FB8; loads/math at 0x9EEF, 0xA009.
+- `0x1050`: `40` scanned refs; stores/clears at 0x4F3E, 0x50E8, 0x50F0, 0x514D, 0x51B3, 0x51C8, 0x51F7, 0x530A, 0x531C, 0x5398; loads/math at 0x50E3, 0x50EB, 0x5148, 0x51AE, 0x51C3, 0x51F2, 0x5305, 0x5317, 0x5393, 0x5408.
 - `0x242B`: `3` scanned refs; stores/clears at 0xBD1B; loads/math at 0xBC64, 0xBC76.
 - `0x242D`: `2` scanned refs; stores/clears at 0xBCAE; loads/math at 0xBCBD.
 - `0x20BC`: `2` scanned refs; stores/clears at 0xBAB1, 0xBBEC; loads/math at -.
