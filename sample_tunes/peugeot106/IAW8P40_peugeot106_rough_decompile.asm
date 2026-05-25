@@ -21,6 +21,8 @@
 ;     later load/MAP-like axis used by spark and other maps.
 ;   * $8A52 is a 19-cell $2044-indexed strategy limit/clamp vector, not a main
 ;     fuel or spark map.
+;   * XDF-confirmed/code-referenced table metadata is mirrored here as labels and
+;     comments. When a physical role is not yet proven, the label stays generic.
 ;
 ;===============================================================================
 ;                             CPU / MEMORY MODEL
@@ -74,15 +76,18 @@ RAM_ADC_200C            EQU     $200C
 RAM_ADC_200D            EQU     $200D
 RAM_ADC_200E            EQU     $200E
 RAM_PROC_2013           EQU     $2013
+RAM_AXIS_SRC_2014       EQU     $2014      ; candidate sensor/state axis source for $869A
 RAM_THR_DELTA_2017      EQU     $2017      ; max(0, $00C9 - $0011), axis input for $9187
 RAM_LOAD_AXIS_2034      EQU     $2034      ; final load/MAP-like 8.8 axis
 RAM_RPM_AXIS_2036       EQU     $2036      ; RPM-normalized 8.8 axis
 RAM_AXIS_2044           EQU     $2044      ; 19-cell speed/RPM-like vector index
+RAM_AXIS_2046           EQU     $2046      ; secondary transient/state axis for $8A0A
 RAM_SPARK_BANK_SEL      EQU     $20B1      ; nonzero => $8A69, zero => $8B41
 RAM_VEC_89F3_OUT        EQU     $20BC
 RAM_VEC_8A52_OUT        EQU     $20E6      ; output of vector $8A52; used as clamp/limit
 RAM_VEC_89C7_OUT        EQU     $20E7
 RAM_VEC_89DA_OUT        EQU     $20E8
+RAM_TABLE_85BA_OUT      EQU     $2063
 RAM_SPARK_ACCUM_2147    EQU     $2147      ; spark-angle accumulator/intermediate
 RAM_SPARK_OUT_2148      EQU     $2148
 RAM_LIMIT_FLAG_214F     EQU     $214F
@@ -90,21 +95,53 @@ RAM_CHECKSUM_PTR        EQU     $2188
 RAM_CHECKSUM_SUM        EQU     $218A
 RAM_DESC_9187           EQU     $218D      ; 7-byte B2D6 descriptor for table $9187
 RAM_DESC_SPARK          EQU     $213A      ; 7-byte B2D6 descriptor for spark tables
+RAM_DESC_TABLE_869A     EQU     $238A
+RAM_TABLE_869A_OUT      EQU     $2391
+RAM_TABLE_9073_REF      EQU     $243C
+RAM_TABLE_888E_OUT      EQU     $2484
+RAM_TABLE_8E6F_OUT      EQU     $24AB
+RAM_TABLE_8F1C_OUT      EQU     $24AC
+RAM_TABLE_8F71_OUT      EQU     $24AD
+RAM_TABLE_8EC7_OUT      EQU     $24AF
 
 ; ROM tables / constants
+CAL_SPARK_BANK_SEED     EQU     $800A
 CHK_WORD                EQU     $800C
 CHK_TARGET              EQU     $800E
-CAL_SPARK_BANK_SEED     EQU     $800A
+DIAG_EVENT_TABLE_55A0   EQU     $55A0      ; diagnostic/event code table, 18 cells
 TABLE_FUEL_CAND_802E    EQU     $802E      ; strongest unconfirmed fuel/VE candidate
+TABLE_CONF_85BA         EQU     $85BA      ; code-confirmed 24x5, axes $2034/$2036
+TABLE_CONF_869A         EQU     $869A      ; code-confirmed 24x9, axes $2014-derived/$2036
+TABLE_CONF_87B1         EQU     $87B1      ; code-confirmed 24x9 zero table, axes $2034/$2036
+TABLE_CONF_888E         EQU     $888E      ; code-confirmed 24x9, axes $2034/$2036
+VEC_89C7_BASE           EQU     $89C7      ; $2044-indexed 19-cell vector
+VEC_89DA_BASE           EQU     $89DA      ; $2044-indexed 19-cell vector
+SCALAR_BLOCK_89ED       EQU     $89ED      ; code-referenced 1x6 control scalars
+VEC_89F3_BASE           EQU     $89F3      ; $2044-indexed 19-cell MOD2-touched vector
+TABLE_CONF_8A0A         EQU     $8A0A      ; code-confirmed 5x5, axes $2034/$2046
+VEC_8A27_BASE           EQU     $8A27      ; $2044-indexed 19-cell vector
+VEC_8A3A_BASE           EQU     $8A3A      ; $2044-indexed 19-cell vector
+SCALAR_BLOCK_8A4D       EQU     $8A4D      ; direct scalar/sentinel references
+VEC_STRATEGY_8A52       EQU     $8A52      ; $2044-indexed clamp/limit vector, 19 cells
+SCALAR_BLOCK_8A65       EQU     $8A65      ; direct scalar references before $8A68
+CAL_SPARK_SIGNED_OFFSET EQU     $8A68      ; code-confirmed signed offset byte
 TABLE_SPARK_HIGH        EQU     $8A69      ; likely high/default spark, 24x9, raw/2 deg
 TABLE_SPARK_LOW         EQU     $8B41      ; likely low/alternate spark, 24x9, raw/2 deg
 TABLE_WOT_SPARK         EQU     $8C19      ; 24-point RPM-only spark vector, raw/2 deg
+TABLE_CONF_8E6F         EQU     $8E6F      ; code-confirmed 17x5 cluster table
+TABLE_CONF_8EC7         EQU     $8EC7      ; code-confirmed 17x5 cluster table
+TABLE_CONF_8F1C         EQU     $8F1C      ; code-confirmed 17x5 cluster table
+TABLE_CONF_8F71         EQU     $8F71      ; code-confirmed 17x5 cluster table
+TABLE_CONF_9073         EQU     $9073      ; code-confirmed 11x9 state/ramp table
+TABLE_STATE_TRIPLES_9131 EQU    $9131      ; diagnostic/state descriptor triples, 19x3
 TABLE_LOAD_FACTOR_9187  EQU     $9187      ; load/air-charge factor, 24x9
+AXIS_SHARED_STRIDE_9290 EQU     $9290      ; observed stride/count byte used by some 24x9 users
 AXIS_LOAD_DELTA_9291    EQU     $9291      ; 9 breakpoints for $2017 into $9187
 AXIS_LOAD_DELTA_COUNT   EQU     $929A      ; count = 9
 AXIS_RPM_PERIOD_929E    EQU     $929E      ; 24 period words, 15000000/period ~= RPM
 AXIS_RPM_COUNT_92CE     EQU     $92CE      ; count = 24
-VEC_STRATEGY_8A52       EQU     $8A52      ; $2044-indexed clamp/limit vector, 19 cells
+AXIS_HELPER_92CF        EQU     $92CF      ; code-referenced 9-point helper vector
+AXIS_HELPER_92D8_COUNT  EQU     $92D8      ; count = 9 for one $92CF caller
 
 ; Interpolation helpers
 SUB_INTERP_1D           EQU     $B2AB
@@ -247,7 +284,9 @@ SENSOR_2007_TO_C9_5EEC:
 
                 ORG     $6344
 LOOKUP_LOAD_FACTOR_9187:
-; Code-confirmed 24x9 lookup.
+; XDF: "Load Model / Correction Factor Candidate 24x9 @ 0x9187".
+; Code-confirmed structure and MOD2-touched, but physical role is still
+; provisional: load-model, air-charge, fuel, or correction factor.
 ;
 ; X axis:
 ;   input byte  = RAM $2017 = max(0, $00C9 - $0011)
@@ -260,6 +299,7 @@ LOOKUP_LOAD_FACTOR_9187:
 ; Output:
 ;   A = interpolated raw byte from table $9187.
 ;   TAB returns value in B for caller.
+; XDF display hypothesis: raw/230. Do not treat as proven main fuel.
 ;
 6344:           LDAA    RAM_THR_DELTA_2017
 6347:           LDY     #RAM_DESC_9187
@@ -291,6 +331,8 @@ LOAD_FACTOR_TO_FINAL_LOAD_AXIS_5E74:
 BUILD_FINAL_LOAD_AXIS_2034:
 ; Convert raw load/aircharge word to final 8.8 load axis used by spark maps.
 ;   $2034 = min($00CE << 1, $07FF)
+; XDF names this a MAP/load kPa estimate axis and displays spark X labels as
+; rounded 0-100 kPa values. Exact ADC transfer remains unproven.
 41A1:           LDD     RAM_LOAD_RAW_CE
 41A3:           ASLD
 41A4:           CPD     #$07FF
@@ -328,6 +370,8 @@ UPDATE_PREVIOUS_CAPTURE_7701:
                 ORG     $D46D
 BUILD_RPM_AXIS_2036:
 ; Convert period-like $00BA to normalized RPM index $2036 using 24 word breakpoints.
+; XDF-confirmed 1x24 period/RPM axis: $929E-$92CD, count $92CE=$18.
+; Display labels use 15000000/period, giving about 550-7500 RPM.
 D46D:           LDX     #AXIS_RPM_PERIOD_929E
 D470:           LDAB    AXIS_RPM_COUNT_92CE
 D473:           DECB
@@ -347,6 +391,8 @@ D47F:           STD     RAM_RPM_AXIS_2036
                 ORG     $D482
 BUILD_2044_AXIS_D482:
 ; $2044 indexes the 19-cell vector family at $89C7-$8A67.
+; XDF keeps this as a speed/RPM-like strategy axis until the physical source is
+; fully named. It is not a spark-load axis.
 ;
 ; Pseudocode:
 ;   if $00D4 >= $1C20:
@@ -377,25 +423,28 @@ D498: .store:   STD     RAM_AXIS_2044
                 ORG     $BA5D
 LOOKUP_2044_VECTOR_FAMILY_BA5D:
 ; Common 1D vectors indexed by $2044. These are strategy/correction vectors.
+; XDF-confirmed members include $89C7, $89DA, $89F3, $8A27, $8A3A, and $8A52.
+; $89ED-$89F2, $8A4D-$8A51, and $8A65-$8A67 are exposed as scalar blocks where
+; direct references treat them separately from the vectors.
 ; $8A52 output at $20E6 is later used as an upper clamp/limit for several
 ; accumulated values, so it is not a main fuel or spark curve by itself.
 BA5D:           LDD     RAM_AXIS_2044
-BA60:           LDY     #$8A27
+BA60:           LDY     #VEC_8A27_BASE
 BA64:           JSR     SUB_INTERP_1D
 BA67:           STAA    $20DD
 
 BA6A:           LDD     RAM_AXIS_2044
-BA6D:           LDY     #$89C7
+BA6D:           LDY     #VEC_89C7_BASE
 BA71:           JSR     SUB_INTERP_1D_ALT
 BA74:           STAA    RAM_VEC_89C7_OUT
 
 BA77:           LDD     RAM_AXIS_2044
-BA7A:           LDY     #$89DA
+BA7A:           LDY     #VEC_89DA_BASE
 BA7E:           JSR     SUB_INTERP_1D
 BA81:           STAA    RAM_VEC_89DA_OUT
 
 BA84:           LDD     RAM_AXIS_2044
-BA87:           LDY     #$8A3A
+BA87:           LDY     #VEC_8A3A_BASE
 BA8B:           JSR     SUB_INTERP_1D
 BA8E:           STAA    $20D4
 
@@ -405,7 +454,7 @@ BA98:           JSR     SUB_INTERP_1D
 BA9B:           STAA    RAM_VEC_8A52_OUT
 
 BAA8:           LDD     RAM_AXIS_2044
-BAAB:           LDY     #$89F3
+BAAB:           LDY     #VEC_89F3_BASE
 BAAF:           JSR     SUB_INTERP_1D
 BAB2:           STAA    RAM_VEC_89F3_OUT
 
@@ -427,10 +476,13 @@ CBFF:           RTS
 
                 ORG     $48EE
 SPARK_LOOKUP_48EE:
-; Main banked spark lookup.
+; Main banked spark lookup. XDF-confirmed structure; octane/default naming is a
+; strong working label, not fully proven knock/fallback semantics.
 ;   If RAM $00A9 bit $20 is set, bypasses the 2D banked tables and uses RPM-only
 ;   vector $8C19.
 ;   Otherwise uses table $8A69 when $20B1 != 0, or $8B41 when $20B1 == 0.
+;   2D axes: X = RAM $2034 MAP/load estimate, Y = RAM $2036 RPM axis.
+;   2D and WOT spark values display as raw/2 degrees in the XDF.
 ;
 48EE:           LDD     #$0000
 48F1:           STD     RAM_SPARK_ACCUM_2147
@@ -457,7 +509,7 @@ SPARK_LOOKUP_48EE:
 4927:           JSR     SUB_INTERP_2D
 
 492A:           BRCLR   RAM_FLAGS_A2,#$02,.add_result
-492E:           LDAB    $8A68            ; optional signed offset byte
+492E:           LDAB    CAL_SPARK_SIGNED_OFFSET ; optional signed offset byte
 4931:           BPL     .store_offset
 4933:           COM     RAM_SPARK_ACCUM_2147
 4936: .store_offset:
@@ -511,8 +563,9 @@ LIMITER_HYSTERESIS_6F01:
                 ORG     $5AD8
 CHECKSUM_SERVICE_5AD8:
 ; Sums bytes through ROM and compares against $800E. Skips $B600-$B7FF.
+; XDF exposes $800C as Checksum Word and $800E as Checksum Complement/target.
 ; $800C is one's complement of $800E. Any ROM edit outside the skipped region
-; requires repairing both words.
+; requires repairing both big-endian words.
 ;
 ; Practical repair formula:
 ;   sum_without_pair = sum(bytes $4000-$FFFF excluding $800C-$800F)
@@ -662,9 +715,85 @@ D2F6:           BNE     .stack_fault
 ;                              TABLES AND AXES
 ;===============================================================================
 
+; This section mirrors the current XDF confirmed/code-referenced entries. Some
+; blocks are represented as labels and comments only so this remains a compact
+; reverse-engineering notebook rather than a full reassembly listing.
+
+                ORG     $55A0
+TABLE_55A0_DIAG_EVENT_CODES:
+; XDF diagnostics/service data: 1x18 raw event-code table.
+; Indexed by routine $5982 before it inserts/removes entries in event queue
+; RAM $004B-$005B. Service/status data, not a tune map.
+
+                ORG     $85BA
+TABLE_85BA_CONFIRMED_24X5:
+; XDF code-confirmed additional table: 24x5 B2D6 byte table.
+; Caller around $6E96 uses axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
+; Interpolated result is stored at RAM $2063. Physical role still open.
+
+                ORG     $869A
+TABLE_869A_CONFIRMED_24X9:
+; XDF code-confirmed additional table: 24x9 B2D6 byte table.
+; Used at $9B79-$9BB4. Axis 1 is derived from RAM $2014 at descriptor $238A;
+; axis 2 is RAM $2036 RPM. Interpolated result is stored at RAM $2391.
+
+                ORG     $87B1
+TABLE_87B1_CONFIRMED_24X9:
+; XDF code-confirmed additional table: 24x9 B2D6 byte table, all zero in stock.
+; Used at $7254-$729B with axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
+; Stride/count comes from $9290; result updates RAM $00BE.
+
+                ORG     $888E
+TABLE_888E_CONFIRMED_24X9:
+; XDF code-confirmed additional table: 24x9 B2D6 byte table.
+; Used at $BE74-$BE93 with axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
+; Result is stored at RAM $2484, then later combined with the $8970 vector result.
+
+                ORG     $8A0A
+TABLE_8A0A_CONFIRMED_5X5:
+; XDF code-confirmed additional table: 5x5 B2D6 byte table.
+; Used around $BA35 with axes RAM $2034 MAP/load estimate and RAM $2046
+; secondary transient/state axis. Result is stored at RAM $20BB.
+
+                ORG     $8E6F
+TABLE_8E6F_CONFIRMED_17X5:
+; XDF code-confirmed 17x5 cluster table used by $D105-$D15D.
+; Axis 1 is derived from RAM $00D0 minus $60 and limited to $0400; axis 2 is
+; RAM $2044. Result is stored at RAM $24AB. Physical role still open.
+
+                ORG     $8EC7
+TABLE_8EC7_CONFIRMED_17X5:
+; Same confirmed $D105-$D15D 17x5 cluster and axes as $8E6F.
+; Result is stored at RAM $24AF. Physical role still open.
+
+                ORG     $8F1C
+TABLE_8F1C_CONFIRMED_17X5:
+; Same confirmed $D105-$D15D 17x5 cluster and axes as $8E6F.
+; Result is stored at RAM $24AC. Physical role still open.
+
+                ORG     $8F71
+TABLE_8F71_CONFIRMED_17X5:
+; Same confirmed $D105-$D15D 17x5 cluster and axes as $8E6F.
+; Interpolated value is shifted down four bits and stored at RAM $24AD.
+
+                ORG     $9073
+TABLE_9073_CONFIRMED_11X9:
+; XDF code-confirmed additional table: 11x9 B2D6 byte table.
+; Used at $C282-$C2BE. Axis 1 comes from $9291 via $B383; axis 2 is derived
+; from RAM $2044 with a $0A00 transform. Compared with RAM $243C and used in a
+; ramp/state update. Physical role still open.
+
+                ORG     $9131
+TABLE_9131_STATE_DESCRIPTOR_TRIPLES:
+; XDF diagnostics/service data: 19x3 raw state descriptor triples.
+; Consumed by the $58F2 descriptor/state subsystem. This is not a normal tune
+; map and should stay separate from fuel/spark candidates.
+
                 ORG     $9291
 AXIS_9291_LOAD_DELTA:
-; 9-point nonlinear breakpoint axis for RAM $2017 into table $9187.
+; XDF code-referenced 1x9 helper breakpoint vector A.
+; Used by $B383 callers including $41E0 and the $9187 lookup at $6344.
+; Physical units remain provisional; do not call it a spark-load axis.
 ; Decimal: 0, 3, 11, 22, 37, 54, 89, 132, 201
     FCB $00,$03,$0B,$16,$25,$36,$59,$84,$C9
 AXIS_929A_LOAD_DELTA_COUNT:
@@ -678,9 +807,17 @@ AXIS_929E_RPM_PERIODS:
 AXIS_92CE_RPM_COUNT:
     FCB $18                 ; count = 24
 
+                ORG     $92CF
+AXIS_92CF_HELPER_B:
+; XDF code-referenced 1x9 helper breakpoint vector B.
+; Used by $B383/$B2AB caller groups around $4340, $5D00, and $5D7B.
+; Physical units remain provisional. Byte $92D8 is count=9 for one caller.
+; Bytes are left in the XDF as raw until the producer/consumer group is named.
+
                 ORG     $9187
 TABLE_9187_LOAD_AIRCHARGE_FACTOR:
-; Code-confirmed 24x9 table.
+; XDF: Load Model / Correction Factor Candidate 24x9 @ $9187.
+; Code-confirmed and MOD2-touched, but not proven main fuel.
 ; X axis: RAM $2017 through $9291 breakpoints.
 ; Y axis: RPM index $2036 from $929E period table.
 ; Display hypothesis: raw/230 or percent/factor-style; not final confirmed units.
@@ -736,30 +873,54 @@ TABLE_9187_LOAD_AIRCHARGE_FACTOR:
 
                 ORG     $8A52
 VEC_8A52_STRATEGY_LIMIT:
-; 19-cell vector indexed by $2044. Output stored to $20E6 and used as a clamp/limit.
+; XDF code-confirmed 1x19 vector indexed by RAM $2044.
+; Output stored to $20E6 and used as a clamp/limit, not a main fuel/spark map.
 ; Decimal: 18, 18, 18, 18, 24, 27, 30, 30, 34, 34, 34, 34, 32, 30, 26, 24, 22, 20, 24
     FCB $12,$12,$12,$12,$18,$1B,$1E,$1E,$22,$22,$22,$22,$20,$1E,$1A,$18,$16,$14,$18
 
                 ORG     $89C7
 VEC_89C7:
+; XDF code-confirmed 1x19 vector indexed by RAM $2044. MOD2 unchanged.
     FCB $11,$11,$11,$11,$11,$11,$11,$11,$11,$11,$11,$11,$0E,$0E,$0E,$0E,$0E,$0E,$0E
                 ORG     $89DA
 VEC_89DA:
+; XDF code-confirmed 1x19 vector indexed by RAM $2044. MOD2 unchanged.
     FCB $20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$1E,$1C,$1A,$18,$16,$14
+                ORG     $89ED
+SCALARS_89ED_CONTROL:
+; XDF code-referenced 1x6 scalar/control block between vectors $89DA and $89F3.
+; Keep raw until the direct consumers are named.
                 ORG     $89F3
 VEC_89F3_MOD2_TOUCHED:
-; Code-confirmed 1x19 vector, MOD2 touched. Likely correction/enrichment/strategy.
+; XDF code-confirmed 1x19 vector indexed by RAM $2044, MOD2 touched.
+; Likely correction/enrichment/strategy; physical role remains provisional.
     FCB $40,$46,$4B,$50,$55,$5A,$5F,$78,$90,$90,$96,$96,$90,$A5,$AA,$A0,$9B,$96,$82
                 ORG     $8A27
 VEC_8A27:
+; XDF code-confirmed 1x19 vector indexed by RAM $2044. MOD2 unchanged.
     FCB $06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06,$06
                 ORG     $8A3A
 VEC_8A3A:
+; XDF code-confirmed 1x19 vector indexed by RAM $2044. MOD2 unchanged.
     FCB $20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,$20
+                ORG     $8A4D
+SCALARS_8A4D_CONTROL:
+; XDF code-referenced 1x5 scalar/sentinel block after vector $8A3A.
+; Direct references include $8A4D, $8A4F, and $8A51.
+                ORG     $8A65
+SCALARS_8A65_CONTROL:
+; XDF code-referenced 1x3 scalar block before the signed offset byte.
+; Direct references include $8A65, $8A66, and $8A67.
+                ORG     $8A68
+BYTE_8A68_SPARK_SIGNED_OFFSET:
+; XDF code-confirmed signed offset byte used by the spark path when enabled.
 
                 ORG     $8A69
 TABLE_8A69_SPARK_HIGH_DEFAULT:
 ; Code-confirmed 24x9. Likely spark high/default. Display raw/2 deg.
+; Axes: X = RAM $2034 MAP/load estimate; Y = RAM $2036 RPM.
+; Stock $800A underflows to runtime $20B1=$FF, so this nonzero-selected bank is
+; the stock/default path. Exact high-octane naming remains provisional.
 ; Raw rows:
 ;   row 00:  52  52  52  42  42  42  42  42  16
 ;   row 01:  44  44  44  42  42  42  42  42  22
@@ -813,6 +974,9 @@ TABLE_8A69_SPARK_HIGH_DEFAULT:
                 ORG     $8B41
 TABLE_8B41_SPARK_LOW_ALTERNATE:
 ; Code-confirmed 24x9. Likely spark low/alternate. Display raw/2 deg.
+; Axes: X = RAM $2034 MAP/load estimate; Y = RAM $2036 RPM.
+; Selected when runtime $20B1 is zero. Usually lower in high-load columns than
+; $8A69, but not lower everywhere; exact low-octane naming remains provisional.
 ; Raw rows:
 ;   row 00:  30  38  38  38  38  28  20  20  20
 ;   row 01:  20  42  42  42  48  32  24  20  20
@@ -865,13 +1029,15 @@ TABLE_8B41_SPARK_LOW_ALTERNATE:
 
                 ORG     $8C19
 VEC_8C19_WOT_SPARK:
-; RPM-only spark vector used when RAM $00A9 bit $20 bypasses banked 2D spark.
+; XDF confirmed-category 1x24 RPM-only spark vector, display raw/2 deg.
+; Used when RAM $00A9 bit $20 bypasses banked 2D spark. Likely WOT/fallback.
     FCB $10,$16,$19,$1C,$1E,$24,$28,$2A,$2D,$2F,$33,$37,$3A,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E
 
                 ORG     $802E
 TABLE_802E_FUEL_VE_AIRCHARGE_CANDIDATE:
 ; Strongest current fuel-side candidate, but not code-confirmed main fuel.
 ; Preferred visual alignment is 21x9. MOD2 changes are clean positive deltas.
+; XDF keeps raw display; raw/2.55 is only a percent/VE-style visualization lead.
 ; Do not call this final main fuel until a consumer path reaches pulse width,
 ; injection time, lambda/open-loop correction, or final fuel scheduling.
 ; Raw decimal rows:

@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-    <fileversion>0.22</fileversion>
+    <fileversion>0.14</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.22 keeps the v0.21 structural work but shortens spark/RPM/helper-axis descriptions for TunerPro compatibility. Physical names remain provisional where noted.</description>
+    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.14 promotes the 21x9 view at 0x802E as the primary likely fuel/VE/air-charge correction candidate, demotes the overlapping 24x9 view to a boundary/debug view, keeps raw display while documenting raw / 2.55 as a visualization hypothesis, and keeps main fuel unconfirmed until a direct injection consumer is found.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -757,8 +757,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x218" flags="0x30">
-    <title>Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1</title>
-    <description>Low-confidence signed 8-bit working view for the adjacent structure after the primary 0x802E candidate. This replaces the earlier 23x9 view at 0x8106, which started three bytes into a row. At 0x80F1, MOD2 changes align as repeated 9-cell row chunks, and signed display removes the apparent byte-wrap cliffs. This is likely tune-related and may be a continuation, secondary correction, or enrichment structure, but it is not proven main fuel. Axes remain raw index labels until a code consumer proves the physical axes.</description>
+    <title>Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106</title>
+    <description>Low-confidence working view for the lower adjacent structure after the upper 24x9 candidate at 0x802E. MOD2 changes 72 of 207 cells, mostly columns 0-5 in parent rows 35-46. Several values wrap through 0xFF, so modulo-byte interpretation may matter. It is likely tune-related and may be a continuation, secondary correction, or enrichment structure, but it is not proven main fuel. It intentionally remains raw-indexed with parent row labels 24-46 until a code consumer proves its axes.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -768,15 +768,15 @@
     </XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>25</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" /><LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" />
-      <LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" /><LABEL index="19" value="19" /><LABEL index="20" value="20" /><LABEL index="21" value="21" /><LABEL index="22" value="22" /><LABEL index="23" value="23" /><LABEL index="24" value="24" />
+      <indexcount>23</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
+      <LABEL index="0" value="24" /><LABEL index="1" value="25" /><LABEL index="2" value="26" /><LABEL index="3" value="27" /><LABEL index="4" value="28" /><LABEL index="5" value="29" /><LABEL index="6" value="30" /><LABEL index="7" value="31" />
+      <LABEL index="8" value="32" /><LABEL index="9" value="33" /><LABEL index="10" value="34" /><LABEL index="11" value="35" /><LABEL index="12" value="36" /><LABEL index="13" value="37" /><LABEL index="14" value="38" /><LABEL index="15" value="39" />
+      <LABEL index="16" value="40" /><LABEL index="17" value="41" /><LABEL index="18" value="42" /><LABEL index="19" value="43" /><LABEL index="20" value="44" /><LABEL index="21" value="45" /><LABEL index="22" value="46" />
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x80F1" mmedelementsizebits="8" mmedrowcount="25" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype>
+      <EMBEDDEDDATA mmedaddress="0x8106" mmedelementsizebits="8" mmedrowcount="23" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype>
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
   </XDFTABLE>
@@ -914,8 +914,8 @@
 
   <XDFTABLE uniqueid="0x227" flags="0x30">
     <title>Code-Confirmed RPM Axis 1x24 @ 0x929E</title>
-    <description>Code-confirmed RPM axis. The main runtime uses X=0x929E and count byte 0x92CE=0x18 in helper 0xB3B9 to generate RAM 0x2036 from period-like RAM 0x00BA. Displayed RPM uses 15000000 / period. This axis feeds the spark banks and WOT spark vector.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>The main runtime uses X=0x929E and count byte 0x92CE=0x18 in the period-axis helper at 0xB3B9 to generate RAM 0x2036 from period-like RAM 0x00BA. Values are 16-bit timer periods. The displayed RPM estimate uses 15000000 / period, which gives the clean breakpoint set 550, 750, 850, 950, 1000, 1200, 1400, 1600, 1800, 2000, 2300, 2600, 2900, 3200, 3501, 3800, 4201, 4500, 5000, 5501, 6000, 6502, 7003, 7500.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" /><LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" /><LABEL index="19" value="19" /><LABEL index="20" value="20" /><LABEL index="21" value="21" /><LABEL index="22" value="22" /><LABEL index="23" value="23" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="rpm" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x929E" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>10000.000000</max><outputtype>1</outputtype><MATH equation="15000000 / X"><VAR id="X" /></MATH></XDFAXIS>
@@ -923,8 +923,8 @@
 
   <XDFTABLE uniqueid="0x228" flags="0x30">
     <title>Likely Spark Advance High Octane / Default 24x9 @ 0x8A69</title>
-    <description>Code-confirmed likely high-octane/default spark bank at 0x8A69. Routine 0x48EE selects this bank when RAM 0x20B1 is nonzero, uses runtime axes RAM 0x2034 and 0x2036, column count 9, and accumulates into the spark command path around RAM 0x2147. Values display as raw / 2 degrees. X labels are provisional rounded MAP/load kPa estimates; exact transfer remains unproven.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>Single retained view for the code-confirmed spark bank at 0x8A69. The routine at 0x48EE loads X with 0x8A69 when spark_bank_selector_state RAM 0x20B1 is nonzero, builds a B2D6 descriptor at 0x213A with axis 1 from RAM 0x2034 and axis 2 from RAM 0x2036, sets column count to 9, and accumulates the result into the spark-angle command path around RAM 0x2147. Stock 0x800A=0x00 underflows to runtime 0x20B1=0xFF, so stock behavior selects this bank by default. Values display plausibly as spark advance with X/2 degree scaling, and compared with 0x8B41 this bank generally has more high-load advance, supporting the likely high-octane/default label. X labels are provisional MAP/load values derived from the 0x2034 8.8 axis range and 100 kPa PRT03-family MAP sensor evidence; exact ECU transfer/scaling is still not proven.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8A69" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>0.000000</min><max>80.000000</max><outputtype>1</outputtype><MATH equation="X / 2"><VAR id="X" /></MATH></XDFAXIS>
@@ -932,8 +932,8 @@
 
   <XDFTABLE uniqueid="0x229" flags="0x30">
     <title>Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41</title>
-    <description>Code-confirmed likely low-octane/alternate spark bank at 0x8B41. Routine 0x48EE selects this bank when RAM 0x20B1 is zero, uses runtime axes RAM 0x2034 and 0x2036, column count 9, and accumulates into the spark command path around RAM 0x2147. Values display as raw / 2 degrees. X labels are provisional rounded MAP/load kPa estimates; exact transfer remains unproven.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>Single retained view for the alternate code-confirmed spark bank at 0x8B41. The routine at 0x48EE loads X with 0x8B41 when spark_bank_selector_state RAM 0x20B1 is zero, builds a B2D6 descriptor at 0x213A with axis 1 from RAM 0x2034 and axis 2 from RAM 0x2036, sets column count to 9, and accumulates the result into the spark-angle command path around RAM 0x2147. Byte 0x8C18 is row 23 column 8 of this bank. Values display plausibly as spark advance with X/2 degree scaling. Compared with 0x8A69, this bank is not simply lower everywhere: it has more advance in some mid-load cells, but is usually lower in high-load columns, supporting the likely low-octane/alternate label. X labels are provisional MAP/load values derived from the 0x2034 8.8 axis range and 100 kPa PRT03-family MAP sensor evidence; exact ECU transfer/scaling is still not proven.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8B41" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>0.000000</min><max>80.000000</max><outputtype>1</outputtype><MATH equation="X / 2"><VAR id="X" /></MATH></XDFAXIS>
@@ -941,8 +941,8 @@
 
   <XDFTABLE uniqueid="0x22A" flags="0x30">
     <title>Code-Referenced Axis Vector 1x9 @ 0x9291</title>
-    <description>Byte vector used by helper 0xB383 with count byte 0x929A=9. Confirmed callers include 0x41E0 and the 0x9187 lookup at 0x6344. Physical scaling is not named yet.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>Byte vector used by helper 0xB383 with count byte 0x929A=9. Confirmed callers include 0x41E0 and the 0x9187 table lookup at 0x6344. Physical scaling is not named yet.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9291" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -950,8 +950,8 @@
 
   <XDFTABLE uniqueid="0x22B" flags="0x30">
     <title>Code-Referenced Axis Vector 1x9 @ 0x92CF</title>
-    <description>Byte vector used by helper 0xB383/B2AB caller groups around 0x4340, 0x5D00, and 0x5D7B. Byte 0x92D8 is a count value of 9 for one caller. Physical scaling is not named yet.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>Byte vector used by helper 0xB383/B2AB caller groups around 0x4340, 0x5D00, and 0x5D7B. The following byte at 0x92D8 is a count value of 9 for one caller. Physical scaling is not named yet.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x92CF" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -959,8 +959,8 @@
 
   <XDFTABLE uniqueid="0x22C" flags="0x30">
     <title>Likely WOT Spark Advance Vector 1x24 @ 0x8C19</title>
-    <description>Likely WOT or fallback spark advance vector at 0x8C19. Code at 0x48F4 bypasses the banked 2D spark maps when RAM 0x00A9 bit 0x20 is set and calls helper 0xB2AB with Y=0x8C19 and D=RAM 0x2036. Values display as raw / 2 degrees. MOD2 does not change this vector.</description>
-    <CATEGORYMEM index="0" category="10" />
+    <description>Code at 0x48F4 bypasses the 0x8A69/0x8B41 banked 2D maps when RAM 0x00A9 bit 0x20 is set and instead calls the 1D interpolation helper at 0xB2AB with Y=0x8C19 and D=RAM 0x2036. Because 0x2036 is the RPM axis and the bytes display as plausible spark values with raw / 2 degree scaling, this is a likely wide-open-throttle or fallback spark advance vector. MOD2 does not change this vector.</description>
+    <CATEGORYMEM index="0" category="0xA" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="deg" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8C19" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>0.000000</min><max>80.000000</max><outputtype>1</outputtype><MATH equation="X / 2"><VAR id="X" /></MATH></XDFAXIS>

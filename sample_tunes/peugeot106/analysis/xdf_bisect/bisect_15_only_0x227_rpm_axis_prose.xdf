@@ -1,0 +1,3290 @@
+<!-- Written 05/25/2026 19:00:35 -->
+<XDFFORMAT version="1.80">
+  <XDFHEADER>
+    <flags>0x1</flags>
+    <fileversion>0.14</fileversion>
+    <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
+    <description>Reverse-engineering XDF for a 64 KiB 27C512 dump from Marelli IAW 8P.40. This definition is intentionally conservative and marks checksum words, known 68HC11 vector addresses, first-pass candidate regions, and table/vector candidates supported by stock-vs-MOD2 comparison and 68HC11 disassembly. Definitions are raw-byte views unless otherwise noted. Version 0.14 promotes the 21x9 view at 0x802E as the primary likely fuel/VE/air-charge correction candidate, demotes the overlapping 24x9 view to a boundary/debug view, keeps raw display while documenting raw / 2.55 as a visualization hypothesis, and keeps main fuel unconfirmed until a direct injection consumer is found.</description>
+    <author>OpenAI Codex</author>
+    <BASEOFFSET offset="0" subtract="0" />
+    <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
+    <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x10000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="Full 27C512 image" />
+    <CATEGORY index="0x0" name="Notes" />
+    <CATEGORY index="0x1" name="68HC11 Vectors" />
+    <CATEGORY index="0x2" name="Candidate Calibration Blocks" />
+    <CATEGORY index="0x3" name="Raw Block Views" />
+    <CATEGORY index="0x4" name="Checksum" />
+    <CATEGORY index="0x5" name="MOD2 Compared Candidates" />
+    <CATEGORY index="0x6" name="Scaled / Likely Named Views" />
+    <CATEGORY index="0x7" name="Code-Confirmed Additional Tables" />
+    <CATEGORY index="0x8" name="Diagnostics / Service Data" />
+    <CATEGORY index="0x9" name="Public Index Leads" />
+    <CATEGORY index="0xA" name="Confirmed" />
+  </XDFHEADER>
+  <XDFCONSTANT uniqueid="0x100">
+    <title>Reset Vector @ 0xFFFE</title>
+    <description>Likely 68HC11 reset vector. Expected to point into executable code.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFFE" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x101">
+    <title>SWI/IRQ Vector @ 0xFFF8</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFF8" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x102">
+    <title>Vector @ 0xFFFA</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFFA" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x103">
+    <title>Vector @ 0xFFFC</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFFC" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x104">
+    <title>Vector @ 0xFFF0</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFF0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x105">
+    <title>Vector @ 0xFFF2</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFF2" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x106">
+    <title>Vector @ 0xFFF4</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFF4" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x107">
+    <title>Vector @ 0xFFF6</title>
+    <CATEGORYMEM index="0" category="1" />
+    <EMBEDDEDDATA mmedaddress="0xFFF6" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>addr</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x110">
+    <title>Checksum Word @ 0x800C</title>
+    <description>16-bit big-endian checksum word. Stock value is 0x4A65; MOD2 value is 0x47BE. This word is the one&apos;s complement of the checksum complement word at 0x800E.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <EMBEDDEDDATA mmedaddress="0x800C" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x111">
+    <title>Checksum Complement @ 0x800E</title>
+    <description>16-bit big-endian checksum complement / additive byte sum target. Stock value is 0xB59A; MOD2 value is 0xB841. The firmware checksum routine compares the accumulated byte sum against this word.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <EMBEDDEDDATA mmedaddress="0x800E" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x112">
+    <title>MOD2 Changed 16-bit Scalar A @ 0x879E</title>
+    <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EB to 0x00FA. Code references were observed around 0x6F2A.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x113">
+    <title>MOD2 Changed 16-bit Scalar B @ 0x87A0</title>
+    <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EF to 0xFFFF. Code references were observed around 0x6F14.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <outputtype>3</outputtype>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x114">
+    <title>MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18</title>
+    <description>Single byte changed by MOD2 from 0x38 to 0x3C. Disassembly of the 0x48EE routine shows this is row 23 column 8 of the 24x9 bank at 0x8B41, not a separate adjacent vector.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <EMBEDDEDDATA mmedaddress="0x8C18" mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x115">
+    <title>Code-Confirmed Signed Offset Byte @ 0x8A68</title>
+    <description>The routine at 0x48EE sign-extends this byte and adds it to the 0x8A69/0x8B41 interpolated result when flag A2 bit 0x02 is set. Stock and MOD2 both store 0x00 here.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <EMBEDDEDDATA mmedaddress="0x8A68" mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x116">
+    <title>Likely RPM Limiter Set Threshold @ 0x879E</title>
+    <description>Code at 0x6F28 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and sets RAM 0x00A4 bit 0x10 if the period is below the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EB is about 7400 RPM; MOD2 0x00FA is about 60000 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>rpm</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="15000000 / X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x117">
+    <title>Likely RPM Limiter Clear Threshold @ 0x87A0</title>
+    <description>Code at 0x6F12 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and clears RAM 0x00A4 bit 0x10 when the period rises above the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EF is about 7386 RPM; MOD2 0xFFFF is about 229 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>rpm</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="15000000 / X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x118">
+    <title>Alternate RPM Threshold Set @ 0x87A2</title>
+    <description>Code at 0x6F24 uses this period threshold instead of 0x879E when RAM 0x214F is nonzero. Displayed as RPM using 15000000 / period. Stock 0x1770 is about 2500 RPM.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <EMBEDDEDDATA mmedaddress="0x87A2" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>rpm</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="15000000 / X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x119">
+    <title>Alternate RPM Threshold Clear @ 0x87A4</title>
+    <description>Code at 0x6F0E uses this period threshold instead of 0x87A0 when RAM 0x214F is nonzero. Displayed as RPM using 15000000 / period. Stock 0x1979 is about 2300 RPM.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <EMBEDDEDDATA mmedaddress="0x87A4" mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>rpm</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="15000000 / X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x11A">
+    <title>Spark Bank Selector Config @ 0x800A</title>
+    <description>Calibration byte loaded around 0xCBEF and decremented before storage to RAM 0x20B1. Runtime 0x20B1 selects the likely spark bank: nonzero selects 0x8A69, zero selects 0x8B41. Stock value is 0x00, which underflows to 0xFF after decrement, so stock runtime behavior selects the 0x8A69 bank.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <EMBEDDEDDATA mmedaddress="0x800A" mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+    <units>raw</units>
+    <datatype>0</datatype>
+    <unittype>0</unittype>
+    <DALINK index="0" />
+    <MATH equation="X">
+      <VAR id="X" />
+    </MATH>
+  </XDFCONSTANT>
+  <XDFTABLE uniqueid="0x200" flags="0x30">
+    <title>Raw 16x16 @ 0x5100</title>
+    <description>Structured region with lower entropy than surrounding code. Candidate constants or 1D/2D calibration bytes.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5100" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x201" flags="0x30">
+    <title>Raw 16x16 @ 0x5200</title>
+    <description>Continuation of 0x5100 candidate region.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5200" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x202" flags="0x30">
+    <title>Raw 16x16 @ 0x5300</title>
+    <description>Continuation of 0x5100 candidate region.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5300" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x203" flags="0x30">
+    <title>Raw 16x16 @ 0x8200</title>
+    <description>Candidate table region detected by lower local entropy. Good place to start manual map hunting.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8200" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x204" flags="0x30">
+    <title>Raw 16x16 @ 0x8300</title>
+    <description>Strong candidate map or axis area. One of the lowest-entropy structured windows in the file.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8300" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x205" flags="0x30">
+    <title>Raw 16x16 @ 0x8600</title>
+    <description>Structured block inside the densest candidate calibration cluster.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8600" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x206" flags="0x30">
+    <title>Raw 16x16 @ 0x8700</title>
+    <description>Very low-entropy candidate table region. May contain small correction tables or axes.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8700" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x207" flags="0x30">
+    <title>Raw 16x16 @ 0x8800</title>
+    <description>Contains smooth low-valued gradients and repeated values. High-priority manual inspection area.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8800" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x208" flags="0x30">
+    <title>Raw 16x16 @ 0x8E00</title>
+    <description>Another strong candidate map/correction area with repeated structured values.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8E00" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x209" flags="0x30">
+    <title>Raw 16x16 @ 0x9000</title>
+    <description>Continuation of the 0x8E00 structured cluster.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x9000" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x20A" flags="0x30">
+    <title>Raw 16x16 @ 0xB500</title>
+    <description>Late-file structured candidate block. May be correction constants or small maps.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0xB500" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x20B" flags="0x30">
+    <title>Raw 16x16 @ 0xFF00</title>
+    <description>Tail block that contains sparse data plus interrupt/reset vectors. Useful for sanity-checking end-of-ROM content.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="10.00" />
+      <LABEL index="2" value="20.00" />
+      <LABEL index="3" value="30.00" />
+      <LABEL index="4" value="40.00" />
+      <LABEL index="5" value="50.00" />
+      <LABEL index="6" value="60.00" />
+      <LABEL index="7" value="70.00" />
+      <LABEL index="8" value="80.00" />
+      <LABEL index="9" value="90.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0xFF00" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x20E" flags="0x30">
+    <title>Candidate Flag/Scalar Block 16x5 @ 0x8880</title>
+    <description>Mixed block containing zeros, a short scalar cluster, and a long run of 0x01 values before the triangular structure begins. Useful for inspecting setup bytes separately from the packed table at 0x88CA.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8880" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x210" flags="0x30">
+    <title>Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD</title>
+    <description>Historical visual slice retained only for screenshot continuity. This is not a standalone candidate map: later disassembly confirms the parent structure is the 24x9 B2D6 table at 0x888E, used around 0xBE74 with axes RAM 0x2034 and RAM 0x2036. Prefer the code-confirmed 24x9 @ 0x888E entry for analysis/editing.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x88CD" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x212" flags="0x30">
+    <title>MOD2 Compared Scalar Block 1x8 @ 0x879C</title>
+    <description>Eight-byte block around the changed 16-bit scalar pair. MOD2 changes bytes at 0x879E-0x87A1 from 07 EB 07 EF to 00 FA FF FF. Treat as raw until the referenced routine is fully decoded.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x879C" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x214" flags="0x30">
+    <title>Legacy Raw 0x8A68 Banked Block View 48x9</title>
+    <description>Legacy raw view retained for context. Disassembly of the 0x48EE routine shows 0x8A68 is a separate signed offset byte, followed by two code-selected 24x9 banks at 0x8A69 and 0x8B41.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>48</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <LABEL index="19" value="19.00" />
+      <LABEL index="20" value="20.00" />
+      <LABEL index="21" value="21.00" />
+      <LABEL index="22" value="22.00" />
+      <LABEL index="23" value="23.00" />
+      <LABEL index="24" value="24.00" />
+      <LABEL index="25" value="25.00" />
+      <LABEL index="26" value="26.00" />
+      <LABEL index="27" value="27.00" />
+      <LABEL index="28" value="28.00" />
+      <LABEL index="29" value="29.00" />
+      <LABEL index="30" value="30.00" />
+      <LABEL index="31" value="31.00" />
+      <LABEL index="32" value="32.00" />
+      <LABEL index="33" value="33.00" />
+      <LABEL index="34" value="34.00" />
+      <LABEL index="35" value="35.00" />
+      <LABEL index="36" value="36.00" />
+      <LABEL index="37" value="37.00" />
+      <LABEL index="38" value="38.00" />
+      <LABEL index="39" value="39.00" />
+      <LABEL index="40" value="40.00" />
+      <LABEL index="41" value="41.00" />
+      <LABEL index="42" value="42.00" />
+      <LABEL index="43" value="43.00" />
+      <LABEL index="44" value="44.00" />
+      <LABEL index="45" value="45.00" />
+      <LABEL index="46" value="46.00" />
+      <LABEL index="47" value="47.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A68" mmedelementsizebits="8" mmedrowcount="48" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x215" flags="0x30">
+    <title>Legacy Raw 1x32 View @ 0x8C18</title>
+    <description>Legacy raw view retained for context. Disassembly now shows 0x8C18 is the last cell of the 24x9 bank at 0x8B41, not the start of a separate adjacent vector.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>32</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <LABEL index="19" value="19.00" />
+      <LABEL index="20" value="20.00" />
+      <LABEL index="21" value="21.00" />
+      <LABEL index="22" value="22.00" />
+      <LABEL index="23" value="23.00" />
+      <LABEL index="24" value="24.00" />
+      <LABEL index="25" value="25.00" />
+      <LABEL index="26" value="26.00" />
+      <LABEL index="27" value="27.00" />
+      <LABEL index="28" value="28.00" />
+      <LABEL index="29" value="29.00" />
+      <LABEL index="30" value="30.00" />
+      <LABEL index="31" value="31.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8C18" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x217" flags="0x30">
+    <title>Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate</title>
+    <description>Alternate boundary/debug view for the 0x802E fuel-side candidate region. The first 21 rows are now preferred as the primary 21x9 fuel/VE/air-charge correction candidate because they match the public-index lead and form a coherent RPM/load surface. Rows 21-23 may be adjacent calibration or tail data until code proves otherwise. Keep this raw view for boundary inspection only; do not treat it as the primary map or as confirmed main fuel.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="128.00" />
+      <LABEL index="2" value="256.00" />
+      <LABEL index="3" value="384.00" />
+      <LABEL index="4" value="512.00" />
+      <LABEL index="5" value="640.00" />
+      <LABEL index="6" value="768.00" />
+      <LABEL index="7" value="896.00" />
+      <LABEL index="8" value="1024.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <LABEL index="21" value="6502.00" />
+      <LABEL index="22" value="7003.00" />
+      <LABEL index="23" value="7500.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x802E" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x218" flags="0x30">
+    <title>Likely Fuel/Enrichment Lower Adjacent Candidate 23x9 @ 0x8106</title>
+    <description>Low-confidence working view for the lower adjacent structure after the upper 24x9 candidate at 0x802E. MOD2 changes 72 of 207 cells, mostly columns 0-5 in parent rows 35-46. Several values wrap through 0xFF, so modulo-byte interpretation may matter. It is likely tune-related and may be a continuation, secondary correction, or enrichment structure, but it is not proven main fuel. It intentionally remains raw-indexed with parent row labels 24-46 until a code consumer proves its axes.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>25</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <LABEL index="19" value="19.00" />
+      <LABEL index="20" value="20.00" />
+      <LABEL index="21" value="21.00" />
+      <LABEL index="22" value="22.00" />
+      <LABEL index="23" value="23.00" />
+      <LABEL index="24" value="24.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x80F1" mmedelementsizebits="8" mmedrowcount="25" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>-128.000000</min>
+      <max>127.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x21B" flags="0x30">
+    <title>Code-Referenced Control Scalars 1x6 @ 0x89ED</title>
+    <description>Control/scalar bytes referenced by routines around 0xBAA8-0xBB96. Known direct loads include 0x89ED, 0x89F0, and 0x89F2; 0x89EE/0x89EF are also used as Y-pointer offsets into the BB3F helper. Keep raw until the surrounding state variables are named.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>6</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="89.00" />
+      <LABEL index="1" value="89.00" />
+      <LABEL index="2" value="89.00" />
+      <LABEL index="3" value="89.00" />
+      <LABEL index="4" value="89.00" />
+      <LABEL index="5" value="89.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x89ED" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="6" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x21C" flags="0x30">
+    <title>Likely Speed/Transient Correction Vector 1x19 @ 0x89F3</title>
+    <description>Medium-confidence working view for the code-confirmed 1D byte vector at 0x89F3. The routine around 0xBAA8 loads Y with 0x89F3, loads D from RAM 0x2044, and calls the 1D interpolation helper at 0xB2AB. MOD2 changes 16 of 19 cells, so it is likely a speed, transient, or enrichment correction vector, but RAM 0x2044 is not fully named yet. Keep raw scaling.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x89F3" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x21E" flags="0x30">
+    <title>Code-Confirmed 1D Vector 1x19 @ 0x89C7</title>
+    <description>The routine around 0xBA6A loads D from RAM 0x2044, loads Y with 0x89C7, and calls the related 1D interpolation helper at 0xB2BA. MOD2 does not change this vector.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x89C7" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x21F" flags="0x30">
+    <title>Code-Confirmed 1D Vector 1x19 @ 0x89DA</title>
+    <description>The routine around 0xBA77 loads D from RAM 0x2044, loads Y with 0x89DA, and calls the 1D interpolation helper at 0xB2AB. Bytes 0x89ED-0x89F2 are separate control scalars, so this vector is exposed as 19 cells.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x89DA" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x220" flags="0x30">
+    <title>Code-Confirmed 1D Vector 1x19 @ 0x8A27</title>
+    <description>The routine around 0xBA5D loads D from RAM 0x2044, loads Y with 0x8A27, and calls the 1D interpolation helper at 0xB2AB. MOD2 does not change this vector.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A27" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x221" flags="0x30">
+    <title>Code-Confirmed 1D Vector 1x19 @ 0x8A3A</title>
+    <description>The routine around 0xBA84 loads D from RAM 0x2044, loads Y with 0x8A3A, and calls the 1D interpolation helper at 0xB2AB. Bytes 0x8A4D-0x8A51 are exposed separately because direct code references treat them as scalars/sentinels.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A3A" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x222" flags="0x30">
+    <title>Code-Confirmed 1D Vector 1x19 @ 0x8A52</title>
+    <description>The routine around 0xBA91 loads D from RAM 0x2044, loads Y with 0x8A52, and calls the 1D interpolation helper at 0xB2AB. Bytes 0x8A65-0x8A67 are exposed separately because direct code references treat them as scalars.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A52" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x223" flags="0x30">
+    <title>Code-Referenced Scalar Block 1x5 @ 0x8A4D</title>
+    <description>Scalar/sentinel bytes between the 0x8A3A vector and the 0x8A52 vector. Direct references include 0x8A4D, 0x8A4F, and 0x8A51; keep raw until the surrounding routines are fully named.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="8.00" />
+      <LABEL index="1" value="8.00" />
+      <LABEL index="2" value="8.00" />
+      <LABEL index="3" value="8.00" />
+      <LABEL index="4" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A4D" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x224" flags="0x30">
+    <title>Code-Referenced Scalar Block 1x3 @ 0x8A65</title>
+    <description>Scalar bytes between the 0x8A52 vector and the signed offset byte at 0x8A68. Direct references include 0x8A65, 0x8A66, and 0x8A67.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>3</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="8.00" />
+      <LABEL index="1" value="8.00" />
+      <LABEL index="2" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A65" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="3" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x225" flags="0x30">
+    <title>Code-Confirmed 2D Table 24x5 @ 0x85BA</title>
+    <description>The routine around 0x6E96 builds a B2D6 descriptor using RAM 0x2034 and RAM 0x2036, sets base 0x85BA, uses stride 5, and stores the interpolated result at RAM 0x2063. MOD2 does not change this table.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <LABEL index="19" value="19.00" />
+      <LABEL index="20" value="20.00" />
+      <LABEL index="21" value="21.00" />
+      <LABEL index="22" value="22.00" />
+      <LABEL index="23" value="23.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x85BA" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x226" flags="0x30">
+    <title>Code-Confirmed 2D Table 5x5 @ 0x8A0A</title>
+    <description>The routine around 0xBA35 builds a B2D6 descriptor using RAM 0x2034 and RAM 0x2046, sets base 0x8A0A, uses stride 5, and stores the interpolated result at RAM 0x20BB. The following bytes 0x8A23-0x8A27 appear to act as scalars/sentinel data before the 0x8A27 vector.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A0A" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x227" flags="0x30">
+    <title>Code-Confirmed RPM Axis 1x24 @ 0x929E</title>
+    <description>The main runtime uses X=0x929E and count byte 0x92CE=0x18 in the period-axis helper at 0xB3B9 to generate RAM 0x2036 from period-like RAM 0x00BA. Values are 16-bit timer periods. The displayed RPM estimate uses 15000000 / period, which gives the clean breakpoint set 550, 750, 850, 950, 1000, 1200, 1400, 1600, 1800, 2000, 2300, 2600, 2900, 3200, 3501, 3800, 4201, 4500, 5000, 5501, 6000, 6502, 7003, 7500. This axis is code-confirmed because it produces runtime RPM axis RAM 0x2036 for the spark banks and WOT spark vector.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="10.00" />
+      <LABEL index="11" value="11.00" />
+      <LABEL index="12" value="12.00" />
+      <LABEL index="13" value="13.00" />
+      <LABEL index="14" value="14.00" />
+      <LABEL index="15" value="15.00" />
+      <LABEL index="16" value="16.00" />
+      <LABEL index="17" value="17.00" />
+      <LABEL index="18" value="18.00" />
+      <LABEL index="19" value="19.00" />
+      <LABEL index="20" value="20.00" />
+      <LABEL index="21" value="21.00" />
+      <LABEL index="22" value="22.00" />
+      <LABEL index="23" value="23.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x929E" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>10000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="15000000 / X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x228" flags="0x30">
+    <title>Likely Spark Advance High Octane / Default 24x9 @ 0x8A69</title>
+    <description>Single retained view for the code-confirmed spark bank at 0x8A69. The routine at 0x48EE loads X with 0x8A69 when spark_bank_selector_state RAM 0x20B1 is nonzero, builds a B2D6 descriptor at 0x213A with axis 1 from RAM 0x2034 and axis 2 from RAM 0x2036, sets column count to 9, and accumulates the result into the spark-angle command path around RAM 0x2147. Stock 0x800A=0x00 underflows to runtime 0x20B1=0xFF, so stock behavior selects this bank by default. Values display plausibly as spark advance with X/2 degree scaling, and compared with 0x8B41 this bank generally has more high-load advance, supporting the likely high-octane/default label. X labels are provisional MAP/load values derived from the 0x2034 8.8 axis range and 100 kPa PRT03-family MAP sensor evidence; exact ECU transfer/scaling is still not proven.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="13.00" />
+      <LABEL index="2" value="25.00" />
+      <LABEL index="3" value="38.00" />
+      <LABEL index="4" value="50.00" />
+      <LABEL index="5" value="63.00" />
+      <LABEL index="6" value="75.00" />
+      <LABEL index="7" value="88.00" />
+      <LABEL index="8" value="100.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <LABEL index="21" value="6502.00" />
+      <LABEL index="22" value="7003.00" />
+      <LABEL index="23" value="7500.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8A69" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>80.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 2">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x229" flags="0x30">
+    <title>Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41</title>
+    <description>Single retained view for the alternate code-confirmed spark bank at 0x8B41. The routine at 0x48EE loads X with 0x8B41 when spark_bank_selector_state RAM 0x20B1 is zero, builds a B2D6 descriptor at 0x213A with axis 1 from RAM 0x2034 and axis 2 from RAM 0x2036, sets column count to 9, and accumulates the result into the spark-angle command path around RAM 0x2147. Byte 0x8C18 is row 23 column 8 of this bank. Values display plausibly as spark advance with X/2 degree scaling. Compared with 0x8A69, this bank is not simply lower everywhere: it has more advance in some mid-load cells, but is usually lower in high-load columns, supporting the likely low-octane/alternate label. X labels are provisional MAP/load values derived from the 0x2034 8.8 axis range and 100 kPa PRT03-family MAP sensor evidence; exact ECU transfer/scaling is still not proven.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="13.00" />
+      <LABEL index="2" value="25.00" />
+      <LABEL index="3" value="38.00" />
+      <LABEL index="4" value="50.00" />
+      <LABEL index="5" value="63.00" />
+      <LABEL index="6" value="75.00" />
+      <LABEL index="7" value="88.00" />
+      <LABEL index="8" value="100.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <LABEL index="21" value="6502.00" />
+      <LABEL index="22" value="7003.00" />
+      <LABEL index="23" value="7500.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8B41" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>80.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 2">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22A" flags="0x30">
+    <title>Code-Referenced Axis Vector 1x9 @ 0x9291</title>
+    <description>Byte vector used by helper 0xB383 with count byte 0x929A=9. Confirmed callers include 0x41E0 and the 0x9187 table lookup at 0x6344. Physical scaling is not named yet.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x9291" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22B" flags="0x30">
+    <title>Code-Referenced Axis Vector 1x9 @ 0x92CF</title>
+    <description>Byte vector used by helper 0xB383/B2AB caller groups around 0x4340, 0x5D00, and 0x5D7B. The following byte at 0x92D8 is a count value of 9 for one caller. Physical scaling is not named yet.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x92CF" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22C" flags="0x30">
+    <title>Likely WOT Spark Advance Vector 1x24 @ 0x8C19</title>
+    <description>Code at 0x48F4 bypasses the 0x8A69/0x8B41 banked 2D maps when RAM 0x00A9 bit 0x20 is set and instead calls the 1D interpolation helper at 0xB2AB with Y=0x8C19 and D=RAM 0x2036. Because 0x2036 is the RPM axis and the bytes display as plausible spark values with raw / 2 degree scaling, this is a likely wide-open-throttle or fallback spark advance vector. MOD2 does not change this vector.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <LABEL index="21" value="6502.00" />
+      <LABEL index="22" value="7003.00" />
+      <LABEL index="23" value="7500.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8C19" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>80.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 2">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22D" flags="0x30">
+    <title>Load Model / Correction Factor Candidate 24x9 @ 0x9187</title>
+    <description>Medium-high structural confidence view for the code-confirmed 0x9187 24x9 lookup. The routine at 0x6344 builds a B2D6 descriptor at RAM 0x218D, derives one axis through helper 0xB383 using vector 0x9291 and count/stride byte 0x929A=9, loads the second axis from RPM-like RAM 0x2036, sets base 0x9187, and returns the interpolated byte. Known callers store the result at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display with X / 230. Likely load-model, air, fuel, or correction factor; not proven main fuel.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="3.00" />
+      <LABEL index="2" value="11.00" />
+      <LABEL index="3" value="22.00" />
+      <LABEL index="4" value="37.00" />
+      <LABEL index="5" value="54.00" />
+      <LABEL index="6" value="89.00" />
+      <LABEL index="7" value="132.00" />
+      <LABEL index="8" value="201.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <LABEL index="21" value="6502.00" />
+      <LABEL index="22" value="7003.00" />
+      <LABEL index="23" value="7500.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x9187" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>2.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 230">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22E" flags="0x30">
+    <title>Code-Confirmed 2D Table 24x9 @ 0x869A</title>
+    <description>B2D6 table used at 0x9B79-0x9BB4. Axis 1 is derived from RAM 0x2014 and stored at descriptor 0x238A. Axis 2 is RAM 0x2036. The interpolated byte is stored at RAM 0x2391. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x869A" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x22F" flags="0x30">
+    <title>Code-Confirmed 2D Table 24x9 @ 0x87B1</title>
+    <description>B2D6 table used at 0x7254-0x729B. Axes are RAM 0x2034 and RAM 0x2036, base is 0x87B1, and stride comes from 0x9290. The interpolated byte updates RAM 0x00BE. This table is all zero in the stock file and is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x87B1" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x230" flags="0x30">
+    <title>Code-Confirmed 2D Table 24x9 @ 0x888E</title>
+    <description>B2D6 table used at 0xBE74-0xBE93. Axes are RAM 0x2034 and RAM 0x2036, base is 0x888E, and stride comes from 0x9290. The interpolated byte is stored at RAM 0x2484 and later combined with the 0x8970 vector result. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <LABEL index="17" value="0.00" />
+      <LABEL index="18" value="0.00" />
+      <LABEL index="19" value="0.00" />
+      <LABEL index="20" value="0.00" />
+      <LABEL index="21" value="0.00" />
+      <LABEL index="22" value="0.00" />
+      <LABEL index="23" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x888E" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x231" flags="0x30">
+    <title>Code-Confirmed 2D Table 11x9 @ 0x9073</title>
+    <description>B2D6 table used at 0xC282-0xC2BE. Axis 1 is generated from vector 0x9291 by helper 0xB383. Axis 2 is derived from RAM 0x2044 with a 0x0A00 transform. The interpolated byte is compared with RAM 0x243C and drives a ramp/state update. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x9073" mmedelementsizebits="8" mmedrowcount="11" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x232" flags="0x30">
+    <title>Code-Confirmed 2D Table 17x5 @ 0x8E6F</title>
+    <description>B2D6 table used by the cluster at 0xD105-0xD15D. Axis 1 is derived from RAM 0x00D0 minus 0x60, then limited to a 0x0400 range. Axis 2 is RAM 0x2044. This bounded 17x5 view follows the clean table boundary before 0x8EC7. The result is stored at RAM 0x24AB. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8E6F" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x233" flags="0x30">
+    <title>Code-Confirmed 2D Table 17x5 @ 0x8EC7</title>
+    <description>B2D6 table used by the cluster at 0xD105-0xD15D. It uses the same 0x00D0-derived axis and RAM 0x2044 axis as the 0x8E6F table. This bounded 17x5 view runs cleanly from 0x8EC7 to 0x8F1B. The result is stored at RAM 0x24AF. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8EC7" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x234" flags="0x30">
+    <title>Code-Confirmed 2D Table 17x5 @ 0x8F1C</title>
+    <description>B2D6 table used by the cluster at 0xD105-0xD15D. It uses the same 0x00D0-derived axis and RAM 0x2044 axis as the 0x8E6F table. This bounded 17x5 view runs cleanly from 0x8F1C to 0x8F70. The result is stored at RAM 0x24AC. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8F1C" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x235" flags="0x30">
+    <title>Code-Confirmed 2D Table 17x5 @ 0x8F71</title>
+    <description>B2D6 table used by the cluster at 0xD105-0xD15D. It uses the same 0x00D0-derived axis and RAM 0x2044 axis as the 0x8E6F table. This bounded 17x5 view runs cleanly from 0x8F71 to 0x8FC5. The interpolated value is shifted down four bits and stored at RAM 0x24AD. This table is not changed by MOD2.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <LABEL index="5" value="0.00" />
+      <LABEL index="6" value="0.00" />
+      <LABEL index="7" value="0.00" />
+      <LABEL index="8" value="0.00" />
+      <LABEL index="9" value="0.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x8F71" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x236" flags="0x30">
+    <title>Diagnostic Event Code Table 1x18 @ 0x55A0</title>
+    <description>Raw ROM view for the table indexed by routine 0x5982 before it inserts or removes entries in the diagnostic/event queue at RAM 0x004B-0x005B. Observed descriptor callers pass event IDs 0x00 through 0x11. This is service/status data, not a normal tune map.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>18</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <LABEL index="9" value="9.00" />
+      <LABEL index="10" value="0.00" />
+      <LABEL index="11" value="0.00" />
+      <LABEL index="12" value="0.00" />
+      <LABEL index="13" value="0.00" />
+      <LABEL index="14" value="0.00" />
+      <LABEL index="15" value="0.00" />
+      <LABEL index="16" value="10.00" />
+      <LABEL index="17" value="11.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x55A0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="18" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x237" flags="0x30">
+    <title>State Descriptor Triples 19x3 @ 0x9131</title>
+    <description>Raw ROM view for the 3-byte descriptor triples consumed by routine 0x58F2. Observed callers point at 0x9131, 0x9134, 0x9137, 0x913A, 0x913D, 0x9143, 0x9146, 0x9149, 0x914C, 0x914F, 0x9152, 0x9155, 0x9158, 0x915B, 0x915E, 0x9161, 0x9164, and 0x9167. The 19x3 view includes the apparent reserved slot at 0x9140 to keep row alignment. This is service/state data, not a normal tune map.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>3</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>19</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="9131.00" />
+      <LABEL index="1" value="9134.00" />
+      <LABEL index="2" value="9137.00" />
+      <LABEL index="3" value="913.00" />
+      <LABEL index="4" value="913.00" />
+      <LABEL index="5" value="9140.00" />
+      <LABEL index="6" value="9143.00" />
+      <LABEL index="7" value="9146.00" />
+      <LABEL index="8" value="9149.00" />
+      <LABEL index="9" value="914.00" />
+      <LABEL index="10" value="914.00" />
+      <LABEL index="11" value="9152.00" />
+      <LABEL index="12" value="9155.00" />
+      <LABEL index="13" value="9158.00" />
+      <LABEL index="14" value="915.00" />
+      <LABEL index="15" value="915.00" />
+      <LABEL index="16" value="9161.00" />
+      <LABEL index="17" value="9164.00" />
+      <LABEL index="18" value="9167.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x9131" mmedelementsizebits="8" mmedrowcount="19" mmedcolcount="3" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x238" flags="0x30">
+    <title>Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E</title>
+    <description>Primary working view for the likely fuel/VE/air-charge correction surface at 0x802E. It uses the public-index 21x9 alignment with RPM-like rows 550-6000 and load/MAP-like columns 0-1024. Peugeot stock raw values are 135-248, about 52.9-97.3 percent if viewed as raw / 2.55; Xantia 607C at the same offset is 144-214, about 56.5-83.9 percent. MOD2 raises selected Peugeot cells mostly by +4 to +6 raw counts. This is clearly not spark and is the strongest current fuel-side candidate, but raw / 2.55 is only a visualization hypothesis and no code consumer into injection pulse width, fuel time, lambda correction, or air-charge calculation has been confirmed. Keep raw display and do not treat as confirmed main fuel.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="128.00" />
+      <LABEL index="2" value="256.00" />
+      <LABEL index="3" value="384.00" />
+      <LABEL index="4" value="512.00" />
+      <LABEL index="5" value="640.00" />
+      <LABEL index="6" value="768.00" />
+      <LABEL index="7" value="896.00" />
+      <LABEL index="8" value="1024.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>21</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x802E" mmedelementsizebits="8" mmedrowcount="21" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x239" flags="0x30">
+    <title>Public-Index Alignment Probe B 21x9 @ 0x80EB</title>
+    <description>Second raw 21x9 alignment probe for adjacent fuel/correction data after the primary 0x802E candidate. This starts immediately after the first 21x9 block, overlaps the older 24x9/23x9 split, and leaves a tail region outside the two-map hypothesis. Treat as lower-confidence adjacent fuel/correction evidence only. Do not treat this as confirmed fuel until code references or live behavior prove it.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="128.00" />
+      <LABEL index="2" value="256.00" />
+      <LABEL index="3" value="384.00" />
+      <LABEL index="4" value="512.00" />
+      <LABEL index="5" value="640.00" />
+      <LABEL index="6" value="768.00" />
+      <LABEL index="7" value="896.00" />
+      <LABEL index="8" value="1024.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>21</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="550.00" />
+      <LABEL index="1" value="750.00" />
+      <LABEL index="2" value="850.00" />
+      <LABEL index="3" value="950.00" />
+      <LABEL index="4" value="1000.00" />
+      <LABEL index="5" value="1200.00" />
+      <LABEL index="6" value="1400.00" />
+      <LABEL index="7" value="1600.00" />
+      <LABEL index="8" value="1800.00" />
+      <LABEL index="9" value="2000.00" />
+      <LABEL index="10" value="2300.00" />
+      <LABEL index="11" value="2600.00" />
+      <LABEL index="12" value="2900.00" />
+      <LABEL index="13" value="3200.00" />
+      <LABEL index="14" value="3501.00" />
+      <LABEL index="15" value="3800.00" />
+      <LABEL index="16" value="4201.00" />
+      <LABEL index="17" value="4500.00" />
+      <LABEL index="18" value="5000.00" />
+      <LABEL index="19" value="5501.00" />
+      <LABEL index="20" value="6000.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x80EB" mmedelementsizebits="8" mmedrowcount="21" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x23A" flags="0x30">
+    <title>Public-Index Alignment Probe Tail 5x9 @ 0x81A8</title>
+    <description>Tail bytes left after interpreting 0x802E as two adjacent 21x9 public-index probes. It covers 45 bytes from 0x81A8 through 0x81D4, the remainder of the MOD2-touched region. This is a lower-confidence adjacent fuel/correction candidate and may be a mini-table, clamp row block, or unrelated adjacent data. Keep raw and do not edit as fuel without code or live-behavior proof.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="1.00" />
+      <LABEL index="2" value="2.00" />
+      <LABEL index="3" value="3.00" />
+      <LABEL index="4" value="4.00" />
+      <LABEL index="5" value="5.00" />
+      <LABEL index="6" value="6.00" />
+      <LABEL index="7" value="7.00" />
+      <LABEL index="8" value="8.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.00" />
+      <LABEL index="1" value="0.00" />
+      <LABEL index="2" value="0.00" />
+      <LABEL index="3" value="0.00" />
+      <LABEL index="4" value="0.00" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x81A8" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+</XDFFORMAT>
