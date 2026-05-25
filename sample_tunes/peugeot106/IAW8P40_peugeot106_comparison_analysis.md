@@ -118,22 +118,22 @@ Top-level changed regions:
 | Region | Changed bytes | Current interpretation |
 | --- | ---: | --- |
 | `0x800C-0x800F` | `4` | Checksum word and complement |
-| `0x802E-0x80EA` | `57` changed cells inside the preferred `21x9` view | Strongest current likely fuel/VE/air-charge correction candidate; code unconfirmed |
-| `0x802E-0x8105` | `75` changed cells inside the alternate `24x9` boundary view | Boundary/debug view for the `0x802E` candidate |
-| `0x80F1-0x81D1` | `90` changed cells inside a signed `25x9` view | Low-confidence likely signed fuel/enrichment adjacent candidate; replaces bad `0x8106` slice |
+| `0x802B-0x8102` | `75` changed cells inside signed `24x9` view | Code-referenced temp-like/RPM fuel correction A; X raw `0x92CF`, Y `0x929E` RPM, output `$204A` into `$204B -> $00C1` |
+| `0x8103-0x81DA` | `72` changed cells inside signed `24x9` view | Code-referenced temp-like/RPM fuel correction B; X raw `0x92CF`, Y `0x929E` RPM, output `$204D` into `$204E/$204F` |
+| `0x821C/0x8318/0x83F0` | signed fuel-trim candidate family | Code-referenced main fuel trim/multiplier candidates; `$E38B` selects `$2084`, and `$E715` applies it to `$00C1` |
+| `0x802E/0x80EB/0x81A8/0x80F1` | overlapping changed legacy views | Alignment/debug probes only; do not tune as VE or main fuel |
 | `0x879E-0x87A1` | `4` | Two changed 16-bit big-endian scalars |
 | `0x89F3-0x8A05` | `16` changed cells inside a code-confirmed `1x19` vector | Compact interpolated vector indexed by `RAM 0x2044` |
 | `0x8A68-0x8C17` plus `0x8C18` | `245` cells plus one adjacent byte | Large packed row block; likely important |
 | `0x9187-0x925E` | `62` changed cells inside a code-confirmed `24x9` table | Load-model / correction-factor candidate; old `0x91D9` view was misaligned |
 
-Repeatable script table stats for the current fuel-side candidate family:
+Repeatable script table stats for the corrected signed correction family:
 
 | Range | Shape | Peugeot stock raw | MOD2 changes | Xantia same-offset raw | Current use |
 | --- | --- | --- | --- | --- | --- |
-| `0x802E-0x80EA` | `21x9` | `135-248`, avg `189.4` | `57 / 189`, `+4..+6`, avg `+5.6` | `144-214`, avg `174.5` | Strongest fuel/VE/air-charge candidate, code unconfirmed |
-| `0x802E-0x8105` | `24x9` | `135-248`, avg `187.8` | `75 / 216`, `+4..+6`, avg `+5.4` | `144-228`, avg `176.0` | Boundary/debug view |
-| `0x80EB-0x81A7` | `21x9` | `0-255`, avg `168.2` | `60 / 189`, includes modulo wraps | `0-255`, avg `164.4` | Lower-confidence adjacent probe |
-| `0x81A8-0x81D4` | `5x9` | `0-254`, avg `165.1` | `30 / 45`, includes modulo wraps | `2-255`, avg `119.1` | Tail/alignment probe |
+| `0x802B-0x8102` | `24x9` signed | `-121..-8`, avg `-68.6` | `75 / 216`, `+4..+6`, avg `+5.4` | `-112..-28`, avg `-80.0` | Signed temp-like/RPM fuel correction A |
+| `0x8103-0x81DA` | `24x9` signed | `-128..127`, avg `-22.8` | `72 / 216`, `+5..+18`, avg `+6.1` | `-54..74`, avg `-4.9` | Signed temp-like/RPM fuel correction B |
+| `0x802E/0x80EB/0x81A8/0x80F1` | legacy probes | overlapping raw/signed views | MOD2-touched because they overlap the signed region | same-offset comparison only | Debug/alignment only; `0x80EB` is signed boundary slice `0x802B+0xC0` |
 
 ## MOD2-Touched Split Region @ `0x802E-0x81D4`
 
@@ -146,11 +146,14 @@ end:   0x81D4
 ```
 
 That alignment was useful for discovery, but it is no longer the active XDF
-view. The current preferred alignment is the public-index `21x9 @ 0x802E`
-surface, with the older `24x9` retained only as a boundary/debug view:
+view. The current preferred alignment is the code-referenced signed `24x9`
+base at `0x802B`, with the older public-index views retained only as
+boundary/debug views:
 
-- Primary candidate: `21x9 @ 0x802E-0x80EA`.
+- Legacy misaligned slice: `21x9 @ 0x802E-0x80EA`.
 - Alternate boundary view: `24x9 @ 0x802E-0x8105`.
+- Signed boundary slice: `21x9 @ 0x80EB-0x81A7`, starting at `0x802B+0xC0`
+  and crossing into `0x8103`.
 - Adjacent signed candidate: `25x9 @ 0x80F1-0x81D1`.
 
 Changed parent row indexes:
@@ -347,13 +350,16 @@ New MOD2-backed entries:
 
 After TunerPro visual review, additional split views were added:
 
-- `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`
-- `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`
-- `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`
+- `Signed Fuel Temp-like/RPM Correction A 24x9 @ 0x802B`
+- `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103`
+- `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C`
+- `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318`
+- `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0`
+- legacy alignment probes around `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1`
 - `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
 - `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
-- `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
+- `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89DA`
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A27`
@@ -390,9 +396,9 @@ After TunerPro visual review, additional split views were added:
 Rationale:
 
 - The old combined `47x9 @ 0x802E` view changes character after row `23`; it
-  has been removed from the XDF. The preferred active view is now
-  `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`; the older
-  `24x9 @ 0x802E` alignment is retained only as a boundary/debug view.
+  has been removed from the XDF. Later disassembly shows `0x802E` is a
+  misaligned slice inside the signed `0x802B` table, so it is retained only as
+  legacy visual context.
 - The `48x9 @ 0x8A68` view has a clear visual break at row `24`, making two `24x9` subviews easier to inspect.
 - The original large views remain in the XDF for context, even where later disassembly refined the true boundaries.
 
@@ -409,7 +415,7 @@ The `0x89F2` raw view was also refined:
 - The old raw `1x20 @ 0x89F2` view has been removed from the normal XDF tree
   because it mixed scalars and vector data in one misleading row.
 - `0x89F3-0x8A05` is now exposed as
-  `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`, a code-confirmed
+  `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`, a code-confirmed
   `1x19` vector used by the 1D interpolation helper at `0xB2AB`.
 - The continuation pass confirmed the surrounding `0x2044`-indexed vector family at `0x89C7`, `0x89DA`, `0x8A27`, `0x8A3A`, and `0x8A52`.
 
@@ -424,11 +430,14 @@ Current confidence-tier candidate labels:
 
 | Range | Retained XDF label | Confidence | Notes |
 | --- | --- | --- | --- |
-| `0x802E-0x80EA` | `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` | Medium fuel-side candidate, code unconfirmed | Preferred RPM/load-like surface; Peugeot/Xantia ranges fit a fuel/VE/air-charge hypothesis; no confirmed consumer. |
-| `0x802E-0x8105` | `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate` | Boundary/debug only | Rows `21-23` may be adjacent calibration or tail data. |
-| `0x80F1-0x81D1` | `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1` | Low | Adjacent tune-related signed structure; replaces the bad `0x8106` mid-row slice. |
+| `0x802B-0x8102` | `Signed Fuel Temp-like/RPM Correction A 24x9 @ 0x802B` | Code-referenced | X raw `0x92CF` temp-like labels, Y `0x929E` RPM labels, output `$204A` into `$204B -> $00C1`. |
+| `0x8103-0x81DA` | `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103` | Code-referenced | Same axes as `0x802B`; output `$204D` feeds `$204E/$204F` blend path. |
+| `0x821C-0x82F3` | `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C` | Code-referenced | Signed load/RPM trim candidate selected by `$E38B`; X=`$2034`, Y=`$2036`, output `$2084` applied to `$00C1` by `$E715`. |
+| `0x8318-0x83EF` | `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318` | Code-referenced | Paired signed load/RPM trim candidate selected by `$E38B`; exact selector semantics remain provisional. |
+| `0x83F0-0x8407` | `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0` | Code-referenced | Signed RPM-only bypass vector that can feed `$2084`; not a standalone VE table. |
+| `0x802E/0x80EB/0x81A8/0x80F1` | Legacy alignment probes | Debug only | Overlap the signed correction region; do not tune as VE or main fuel. |
 | `0x89ED-0x89F2` | `Code-Referenced Control Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes. |
-| `0x89F3-0x8A05` | `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3` | Medium | Code-confirmed `0x2044`-indexed vector; MOD2 changes `16 / 19` cells. |
+| `0x89F3-0x8A05` | `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3` | Medium-high structure | Code-confirmed `0x2044`-indexed vector; X sites are `0-7200 rpm` in 400 rpm steps; MOD2 changes `16 / 19` cells. |
 | `0x9187-0x925E` | `Load Model / Correction Factor Candidate 24x9 @ 0x9187` | Medium-high structural | Code-confirmed lookup that can feed `0x00D0 -> 0x00CE -> 0x2034`; not proven main fuel. |
 
 Screenshots alone are no longer enough to keep a normal candidate view active
@@ -500,16 +509,14 @@ Spark offset sanity pass across comparison ROMs:
 
 Fuel/correction candidate pass:
 
-- `0x802E` is now the strongest fuel-side candidate in the local XDF, with the
-  public-index `21x9` alignment preferred over the older `24x9` view.
-- The primary `21x9 @ 0x802E` candidate changes `57 / 189` cells in MOD2,
-  mostly by `+4`, `+5`, or `+6`.
-- Peugeot stock raw values are `135-248`, about `52.9-97.3%` if viewed as
-  `raw / 2.55`; Xantia 607C at the same offset is `144-214`, about
-  `56.5-83.9%`. This supports an engine-specific fuel/VE/air-charge
-  interpretation without proving the function.
-- The alternate `24x9 @ 0x802E` boundary view changes `75 / 216` cells, mostly
-  rows `10`, `11`, `13-18`, and `21-23`. Rows `21-23` may be adjacent
+- `0x802B` and `0x8103` are now the code-referenced signed temp-like/RPM fuel
+  correction candidate tables in this region.
+- `0x802E` is a `+3` misaligned slice inside `0x802B`; it remains useful only
+  as legacy visual context.
+- A pure VE/base fuel table is still not proven, but `$821C/$8318` are now the
+  strongest main fuel trim/multiplier candidates and `$00C1/$00C3/$00BC` are
+  the strongest fuel pulse/event-width path candidates. OC1/OC3 scheduling is
+  strong software evidence; exact driver/pin proof remains hardware-level.
   calibration or tail data until code proves otherwise.
 - The adjacent signed candidate `25x9 @ 0x80F1` changes `90 / 225` cells.
   The previous `0x8106` view started three bytes into a row. At `0x80F1`, the
@@ -524,9 +531,9 @@ Fuel/correction candidate pass:
 - `0x9187-0x925E` is code-confirmed and MOD2 changes `62 / 216` cells, but the
   traced path can feed `0x00D0 -> 0x00CE -> 0x2034`, so it currently looks more
   like a correction/load-model table than final main fuel.
-- `0x89F3-0x8A05` is a code-confirmed `1x19` vector indexed by `0x2044`; MOD2
-  changes `16 / 19` cells. It remains a plausible enrichment/correction vector
-  until the `0x2044` axis is physically named.
+- `0x89F3-0x8A05` is a code-confirmed `1x19` vector indexed by RPM-derived
+  `0x2044`; MOD2 changes `16 / 19` cells. It remains a plausible
+  load-model/transient/enrichment vector, not a vehicle-speed map.
 
 Free-space scan:
 

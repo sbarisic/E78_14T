@@ -477,8 +477,9 @@ D498: FD 20 44      STD $2044
 Meaning so far:
 
 - `0x2044` is an 8.8-style 1D index.
-- It is derived from `RAM 0x00D4`.
+- It is derived from RPM-like `RAM 0x00D4`.
 - It is clamped at `0x1200`, giving integer index `18`.
+- The code path maps integer sites to 400 rpm steps: `0, 400, 800, ... 7200`.
 - This explains why many nearby vectors expose 19 useful cells; the helper may read the next byte when the fraction is zero, so immediately-following scalar/sentinel bytes should not be blindly folded into the curve.
 
 ### `RAM 0x00BA`
@@ -522,10 +523,11 @@ physical units remain qualified where the transfer path is still incomplete.
 | --- | --- | --- | --- | --- |
 | `0x2036` | `rpm_axis_8p8` | Built by `0xB3B9` from period-like `0x00BA` using `0x929E-0x92CD`, count `0x92CE = 0x18` | `0x8A69`, `0x8B41`, `0x8C19`, `0x9187`, `0x85BA`, `0x869A` | High; `15000000 / period` gives the displayed RPM labels. |
 | `0x2034` | `MAP/load_kPa_estimate_axis_8p8` | `0x41A1-0x41AD` from clamped/doubled `0x00CE`, fed by `0x00D0` and load-model/state paths | `0x8A69`, `0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A` | Medium-high MAP/load; XDF displays spark labels as rounded integer `0-100 kPa`, exact ADC transfer unproven. |
-| `0x2044` | `vehicle_speed_or_transient_axis_8p8` | Derived from inverse-period-like `0x00D4`, clamped to `0x1200` | `0x89C7-0x8A67` vector family, `0x9073`, `0x8E6F/0x8EC7/0x8F1C/0x8F71` | Medium; likely vehicle-speed/transient from consumers and table shapes. |
+| `0x2044` | `rpm_400rpm_site_axis_8p8` | Derived from RPM-like `0x00D4`, clamped to `0x1200` | `0x89C7-0x8A67` vector family, `0x9073`, `0x8E6F/0x8EC7/0x8F1C/0x8F71` | High structure; sites are `0-7200 rpm` in 400 rpm steps. Not a vehicle-speed axis. |
 | `0x2046` | `secondary_transient_state_axis_8p8` | Built in the same normalized-axis runtime block as `0x2036` and `0x2044` | `0x8A0A` | Low-medium; exact source still needs tracing. |
 | `0x9291-0x9299` | `9_point_helper_breakpoint_vector_A` | EPROM vector used by `0xB383`, count/stride byte `0x929A = 0x09` | `0x9187`, `0x9073`, helper calls around `0x41E0` | High structural, physical units provisional. |
-| `0x92CF-0x92D7` | `9_point_helper_breakpoint_vector_B` | EPROM vector near count byte `0x92D8 = 0x09` | Helper groups around `0x4340`, `0x5D00`, `0x5D7B` | Medium structural, physical units provisional. |
+| `0x92CF-0x92D7` | `sensor_axis_B_breakpoints` | EPROM vector `12,20,34,57,93,142,191,227,246` near count byte `0x92D8 = 0x09` | `0x2008 -> 0x2122 -> 0x203C/0x203E`; exact sensor identity open. | Medium-high structure, physical units provisional. |
+| `0x92D9-0x92E1` | `sensor_axis_A_breakpoints` | Same raw vector shape, count byte `0x92E2 = 0x09` | `0x200A -> 0x2124 -> 0x2038/0x203A`; raw X labels for `0x802B/0x8103`. | Medium-high structure, physical units provisional. |
 | `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
 
 Current confirmed consumer map:
@@ -535,9 +537,11 @@ Current confirmed consumer map:
 | `0x8A69` | `0x2034` MAP/load kPa estimate by `0x2036` RPM | Likely high-octane/default spark bank; in XDF `Confirmed` category with rounded integer MAP/load labels. |
 | `0x8B41` | `0x2034` MAP/load kPa estimate by `0x2036` RPM | Likely low-octane/alternate spark bank; in XDF `Confirmed` category with rounded integer MAP/load labels. |
 | `0x8C19` | `0x2036` RPM only | Likely WOT/fallback spark vector; in XDF `Confirmed` category. |
+| `0x802B` | raw `0x92D9` temp-like axis by `0x2036` RPM | Signed `24x9` correction table; output `0x204A`, sensor identity still provisional. |
+| `0x8103` | raw `0x92D9` temp-like axis by `0x2036` RPM | Paired signed `24x9` correction table; output `0x204D`, sensor identity still provisional. |
 | `0x9187` | `0x9291`-derived axis by `0x2036` RPM | Load-model/correction factor candidate that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
-| `0x85BA` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x5` table; exact physical role still open. |
-| `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x9` zero table that updates `0x00BE`. |
+| `0x85BA` | high-load transform / load by `0x2036` RPM | High-load pulse extension / duration-support candidate; output `0x2063` is doubled into the `0x00C3` path. |
+| `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase candidate; stock-zero output updates `0x00BE -> 0x21C6` before OC1/OC3 scheduling. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Code-confirmed `24x9` table stored to `0x2484`, later combined with `0x8970` vector output. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
 | `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
@@ -564,6 +568,7 @@ BAB2: B7 20 BC      STAA $20BC
 ```
 
 The routine uses `RAM 0x2044` as an 8.8 index into the byte vector at `0x89F3`.
+This gives a 400 rpm X axis: `0, 400, 800, ... 7200 rpm`.
 
 Nearby control/scalar usage:
 
@@ -583,7 +588,8 @@ Status:
 
 - `0x89F3` is now code-confirmed as a 1D interpolation vector.
 - `0x89ED-0x89F2` should be treated as control scalars, not part of the vector.
-- Exact physical meaning is still unknown.
+- Physical role remains provisional, but the axis is RPM-derived. The current
+  best label is load-model/transient/enrichment gain, not vehicle speed.
 
 ## Code-Confirmed `0x2044` Vector Family
 
@@ -866,11 +872,13 @@ Diff summary:
   contiguous regions. It is checksum-valid and reset-compatible, so it is a
   useful same-family comparison image, not a Peugeot offset authority.
 
-For the preferred `0x802E` `21x9` fuel/VE/air-charge candidate, MOD2 differs
-in `57 / 189` cells, Xantia differs in all `189` cells,
-`Peug.106Rally.org.bin` is byte-identical to Peugeot stock in that window, and
-`RALLY13.ORI` differs in `116 / 189` cells. These comparisons support the
-candidate's fuel-side priority but still do not prove a main-fuel consumer.
+For the corrected signed `0x802B` and `0x8103` fuel/charge correction candidates, MOD2
+changes `75 / 216` and `72 / 216` cells respectively. These tables use the raw
+`0x92D9` temperature-like helper axis into `$2038`, the `0x929E` RPM axis into
+`$2036`, and output `$204A/$204D`. `$204A` feeds the `$204B -> $00C1`
+fuel/charge accumulator candidate, while `$204D` feeds the `$204E/$204F` blend
+path. The old `0x802E` view is a misaligned slice, not a primary fuel/VE
+candidate.
 
 Scanner limitation:
 
@@ -885,12 +893,12 @@ Scanner limitation:
   need separate local tracing before any Xantia table role is used as evidence
   for the Peugeot ROM.
 
-## `0x802E-0x81D4` Region
+## `0x802B-0x81DA` Region
 
-The `0x802E-0x81D4` region is MOD2-touched and table-like, but direct code
-usage has not been confirmed yet. The preferred working view is now the
-`21x9 @ 0x802E` surface, which looks like a fuel/VE/air-charge correction
-candidate rather than spark.
+The corrected code-referenced view of this MOD2-touched region is two signed
+fuel/charge correction candidates: `24x9 @ 0x802B` and `24x9 @ 0x8103`. Their
+exact temperature sensor identity and final injector output channel remain
+provisional.
 
 Important correction:
 
@@ -906,33 +914,20 @@ C623: FD 24 56      STD $2456
 
 Status:
 
-- The old combined `47x9 @ 0x802E` view was removed from the XDF because the
-  screenshot and byte pattern suggest a split after row 23.
-- Primary candidate `21x9 @ 0x802E`: `57 / 189` changed cells, mostly `+4`,
-  `+5`, and `+6` raw-count increases. It uses RPM-like rows `550-6000` and
-  load/MAP-like columns `0-1024`.
-- Peugeot stock raw values are `135-248`, roughly `52.9-97.3%` under the
-  unconfirmed `raw / 2.55` visualization hypothesis. Xantia 607C at the same
-  offset is `144-214`, roughly `56.5-83.9%`.
-- Alternate boundary view `24x9 @ 0x802E`: `75 / 216` changed cells. Rows
-  `21-23` may be adjacent calibration or tail data until code proves otherwise.
-- Adjacent probe `21x9 @ 0x80EB`: the script reports `60 / 189` MOD2-touched
-  cells and full Peugeot/Xantia same-offset disagreement. The modulo-byte wraps
-  and lack of direct code reference keep it below the primary `0x802E` surface.
-- Tail probe `5x9 @ 0x81A8`: the script reports `30 / 45` MOD2-touched cells;
-  this remains a tail/alignment probe rather than a normal tune map.
-- Adjacent signed candidate `25x9 @ 0x80F1`: `90 / 225` changed cells. This
-  replaces the earlier `23x9 @ 0x8106` view, which starts three bytes into a
-  row. At `0x80F1`, the first MOD2 change block is exactly two full 9-cell rows
-  and later changes align as repeated row chunks. The table is displayed as
-  signed 8-bit using TunerPro native signed data flags; most deltas are signed
-  `+5`, with one `+18` group. Axes remain unproven.
-- Do not call `0x802E` code-confirmed main fuel yet. The next proof must be a
-  consumer path into injection pulse width, fuel time, lambda correction,
-  air-charge calculation, or scheduling.
-- It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
+- `0x802B`: signed `24x9`; X raw `0x92D9` labels
+  `12,20,34,57,93,142,191,227,246`; Y `0x929E` RPM labels; output `$204A`
+  feeds `$204B -> $00C1`.
+- `0x8103`: paired signed `24x9` with the same axes; output `$204D` feeds the
+  `$204E/$204F` blend path.
+- `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1` are retained as legacy alignment
+  probes only. Do not tune them as VE or main fuel.
+- A pure VE/base fuel table is still not proven, but `$821C/$8318` are now the
+  strongest main fuel trim/multiplier candidates. `$00C1/$00C3/$00BC` are the
+  strongest fuel pulse/event-width path candidates; OC1 is the interrupt
+  scheduler and OC3/PA5 behaves like the timed pulse-output path, while exact
+  driver/pin proof remains hardware-level.
 
-## Static `0x802E` / Fuel-Path Proof Pass 2026-05-25
+## Static Fuel-Path Proof Pass 2026-05-25
 
 New support artifacts:
 
@@ -945,17 +940,15 @@ New support artifacts:
 
 Static proof result:
 
-- No Peugeot-local code path has yet proven that `0x802E` reaches fuel pulse
-  width, fuel time, lambda correction, air-charge math, or injection scheduling.
+- No Peugeot-local code path has yet proven a main fuel base table. The newest
+  trace does identify `$00C1/$00C3` as strong fuel/charge time-path candidates,
+  but final injector hardware assignment remains open.
 - The only immediate `0x802E` word-pattern hit is still the false positive at
   the aligned `0xC61A-0xC623` clamp sequence.
 - The helper-call scan does not find `0x802E`, `0x80EB`, or `0x81A8` near the
   known Peugeot interpolation helpers.
-- No startup copy, calibration overlay, descriptor table, or constructed-base
-  path has been confirmed for `0x802E-0x81D4`.
-- `0x80EB` and `0x81A8` stay as lower-confidence adjacent probes because they
-  are MOD2-touched but have weaker structure, modulo wraps, and no immediate
-  Peugeot code reference.
+- `0x802E` is now understood as a misaligned slice inside `0x802B`, not a real
+  table base.
 
 Output/injection path boundary:
 
@@ -969,8 +962,9 @@ Output/injection path boundary:
 | `0x242F` | stores `0xBAB5`, `0xBAC6`; math/loads `0xBABE`, `0xBB49`, `0xBB53` | adjacent scheduler/state word |
 | `0x2431` | stores `0xBB68`, `0xBB79` | adjacent state byte/flag |
 
-This identifies the scheduler boundary but does not yet identify the actuator
-as injection or connect it to the `0x802E` candidate.
+This identifies the scheduler boundary and now has a stronger bridge from
+`$00C3 -> $00BC -> $1016`, but it does not yet identify the actuator as
+injection or make any legacy `0x802E` view a standalone table.
 
 ADC/load boundary:
 
@@ -1148,7 +1142,7 @@ Previously added in `0.4`:
 - code-confirmed spark-bank raw views at `0x8A69` and `0x8B41`, later
   condensed into the retained scaled likely spark entries
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
-- `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
+- `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`
 
 New in `0.5`:
 
@@ -1161,7 +1155,7 @@ New in `0.5`:
 - `Code-Confirmed 1D Vector 1x19 @ 0x8A52`
 - `Code-Referenced Scalar Block 1x5 @ 0x8A4D`
 - `Code-Referenced Scalar Block 1x3 @ 0x8A65`
-- `Code-Confirmed 2D Table 24x5 @ 0x85BA`
+- `High-Load Pulse Extension Candidate 24x5 @ 0x85BA`
 - `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
 
 The old `MOD2 Compared Candidate 15x9 Table @ 0x91D9` was later removed from
@@ -1182,7 +1176,7 @@ New in `0.6`:
 New in `0.7`:
 
 - `Code-Confirmed 2D Table 24x9 @ 0x869A`.
-- `Code-Confirmed 2D Table 24x9 @ 0x87B1`.
+- `Injector/Event Phase Candidate 24x9 @ 0x87B1`.
 - `Code-Confirmed 2D Table 24x9 @ 0x888E`.
 - `Code-Confirmed 2D Table 11x9 @ 0x9073`.
 - `Code-Confirmed 2D Table 17x5 @ 0x8E6F`.
@@ -1249,8 +1243,9 @@ New in `0.11`:
 New in `0.12`:
 
 - Removed the combined `47x9 @ 0x802E` view.
-- Promoted `0x802E-0x8105` as the upper `24x9` tune candidate with provisional
-  load/RPM-style labels.
+- Historical note: `0x802E-0x8105` was once promoted as an upper `24x9` tune
+  candidate, but later targeted disassembly superseded this with the signed
+  `0x802B/0x8103` correction model.
 - Replaced the bad `0x8106-0x81D4` lower adjacent slice with
   `0x80F1-0x81D1` as a signed `25x9` tune/correction candidate.
 - Removed duplicate raw spark-bank views at `0x8A69` and `0x8B41`; the retained
@@ -1267,10 +1262,9 @@ New in `0.13`:
 
 - Renamed the then-primary MOD2/correction candidates with confidence-tier
   working labels:
-  - `Likely Fuel/VE Correction Upper Candidate 24x9 @ 0x802E`, later demoted
-    in `0.14` to a boundary/debug view
-  - `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`
-  - `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`
+  - historical `0x802E` and `0x80F1` fuel-side hypotheses, now superseded by
+    the signed `0x802B/0x8103` correction model
+  - `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`
   - `Load Model / Correction Factor Candidate 24x9 @ 0x9187`
 - Removed the misleading legacy `0x89F2` and `0x91D9` views from the normal XDF
   tree. Screenshots alone are no longer enough to keep an active view when later
@@ -1280,26 +1274,19 @@ New in `0.13`:
   - `21x9 @ 0x802E`
   - `21x9 @ 0x80EB`
   - `5x9 tail @ 0x81A8`
-- These probes test the public claim of two 9-load-site, about-21-speed-site
-  fuel/correction maps. In `0.14`, the first `21x9 @ 0x802E` probe was promoted
-  to the primary fuel/VE/air-charge candidate; the second `21x9` and tail views
-  remain lower-confidence adjacent probes.
+- These probes tested the public claim of two 9-load-site, about-21-speed-site
+  fuel/correction maps. They are now legacy alignment context only.
 - Updated the `0x879E/0x87A0` limiter descriptions to mention the public
   `21000000 / value` formula as a lead only; the retained scaling remains the
   locally supported `15000000 / period`.
 
-New in `0.14`:
+New in `0.26`:
 
-- Promoted `21x9 @ 0x802E` to
-  `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
-- Demoted the overlapping `24x9 @ 0x802E` to
-  `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`.
-- Kept `raw` display for `0x802E`; `raw / 2.55` is documented only as a
-  percent/VE visualization hypothesis.
-- Kept `21x9 @ 0x80EB` and `5x9 @ 0x81A8` as lower-confidence adjacent
-  fuel/correction probes.
-- Main fuel remains unconfirmed until a code consumer path reaches injection or
-  fuel-specific calculations.
+- Added raw `0x92CF` temperature-like X labels and `0x929E` RPM Y labels to
+  signed `24x9 @ 0x802B` and `24x9 @ 0x8103`.
+- Marked `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1` as legacy alignment probes.
+- Main fuel base table remains unconfirmed. `$00C1/$00C3` are the strongest
+  fuel/charge time-path candidates until the final injector output is proven.
 
 External evidence integration:
 
@@ -1366,8 +1353,10 @@ Highest value next:
    - specifically trace IAT/CTS consumers for any RPM-by-temperature correction
      table matching the public air-density map family.
 4. Continue fuel proof:
-   - find a real consumer for `0x802E-0x81D4`.
-   - trace injection pulse-width/output code separately from spark.
+   - trace `$00C3/$00BC` through the output scheduler and prove which actuator
+     channel is driven.
+   - keep searching backward from the fuel/charge path for the still-unfound
+     main fuel base table.
 5. Keep tracing table outputs:
    - `0x20BC`, `0x20BD-0x20C5`, `0x242F`, `0x2431`.
    - `0x2063`, `0x2391`, `0x00BE`, `0x2484`, `0x243C`, `0x24AB`,

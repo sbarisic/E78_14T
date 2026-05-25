@@ -71,26 +71,76 @@ COMPARISON_KEYS = ["peugeot_mod2", "xantia_607c", "peug_106rally_org", "rally13_
 
 
 KNOWN_TABLES = [
-    ("fuel_ve_aircharge_candidate_21x9", 0x802E, 21, 9, "raw"),
-    ("fuel_ve_boundary_24x9", 0x802E, 24, 9, "raw"),
-    ("public_probe_b_21x9", 0x80EB, 21, 9, "raw"),
-    ("public_probe_tail_5x9", 0x81A8, 5, 9, "raw"),
-    ("adjacent_signed_correction_25x9", 0x80F1, 25, 9, "signed8"),
+    ("fuel_temp_like_rpm_corr_a_802b_signed_24x9", 0x802B, 24, 9, "signed8"),
+    ("legacy_misaligned_slice_802e_21x9", 0x802E, 21, 9, "raw"),
+    ("legacy_boundary_slice_802e_24x9", 0x802E, 24, 9, "raw"),
+    ("legacy_signed_boundary_slice_80eb_21x9", 0x80EB, 21, 9, "signed8"),
+    ("legacy_signed_alignment_probe_80f1_25x9", 0x80F1, 25, 9, "signed8"),
+    ("fuel_temp_like_rpm_corr_b_8103_signed_24x9", 0x8103, 24, 9, "signed8"),
+    ("legacy_public_probe_tail_81a8_5x9", 0x81A8, 5, 9, "raw"),
+    ("fuel_trim_alt_a_81f8_signed_24x9", 0x81F8, 24, 9, "signed8 alt-base"),
+    ("main_fuel_trim_candidate_a_821c_signed_24x9", 0x821C, 24, 9, "signed8"),
+    ("fuel_trim_alt_b_82f4_signed_24x9", 0x82F4, 24, 9, "signed8 alt-base"),
+    ("main_fuel_trim_candidate_b_8318_signed_24x9", 0x8318, 24, 9, "signed8"),
+    ("rpm_only_fuel_trim_bypass_83f0_signed_1x24", 0x83F0, 1, 24, "signed8"),
+    ("high_load_pulse_extension_85ba_24x5", 0x85BA, 24, 5, "raw"),
+    ("injector_event_phase_candidate_87b1_24x9", 0x87B1, 24, 9, "raw"),
     ("spark_high_default_24x9", 0x8A69, 24, 9, "raw/2 deg"),
     ("spark_low_alternate_24x9", 0x8B41, 24, 9, "raw/2 deg"),
     ("wot_spark_vector_1x24", 0x8C19, 1, 24, "raw/2 deg"),
+    ("spark_mode_vector_a_8c31_1x24", 0x8C31, 1, 24, "raw/2 deg"),
+    ("spark_mode_vector_b_8c49_1x24", 0x8C49, 1, 24, "raw/2 deg"),
+    ("spark_mode_vector_c_8c61_1x24", 0x8C61, 1, 24, "raw/2 deg"),
+    ("spark_temp_load_corr_a_8c7c_signed_17x9", 0x8C7C, 17, 9, "signed8"),
+    ("spark_temp_load_corr_b_8d15_signed_17x9", 0x8D15, 17, 9, "signed8"),
+    ("spark_temp_decay_8dae_1x9", 0x8DAE, 1, 9, "raw"),
     ("load_model_correction_24x9", 0x9187, 24, 9, "raw/230 hypothesis"),
     ("rpm_axis_period_1x24", 0x929E, 1, 24, "period axis"),
+    ("sensor_axis_b_92cf_1x9", 0x92CF, 1, 9, "raw"),
+    ("sensor_axis_a_92d9_1x9", 0x92D9, 1, 9, "raw"),
+    ("sensor_transfer_400e_1x9", 0x400E, 1, 9, "raw"),
     ("control_scalars_1x6", 0x89ED, 1, 6, "raw"),
-    ("speed_transient_vector_1x19", 0x89F3, 1, 19, "raw"),
+    ("rpm_load_enrichment_gain_1x19", 0x89F3, 1, 19, "raw"),
 ]
 
 TABLE_BASES = [
+    0x802B,
     0x802E,
     0x80EB,
+    0x80F1,
+    0x8103,
     0x8106,
     0x81A8,
+    0x81F8,
+    0x821C,
+    0x82F4,
+    0x8318,
+    0x83F0,
+    0x8408,
+    0x845B,
+    0x846C,
+    0x847D,
+    0x848E,
+    0x849F,
+    0x84B0,
+    0x84C1,
+    0x84D2,
+    0x84E3,
+    0x84F6,
+    0x8508,
+    0x8511,
+    0x8529,
+    0x853B,
+    0x8546,
+    0x8558,
+    0x8561,
+    0x8579,
+    0x858B,
+    0x8596,
+    0x85AF,
+    0x85BA,
     0x869A,
+    0x87B1,
     0x879E,
     0x87A0,
     0x89ED,
@@ -98,9 +148,18 @@ TABLE_BASES = [
     0x8A69,
     0x8B41,
     0x8C19,
+    0x8C31,
+    0x8C49,
+    0x8C61,
+    0x8C7C,
+    0x8D15,
+    0x8DAE,
     0x9187,
     0x9291,
     0x929E,
+    0x92CF,
+    0x92D9,
+    0x400E,
 ]
 
 PEUGEOT_HELPERS = [0xB2D6, 0xB2AB, 0xB383, 0xB3B9]
@@ -114,8 +173,19 @@ HELPER_FOCUS_BY_ROM = {
     "rally13_ori": XANTIA_HELPERS,
 }
 RAM_TARGETS = [
+    0x00BC,
+    0x00BF,
+    0x00C1,
+    0x00C3,
     0x00CE,
     0x00D0,
+    0x100B,
+    0x100E,
+    0x1016,
+    0x101A,
+    0x1020,
+    0x1022,
+    0x1023,
     0x1030,
     0x1031,
     0x1032,
@@ -130,8 +200,27 @@ RAM_TARGETS = [
     0x200D,
     0x200E,
     0x2013,
+    0x2030,
     0x2034,
     0x2036,
+    0x2038,
+    0x203A,
+    0x203C,
+    0x203E,
+    0x2040,
+    0x2042,
+    0x204A,
+    0x204B,
+    0x204D,
+    0x204E,
+    0x204F,
+    0x2050,
+    0x2051,
+    0x2053,
+    0x2055,
+    0x2057,
+    0x2084,
+    0x2086,
     0x20B1,
     0x20BC,
     0x20BD,
@@ -149,10 +238,22 @@ RAM_TARGETS = [
     0x2148,
     0x2149,
     0x214C,
+    0x2122,
+    0x2124,
+    0x21C6,
+    0x21C8,
+    0x21CB,
+    0x21CD,
+    0x21CF,
     0x242B,
     0x242D,
     0x242F,
     0x2431,
+    0x2584,
+    0x2590,
+    0x2596,
+    0x25A3,
+    0x2610,
 ]
 
 EXTENDED_OPS = {
@@ -281,7 +382,7 @@ def signed8(value: int) -> int:
 
 def table_values(data: bytes, addr: int, rows: int, cols: int, notes: str) -> list[int]:
     values = list(table_bytes(data, addr, rows, cols))
-    if notes == "signed8":
+    if notes.startswith("signed8"):
         return [signed8(value) for value in values]
     return values
 
@@ -352,7 +453,7 @@ def best_spark_alignment(stock: bytes, candidate: bytes) -> tuple[int, float, fl
 def same_offset_table_delta(a: bytes, b: bytes, addr: int, length: int, notes: str = "raw") -> tuple[int, int, int, float]:
     av = list(a[addr : addr + length])
     bv = list(b[addr : addr + length])
-    if notes == "signed8":
+    if notes.startswith("signed8"):
         av = [signed8(value) for value in av]
         bv = [signed8(value) for value in bv]
     diffs = [bb - aa for aa, bb in zip(av, bv) if aa != bb]
@@ -589,11 +690,29 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     print()
 
     for addr, rows, cols, notes in (
+        (0x802B, 24, 9, "signed8"),
         (0x802E, 21, 9, "raw"),
         (0x802E, 24, 9, "raw"),
-        (0x80EB, 21, 9, "raw"),
+        (0x80EB, 21, 9, "signed8"),
         (0x80F1, 25, 9, "signed8"),
+        (0x8103, 24, 9, "signed8"),
         (0x81A8, 5, 9, "raw"),
+        (0x81F8, 24, 9, "signed8 alt-base"),
+        (0x821C, 24, 9, "signed8"),
+        (0x82F4, 24, 9, "signed8 alt-base"),
+        (0x8318, 24, 9, "signed8"),
+        (0x83F0, 1, 24, "signed8"),
+        (0x85BA, 24, 5, "raw"),
+        (0x87B1, 24, 9, "raw"),
+        (0x8C31, 1, 24, "raw/2 deg"),
+        (0x8C49, 1, 24, "raw/2 deg"),
+        (0x8C61, 1, 24, "raw/2 deg"),
+        (0x8C7C, 17, 9, "signed8"),
+        (0x8D15, 17, 9, "signed8"),
+        (0x8DAE, 1, 9, "raw"),
+        (0x92CF, 1, 9, "raw"),
+        (0x92D9, 1, 9, "raw"),
+        (0x400E, 1, 9, "raw"),
     ):
         length = rows * cols
         refs = find_word_refs(stock, addr)
@@ -603,6 +722,16 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         for key in COMPARISON_KEYS:
             count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, roms[key], addr, length, notes)
             print(f"  - `{key}` differs in `{count}/{length}` cells (`{delta_min:+d}..{delta_max:+d}`, avg `{delta_avg:+.1f}`).")
+
+    print()
+    print("Sensor-axis split note: `0x200A -> 0x2124 -> 0x92D9` builds runtime `0x2038/0x203A`, while `0x2008 -> 0x2122 -> 0x92CF` builds runtime `0x203C/0x203E`. Both breakpoint vectors currently carry raw labels `12,20,34,57,93,142,191,227,246`, and `0x400E` is the shared transfer/display vector. Exact CTS/IAT assignment remains provisional.")
+    print("Signed temp-like/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 -> 0x2038` temperature-like axis and RPM labels from `0x929E -> 0x2036`; outputs are `0x204A`/`0x204D`.")
+    print("Legacy boundary note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is only an alignment probe.")
+    print()
+    print("Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed temp-like/RPM corrections; `0x821C/0x8318` signed load/RPM trim candidates, or `0x83F0` RPM-only bypass, feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC -> 0x1016/0x101A` is the current strongest software pulse/event-width scheduler path.")
+    print("Output timing note: OC1 schedules the interrupt at `0x1016`, then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x87B1 -> 0x00BE -> 0x21C6` is phase/offset, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.")
+    print()
+    print("Main fuel status: a pure VE/base table is still not proven, but `0x821C/0x8318` are now the strongest main fuel trim/multiplier candidates. `0x81F8/0x82F4` are alternate bases selected by `0xE38B` and are kept out of the normal XDF tuning tree for now. OC1/OC3 scheduling is strong software evidence; the exact driver/pin remains a hardware-level proof item. The old `0x802E` VE-looking surface remains a legacy misaligned slice inside the signed `0x802B` table.")
 
     print()
     print("Spark alignment scan against Peugeot stock 24x9+24x9+1x24 bundle:")
@@ -627,7 +756,48 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
 
     ram_refs = scan_ram_refs(stock, RAM_TARGETS)
     print()
-    for addr in (0x20EB, 0x20ED, 0x242B, 0x242D, 0x20BC, 0x242F, 0x2431):
+    for addr in (
+        0x00BC,
+        0x00BF,
+        0x00C1,
+        0x00C3,
+        0x204A,
+        0x204B,
+        0x204D,
+        0x204E,
+        0x204F,
+        0x2050,
+        0x2051,
+        0x2053,
+        0x2055,
+        0x2057,
+        0x2084,
+        0x2086,
+        0x21C6,
+        0x21C8,
+        0x21CB,
+        0x21CD,
+        0x21CF,
+        0x2584,
+        0x2590,
+        0x2596,
+        0x25A3,
+        0x2610,
+        0x100B,
+        0x100E,
+        0x1016,
+        0x101A,
+        0x1020,
+        0x1022,
+        0x1023,
+        0x20EB,
+        0x20ED,
+        0x242B,
+        0x242D,
+        0x20BC,
+        0x242F,
+        0x2431,
+    ):
         hits = sorted(ram_refs.get(addr, []))
         stores = [h for h in hits if h[1].startswith("ST") or h[1].startswith("CLR")]
         loads = [h for h in hits if h[1].startswith("LD") or h[1].startswith("CP") or h[1].startswith("ADD") or h[1].startswith("SUB")]
@@ -637,7 +807,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
             f"{', '.join(fmt_addr(p) for p, _ in loads[:10]) or '-'}."
         )
     print()
-    for addr in (0x1030, 0x1031, 0x1032, 0x1033, 0x1034, 0x2007, 0x2008, 0x2009, 0x200A, 0x200B, 0x200C, 0x200D, 0x200E, 0x2013, 0x00CE, 0x00D0, 0x2034):
+    for addr in (0x1030, 0x1031, 0x1032, 0x1033, 0x1034, 0x2007, 0x2008, 0x2009, 0x200A, 0x200B, 0x200C, 0x200D, 0x200E, 0x2013, 0x2122, 0x2124, 0x2038, 0x203A, 0x203C, 0x203E, 0x2040, 0x2042, 0x00CE, 0x00D0, 0x2034):
         hits = sorted(ram_refs.get(addr, []))
         print(
             f"- `{fmt_addr(addr)}` ADC/load path: `{len(hits)}` scanned refs; first sites "

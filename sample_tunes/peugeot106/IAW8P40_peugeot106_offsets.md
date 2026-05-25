@@ -106,9 +106,10 @@ Recommended next steps:
 
 1. Open the BIN with the new XDF in TunerPro.
 2. Inspect code-confirmed and MOD2-touched views first, especially
-   `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`,
-   `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`,
-   `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`,
+signed temp-like/RPM fuel correction candidates `24x9 @ 0x802B` and `24x9 @ 0x8103`,
+   signed main fuel trim/multiplier candidates `24x9 @ 0x821C`, `24x9 @ 0x8318`,
+   and the RPM-only bypass vector `1x24 @ 0x83F0`,
+   legacy alignment probes around `0x802E`, `0x80EB`, `0x80F1`, and `0x81A8`,
    the likely spark maps, and
    `Load Model / Correction Factor Candidate 24x9 @ 0x9187`.
 3. Inspect `Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD` only as
@@ -152,33 +153,29 @@ Checksum offsets:
 
 Candidate and code-confirmed offsets added to the XDF:
 
-- `0x802E-0x80EA`: `Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E`.
-  This is now the preferred working alignment for the visible fuel-side surface.
-  MOD2 changes `57 / 189` cells, mostly by `+4`, `+5`, and `+6`.
-  Peugeot stock raw range is `135-248`, about `52.9-97.3%` under the
-  unconfirmed `raw / 2.55` visualization hypothesis. Xantia 607C at the same
-  offset is `144-214`, about `56.5-83.9%`, supporting an engine-specific
-  fuel/VE/air-charge interpretation without proving function.
-- `0x802E-0x8105`: `Alternate 24-Row Boundary View for 0x802E Fuel/VE Candidate`.
-  MOD2 changes `75 / 216` cells. Rows `21-23` may be adjacent calibration or
-  tail data until code proves otherwise.
-- `0x80EB-0x81A7`: `Public-Index Alignment Probe B 21x9 @ 0x80EB`.
-  Script pass reports `60 / 189` MOD2-touched cells, but modulo-byte wraps and
-  lack of direct code reference keep it below the primary `0x802E` candidate.
-- `0x81A8-0x81D4`: `Public-Index Alignment Probe Tail 5x9 @ 0x81A8`.
-  Script pass reports `30 / 45` MOD2-touched cells; keep as tail/alignment
-  evidence only.
-- `0x80F1-0x81D1`: `Likely Signed Fuel/Enrichment Adjacent Candidate 25x9 @ 0x80F1`.
-  MOD2 changes `90 / 225` cells. The old `0x8106` view was a bad mid-row slice;
-  at `0x80F1`, the first changed block is two full 9-cell rows and later
-  changes align as repeated row chunks. This view displays signed 8-bit values
-  with TunerPro native signed data flags.
-- The old combined `47x9 @ 0x802E` XDF view was removed because the screenshot
-  and byte pattern suggest two adjacent structures rather than one table.
-- These labels are working names. `0x802E` is the strongest current fuel-side
-  candidate, but it is not confirmed main fuel until a consumer path reaches
-  injection pulse width, fuel time, lambda correction, air-charge calculation,
-  or scheduling.
+- `0x802B-0x8102`: `Signed Fuel Temp-like/RPM Correction A 24x9 @ 0x802B`.
+  Code-referenced signed correction table. X labels are raw `0x92CF` helper
+  values `12,20,34,57,93,142,191,227,246` into runtime `$2038`; Y labels are
+  the confirmed `0x929E` RPM sites. Output is `$204A`.
+- `0x8103-0x81DA`: `Signed Fuel Temp-like/RPM Correction B 24x9 @ 0x8103`.
+  Paired signed correction table using the same raw temp-like and RPM axes.
+  Output is `$204D`.
+- `0x821C-0x82F3`: `Main Fuel Trim / Multiplier Candidate A 24x9 @ 0x821C`.
+  Signed load/RPM trim candidate selected by `$E38B`; X is runtime `$2034`,
+  Y is runtime `$2036`, and output `$2084` is applied to `$00C1` by `$E715`.
+- `0x8318-0x83EF`: `Main Fuel Trim / Multiplier Candidate B 24x9 @ 0x8318`.
+  Paired signed load/RPM trim candidate selected by `$E38B`; exact selector
+  semantics remain provisional.
+- `0x83F0-0x8407`: `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0`.
+  Signed RPM-only bypass vector that can also feed `$2084`.
+- `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1` are retained only as legacy
+  visual/alignment probes around the signed correction region. `0x80EB` is a
+  signed boundary slice at `0x802B+0xC0` crossing into `0x8103`. Do not tune
+  them as VE or main fuel.
+- A pure VE/base fuel table is still not proven, but `$821C/$8318` are now the
+  strongest main fuel trim/multiplier candidates. `$00C1/$00C3/$00BC` are the
+  strongest fuel pulse/event-width path candidates. OC1/OC3 scheduling is
+  strong software evidence; exact driver/pin proof remains hardware-level.
 - `0x800A`: code-referenced spark-bank selector seed byte; stock `0x00` becomes runtime `0x20B1 = 0xFF` after decrement.
 - `0x879C-0x87A3`: scalar block around changed 16-bit words.
 - `0x879E`: changed 16-bit threshold scalar, stock `0x07EB`, MOD2 `0x00FA`.
@@ -194,9 +191,9 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x8F71-0x8FC5`: code-confirmed bounded `17x5` 2D table view.
 - `0x9073-0x90D5`: code-confirmed `11x9` 2D table.
 - `0x89ED-0x89F2`: code-referenced control scalars.
-- `0x89F3-0x8A05`: `Likely Speed/Transient Correction Vector 1x19 @ 0x89F3`;
+- `0x89F3-0x8A05`: `Provisional RPM Load-Enrichment Gain 1x19 @ 0x89F3`;
   code-confirmed `1x19` interpolation vector and part of a larger
-  `0x2044`-indexed vector family.
+  RPM-derived `0x2044`-indexed vector family.
 - `0x8A68`: code-confirmed signed offset byte, stock/MOD2 `0x00`.
 - `0x8A69-0x8B40`: code-confirmed `24x9` 2D table bank; likely
   high-octane/default spark advance. XDF displays the `0x2034` load axis as
@@ -252,7 +249,7 @@ Useful direct-reference hints from byte/opcode context:
 - `0x888E` is loaded as a B2D6 table base around `0xBE74-0xBE90`; result stores to `0x2484`.
 - `0x9073` is loaded as a B2D6 table base around `0xC282-0xC2BE`; result is compared with `0x243C`.
 - `0x8E6F`, `0x8F1C`, `0x8F71`, and `0x8EC7` are loaded as B2D6 table bases around `0xD105-0xD15D`.
-- `0x89F3` is used as a 1D interpolation vector around `0xBAA8-0xBAB2`.
+- `0x89F3` is used as a 1D RPM-indexed interpolation vector around `0xBAA8-0xBAB2`.
 - `0x89ED`, `0x89F0`, `0x89F2`, `0x8A06`, and `0x8A08` are scalar/control bytes used around `0xBAA8-0xBB96`.
 - `0x8A69` / `0x8B41` are selected as 2D table banks around `0x48EE-0x4941`.
 - `0x800A` is loaded around `0xCBEF` and decremented before being stored to `0x20B1`.

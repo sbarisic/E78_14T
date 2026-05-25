@@ -25,7 +25,7 @@ The TU2J2/MFZ wiring reference lists these relevant component IDs:
 | --- | --- | --- |
 | `B24` | Coolant temperature sensor | Should correspond to one ADC channel and warmup/enrichment/fan/back-up logic. |
 | `B25` | Inlet air temperature sensor | Should correspond to one ADC channel and air-density correction. |
-| `B33` | Vehicle speed sensor | Supports speed-indexed logic and likely relates to the `0x00D4/0x2044` family. |
+| `B33` | Vehicle speed sensor | Mentioned by some generic references, but current firmware evidence does not tie it to the `0x00D4/0x2044` family. |
 | `B69` | Knock sensor, marked for 1.3 | Supports the idea that dual spark banks may be knock/octane related, but bank meaning is not proven. |
 | `B72` | Heated oxygen sensor | Supports closed-loop mixture/adaptation and diagnostic logic. |
 | `B75` | Crankshaft speed sensor | Source for period/RPM logic, likely upstream of `0x00BA` and `0x2036`. |
@@ -35,7 +35,8 @@ The TU2J2/MFZ wiring reference lists these relevant component IDs:
 PeugeotBook also lists Magneti Marelli system service items including the
 throttle potentiometer, idle-speed control stepper motor, MAP sensor, coolant
 temperature sensor, inlet air temperature sensor, crankshaft sensor, knock
-sensor, throttle-housing heating element, and vehicle speed sensor.
+sensor, and throttle-housing heating element. Vehicle-speed references are
+treated as generic/variant evidence until a 1.3 Rallye 8P.40 pin path is proven.
 
 ## MAP Sensor Clue
 
@@ -93,10 +94,10 @@ but the exact channel meanings still need local Peugeot consumer/fallback proof.
    screenshot shows a `24x9` RPM-by-temperature `Air density correction factor
    by temperature` table, but that exact byte matrix was not found in the local
    stock or MOD2 Peugeot 106 dumps using likely scalings and orientations.
-6. Trace the `0x802E` fuel-side candidate toward injection logic. The preferred
-   `21x9` view uses RPM-like rows and load/MAP-like columns, and the Peugeot vs
-   Xantia difference supports a fuel/VE/air-charge interpretation, but sensor
-   and injector consumers are still needed before calling it main fuel.
+6. Continue the fuel/charge proof from the signed `0x802B/0x8103` correction
+   pair into `$204B`, `$00C1`, `$2051`, `$00C3`, `$00BC`, and the provisional
+   `$1016` scheduler bridge. The old `0x802E` view is legacy alignment context
+   only, not a table base to tune.
 7. Use live data if available:
    - key-on engine-off MAP should be near barometric pressure,
    - warm idle MAP should be much lower than WOT,
@@ -113,13 +114,17 @@ and transposed views. The closest meaningful local correction candidate remains
 `0x9187`, but its bytes are different and its confirmed path currently feeds the
 load-model chain `0x00D0 -> 0x00CE -> 0x2034`.
 
-## Fuel/VE Candidate Sensor Boundary
+## Signed Temp-like/RPM Fuel Correction Boundary
 
-`Likely Fuel/VE/Air-Charge Correction Candidate 21x9 @ 0x802E` now looks like
-the strongest fuel-side table candidate. Its columns follow the same provisional
-load/MAP-like `0-1024` idea used elsewhere, but no ADC or injection path has
-confirmed the physical inputs or output role. Keep `raw / 2.55` as a viewing
-hypothesis only until sensor traces or live data prove the scale.
+The old `0x802E` fuel/VE-looking surface is now treated as a legacy misaligned
+slice inside the code-referenced signed table at `0x802B`. The corrected pair is
+`0x802B` and `0x8103`, both signed `24x9` temp-like/RPM fuel correction
+candidates.
+Their X axis uses raw `0x92CF` helper labels into runtime `$2038`, their Y axis
+uses the confirmed `0x929E` RPM labels into `$2036`, and their outputs are
+`$204A` and `$204D`. `$204A` feeds `$204B -> $00C1`; `$204D` feeds the
+`$204E/$204F` blend path. The exact temperature sensor identity and final
+injector channel remain provisional.
 
 ## Source URLs
 

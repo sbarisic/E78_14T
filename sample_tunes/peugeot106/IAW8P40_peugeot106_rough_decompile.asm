@@ -13,14 +13,32 @@
 ; decoded here. Syntax is close to common 68HC11 assemblers but may need small
 ; edits for a specific assembler.
 ;
-; Key conclusion in this pass:
-;   * $9187 is a code-confirmed 24x9 load/air-charge factor table.
-;   * Its X index is built from RAM $2017 using 9 breakpoints at $9291.
-;   * Its Y index is the RPM-normalized axis in RAM $2036.
-;   * The $9187 result can seed $00D0 -> $00CE -> $2034, so it helps create the
-;     later load/MAP-like axis used by spark and other maps.
-;   * $8A52 is a 19-cell $2044-indexed strategy limit/clamp vector, not a main
-;     fuel or spark map.
+; Key conclusions in this pass:
+;   * $2036 is a very-high-confidence RPM-normalized axis built from engine period
+;     RAM $00BA through the 24-point period table at $929E.
+;   * $2034 is a high-confidence modeled load / air-charge axis used by spark and
+;     other maps. The $9187 path can seed the upstream $00D0 -> $00CE -> $2034
+;     calculation, so $9187 is best treated as a load-model / air-charge factor.
+;   * $2017 plus breakpoints at $9291 form a processed throttle/load-delta axis.
+;   * $2044 is an RPM-derived 19-cell 8.8 vector index built from $00D4.
+;     It resolves to 400 rpm sites from 0-7200 rpm. $2046 remains a
+;     secondary transient/state axis, still physically provisional.
+;   * Two temperature/sensor-style axes are now separated:
+;       $200A -> $2124 -> $92D9 breakpoints -> $2038/$203A.
+;       $2008 -> $2122 -> $92CF breakpoints -> $203C/$203E.
+;     By consumer behavior, $203C/$203E is now the best likely CTS/coolant axis
+;     and $2038/$203A is the best likely IAT/air-temperature axis. Exact sensor
+;     assignment still needs pin/ADC or bench proof.
+;   * $200C -> $00CC -> $2040 -> $84E3 -> $2049 is the strongest lambda /
+;     closed-loop fuel correction candidate found so far.
+;   * $888E/$8970 feed $202B and external bit $1050.04, so $888E is now best
+;     treated as idle-air / idle-bypass target, not fuel.
+;   * $8010-$8027 is an SPI output pointer frame, not calibration data.
+;   * The old $802E fuel/VE hypothesis is demoted: $802E is +3 inside the signed
+;     24x9 table at $802B. $821C/$8318 are now the strongest main fuel trim /
+;     multiplier candidates, while $00C1/$00C3/$00BC form the strongest fuel
+;     pulse/event-width candidate path. The final injector pin/channel still
+;     needs hardware proof.
 ;   * XDF-confirmed/code-referenced table metadata is mirrored here as labels and
 ;     comments. When a physical role is not yet proven, the label stays generic.
 ;
@@ -45,9 +63,14 @@ RAM_FLAGS_A4            EQU     $00A4
 RAM_FLAGS_A9            EQU     $00A9
 RAM_TIMER_PREV_B8       EQU     $00B8
 RAM_ENGINE_PERIOD_BA    EQU     $00BA      ; period-like delta, upstream of RPM axis
+RAM_FUEL_EVENT_BC       EQU     $00BC      ; duration/phase candidate derived from $00C3
+RAM_FUEL_PREV_BF        EQU     $00BF      ; previous/latched event value near $6Fxx
+RAM_FUEL_ACCUM_C1       EQU     $00C1      ; core fuel/charge accumulator candidate
+RAM_FUEL_FINAL_C3       EQU     $00C3      ; post-correction fuel/charge value candidate
+RAM_LAMBDA_FILTER_CC    EQU     $00CC      ; filtered lambda/O2 candidate
 RAM_LOAD_RAW_CE         EQU     $00CE      ; raw load/aircharge word
 RAM_LOAD_BYTE_D0        EQU     $00D0      ; load-model/aircharge byte
-RAM_SPEED_D4            EQU     $00D4      ; inverse-period / speed-like word
+RAM_SPEED_D4            EQU     $00D4      ; inverse-period / RPM-like word
 RAM_TIMER_CAPTURE_D9    EQU     $00D9
 RAM_SENSOR_BASE_10      EQU     $0010      ; adaptive/minimum-like baseline area
 RAM_SENSOR_BASE_11      EQU     $0011      ; subtracted from $00C9 to form $2017
@@ -55,9 +78,19 @@ RAM_SENSOR_PROC_C9      EQU     $00C9      ; processed sensor, probably TPS/load
 
 ; 68HC11 registers
 REG_PORTA               EQU     $1000
+REG_CFORC               EQU     $100B      ; compare-force register, OC3 force bit $20
 REG_TCNT                EQU     $100E
 REG_TIC3                EQU     $1014
+REG_TOC1                EQU     $1016      ; OC1 compare, scheduler/phase interrupt
+REG_OC_1016             EQU     $1016      ; alias retained for older notes
+REG_TOC3                EQU     $101A      ; OC3 compare, pulse edge scheduling candidate
+REG_TCTL1               EQU     $1020      ; OC2/OC3 action bits
+REG_TMSK1               EQU     $1022      ; timer interrupt mask
+REG_TFLG1               EQU     $1023      ; timer flag acknowledge
 REG_TFLG2               EQU     $1025
+REG_SPI_CTRL            EQU     $1028
+REG_SPI_STATUS          EQU     $1029
+REG_SPI_DATA            EQU     $102A
 REG_ADCTL               EQU     $1030
 REG_ADR1                EQU     $1031
 REG_ADR2                EQU     $1032
@@ -65,6 +98,7 @@ REG_ADR3                EQU     $1033
 REG_ADR4                EQU     $1034
 REG_COPRST              EQU     $103A
 REG_INIT                EQU     $103D
+REG_EXT_PORT_1050       EQU     $1050      ; external/ASIC port, idle path toggles bit $04
 
 ; RAM $20xx processed channels / axes
 RAM_ADC_2007            EQU     $2007
@@ -72,16 +106,42 @@ RAM_ADC_2008            EQU     $2008
 RAM_ADC_2009            EQU     $2009
 RAM_ADC_200A            EQU     $200A
 RAM_ADC_200B            EQU     $200B
-RAM_ADC_200C            EQU     $200C
+RAM_ADC_200C            EQU     $200C      ; best lambda/O2 raw input candidate
 RAM_ADC_200D            EQU     $200D
 RAM_ADC_200E            EQU     $200E
 RAM_PROC_2013           EQU     $2013
-RAM_AXIS_SRC_2014       EQU     $2014      ; candidate sensor/state axis source for $869A
+RAM_AXIS_SRC_2014       EQU     $2014      ; modeled load / air-charge working value for $869A
 RAM_THR_DELTA_2017      EQU     $2017      ; max(0, $00C9 - $0011), axis input for $9187
+RAM_TRANSIENT_2030      EQU     $2030      ; signed/limited transient working axis
 RAM_LOAD_AXIS_2034      EQU     $2034      ; final load/MAP-like 8.8 axis
 RAM_RPM_AXIS_2036       EQU     $2036      ; RPM-normalized 8.8 axis
-RAM_AXIS_2044           EQU     $2044      ; 19-cell speed/RPM-like vector index
+RAM_TEMP_AXIS_A_2038    EQU     $2038      ; temp-like axis from $200A/$2124/$92D9, likely IAT
+RAM_IAT_AXIS_2038       EQU     $2038      ; likely inlet-air/air-temp correction axis
+RAM_TEMP_AXIS_A2_203A   EQU     $203A      ; doubled $2038; used by $8C7C spark correction
+RAM_IAT_AXIS2_203A      EQU     $203A      ; likely IAT companion axis
+RAM_TEMP_AXIS_B_203C    EQU     $203C      ; temp-like axis from $2008/$2122/$92CF, likely CTS
+RAM_CTS_AXIS_203C       EQU     $203C      ; likely coolant/CTS axis by warmup consumers
+RAM_TEMP_AXIS_B2_203E   EQU     $203E      ; doubled $203C; warmup and $8D15 spark correction
+RAM_CTS_AXIS2_203E      EQU     $203E      ; likely CTS companion axis
+RAM_AXIS_2040           EQU     $2040      ; dynamic axis for phase/deadtime-style support vectors
+RAM_LAMBDA_AXIS_2040    EQU     $2040      ; likely lambda/dynamic closed-loop correction axis
+RAM_THR_DELTA_AXIS_2042 EQU     $2042      ; $2017 through $9291 breakpoints
+RAM_AXIS_2044           EQU     $2044      ; RPM-derived 19-cell vector index, 400 rpm/site
 RAM_AXIS_2046           EQU     $2046      ; secondary transient/state axis for $8A0A
+RAM_TEMP_RPM_CORR_A_OUT EQU     $204A      ; signed fuel/charge correction output from $802B
+RAM_FUEL_CORR_SUM_204B  EQU     $204B      ; correction stack added to $00CE into $00C1
+RAM_TEMP_RPM_CORR_B_OUT EQU     $204D      ; signed fuel/charge correction output from $8103
+RAM_FUEL_BLEND_204E     EQU     $204E      ; blend/scale word from $204D path
+RAM_FUEL_BLEND_204F     EQU     $204F      ; adjacent blend byte used in $00C1 scaling
+RAM_FUEL_CORR_2050      EQU     $2050      ; signed correction added with $204A
+RAM_FUEL_CORR_2051      EQU     $2051      ; corrected fuel/charge value used near $6F48
+RAM_FUEL_MULT_2053      EQU     $2053      ; multiplier/percentage-style correction on $00C1
+RAM_FUEL_ADD_2055       EQU     $2055      ; additive fuel/charge correction
+RAM_FUEL_ADD_2057       EQU     $2057      ; additive fuel/charge correction
+RAM_FUEL_TRIM_2084      EQU     $2084      ; signed trim from $821C/$8318/$83F0
+RAM_FUEL_PHASE_2086     EQU     $2086      ; scheduler phase offset from $2040 axis
+RAM_IDLE_CURRENT_202B   EQU     $202B      ; idle-air/actuator current target candidate
+RAM_IDLE_STEP_TIMER_202C EQU    $202C      ; idle actuator step timer/count candidate
 RAM_SPARK_BANK_SEL      EQU     $20B1      ; nonzero => $8A69, zero => $8B41
 RAM_VEC_89F3_OUT        EQU     $20BC
 RAM_VEC_8A52_OUT        EQU     $20E6      ; output of vector $8A52; used as clamp/limit
@@ -91,6 +151,11 @@ RAM_TABLE_85BA_OUT      EQU     $2063
 RAM_SPARK_ACCUM_2147    EQU     $2147      ; spark-angle accumulator/intermediate
 RAM_SPARK_OUT_2148      EQU     $2148
 RAM_LIMIT_FLAG_214F     EQU     $214F
+RAM_PHASE_OFFSET_21C6   EQU     $21C6      ; phase offset built from $87B1 path
+RAM_PERIOD_LIMIT_21C8   EQU     $21C8      ; event period limit / guard
+RAM_OC_BASE_21CB        EQU     $21CB      ; timer base captured before TOC3 schedule
+RAM_OC_REMAIN_21CD      EQU     $21CD      ; leftover/delay when pulse exceeds period
+RAM_ALT_WIDTH_21CF      EQU     $21CF      ; alternate event width for some modes
 RAM_CHECKSUM_PTR        EQU     $2188
 RAM_CHECKSUM_SUM        EQU     $218A
 RAM_DESC_9187           EQU     $218D      ; 7-byte B2D6 descriptor for table $9187
@@ -98,7 +163,21 @@ RAM_DESC_SPARK          EQU     $213A      ; 7-byte B2D6 descriptor for spark ta
 RAM_DESC_TABLE_869A     EQU     $238A
 RAM_TABLE_869A_OUT      EQU     $2391
 RAM_TABLE_9073_REF      EQU     $243C
+RAM_FILTER_2584         EQU     $2584      ; subtracted from $00C1 correction stack
+RAM_SLOW_CORR_2590      EQU     $2590      ; additive correction into $00C1
+RAM_ADAPT_2596          EQU     $2596      ; slow adaptation/base used with $204A
+RAM_TMP_25A3            EQU     $25A3      ; temp descriptor/accumulator around $E84B/$E927
+RAM_CORR_2610           EQU     $2610      ; alternate-bank signed correction term
+RAM_SENSOR_FILT_2122    EQU     $2122      ; filtered $2008 path before $92CF lookup
+RAM_SENSOR_FILT_2124    EQU     $2124      ; filtered $200A path before $92D9 lookup
 RAM_TABLE_888E_OUT      EQU     $2484
+RAM_IDLE_TARGET_2483    EQU     $2483
+RAM_IDLE_MAP_OUT_2484   EQU     $2484      ; $888E idle target map result
+RAM_IDLE_TEMP_CAP_2486  EQU     $2486      ; $8970 CTS-axis idle cap/vector result
+RAM_IDLE_SHAPED_2488    EQU     $2488
+RAM_IDLE_STATUS_248D    EQU     $248D
+RAM_IDLE_STATUS_248E    EQU     $248E
+RAM_LAMBDA_FUEL_2049    EQU     $2049      ; $84E3 output applied to $00C1
 RAM_TABLE_8E6F_OUT      EQU     $24AB
 RAM_TABLE_8F1C_OUT      EQU     $24AC
 RAM_TABLE_8F71_OUT      EQU     $24AD
@@ -108,12 +187,24 @@ RAM_TABLE_8EC7_OUT      EQU     $24AF
 CAL_SPARK_BANK_SEED     EQU     $800A
 CHK_WORD                EQU     $800C
 CHK_TARGET              EQU     $800E
+TABLE_SPI_FRAME_8010    EQU     $8010      ; pointer frame for SPI output, not calibration
 DIAG_EVENT_TABLE_55A0   EQU     $55A0      ; diagnostic/event code table, 18 cells
-TABLE_FUEL_CAND_802E    EQU     $802E      ; strongest unconfirmed fuel/VE candidate
+TABLE_TEMP_RPM_CORR_A_802B EQU  $802B      ; signed 24x9, X=$2038 likely IAT/air-temp, Y=$2036 RPM
+TABLE_FUEL_CHARGE_CORR_A_802B EQU $802B    ; alias: feeds $204A -> $204B -> $00C1
+TABLE_LEGACY_SLICE_802E EQU     $802E      ; +3 inside $802B; legacy visual probe only
+TABLE_LEGACY_BOUNDARY_80EB EQU   $80EB      ; $802B+$C0; signed cross-boundary slice only
+TABLE_TEMP_RPM_CORR_B_8103 EQU  $8103      ; signed 24x9, X=$2038 likely IAT/air-temp, Y=$2036 RPM
+TABLE_FUEL_CHARGE_CORR_B_8103 EQU $8103    ; alias: feeds $204D -> $204E blend path
+TABLE_FUEL_TRIM_ALT_A_81F8 EQU $81F8       ; alternate/special base selected by $E38B
+TABLE_FUEL_TRIM_A_821C EQU   $821C         ; signed 24x9, X=$2034 load, Y=$2036 RPM
+TABLE_FUEL_TRIM_ALT_B_82F4 EQU $82F4       ; alternate/special base selected by $E38B
+TABLE_FUEL_TRIM_B_8318 EQU   $8318         ; signed 24x9 alternate bank, -> $2084
+VEC_FUEL_TRIM_RPM_83F0 EQU   $83F0         ; RPM-only signed trim bypass, -> $2084
 TABLE_CONF_85BA         EQU     $85BA      ; code-confirmed 24x5, axes $2034/$2036
 TABLE_CONF_869A         EQU     $869A      ; code-confirmed 24x9, axes $2014-derived/$2036
 TABLE_CONF_87B1         EQU     $87B1      ; code-confirmed 24x9 zero table, axes $2034/$2036
-TABLE_CONF_888E         EQU     $888E      ; code-confirmed 24x9, axes $2034/$2036
+TABLE_CONF_888E         EQU     $888E      ; idle-air / idle-bypass target, axes $2034/$2036
+TABLE_IDLE_BASE_888E    EQU     $888E      ; alias: $2484/$202B actuator target path
 VEC_89C7_BASE           EQU     $89C7      ; $2044-indexed 19-cell vector
 VEC_89DA_BASE           EQU     $89DA      ; $2044-indexed 19-cell vector
 SCALAR_BLOCK_89ED       EQU     $89ED      ; code-referenced 1x6 control scalars
@@ -128,6 +219,12 @@ CAL_SPARK_SIGNED_OFFSET EQU     $8A68      ; code-confirmed signed offset byte
 TABLE_SPARK_HIGH        EQU     $8A69      ; likely high/default spark, 24x9, raw/2 deg
 TABLE_SPARK_LOW         EQU     $8B41      ; likely low/alternate spark, 24x9, raw/2 deg
 TABLE_WOT_SPARK         EQU     $8C19      ; 24-point RPM-only spark vector, raw/2 deg
+VEC_SPARK_MODE_A_8C31   EQU     $8C31      ; RPM-only special-mode spark vector, raw/2 deg
+VEC_SPARK_MODE_B_8C49   EQU     $8C49      ; RPM-only special-mode spark vector, raw/2 deg
+VEC_SPARK_MODE_C_8C61   EQU     $8C61      ; RPM-only special-mode spark vector, raw/2 deg
+TABLE_SPARK_TEMP_LOAD_A_8C7C EQU $8C7C     ; signed load/temp spark correction, adds to $2147
+TABLE_SPARK_TEMP_LOAD_B_8D15 EQU $8D15     ; signed load/temp spark correction, adds to $2147
+VEC_SPARK_TEMP_DECAY_8DAE EQU   $8DAE      ; $203E-indexed spark decay/correction vector
 TABLE_CONF_8E6F         EQU     $8E6F      ; code-confirmed 17x5 cluster table
 TABLE_CONF_8EC7         EQU     $8EC7      ; code-confirmed 17x5 cluster table
 TABLE_CONF_8F1C         EQU     $8F1C      ; code-confirmed 17x5 cluster table
@@ -142,11 +239,47 @@ AXIS_RPM_PERIOD_929E    EQU     $929E      ; 24 period words, 15000000/period ~=
 AXIS_RPM_COUNT_92CE     EQU     $92CE      ; count = 24
 AXIS_HELPER_92CF        EQU     $92CF      ; code-referenced 9-point helper vector
 AXIS_HELPER_92D8_COUNT  EQU     $92D8      ; count = 9 for one $92CF caller
+AXIS_HELPER_92D9        EQU     $92D9      ; second 9-point temp-like helper vector, $200A path
+AXIS_HELPER_92E2_COUNT  EQU     $92E2      ; count = 9 for the $92D9 caller
+VEC_SENSOR_TRANSFER_400E EQU    $400E      ; 160,140,120,100,80,60,40,20,0 display/transfer vector
+CAL_OC3_GUARD_8787      EQU     $8787      ; word guard used in OC3 period-fit tests
+VEC_IDLE_TEMP_8970      EQU     $8970      ; likely CTS-axis idle target/cap vector
+CAL_IDLE_ALT_8967       EQU     $8967
+CAL_IDLE_HYST_896D      EQU     $896D
+CAL_IDLE_MAX_896E       EQU     $896E
+CAL_IDLE_STEP_DELAY_8981 EQU    $8981
+CAL_IDLE_TEMP_LIMIT_8E6C EQU    $8E6C
+CAL_IDLE_DISABLE_888A   EQU     $888A
+
+; Warmup/transient fuel-support tables identified by targeted tracing.
+VEC_WARMUP_C5_A_845B        EQU $845B      ; $203E-indexed -> $00C5, mode dependent
+VEC_WARMUP_C5_B_846C        EQU $846C      ; alternate $00C5 vector
+VEC_AFTERSTART_TIME_A_847D  EQU $847D      ; $203E-indexed timer/count
+VEC_AFTERSTART_TIME_B_848E  EQU $848E
+VEC_WARMUP_BLEND_A_849F     EQU $849F
+VEC_WARMUP_BLEND_B_84B0     EQU $84B0
+VEC_WARMUP_BLEND_C_84C1     EQU $84C1
+VEC_WARMUP_BLEND_D_84D2     EQU $84D2
+VEC_AXIS2040_SCALE_84E3     EQU $84E3      ; legacy alias for $2040-indexed lambda/fuel vector
+VEC_LAMBDA_FUEL_84E3        EQU $84E3      ; likely lambda/closed-loop fuel correction
+VEC_TEMPB_SCALE_84F6        EQU $84F6      ; $203C-indexed word table path
+VEC_THROTTLEDELTA_8508      EQU $8508      ; $2042-indexed transient vector
+VEC_RPM_TRANSIENT_8511      EQU $8511      ; $2036-indexed transient vector
+TABLE_TRANSIENT_A_8529      EQU $8529      ; transient word table, X=$2042
+VEC_TEMPB_TRANSIENT_853B    EQU $853B      ; $203C-indexed transient scalar
+VEC_TEMPB_SCALE_8546        EQU $8546      ; $203C-indexed word table path
+VEC_TEMPB_TRANSIENT_8558    EQU $8558
+VEC_RPM_TRANSIENT_8561      EQU $8561
+TABLE_TRANSIENT_B_8579      EQU $8579      ; transient word table, X=$2042
+VEC_TEMPB_TRANSIENT_858B    EQU $858B
+VEC_ADDITIVE_ENRICH_A_8596  EQU $8596      ; EB16 helper -> $2055
+VEC_ADDITIVE_ENRICH_B_85AF  EQU $85AF      ; EB16 helper -> $2057
 
 ; Interpolation helpers
 SUB_INTERP_1D           EQU     $B2AB
 SUB_INTERP_1D_ALT       EQU     $B2BA
 SUB_INTERP_2D           EQU     $B2D6
+SUB_INTERP_2D_SIGNED    EQU     $B32B      ; signed 2D interpolation used by $802B/$8103
 SUB_AXIS_FROM_BYTE      EQU     $B383      ; monotonic byte breakpoints -> 8.8 index
 SUB_AXIS_FROM_PERIOD    EQU     $B3B9      ; period table -> 8.8 RPM index
 
@@ -385,20 +518,23 @@ D47C:           JSR     SUB_AXIS_FROM_PERIOD
 D47F:           STD     RAM_RPM_AXIS_2036
 
 ;===============================================================================
-;                     19-CELL SPEED/RPM-LIKE VECTOR INDEX $2044
+;                     19-CELL RPM-DERIVED VECTOR INDEX $2044
 ;===============================================================================
 
                 ORG     $D482
 BUILD_2044_AXIS_D482:
 ; $2044 indexes the 19-cell vector family at $89C7-$8A67.
-; XDF keeps this as a speed/RPM-like strategy axis until the physical source is
-; fully named. It is not a spark-load axis.
+; $00D4 is built from engine period $00BA through inverse-period math
+; equivalent to roughly 15000000 / period. The code below maps $00D4 to an
+; 8.8 index with 400 rpm cell spacing and a 7200 rpm / index-18 cap.
+; It is not a vehicle-speed axis and not a spark-load axis.
 ;
 ; Pseudocode:
-;   if $00D4 >= $1C20:
+;   if $00D4 >= $1C20:       ; 7200 rpm
 ;       $2044 = $1200
 ;   else:
 ;       $2044 = ($00D4 / 25) << 4
+;   integer cell = $2044 >> 8 = rpm / 400
 ;
 D482:           LDD     RAM_SPEED_D4
 D484:           CPD     #$1C20
@@ -417,12 +553,13 @@ D498: .store:   STD     RAM_AXIS_2044
 ; ... also derives $2046 after this.
 
 ;===============================================================================
-;                $2044-INDEXED VECTOR FAMILY / STRATEGY LIMITS
+;                RPM-INDEXED $2044 VECTOR FAMILY / STRATEGY LIMITS
 ;===============================================================================
 
                 ORG     $BA5D
 LOOKUP_2044_VECTOR_FAMILY_BA5D:
-; Common 1D vectors indexed by $2044. These are strategy/correction vectors.
+; Common 1D vectors indexed by RPM-derived $2044. These are
+; strategy/correction vectors.
 ; XDF-confirmed members include $89C7, $89DA, $89F3, $8A27, $8A3A, and $8A52.
 ; $89ED-$89F2, $8A4D-$8A51, and $8A65-$8A67 are exposed as scalar blocks where
 ; direct references treat them separately from the vectors.
@@ -712,12 +849,531 @@ D2F6:           BNE     .stack_fault
 ;   JMP $D2D9      ; loop
 
 ;===============================================================================
+;                     SENSOR / TEMPERATURE AXIS PRODUCERS
+;===============================================================================
+
+                ORG     $431A
+BUILD_SENSOR_AXIS_B_431A:
+; $2008 path: filter into $2122, map through raw breakpoint vector $92CF, invert
+; the 8.8 index, store $203C, and store doubled companion axis $203E. The $400E
+; vector is also interpolated into $00CA as a display/transfer-style value.
+; By consumer behavior this is now the best likely CTS/coolant axis: warmup,
+; afterstart, idle/state, and the $8D15 spark correction all use this family.
+; Exact sensor identity remains provisional until harness/ADC proof.
+431A:           LDAA    RAM_ADC_2008
+433D:           STD     RAM_SENSOR_FILT_2122
+4340:           LDX     #AXIS_HELPER_92CF
+4343:           LDAB    AXIS_HELPER_92D8_COUNT
+4349:           JSR     SUB_AXIS_FROM_BYTE
+434F:           LDY     #VEC_SENSOR_TRANSFER_400E
+4353:           JSR     SUB_INTERP_1D
+4361:           STD     RAM_TEMP_AXIS_B_203C
+4364:           ASLD
+4365:           STD     RAM_TEMP_AXIS_B2_203E
+
+                ORG     $436A
+BUILD_SENSOR_AXIS_A_436A:
+; $200A path: filter into $2124, map through raw breakpoint vector $92D9, invert
+; the 8.8 index, store $2038, and store doubled companion axis $203A. This is
+; the axis used by the signed $802B/$8103 fuel temp/RPM corrections and by the
+; $8C7C spark temp/load correction.
+; By consumer behavior this is now the best likely IAT/air-temperature axis.
+436A:           LDAA    RAM_ADC_200A
+438D:           STD     RAM_SENSOR_FILT_2124
+4390:           LDX     #AXIS_HELPER_92D9
+4393:           LDAB    AXIS_HELPER_92E2_COUNT
+4399:           JSR     SUB_AXIS_FROM_BYTE
+439F:           LDY     #VEC_SENSOR_TRANSFER_400E
+43A3:           JSR     SUB_INTERP_1D
+43B1:           STD     RAM_TEMP_AXIS_A_2038
+43B4:           ASLD
+43B5:           STD     RAM_TEMP_AXIS_A2_203A
+
+;===============================================================================
+;                LAMBDA / CLOSED-LOOP FUEL CORRECTION CANDIDATE
+;===============================================================================
+
+                ORG     $5B1B
+LAMBDA_INPUT_SERVICE_5B1B:
+; Best current lambda/O2 input candidate. $200C is checked against calibration
+; thresholds around $9267/$9268, diagnostic flags/events are updated, and caller
+; $43DC filters the result into $00CC. This is not fully hardware-proven yet,
+; but the downstream path reaches the central fuel accumulator.
+5B1B:           LDAA    RAM_ADC_200C
+5B3B:           CMPA    $9267
+5B40:           CMPA    $9268
+5B8E:           LDAA    RAM_ADC_200C
+5B94:           RTS
+
+                ORG     $43DC
+LAMBDA_FILTER_TO_AXIS_43DC:
+; $200C result is filtered into $00CC, then $43F3 builds $2040. The current best
+; model is:
+;   $200C -> $5B1B -> $43DC -> $00CC -> $2040 -> $84E3 -> $2049 -> $00C1.
+43DC:           JSR     LAMBDA_INPUT_SERVICE_5B1B
+43EE:           JSR     $B42F             ; filtered result into $00CC path
+
+                ORG     $43F3
+BUILD_LAMBDA_AXIS_2040_43F3:
+; $2040 = max($00CC - $8000, 0) >> 4. This dynamic/lambda axis also indexes
+; scheduler/guard vectors $92FA/$877E/$8789, so it is a shared strategy axis.
+43F3:           LDD     RAM_LAMBDA_FILTER_CC
+43F5:           SUBD    #$8000
+43FC:           LSRD
+43FD:           LSRD
+43FE:           LSRD
+43FF:           LSRD
+4400:           STD     RAM_LAMBDA_AXIS_2040
+
+                ORG     $E83E
+LAMBDA_AXIS_TO_FUEL_CORR_E83E:
+; $2040 indexes $84E3 and stores to $2049. $2049 is later applied into $00C1,
+; making $84E3 the strongest lambda/closed-loop fuel correction vector candidate.
+E83E:           LDD     RAM_LAMBDA_AXIS_2040
+E841:           LDY     #VEC_LAMBDA_FUEL_84E3
+E845:           JSR     SUB_INTERP_1D
+E848:           STAA    RAM_LAMBDA_FUEL_2049
+
+                ORG     $E6A6
+APPLY_LAMBDA_FUEL_CORR_E6A6:
+; If $2049 is nonzero, helper $E6DA applies a correction to $00C1. This is fuel
+; quantity/closed-loop correction, not spark and not injector phase.
+E6A6:           LDAA    RAM_LAMBDA_FUEL_2049
+E6A9:           BEQ     .no_lambda_corr
+E6AD:           JSR     $E6DA
+E6B9:           STD     RAM_FUEL_ACCUM_C1
+E6C4: .no_lambda_corr:
+E6C4:           RTS
+
+;===============================================================================
+;                      IDLE-AIR / IDLE-BYPASS ACTUATOR PATH
+;===============================================================================
+
+                ORG     $BE65
+IDLE_AIR_TARGET_BE65:
+; This path moves $888E out of fuel. Normal mode looks up $888E with load/RPM,
+; adds/shapes it with likely CTS-axis vector $8970 and idle constants, moves
+; $202B one count toward target, and toggles external bit $1050.04. This strongly
+; resembles idle stepper / idle-bypass actuator control.
+BE65:           LDAA    CAL_IDLE_MAX_896E
+BE74:           LDY     #$248F
+BE78:           LDD     RAM_LOAD_AXIS_2034
+BE7E:           LDD     RAM_RPM_AXIS_2036
+BE84:           LDD     #TABLE_IDLE_BASE_888E
+BE90:           JSR     SUB_INTERP_2D
+BE93:           STAA    RAM_IDLE_MAP_OUT_2484
+BE96:           LDY     #VEC_IDLE_TEMP_8970
+BE9A:           LDD     RAM_CTS_AXIS2_203E
+BE9D:           JSR     SUB_INTERP_1D
+BEA0:           STAA    RAM_IDLE_TEMP_CAP_2486
+BEE7:           STAB    RAM_IDLE_CURRENT_202B
+BEEA:           STAB    RAM_IDLE_TARGET_2483
+BEEF:           STAA    RAM_IDLE_STEP_TIMER_202C
+BF07:           BCLR    $50,X,#$04        ; external bit $1050.04 clear
+BF2D:           BSET    $50,X,#$04        ; external bit $1050.04 set
+
+;===============================================================================
+;                    SPI OUTPUT POINTER FRAME, NOT CALIBRATION
+;===============================================================================
+
+                ORG     $8010
+SPI_OUTPUT_POINTER_FRAME_8010:
+; Pointer table consumed by $9F02-$A001. It streams live RAM/status bytes through
+; SPI data register $102A, so $8010-$8027 is not a fuel/spark/axis calibration
+; block. $8028/$802A are constants, and the true signed fuel table starts $802B.
+    FDB $00D0,$00D3,$00CA,$00CB,$00A3,$00B6,$00C9,$20B9
+    FDB $00A9,$00A9,$00A9,$00A9
+
+                ORG     $9F02
+SPI_OUTPUT_WRITER_9F02:
+; Loads the pointers from $8010, reads the pointed live RAM bytes, folds them,
+; and writes each byte to SPDR $102A.
+9F02:           LDY     #SPI_OUTPUT_POINTER_FRAME_8010
+9F37:           STAA    REG_SPI_DATA
+9F4B:           LDX     $00,Y
+9F4E:           LDAB    $00,X
+9F55:           STAB    REG_SPI_DATA
+
+;===============================================================================
+;              FUEL / CHARGE CORRECTION AND DURATION CANDIDATE PATH
+;===============================================================================
+
+                ORG     $B447
+RUNTIME_FUEL_ORDER_B447:
+; Main-loop ordering evidence from addendum 2. The loop calls the scheduler and
+; fuel calculations in a mode-dependent order:
+;   $6EEE scheduler service, $E9A8 state work, $E38B fuel-trim lookup,
+;   $6E96 high-load/final publish, then sometimes $6EEE again.
+; This places the $E38B/$E5E8/$E6D1 fuel path directly before the output-
+; compare scheduler, but physical injector pin assignment remains hardware work.
+B447:           JSR     $4292
+B44A:           JSR     $B57F
+B44D:           JSR     $D0C8
+B450:           BRSET   RAM_FLAGS_A3,#$01,$B462
+B454:           JSR     FUEL_SCHEDULER_ENTRY_6EEE
+B457:           JSR     $E9A8
+B45A:           JSR     FUEL_TRIM_LOOKUP_E38B
+B45D:           JSR     FUEL_HIGHLOAD_6E96
+B460:           BRA     $B46E
+B462:           JSR     $E9A8
+B465:           JSR     FUEL_TRIM_LOOKUP_E38B
+B468:           JSR     FUEL_HIGHLOAD_6E96
+B46B:           JSR     FUEL_SCHEDULER_ENTRY_6EEE
+
+                ORG     $E38B
+FUEL_TRIM_LOOKUP_E38B:
+; Strongest current main fuel trim / multiplier candidate family.
+;
+; Normal mode:
+;   - $20B1 selects signed 24x9 bank $821C or $8318.
+;   - X axis = RAM $2034 modeled load / MAP-like axis.
+;   - Y axis = RAM $2036 RPM axis.
+;   - Signed 2D helper $B32B returns a signed byte stored at $2084.
+;
+; Bypass/special modes:
+;   - $00A9 bit $20 uses RPM-only signed vector $83F0 through helper $B2BA.
+;   - low-RPM/special flags select alternate bases $81F8/$82F4. These are
+;     documented as alternate code paths, not exposed as normal XDF tune maps.
+;
+; Consumer:
+;   $E627 loads X=$2084 and calls $E715, which applies the signed byte as a
+;   proportional correction to central fuel accumulator $00C1.
+E38B:           BRCLR   RAM_FLAGS_A9,#$20,$E39B
+E38F:           LDD     RAM_RPM_AXIS_2036
+E392:           LDY     #VEC_FUEL_TRIM_RPM_83F0
+E396:           JSR     $B2BA
+E399:           BRA     .store_2084
+E39B:           LDX     #TABLE_FUEL_TRIM_A_821C
+E39E:           TST     RAM_SPARK_BANK_SEL
+E3A1:           BNE     .table_selected
+E3A3:           LDX     #TABLE_FUEL_TRIM_B_8318
+E3A6: .table_selected:
+E3A6:           LDD     RAM_RPM_AXIS_2036
+E3A9:           CPD     #$0300
+E3AD:           BHI     .build_desc
+E3AF:           BRCLR   RAM_FLAGS_A9,#$40,.build_desc
+E3B3:           TST     $0090
+E3B6:           BEQ     .build_desc
+E3B8:           TST     $202D
+E3BB:           BNE     .build_desc
+E3BD:           LDX     #TABLE_FUEL_TRIM_ALT_A_81F8
+E3C0:           TST     RAM_SPARK_BANK_SEL
+E3C3:           BNE     .build_desc
+E3C5:           LDX     #TABLE_FUEL_TRIM_ALT_B_82F4
+E3C8: .build_desc:
+E3C8:           LDY     #$259A
+E3CC:           STD     $02,Y            ; Y axis = RPM
+E3CF:           LDD     RAM_LOAD_AXIS_2034
+E3D2:           STD     $00,Y            ; X axis = modeled load / MAP-like
+E3D5:           STX     $04,Y            ; selected table base
+E3D8:           LDAA    AXIS_SHARED_STRIDE_9290
+E3DB:           STAA    $06,Y
+E3DE:           JSR     SUB_INTERP_2D_SIGNED
+E3E1: .store_2084:
+E3E1:           STAA    RAM_FUEL_TRIM_2084
+
+                ORG     $E84B
+LOOKUP_FUEL_CHARGE_CORR_E84B:
+; Signed 24x9 correction pair. Both use X=$2038 temperature-like axis from the
+; $200A -> $2124 -> $92D9 producer and Y=$2036 RPM. $92D9 and $92CF currently
+; share the same raw breakpoint values, but the producer paths are distinct.
+E84B:           LDY     #RAM_TMP_25A3
+E84F:           LDD     RAM_TEMP_AXIS_A_2038
+E852:           STD     $00,Y
+E855:           LDD     RAM_RPM_AXIS_2036
+E858:           STD     $02,Y
+E85B:           LDX     #TABLE_FUEL_CHARGE_CORR_A_802B
+E85E:           STX     $04,Y
+E861:           LDAA    #$09
+E863:           STAA    $06,Y
+E866:           JSR     SUB_INTERP_2D_SIGNED
+E869:           STAA    RAM_TEMP_RPM_CORR_A_OUT
+
+E86C:           LDY     #RAM_TMP_25A3
+E870:           LDD     RAM_TEMP_AXIS_A_2038
+E873:           STD     $00,Y
+E876:           LDD     RAM_RPM_AXIS_2036
+E879:           STD     $02,Y
+E87C:           LDX     #TABLE_FUEL_CHARGE_CORR_B_8103
+E87F:           STX     $04,Y
+E882:           LDAA    #$09
+E884:           STAA    $06,Y
+E887:           JSR     SUB_INTERP_2D_SIGNED
+E88A:           STAA    RAM_TEMP_RPM_CORR_B_OUT
+
+                ORG     $E927
+BUILD_FUEL_CORR_SUM_E927:
+; $204A and $2050 are sign-extended, combined with slow/adaptive terms, doubled,
+; optionally adjusted by $2610, and added to $24D9. The result $204B is the
+; correction stack later added to raw load/air-charge $00CE.
+E927:           CLRA
+E928:           LDAB    RAM_TEMP_RPM_CORR_A_OUT
+E92B:           BPL     .corr_a_positive
+E92D:           COMA                    ; sign extend negative signed byte
+E92E: .corr_a_positive:
+E92E:           ADDD    RAM_ADAPT_2596
+E931:           STD     RAM_TMP_25A3
+; ... sign-extend $2050, double, optionally add signed $2610, add $24D9 ...
+E956:           ADDD    $24D9
+E959:           STD     RAM_FUEL_CORR_SUM_204B
+
+; $204D is sign-extended and combined with direct RAM $0006 plus calibration
+; word $8028. Negative values are clamped to zero and stored at $204E/$204F.
+E95C:           CLRA
+E95D:           LDAB    RAM_TEMP_RPM_CORR_B_OUT
+E960:           BPL     .corr_b_positive
+E962:           COMA
+E963: .corr_b_positive:
+E963:           ADDD    $0006
+E965:           ADDD    $8028
+E968:           BGE     .blend_nonnegative
+E96A:           LDD     #$0000
+E96D: .blend_nonnegative:
+E96D:           STD     RAM_FUEL_BLEND_204E
+
+                ORG     $E5E8
+FUEL_CHARGE_ACCUM_E5E8:
+; Strongest current fuel/charge time-path candidate:
+;   $00C1 = max(0, $00CE + $204B)
+; $00CE is raw load/air-charge, while $204B is the signed correction stack fed
+; by $802B/$2050/$24D9. This is stronger evidence than the old visual $802E view,
+; but it still does not prove the final injector hardware channel.
+E5E8:           LDD     RAM_FUEL_CORR_SUM_204B
+E5EB:           ADDD    RAM_LOAD_RAW_CE
+E5ED:           BGE     .fuel_sum_nonnegative
+E5EF:           CLRA
+E5F0:           CLRB
+E5F1: .fuel_sum_nonnegative:
+E5F1:           STD     RAM_FUEL_ACCUM_C1
+; $204E/$204F blend with $00C1/$00C2, then the result is limited at $0BB8.
+
+                ORG     $E652
+FUEL_CHARGE_LIMITS_E652:
+; Additive/subtractive correction stack, saturation, and duration-like cap.
+; The cap by engine period $00BA strongly suggests $00C1 is time/duration-like.
+E652:           LDD     RAM_FUEL_ACCUM_C1
+E654:           ADDD    RAM_FUEL_ADD_2055
+E659:           ADDD    RAM_FUEL_ADD_2057
+E65E:           ADDD    RAM_SLOW_CORR_2590
+E663:           SUBD    RAM_FILTER_2584
+; ... clamp to 0..$7D00 ...
+E627:           LDX     #RAM_FUEL_TRIM_2084
+E62A:           JSR     APPLY_SIGNED_PERCENT_E715
+E678:           LDD     RAM_ENGINE_PERIOD_BA
+E67A:           CPD     RAM_FUEL_ACCUM_C1
+E67D:           BCC     .period_allows
+E67F:           STD     RAM_FUEL_ACCUM_C1
+; ... apply $2053 multiplier and optional $2049 scaling ...
+E6A1:           STD     RAM_FUEL_CORR_2051
+E6D1:           LDD     RAM_FUEL_ACCUM_C1
+E6D3:           STD     RAM_FUEL_FINAL_C3
+E6D5:           JSR     $4405
+
+                ORG     $E715
+APPLY_SIGNED_PERCENT_E715:
+; Signed proportional correction helper used by $2084.
+; X points to a signed byte. Positive values add a proportional amount to
+; $00C1/$00C2; negative values subtract it. This proves $2084 is a true fuel/
+; charge trim term, not a state flag.
+E715:           LDAA    $00C2
+E717:           LDAB    $00,X
+E719:           BMI     .negative
+E71B:           MUL
+E71C:           ADCA    #$00
+E71E:           STAA    $00FE
+E720:           LDAA    RAM_FUEL_ACCUM_C1
+E722:           CLRB
+E723:           STAB    $00FD
+E725:           LDAB    $00,X
+E727:           MUL
+E728:           ADDD    $00FD
+E72A:           ADDD    RAM_FUEL_ACCUM_C1
+E72C:           BRA     .store
+E72E: .negative:
+E72E:           NEGB
+E72F:           MUL
+E730:           ADCA    #$00
+E732:           STAA    $00FE
+E734:           LDAA    RAM_FUEL_ACCUM_C1
+E736:           CLRB
+E737:           STAB    $00FD
+E739:           LDAB    $00,X
+E73B:           NEGB
+E73C:           MUL
+E73D:           ADDD    $00FD
+E73F:           STD     $00FD
+E741:           LDD     RAM_FUEL_ACCUM_C1
+E743:           SUBD    $00FD
+E745: .store:
+E745:           STD     RAM_FUEL_ACCUM_C1
+E747:           RTS
+
+                ORG     $6E96
+FUEL_HIGHLOAD_6E96:
+; High-load/event-width publish path. When enabled, compares $00BF/2 against
+; $00C1, optionally looks up $85BA using X=$2034 and Y=$2036, adds the result
+; doubled to $00C1, and publishes final fuel/charge value to $00C3. This makes
+; $85BA a high-load pulse-extension / duration-support candidate, not a main
+; fuel trim table.
+6E96:           BRCLR   RAM_FLAGS_A3,#$80,$6EDA
+6E9A:           LDD     RAM_FUEL_PREV_BF
+6E9C:           LSRD
+6E9D:           CPD     RAM_FUEL_ACCUM_C1
+6EA0:           BLS     $6ED2
+6EA5:           LDY     #$21D8
+6EA9:           LDD     RAM_LOAD_AXIS_2034
+6EB9:           LDD     RAM_RPM_AXIS_2036
+6EBF:           LDX     #TABLE_CONF_85BA
+6ECA:           JSR     SUB_INTERP_2D
+6ECD:           STAA    RAM_TABLE_85BA_OUT
+; ...
+6EDD:           LDD     RAM_FUEL_ACCUM_C1
+6EE3:           CLRA
+6EE4:           LDAB    RAM_TABLE_85BA_OUT
+6EE7:           ASLD
+6EE8:           ADDD    RAM_FUEL_ACCUM_C1
+6EEA:           STD     RAM_FUEL_FINAL_C3
+6EEC:           RTS
+
+                ORG     $D5DF
+BUILD_EVENT_LIMITS_D5DF:
+; Builds $00BF and $2086 from the $2040 axis using 1D tables. $00BF is later
+; compared with $00C1/$00C3; $2086 becomes part of the OC3 pulse timing.
+D5DF:           LDD     $2040
+D5E2:           LDY     #$92FA
+D5E6:           JSR     SUB_INTERP_1D
+D5F2:           LDY     #$877E
+D5F6:           JSR     SUB_INTERP_1D
+D5FE:           STD     RAM_FUEL_PREV_BF
+D600:           LDX     #$2040
+D603:           LDY     #$8789
+D607:           JSR     $B26E
+D60A:           STD     RAM_FUEL_PHASE_2086
+
+                ORG     $6EEE
+FUEL_SCHEDULER_ENTRY_6EEE:
+; Scheduler service. If OC1 is enabled, pull TOC1 close to current time; the
+; normal path then prepares $00BC from $00C3 and schedules TOC1.
+6EEE:           LDX     #REG_PORTA
+6EF1:           BRCLR   $22,X,#$80,$6F01
+6EF5:           LDD     REG_TCNT
+6EF8:           ADDD    #$0004
+6EFB:           STD     REG_TOC1
+
+                ORG     $6F48
+FUEL_OUTPUT_COMPARE_CANDIDATE_6F48:
+; Bridge from fuel/charge value to timer scheduling. This reads $2051 and $00C3,
+; derives event width $00BC from $00C3, and schedules OC1/TOC1 at $1016 using
+; $21C6+$00B8. OC1 then enters $6FE4 and creates/schedules an OC3 pulse. Strong
+; software evidence for fuel pulse timing; exact injector pin remains unproven.
+6F48:           LDD     RAM_FUEL_CORR_2051
+6F4B:           JSR     $440D
+; ...
+6F6C:           LDD     RAM_FUEL_FINAL_C3
+6F6E:           ASLD
+6F6F:           STD     RAM_FUEL_EVENT_BC
+; ...
+6FC0:           LDD     RAM_PHASE_OFFSET_21C6
+6FC3:           ADDD    RAM_TIMER_PREV_B8
+6FC5:           STD     REG_TOC1
+6FD8:           STAA    REG_TFLG1
+6FDE:           BSET    $22,X,#$80        ; enable OC1 interrupt
+
+                ORG     $6FE4
+OC1_VECTOR_HANDLER_6FE4:
+; Vector $FFE8 points here. OC1 disables itself, prepares OC3 action bits, may
+; force an OC3 edge through CFORC, then schedules TOC3 at $101A using $00BC plus
+; phase terms. OC1 is therefore the interrupt scheduler, while OC3/PA5 is the
+; hardware timed pulse-output path. Software evidence is strong for injector
+; pulse scheduling; the exact output transistor / connector pin is hardware proof.
+6FE4:           LDX     #REG_PORTA
+6FE7:           BCLR    $22,X,#$80        ; disable OC1 interrupt
+7010:           LDD     RAM_FUEL_FINAL_C3
+7012:           ASLD
+7014:           STD     RAM_FUEL_EVENT_BC
+703C:           LDD     RAM_FUEL_EVENT_BC
+705C:           BSET    $20,X,#$30        ; TCTL1 OC3 action: forced edge setup
+7065:           BRSET   $00,X,#$20,$70C1
+7069:           BSET    $0B,X,#$20        ; CFORC: force OC3 edge now
+706C:           LDD     RAM_FUEL_PHASE_2086
+706F:           ADDD    CAL_OC3_GUARD_8787 ; period-fit guard before edge schedule
+7072:           ADDD    RAM_FUEL_EVENT_BC
+7074:           CPD     RAM_PERIOD_LIMIT_21C8
+707A:           LDD     RAM_FUEL_EVENT_BC
+707C:           ADDD    RAM_OC_BASE_21CB
+707F:           ADDD    RAM_FUEL_PHASE_2086
+7082:           ADDD    #$0005
+7085:           STD     REG_TOC3          ; schedule OC3 pulse edge
+70AA:           BCLR    $20,X,#$10        ; change OC3 action for scheduled edge
+70BC:           BSET    $0B,X,#$20        ; force/confirm OC3 action in some states
+
+;===============================================================================
 ;                              TABLES AND AXES
 ;===============================================================================
 
 ; This section mirrors the current XDF confirmed/code-referenced entries. Some
 ; blocks are represented as labels and comments only so this remains a compact
 ; reverse-engineering notebook rather than a full reassembly listing.
+
+                ORG     $802B
+TABLE_802B_FUEL_CHARGE_CORR_A_SIGNED_24X9:
+; Code-referenced signed 2D fuel/charge correction candidate. X axis is likely IAT/air-temp
+; RAM $2038 from the $200A/$2124 producer with raw helper labels from $92D9:
+;   12,20,34,57,93,142,191,227,246.
+; Y axis is RPM RAM $2036 with labels from $929E:
+;   550,750,850,950,1000,1200,1400,1600,1800,2000,2300,2600,
+;   2900,3200,3501,3800,4201,4500,5000,5501,6000,6502,7003,7500.
+; Output is RAM $204A and feeds $204B -> $00C1 fuel/charge accumulator candidate.
+; Important correction: legacy $802E is +3 bytes inside this table, not a true
+; table base and not a VE/fuel table to tune directly. Legacy $80EB is $802B+$C0,
+; starts at a non-row-aligned offset inside this signed table, and crosses into
+; the paired $8103 table when viewed as the old 21x9 public-index probe.
+
+                ORG     $8103
+TABLE_8103_TEMP_RPM_CORR_B_SIGNED_24X9:
+; Paired signed 2D fuel/charge correction candidate using the same X=$2038 likely IAT/air-temp
+; raw $92D9 labels and Y=$2036 RPM $929E labels as $802B. Output is RAM $204D.
+; Its signed output feeds the $204E/$204F blend path used by the $00C1 fuel/
+; charge accumulator candidate. Exact sensor identity and injector channel open.
+
+                ORG     $821C
+TABLE_821C_MAIN_FUEL_TRIM_CAND_A_SIGNED_24X9:
+; Candidate main fuel trim / multiplier table. Selected by routine $E38B when
+; $20B1 chooses bank A. Signed 24x9, X=RAM $2034 modeled load/MAP-like axis,
+; Y=RAM $2036 RPM axis, output=$2084. $E715 applies $2084 as a signed
+; proportional correction to $00C1, making this a stronger fueling knob than
+; the old misaligned $802E visual view.
+
+                ORG     $8318
+TABLE_8318_MAIN_FUEL_TRIM_CAND_B_SIGNED_24X9:
+; Candidate main fuel trim / multiplier table. Alternate bank selected by
+; routine $E38B when $20B1 chooses bank B. Same axes and signed output path as
+; $821C. Final injector output pin/channel remains unproven.
+
+                ORG     $83F0
+VEC_83F0_RPM_ONLY_FUEL_TRIM_BYPASS_SIGNED_1X24:
+; RPM-only signed fuel trim / bypass vector used by $E38B when $00A9 bit $20 is
+; set. Helper $B2BA uses RPM axis RAM $2036; result is stored at $2084 and then
+; applied to $00C1 by $E715.
+
+                ORG     $81F8
+TABLE_81F8_FUEL_TRIM_ALT_A_SIGNED_24X9:
+; Alternate/special low-RPM base selected inside $E38B under flag conditions.
+; Documented for reverse-engineering context only; not exposed as a normal XDF
+; tuning table in the current XDF.
+
+                ORG     $82F4
+TABLE_82F4_FUEL_TRIM_ALT_B_SIGNED_24X9:
+; Alternate/special low-RPM base selected inside $E38B under flag conditions.
+; Documented for reverse-engineering context only; not exposed as a normal XDF
+; tuning table in the current XDF.
+
+                ORG     $84E3
+VEC_84E3_LAMBDA_CLOSED_LOOP_FUEL_1X19:
+; Likely lambda / closed-loop fuel correction vector. Current traced path is:
+;   $200C -> $5B1B -> $43DC -> $00CC -> $2040 -> $84E3 -> $2049 -> $00C1.
+; This is strong software evidence for a closed-loop fuel trim, but $200C still
+; needs scope or harness proof before calling it final lambda/O2 in hardware.
 
                 ORG     $55A0
 TABLE_55A0_DIAG_EVENT_CODES:
@@ -727,9 +1383,10 @@ TABLE_55A0_DIAG_EVENT_CODES:
 
                 ORG     $85BA
 TABLE_85BA_CONFIRMED_24X5:
-; XDF code-confirmed additional table: 24x5 B2D6 byte table.
+; High-load fuel pulse extension / duration-support candidate: 24x5 B2D6 byte table.
 ; Caller around $6E96 uses axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
-; Interpolated result is stored at RAM $2063. Physical role still open.
+; Interpolated result is stored at RAM $2063, doubled, and added to $00C1 before
+; publishing $00C3. This affects event width, not the main fuel trim multiplier.
 
                 ORG     $869A
 TABLE_869A_CONFIRMED_24X9:
@@ -739,21 +1396,63 @@ TABLE_869A_CONFIRMED_24X9:
 
                 ORG     $87B1
 TABLE_87B1_CONFIRMED_24X9:
-; XDF code-confirmed additional table: 24x9 B2D6 byte table, all zero in stock.
+; Injector/event phase candidate: 24x9 B2D6 byte table, all zero in stock.
 ; Used at $7254-$729B with axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
-; Stride/count comes from $9290; result updates RAM $00BE.
+; Stride/count comes from $9290; result updates RAM $00BE, which is converted to
+; $21C6, the OC1 schedule offset before the OC3 pulse. Tune as phase/offset only.
 
                 ORG     $888E
 TABLE_888E_CONFIRMED_24X9:
-; XDF code-confirmed additional table: 24x9 B2D6 byte table.
+; Likely idle-air / idle-bypass target table, not fuel quantity.
 ; Used at $BE74-$BE93 with axes RAM $2034 MAP/load estimate and RAM $2036 RPM.
-; Result is stored at RAM $2484, then later combined with the $8970 vector result.
+; Result is stored at RAM $2484, then combined with the likely CTS-axis $8970
+; vector and shaped toward RAM $202B. External bit $1050.04 is then toggled by
+; the state path, so final actuator hardware still needs board/pin proof.
+
+                ORG     $8970
+VEC_8970_IDLE_CTS_TARGET_CAP_1X17:
+; Likely CTS/coolant-axis idle target/cap vector. Indexed by RAM $203E in the
+; BE65 idle path, stored to $2486, and combined with the $888E load/RPM target.
+; Keep the CTS name as "likely" until ADC channel/pin behavior is confirmed.
 
                 ORG     $8A0A
 TABLE_8A0A_CONFIRMED_5X5:
 ; XDF code-confirmed additional table: 5x5 B2D6 byte table.
 ; Used around $BA35 with axes RAM $2034 MAP/load estimate and RAM $2046
 ; secondary transient/state axis. Result is stored at RAM $20BB.
+
+                ORG     $8C31
+VEC_8C31_SPARK_MODE_A_1X24:
+; RPM-only spark / angle vector used by special-state spark logic around $49A3.
+; Indexed by RPM axis $2036 and displayed as raw/2 degrees. Physical mode name
+; remains provisional.
+
+                ORG     $8C49
+VEC_8C49_SPARK_MODE_B_1X24:
+; RPM-only spark / angle vector used by the paired special-state path. Indexed
+; by $2036 and displayed as raw/2 degrees.
+
+                ORG     $8C61
+VEC_8C61_SPARK_MODE_C_1X24:
+; Third RPM-only special-state spark / angle vector before the signed correction
+; pair at $8C7C/$8D15. Indexed by $2036 and displayed as raw/2 degrees.
+
+                ORG     $8C7C
+TABLE_8C7C_SPARK_TEMP_LOAD_A_SIGNED_17X9:
+; Code-referenced signed 2D spark correction. X axis is modeled load RAM $2034;
+; Y axis is likely IAT/air-temp RAM $203A from the $200A/$92D9 family. The signed result
+; is sign-extended and added into spark accumulator RAM $2147.
+
+                ORG     $8D15
+TABLE_8D15_SPARK_TEMP_LOAD_B_SIGNED_17X9:
+; Paired signed 2D spark correction using modeled load RAM $2034 and a
+; likely CTS/coolant axis RAM $203E from the $2008/$92CF family. Signed result contributes to
+; RAM $2147; exact temperature sensor naming remains provisional.
+
+                ORG     $8DAE
+VEC_8DAE_SPARK_TEMP_DECAY:
+; Temperature/sensor-indexed spark correction decay or ramp vector. Indexed by
+; $203E family in the $49BA path and stored into RAM $2134.
 
                 ORG     $8E6F
 TABLE_8E6F_CONFIRMED_17X5:
@@ -810,9 +1509,25 @@ AXIS_92CE_RPM_COUNT:
                 ORG     $92CF
 AXIS_92CF_HELPER_B:
 ; XDF code-referenced 1x9 helper breakpoint vector B.
+; Raw labels: 12,20,34,57,93,142,191,227,246.
+; Used by the $2008 -> $2122 producer for likely CTS/coolant axis RAM $203C/$203E.
 ; Used by $B383/$B2AB caller groups around $4340, $5D00, and $5D7B.
 ; Physical units remain provisional. Byte $92D8 is count=9 for one caller.
 ; Bytes are left in the XDF as raw until the producer/consumer group is named.
+
+                ORG     $92D9
+AXIS_92D9_HELPER_A:
+; Second 1x9 temperature-like helper breakpoint vector. Same raw label shape:
+; 12,20,34,57,93,142,191,227,246.
+; Used by the $200A -> $2124 producer for likely IAT axis RAM $2038/$203A, including signed
+; fuel temp/RPM correction tables $802B/$8103 and spark correction $8C7C.
+; Byte $92E2 is count=9 for this caller group.
+
+                ORG     $400E
+VEC_400E_SENSOR_TRANSFER:
+; 1x9 transfer/display vector used while building both temperature-like axes.
+; Raw decimal labels: 160,140,120,100,80,60,40,20,0. This looks like a
+; temperature display/linearization aid, but physical units are not confirmed.
 
                 ORG     $9187
 TABLE_9187_LOAD_AIRCHARGE_FACTOR:
@@ -893,7 +1608,9 @@ SCALARS_89ED_CONTROL:
                 ORG     $89F3
 VEC_89F3_MOD2_TOUCHED:
 ; XDF code-confirmed 1x19 vector indexed by RAM $2044, MOD2 touched.
-; Likely correction/enrichment/strategy; physical role remains provisional.
+; X labels: 0, 400, 800, ... 7200 rpm. Output is stored to $20BC, then also
+; becomes the high byte of working word $242F in the same routine.
+; Likely load-model/transient/enrichment gain; physical role remains provisional.
     FCB $40,$46,$4B,$50,$55,$5A,$5F,$78,$90,$90,$96,$96,$90,$A5,$AA,$A0,$9B,$96,$82
                 ORG     $8A27
 VEC_8A27:
@@ -1033,64 +1750,22 @@ VEC_8C19_WOT_SPARK:
 ; Used when RAM $00A9 bit $20 bypasses banked 2D spark. Likely WOT/fallback.
     FCB $10,$16,$19,$1C,$1E,$24,$28,$2A,$2D,$2F,$33,$37,$3A,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E,$3E
 
-                ORG     $802E
-TABLE_802E_FUEL_VE_AIRCHARGE_CANDIDATE:
-; Strongest current fuel-side candidate, but not code-confirmed main fuel.
-; Preferred visual alignment is 21x9. MOD2 changes are clean positive deltas.
-; XDF keeps raw display; raw/2.55 is only a percent/VE-style visualization lead.
-; Do not call this final main fuel until a consumer path reaches pulse width,
-; injection time, lambda/open-loop correction, or final fuel scheduling.
-; Raw decimal rows:
-;   row 00: 147 147 147 147 147 147 156 152 147
-;   row 01: 144 144 148 146 146 146 161 154 148
-;   row 02: 146 145 149 149 149 149 170 163 155
-;   row 03: 153 135 152 152 152 152 174 167 159
-;   row 04: 157 145 156 156 156 156 186 179 171
-;   row 05: 168 164 168 168 168 168 196 189 180
-;   row 06: 175 175 175 175 175 175 208 201 192
-;   row 07: 187 187 187 187 187 187 214 208 200
-;   row 08: 194 193 192 192 192 192 218 213 206
-;   row 09: 203 203 203 203 203 203 206 202 196
-;   row 10: 194 194 194 194 194 194 208 204 202
-;   row 11: 196 196 196 196 196 196 220 216 210
-;   row 12: 207 207 207 207 207 207 218 214 211
-;   row 13: 205 205 211 209 205 205 208 203 196
-;   row 14: 194 194 207 194 194 194 202 198 192
-;   row 15: 189 188 192 188 188 188 201 196 189
-;   row 16: 186 185 185 185 185 185 219 214 207
-;   row 17: 203 200 200 200 200 200 220 215 207
-;   row 18: 202 200 200 200 200 200 238 233 225
-;   row 19: 221 218 217 217 217 217 248 241 232
-;   row 20: 226 221 221 221 221 221 221 216 209
-    FCB $93,$93,$93,$93,$93,$93,$9C,$98,$93    ; row 00 raw: 147 147 147 147 147 147 156 152 147
-    FCB $90,$90,$94,$92,$92,$92,$A1,$9A,$94    ; row 01 raw: 144 144 148 146 146 146 161 154 148
-    FCB $92,$91,$95,$95,$95,$95,$AA,$A3,$9B    ; row 02 raw: 146 145 149 149 149 149 170 163 155
-    FCB $99,$87,$98,$98,$98,$98,$AE,$A7,$9F    ; row 03 raw: 153 135 152 152 152 152 174 167 159
-    FCB $9D,$91,$9C,$9C,$9C,$9C,$BA,$B3,$AB    ; row 04 raw: 157 145 156 156 156 156 186 179 171
-    FCB $A8,$A4,$A8,$A8,$A8,$A8,$C4,$BD,$B4    ; row 05 raw: 168 164 168 168 168 168 196 189 180
-    FCB $AF,$AF,$AF,$AF,$AF,$AF,$D0,$C9,$C0    ; row 06 raw: 175 175 175 175 175 175 208 201 192
-    FCB $BB,$BB,$BB,$BB,$BB,$BB,$D6,$D0,$C8    ; row 07 raw: 187 187 187 187 187 187 214 208 200
-    FCB $C2,$C1,$C0,$C0,$C0,$C0,$DA,$D5,$CE    ; row 08 raw: 194 193 192 192 192 192 218 213 206
-    FCB $CB,$CB,$CB,$CB,$CB,$CB,$CE,$CA,$C4    ; row 09 raw: 203 203 203 203 203 203 206 202 196
-    FCB $C2,$C2,$C2,$C2,$C2,$C2,$D0,$CC,$CA    ; row 10 raw: 194 194 194 194 194 194 208 204 202
-    FCB $C4,$C4,$C4,$C4,$C4,$C4,$DC,$D8,$D2    ; row 11 raw: 196 196 196 196 196 196 220 216 210
-    FCB $CF,$CF,$CF,$CF,$CF,$CF,$DA,$D6,$D3    ; row 12 raw: 207 207 207 207 207 207 218 214 211
-    FCB $CD,$CD,$D3,$D1,$CD,$CD,$D0,$CB,$C4    ; row 13 raw: 205 205 211 209 205 205 208 203 196
-    FCB $C2,$C2,$CF,$C2,$C2,$C2,$CA,$C6,$C0    ; row 14 raw: 194 194 207 194 194 194 202 198 192
-    FCB $BD,$BC,$C0,$BC,$BC,$BC,$C9,$C4,$BD    ; row 15 raw: 189 188 192 188 188 188 201 196 189
-    FCB $BA,$B9,$B9,$B9,$B9,$B9,$DB,$D6,$CF    ; row 16 raw: 186 185 185 185 185 185 219 214 207
-    FCB $CB,$C8,$C8,$C8,$C8,$C8,$DC,$D7,$CF    ; row 17 raw: 203 200 200 200 200 200 220 215 207
-    FCB $CA,$C8,$C8,$C8,$C8,$C8,$EE,$E9,$E1    ; row 18 raw: 202 200 200 200 200 200 238 233 225
-    FCB $DD,$DA,$D9,$D9,$D9,$D9,$F8,$F1,$E8    ; row 19 raw: 221 218 217 217 217 217 248 241 232
-    FCB $E2,$DD,$DD,$DD,$DD,$DD,$DD,$D8,$D1    ; row 20 raw: 226 221 221 221 221 221 221 216 209
+; Legacy note for earlier XDF work:
+;   $802E was previously exposed as a smooth unsigned 21x9 fuel/VE candidate.
+;   Targeted disassembly now shows the real signed table base is $802B, so $802E
+;   is a misaligned +3 slice inside TABLE_802B_FUEL_CHARGE_CORR_A_SIGNED_24X9.
+;   $80EB is another legacy view: $802B+$C0, beginning inside signed table A and
+;   crossing into signed table B at $8103. It is a signed boundary/alignment
+;   diagnostic only, with no physical RPM/load axes.
+;   Main fuel table remains unfound, but $00C1/$00C3 now form the strongest
+;   fuel/charge time-path candidate. Continue proving the final injector output.
 
 ;===============================================================================
 ;                                OPEN ITEMS / TODO
 ;===============================================================================
 ;
-; 1. Prove or disprove TABLE_802E as a fuel/VE/air-charge consumer.
-;    Literal address search is not enough; look for indirect descriptors or copied
-;    calibration-window references.
+; 1. Trace injector driver scheduling backward to find confirmed main fuel.
+;    The old $802E visual VE candidate is demoted to a legacy misaligned slice.
 ;
 ; 2. Trace $20E6 consumers to name VEC_8A52 more precisely. Current evidence says
 ;    clamp/limit vector, not final fuel/spark.
@@ -1101,8 +1776,6 @@ TABLE_802E_FUEL_VE_AIRCHARGE_CANDIDATE:
 ;
 ; 4. Trace spark accumulator $2147 to timer output compare scheduling to prove
 ;    final ignition output conversion.
-;
-; 5. Trace injector driver scheduling backward to find confirmed main fuel.
 ;
 ;===============================================================================
 ; End of rough decompile.
