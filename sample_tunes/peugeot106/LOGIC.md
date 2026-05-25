@@ -816,28 +816,41 @@ working view is now the first `21x9 @ 0x802E` surface rather than the older
 Repeatable script pass:
 
 - `tools/iaw8p40_analyze.py` now loads the Peugeot stock, Peugeot folder
-  `Stok`, Peugeot MOD2, and Xantia 607C bins and prints Markdown-friendly
-  hash/checksum/diff/reference tables without modifying ROMs.
+  `Stok`, Peugeot MOD2, Xantia 607C, `Peug.106Rally.org.bin`, and
+  `RALLY13.ORI` images and prints Markdown-friendly hash/checksum/diff/reference
+  tables without modifying ROMs.
 - The script confirms Peugeot stock and folder `Stok` are byte-identical.
 - Checksum pairs:
   - Peugeot stock and `Stok`: `0x4A65/0xB59A`, sum `0xFFFF`.
   - Peugeot MOD2: `0x47BE/0xB841`, sum `0xFFFF`.
   - Xantia 607C: `0x9F83/0x607C`, sum `0xFFFF`.
-- All four available bins use reset vector `0xB800`.
+  - `RALLY13.ORI`: `0x7A41/0x85BE`, sum `0xFFFF`.
+  - `Peug.106Rally.org.bin`: stored `0x4A65/0xB59A`, but byte sum `0xE160`;
+    checksum validation fails.
+- All six available 64 KiB images use reset vector `0xB800`.
+- `Peug.106Rally.org.bin` is suspicious: the normally blank `0x0000-0x3FFF`
+  prefix is not zero-filled, though the `0xB600-0xB7FF` hole is zero.
+- `RALLY13.ORI` has a valid checksum, zero prefix, zero `0xB600-0xB7FF` hole,
+  and same-family reset vector.
 - Peugeot stock vs MOD2: `479` differing bytes in `87` contiguous regions.
   The changes remain concentrated in checksum/calibration-looking regions.
 - Peugeot stock vs Xantia 607C: `42021` differing bytes in `1038`
   contiguous regions. Xantia is therefore useful as same-family comparative
   evidence, but not as proof that a same offset has the same Peugeot function.
+- Peugeot stock vs `Peug.106Rally.org.bin`: `16513` differing bytes, mostly in
+  the normally zero prefix plus spark/correction calibration areas. The promoted
+  `0x802E` surface is unchanged versus stock.
+- Peugeot stock vs `RALLY13.ORI`: `43767` differing bytes in `954` contiguous
+  regions. Treat it like Xantia: useful same-family comparison, not offset proof.
 
 Script-reported candidate stats:
 
-| Range | Shape | Peugeot stock | MOD2 cells/delta | Xantia same-offset | Interpretation impact |
-| --- | --- | --- | --- | --- | --- |
-| `0x802E-0x80EA` | `21x9` | raw `135-248`, avg `189.4` | `57 / 189`, `+4..+6`, avg `+5.6` | raw `144-214`, avg `174.5` | Strengthens fuel/VE/air-charge candidate; code unconfirmed. |
-| `0x802E-0x8105` | `24x9` | raw `135-248`, avg `187.8` | `75 / 216`, `+4..+6`, avg `+5.4` | raw `144-228`, avg `176.0` | Boundary/debug view only. |
-| `0x80EB-0x81A7` | `21x9` | raw `0-255`, avg `168.2` | `60 / 189`, modulo deltas include wraps | raw `0-255`, avg `164.4` | Lower-confidence adjacent probe. |
-| `0x81A8-0x81D4` | `5x9` | raw `0-254`, avg `165.1` | `30 / 45`, modulo deltas include wraps | raw `2-255`, avg `119.1` | Tail/alignment probe only. |
+| Range | Peugeot stock | MOD2 | Xantia | Peug.106Rally.org | RALLY13 | Interpretation impact |
+| --- | --- | --- | --- | --- | --- | --- |
+| `0x802E-0x80EA` | raw `135-248`, avg `189.4` | `57 / 189`, `+4..+6` | raw `144-214`, avg `174.5` | `0 / 189` changed | `116 / 189` changed | Strongest fuel/VE/air-charge candidate; code unconfirmed. |
+| `0x802E-0x8105` | raw `135-248`, avg `187.8` | `75 / 216`, `+4..+6` | raw `144-228`, avg `176.0` | `0 / 216` changed | `133 / 216` changed | Boundary/debug view only. |
+| `0x80EB-0x81A7` | raw `0-255`, avg `168.2` | `60 / 189`, wraps | raw `0-255`, avg `164.4` | `0 / 189` changed | `126 / 189` changed | Lower-confidence adjacent probe. |
+| `0x81A8-0x81D4` | raw `0-254`, avg `165.1` | `30 / 45`, wraps | raw `2-255`, avg `119.1` | `0 / 45` changed | `30 / 45` changed | Tail/alignment probe only. |
 
 Immediate-reference scan:
 
@@ -1608,6 +1621,58 @@ Current cross-check status:
 No XDF labels should be promoted from external-source names alone. Public
 sources can guide search priority, but exact map naming still needs local code,
 MOD2 delta, axis, or live-behavior proof.
+
+## Static Fuel-Path Proof Pass 2026-05-25
+
+This pass added committed analyzer snapshots under `analysis/`, checksum tooling
+under `tools/iaw8p40_checksum.py`, and the confidence matrix in
+`evidence_status.md`. The important firmware result is still conservative:
+`0x802E` remains the strongest fuel-side candidate, but it is not proven main
+fuel.
+
+Direct and indirect `0x802E` evidence:
+
+- Literal table-base search is insufficient. The only Peugeot `0x802E`
+  word-pattern hit is still the known false positive near `0xC620`, where
+  aligned decoding is an immediate clamp sequence, not a table-base load.
+- The focused helper-call scan still finds no `B2D6`/`B2AB` helper call with a
+  nearby `0x802E`, `0x80EB`, or `0x81A8` table literal.
+- The known Peugeot helper calls remain tied to other proven structures:
+  `0x8A69`, `0x8B41`, `0x8C19`, `0x9187`, `0x9291`, `0x929E`, and `0x869A`.
+- No current startup-copy, calibration-overlay, descriptor-table, or constructed
+  base path has been proven for `0x802E-0x81D4`.
+- `0x80EB` and `0x81A8` remain below `0x802E` in confidence because their MOD2
+  deltas include modulo wraps and the immediate-base scan finds no Peugeot code
+  reference.
+
+Injection/output scheduling trace:
+
+- Backward tracing from the timer/output-compare block identifies scheduler
+  state, not a fuel-table consumer.
+- `0x20EB` stores at `0xBB9A` and `0xBD39`; loads/math at `0xBC67` and
+  `0xBC7A`.
+- `0x20ED` stores at `0xBB9D` and `0xBD4F`; loads/math at `0xBCB1` and
+  `0xBCC1`.
+- `0x242B` is stored at `0xBD1B` and consumed at `0xBC64/0xBC76`.
+- `0x242D` is captured at `0xBCAE` and consumed at `0xBCBD`.
+- `0x20BC`, `0x20BD-0x20C5`, `0x242F`, and `0x2431` are adjacent timed-output
+  state bytes/words, but this pass does not connect them to `0x802E`.
+
+ADC/load trace:
+
+- `0x1030-0x1034` remain the ADC control/result register family.
+- `0x2007-0x200E` and `0x2013` remain raw or lightly processed sensor RAM.
+- `0x00D0 -> 0x00CE -> 0x2034` remains the best load/air-charge chain.
+- `0x2034` is strong enough to label as load/MAP-like, but exact pressure
+  scaling and sensor channel assignment remain unproven.
+
+Conclusion:
+
+- Keep XDF `0.14` labels as-is.
+- Do not add `raw / 2.55` as normal tuning scaling.
+- Do not rename `0x802E` to main fuel until a Peugeot-local consumer reaches
+  injection pulse width, fuel time, lambda correction, air-charge math, or fuel
+  scheduling.
 
 ## Current Functional Picture
 

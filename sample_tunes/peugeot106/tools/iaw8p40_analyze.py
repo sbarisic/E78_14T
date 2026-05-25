@@ -8,14 +8,26 @@ tables that can be pasted into the reverse-engineering notes.
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
+import io
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Callable, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ANALYSIS_DIR = ROOT / "analysis"
+
+SECTION_FILES = {
+    "overview": "overview.md",
+    "diffs": "diff_regions.md",
+    "tables": "table_stats.md",
+    "helpers": "helper_calls.md",
+    "ram": "ram_refs.md",
+    "trace": "trace_notes.md",
+}
 
 
 @dataclass(frozen=True)
@@ -42,7 +54,19 @@ ROMS = [
         "Citroen Xantia 1.6 8v IAW 8P.40 607C",
         ROOT / "Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin",
     ),
+    RomSpec(
+        "peug_106rally_org",
+        "Peug.106Rally.org.bin public/tuned comparison",
+        ROOT / "Peug.106Rally.org.bin",
+    ),
+    RomSpec(
+        "rally13_ori",
+        "RALLY13.ORI same-family comparison",
+        ROOT / "RALLY13.ORI",
+    ),
 ]
+
+COMPARISON_KEYS = ["peugeot_mod2", "xantia_607c", "peug_106rally_org", "rally13_ori"]
 
 
 KNOWN_TABLES = [
@@ -79,6 +103,14 @@ TABLE_BASES = [
 
 PEUGEOT_HELPERS = [0xB2D6, 0xB2AB, 0xB383, 0xB3B9]
 XANTIA_HELPERS = [0xB2CB, 0xB349]
+HELPER_FOCUS_BY_ROM = {
+    "peugeot_stock": PEUGEOT_HELPERS,
+    "peugeot_stok": PEUGEOT_HELPERS,
+    "peugeot_mod2": PEUGEOT_HELPERS,
+    "peug_106rally_org": PEUGEOT_HELPERS,
+    "xantia_607c": XANTIA_HELPERS,
+    "rally13_ori": XANTIA_HELPERS,
+}
 RAM_TARGETS = [
     0x00CE,
     0x00D0,
@@ -200,6 +232,23 @@ def u16be(data: bytes, addr: int) -> int:
 
 def fmt_addr(addr: int) -> str:
     return f"0x{addr:04X}"
+
+
+def checksum_pair(data: bytes) -> tuple[int, int]:
+    return u16be(data, 0x800C), u16be(data, 0x800E)
+
+
+def byte_sum(data: bytes) -> int:
+    return sum(data[0x4000:]) & 0xFFFF
+
+
+def checksum_valid(data: bytes) -> bool:
+    w1, w2 = checksum_pair(data)
+    return ((w1 + w2) & 0xFFFF) == 0xFFFF and byte_sum(data) == w2
+
+
+def zero_range(data: bytes, start: int, end: int) -> bool:
+    return all(value == 0 for value in data[start:end])
 
 
 def find_diff_regions(a: bytes, b: bytes) -> list[tuple[int, int, int]]:
@@ -328,28 +377,25 @@ def nearby_table_literals(data: bytes, site: int, radius: int = 24) -> list[str]
 def print_rom_overview(roms: dict[str, bytes]) -> None:
     print("## ROM Overview")
     print()
-    print("| Key | Label | Size | SHA256 | Checksum words | Pair sum | Byte sum 0x4000-0xFFFF | Reset vector |")
-    print("| --- | --- | ---: | --- | --- | --- | --- | --- |")
+    print("| Key | Label | Size | SHA256 | Checksum words | Pair sum | Byte sum 0x4000-0xFFFF | Valid checksum | Zero 0x0000-0x3FFF | Zero 0xB600-0xB7FF | Reset vector |")
+    print("| --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- |")
     for spec in ROMS:
         data = roms[spec.key]
-        w1 = u16be(data, 0x800C)
-        w2 = u16be(data, 0x800E)
-        byte_sum = sum(data[0x4000:]) & 0xFFFF
+        w1, w2 = checksum_pair(data)
+        rom_byte_sum = byte_sum(data)
         reset = u16be(data, 0xFFFE)
         print(
             f"| `{spec.key}` | {spec.label} | {len(data)} | `{sha256(data)}` | "
             f"`{fmt_addr(w1)}/{fmt_addr(w2)}` | `{fmt_addr((w1 + w2) & 0xFFFF)}` | "
-            f"`{fmt_addr(byte_sum)}` | `{fmt_addr(reset)}` |"
+            f"`{fmt_addr(rom_byte_sum)}` | {'yes' if checksum_valid(data) else 'no'} | "
+            f"{'yes' if zero_range(data, 0x0000, 0x4000) else 'no'} | "
+            f"{'yes' if zero_range(data, 0xB600, 0xB800) else 'no'} | `{fmt_addr(reset)}` |"
         )
     print()
 
 
 def print_diff_summary(roms: dict[str, bytes]) -> None:
-    pairs = [
-        ("peugeot_stock", "peugeot_stok"),
-        ("peugeot_stock", "peugeot_mod2"),
-        ("peugeot_stock", "xantia_607c"),
-    ]
+    pairs = [("peugeot_stock", spec.key) for spec in ROMS if spec.key != "peugeot_stock"]
     print("## Diff Regions")
     print()
     for left, right in pairs:
@@ -371,24 +417,27 @@ def print_diff_summary(roms: dict[str, bytes]) -> None:
 
 def print_known_table_stats(roms: dict[str, bytes]) -> None:
     stock = roms["peugeot_stock"]
-    mod2 = roms["peugeot_mod2"]
-    xantia = roms["xantia_607c"]
     print("## Known Table / Candidate Stats")
     print()
-    print("| Name | Range | Shape | Peugeot raw min-max avg | MOD2 changed cells/delta | Xantia raw min-max avg | Peugeot vs Xantia changed cells/delta | Notes |")
-    print("| --- | --- | --- | --- | --- | --- | --- | --- |")
+    comparison_headers = " | ".join(f"{key} raw min-max avg / delta" for key in COMPARISON_KEYS)
+    print(f"| Name | Range | Shape | Peugeot raw min-max avg | {comparison_headers} | Notes |")
+    print(f"| --- | --- | --- | --- | {' | '.join('---' for _ in COMPARISON_KEYS)} | --- |")
     for name, addr, rows, cols, notes in KNOWN_TABLES:
         length = rows * cols
         s = byte_stats(table_bytes(stock, addr, rows, cols))
-        x = byte_stats(table_bytes(xantia, addr, rows, cols))
-        md_count, md_min, md_max, md_avg = same_offset_table_delta(stock, mod2, addr, length)
-        xd_count, xd_min, xd_max, xd_avg = same_offset_table_delta(stock, xantia, addr, length)
+        comparison_cells = []
+        for key in COMPARISON_KEYS:
+            other = roms[key]
+            stats = byte_stats(table_bytes(other, addr, rows, cols))
+            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, other, addr, length)
+            comparison_cells.append(
+                f"`{stats['min']:.0f}-{stats['max']:.0f} avg {stats['avg']:.1f}; "
+                f"{count} cells {delta_min:+d}..{delta_max:+d} avg {delta_avg:+.1f}`"
+            )
         print(
             f"| `{name}` | `{fmt_addr(addr)}-{fmt_addr(addr + length - 1)}` | `{rows}x{cols}` | "
             f"`{s['min']:.0f}-{s['max']:.0f} avg {s['avg']:.1f}` | "
-            f"`{md_count}; {md_min:+d}..{md_max:+d} avg {md_avg:+.1f}` | "
-            f"`{x['min']:.0f}-{x['max']:.0f} avg {x['avg']:.1f}` | "
-            f"`{xd_count}; {xd_min:+d}..{xd_max:+d} avg {xd_avg:+.1f}` | {notes} |"
+            f"{' | '.join(comparison_cells)} | {notes} |"
         )
     print()
 
@@ -396,7 +445,8 @@ def print_known_table_stats(roms: dict[str, bytes]) -> None:
 def print_table_refs(roms: dict[str, bytes]) -> None:
     print("## Immediate Table-Base Reference Scan")
     print()
-    for key in ("peugeot_stock", "xantia_607c"):
+    for spec in ROMS:
+        key = spec.key
         data = roms[key]
         print(f"### `{key}`")
         print()
@@ -414,7 +464,9 @@ def print_table_refs(roms: dict[str, bytes]) -> None:
 def print_helper_calls(roms: dict[str, bytes]) -> None:
     print("## Helper / JSR Scan")
     print()
-    for key, helpers in (("peugeot_stock", PEUGEOT_HELPERS), ("xantia_607c", XANTIA_HELPERS)):
+    for spec in ROMS:
+        key = spec.key
+        helpers = HELPER_FOCUS_BY_ROM.get(key, PEUGEOT_HELPERS + XANTIA_HELPERS)
         data = roms[key]
         targets = scan_jsr_targets(data)
         print(f"### `{key}`")
@@ -448,7 +500,8 @@ def print_helper_calls(roms: dict[str, bytes]) -> None:
 def print_ram_refs(roms: dict[str, bytes]) -> None:
     print("## RAM / Register Reference Scan")
     print()
-    for key in ("peugeot_stock", "xantia_607c"):
+    for spec in ROMS:
+        key = spec.key
         refs = scan_ram_refs(roms[key], RAM_TARGETS)
         print(f"### `{key}`")
         print()
@@ -465,22 +518,18 @@ def print_ram_refs(roms: dict[str, bytes]) -> None:
 
 def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     stock = roms["peugeot_stock"]
-    mod2 = roms["peugeot_mod2"]
-    xantia = roms["xantia_607c"]
     print("## Targeted Trace Notes")
     print()
 
     for addr, rows, cols in ((0x802E, 21, 9), (0x802E, 24, 9), (0x80EB, 21, 9), (0x81A8, 5, 9)):
         length = rows * cols
-        md_count, md_min, md_max, md_avg = same_offset_table_delta(stock, mod2, addr, length)
-        xd_count, xd_min, xd_max, xd_avg = same_offset_table_delta(stock, xantia, addr, length)
         refs = find_word_refs(stock, addr)
         print(
-            f"- `{fmt_addr(addr)}` `{rows}x{cols}`: MOD2 changed `{md_count}/{length}` cells "
-            f"(`{md_min:+d}..{md_max:+d}`, avg `{md_avg:+.1f}`); Xantia same-offset differs "
-            f"`{xd_count}/{length}` cells (`{xd_min:+d}..{xd_max:+d}`, avg `{xd_avg:+.1f}`); "
-            f"Peugeot immediate word-reference hits `{len(refs)}`."
+            f"- `{fmt_addr(addr)}` `{rows}x{cols}`: Peugeot immediate word-reference hits `{len(refs)}`."
         )
+        for key in COMPARISON_KEYS:
+            count, delta_min, delta_max, delta_avg = same_offset_table_delta(stock, roms[key], addr, length)
+            print(f"  - `{key}` differs in `{count}/{length}` cells (`{delta_min:+d}..{delta_max:+d}`, avg `{delta_avg:+.1f}`).")
 
     ram_refs = scan_ram_refs(stock, RAM_TARGETS)
     print()
@@ -503,6 +552,33 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     print()
 
 
+SECTION_RENDERERS: dict[str, Callable[[dict[str, bytes]], None]] = {
+    "overview": print_rom_overview,
+    "diffs": print_diff_summary,
+    "tables": print_known_table_stats,
+    "refs": print_table_refs,
+    "helpers": print_helper_calls,
+    "ram": print_ram_refs,
+    "trace": print_targeted_trace_notes,
+}
+
+
+def render_section(roms: dict[str, bytes], section: str) -> str:
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        SECTION_RENDERERS[section](roms)
+    return out.getvalue()
+
+
+def write_analysis_files(roms: dict[str, bytes]) -> None:
+    ANALYSIS_DIR.mkdir(exist_ok=True)
+    for section, filename in SECTION_FILES.items():
+        path = ANALYSIS_DIR / filename
+        text = render_section(roms, section)
+        path.write_text(text, encoding="ascii", newline="\n")
+        print(f"wrote {path.relative_to(ROOT)}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -511,6 +587,11 @@ def main() -> None:
         default="all",
         help="Limit output to one section.",
     )
+    parser.add_argument(
+        "--write-analysis",
+        action="store_true",
+        help="Write generated Markdown snapshots under analysis/ and exit.",
+    )
     args = parser.parse_args()
 
     roms = read_roms()
@@ -518,20 +599,13 @@ def main() -> None:
         if len(data) != 0x10000:
             raise ValueError(f"{key} is {len(data)} bytes, expected 65536")
 
-    if args.section in ("all", "overview"):
-        print_rom_overview(roms)
-    if args.section in ("all", "diffs"):
-        print_diff_summary(roms)
-    if args.section in ("all", "tables"):
-        print_known_table_stats(roms)
-    if args.section in ("all", "refs"):
-        print_table_refs(roms)
-    if args.section in ("all", "helpers"):
-        print_helper_calls(roms)
-    if args.section in ("all", "ram"):
-        print_ram_refs(roms)
-    if args.section in ("all", "trace"):
-        print_targeted_trace_notes(roms)
+    if args.write_analysis:
+        write_analysis_files(roms)
+        return
+
+    sections = SECTION_RENDERERS if args.section == "all" else {args.section: SECTION_RENDERERS[args.section]}
+    for section in sections:
+        print(render_section(roms, section), end="")
 
 
 if __name__ == "__main__":

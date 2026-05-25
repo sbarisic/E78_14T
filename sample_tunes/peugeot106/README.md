@@ -28,10 +28,18 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Living firmware-logic map.
   - Describes boot flow, main loop, timer/ADC preprocessing, normalized axes, interpolation helpers, confirmed table usage, output scheduling, and open reverse-engineering targets.
 
+- `evidence_status.md`
+  - Compact confidence table for important offsets and map candidates.
+  - Separates code-confirmed, MOD2-touched, Xantia-comparable, and diagnostic-only structures.
+
 - `IAW8P40_peugeot106_external_evidence.md`
   - Verified public-source notes from the deep-research report integration.
   - Separates public evidence, report-only leads, local code confirmation, and
     still-unconfirmed map-family targets.
+
+- `analysis/`
+  - Generated analyzer snapshots that are safe to review in Git diffs.
+  - Regenerate with `python tools/iaw8p40_analyze.py --write-analysis`.
 
 - `1_3L_8V_IAW8P40/`
   - Internet comparison files.
@@ -42,11 +50,26 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Same-family IAW 8P.40 comparison binary.
   - Used only as comparative support; it does not confirm Peugeot offsets by itself.
 
+- `Peug.106Rally.org.bin`
+  - Public/tuned-looking Peugeot comparison image.
+  - Size and reset vector look compatible, but checksum validation fails and
+    `0x0000-0x3FFF` is not zero-filled, so treat it as suspicious evidence.
+
+- `RALLY13.ORI`
+  - Valid same-family 64 KiB comparison image.
+  - Checksum pair is valid and reset vector is `0xB800`; use as comparative
+    evidence only, not as Peugeot offset authority.
+
 - `tools/iaw8p40_analyze.py`
-  - Read-only repeatable analysis script for all four available 64 KiB BINs.
+  - Read-only repeatable analysis script for all six available 64 KiB images.
   - Emits Markdown-friendly hashes, checksum words, reset vectors, diff regions,
-    known-table stats, same-offset Peugeot/Xantia comparisons, immediate
+    known-table stats, same-offset comparison data, immediate
     reference hints, helper-call scans, and RAM/register reference scans.
+  - Can also write committed snapshots under `analysis/`.
+
+- `tools/iaw8p40_checksum.py`
+  - Calculates or repairs the IAW8P40 checksum pair.
+  - Repair mode writes only a new output file and refuses protected source filenames.
 
 ## Main ROM Observations
 
@@ -61,7 +84,10 @@ This folder contains a readout from a Marelli `IAW 8P.40` ECU used on a Peugeot 
   - Peugeot stock checksum words are `0x4A65/0xB59A`, summing to `0xFFFF`.
   - MOD2 checksum words are `0x47BE/0xB841`, also summing to `0xFFFF`.
   - Xantia 607C checksum words are `0x9F83/0x607C`, also summing to `0xFFFF`.
-  - All four available BINs use reset vector `0xB800`.
+  - `RALLY13.ORI` checksum words are `0x7A41/0x85BE`, also summing to `0xFFFF`.
+  - `Peug.106Rally.org.bin` stores `0x4A65/0xB59A`, but its byte sum is
+    `0xE160`, so checksum validation fails.
+  - All six available 64 KiB images use reset vector `0xB800`.
 
 ## 68HC11 Vector Area
 
@@ -114,6 +140,10 @@ inside the preferred `21x9 @ 0x802E` view, all clean positive raw-count changes
 from `+4` to `+6`. The same-offset Xantia surface differs in all `189` cells,
 with lower average raw value than the Peugeot Rallye file. That strengthens the
 fuel/VE/air-charge hypothesis but still does not prove main fuel.
+The new `Peug.106Rally.org.bin` image is identical to stock across this `21x9`
+surface despite being checksum-invalid overall. `RALLY13.ORI` differs in
+`116 / 189` cells and is useful as a valid same-family comparison, not as direct
+Peugeot offset proof.
 
 ### Candidate 17x9 Map @ `0x88CD`
 

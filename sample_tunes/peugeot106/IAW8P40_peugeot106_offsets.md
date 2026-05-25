@@ -23,8 +23,8 @@ External evidence note:
 
 Repeatable analysis note:
 
-- `tools/iaw8p40_analyze.py` is a read-only script that loads all four
-  available 64 KiB BINs and emits Markdown-friendly hashes, checksum words,
+- `tools/iaw8p40_analyze.py` is a read-only script that loads all six
+  available 64 KiB images and emits Markdown-friendly hashes, checksum words,
   reset vectors, diff regions, table stats, helper-call hints, and RAM/register
   references.
 - Current script pass confirms:
@@ -32,9 +32,17 @@ Repeatable analysis note:
   - Peugeot stock checksum pair: `0x4A65/0xB59A`.
   - MOD2 checksum pair: `0x47BE/0xB841`.
   - Xantia 607C checksum pair: `0x9F83/0x607C`.
-  - All four available BINs use reset vector `0xB800`.
+  - `RALLY13.ORI` checksum pair: `0x7A41/0x85BE`.
+  - `Peug.106Rally.org.bin` stores `0x4A65/0xB59A`, but its byte sum is
+    `0xE160`, so checksum validation fails.
+  - All six available images use reset vector `0xB800`.
   - Peugeot stock vs Xantia 607C differs by `42021` bytes, so Xantia remains
     same-family comparative support only.
+  - Peugeot stock vs `Peug.106Rally.org.bin` differs by `16513` bytes and the
+    public file has a nonzero `0x0000-0x3FFF` prefix, so it is suspicious
+    comparative evidence only.
+  - Peugeot stock vs `RALLY13.ORI` differs by `43767` bytes; it is
+    checksum-valid same-family comparison evidence, not Peugeot offset proof.
 
 Important vector values:
 

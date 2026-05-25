@@ -788,26 +788,30 @@ Raw descriptor bytes:
 ## Repeatable Multi-BIN Analysis Script
 
 `tools/iaw8p40_analyze.py` is a read-only support script for this reverse
-engineering pass. It loads the four available 64 KiB binaries:
+engineering pass. It loads the six available 64 KiB images:
 
 - `M27C512_original.BIN`.
 - `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_Stok.bin`.
 - `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin`.
 - `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin`.
+- `Peug.106Rally.org.bin`.
+- `RALLY13.ORI`.
 
 The script reports hashes, checksum words, reset vectors, diff regions,
-candidate-table statistics, same-offset Peugeot/Xantia comparisons, immediate
-table-base byte-pattern hints, helper-call sites, and RAM/register references.
-It does not modify BIN files.
+candidate-table statistics, same-offset comparisons, immediate table-base
+byte-pattern hints, helper-call sites, and RAM/register references. It does not
+modify BIN or ORI files.
 
 Confirmed by the script:
 
-| BIN | SHA256 | Checksum pair | Sum | Reset |
-| --- | --- | --- | --- | --- |
-| Peugeot stock | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xFFFF` | `0xB800` |
-| Peugeot `Stok` | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xFFFF` | `0xB800` |
-| Peugeot MOD2 | `D3E4A451EDD236104C79190372FA1BE1E45AAD09398EABE6F7B7E1479D810855` | `0x47BE/0xB841` | `0xFFFF` | `0xB800` |
-| Xantia 607C | `05470171F86B8525F962F13370846E6D4A1A6FBABC0107D90E1497F88A5DFE89` | `0x9F83/0x607C` | `0xFFFF` | `0xB800` |
+| BIN | SHA256 | Checksum pair | Byte sum | Valid | Prefix zero | Hole zero | Reset |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Peugeot stock | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xB59A` | Yes | Yes | Yes | `0xB800` |
+| Peugeot `Stok` | `09E5D927BD6951ECF7B57F351CCD5D396DC95C191D12164F71671725B751A681` | `0x4A65/0xB59A` | `0xB59A` | Yes | Yes | Yes | `0xB800` |
+| Peugeot MOD2 | `D3E4A451EDD236104C79190372FA1BE1E45AAD09398EABE6F7B7E1479D810855` | `0x47BE/0xB841` | `0xB841` | Yes | Yes | Yes | `0xB800` |
+| Xantia 607C | `05470171F86B8525F962F13370846E6D4A1A6FBABC0107D90E1497F88A5DFE89` | `0x9F83/0x607C` | `0x607C` | Yes | Yes | Yes | `0xB800` |
+| `Peug.106Rally.org.bin` | `FE7D7953298C575BC08E4C301CE7E911BCE082D1515E1FCA68509A2C980E0141` | `0x4A65/0xB59A` | `0xE160` | No | No | Yes | `0xB800` |
+| `RALLY13.ORI` | `5F4EF679F6D262502D0023CF9F441111BC5C694CD4E281394AD0FCBA810854CF` | `0x7A41/0x85BE` | `0x85BE` | Yes | Yes | Yes | `0xB800` |
 
 Diff summary:
 
@@ -815,6 +819,19 @@ Diff summary:
 - Peugeot stock vs MOD2: `479` differing bytes in `87` contiguous regions.
 - Peugeot stock vs Xantia 607C: `42021` differing bytes in `1038`
   contiguous regions.
+- Peugeot stock vs `Peug.106Rally.org.bin`: `16513` differing bytes in `27`
+  contiguous regions. This file keeps the Peugeot checksum words but has byte
+  sum `0xE160`, so it is checksum-invalid and should be treated as suspicious
+  comparison evidence.
+- Peugeot stock vs `RALLY13.ORI`: `43767` differing bytes in `954`
+  contiguous regions. It is checksum-valid and reset-compatible, so it is a
+  useful same-family comparison image, not a Peugeot offset authority.
+
+For the preferred `0x802E` `21x9` fuel/VE/air-charge candidate, MOD2 differs
+in `57 / 189` cells, Xantia differs in all `189` cells,
+`Peug.106Rally.org.bin` is byte-identical to Peugeot stock in that window, and
+`RALLY13.ORI` differs in `116 / 189` cells. These comparisons support the
+candidate's fuel-side priority but still do not prove a main-fuel consumer.
 
 Scanner limitation:
 
@@ -872,6 +889,53 @@ Status:
   consumer path into injection pulse width, fuel time, lambda correction,
   air-charge calculation, or scheduling.
 - It may be accessed indirectly after startup copy / calibration overlay, or by descriptor data not yet decoded.
+
+## Static `0x802E` / Fuel-Path Proof Pass 2026-05-25
+
+New support artifacts:
+
+- `analysis/*.md` now stores generated analyzer snapshots for overview, diff
+  regions, table stats, helper calls, RAM/register refs, and trace notes.
+- `evidence_status.md` summarizes confidence and next proof requirements for
+  the important offsets.
+- `tools/iaw8p40_checksum.py` adds safe checksum calculation and repair-copy
+  tooling. It does not modify source BIN files.
+
+Static proof result:
+
+- No Peugeot-local code path has yet proven that `0x802E` reaches fuel pulse
+  width, fuel time, lambda correction, air-charge math, or injection scheduling.
+- The only immediate `0x802E` word-pattern hit is still the false positive at
+  the aligned `0xC61A-0xC623` clamp sequence.
+- The helper-call scan does not find `0x802E`, `0x80EB`, or `0x81A8` near the
+  known Peugeot interpolation helpers.
+- No startup copy, calibration overlay, descriptor table, or constructed-base
+  path has been confirmed for `0x802E-0x81D4`.
+- `0x80EB` and `0x81A8` stay as lower-confidence adjacent probes because they
+  are MOD2-touched but have weaker structure, modulo wraps, and no immediate
+  Peugeot code reference.
+
+Output/injection path boundary:
+
+| RAM | Current trace result | Meaning |
+| --- | --- | --- |
+| `0x20EB` | stores `0xBB9A`, `0xBD39`; math/loads `0xBC67`, `0xBC7A` | scheduled output offset |
+| `0x20ED` | stores `0xBB9D`, `0xBD4F`; math/loads `0xBCB1`, `0xBCC1` | next scheduled output offset |
+| `0x242B` | store `0xBD1B`; loads `0xBC64`, `0xBC76` | base/previous compare time |
+| `0x242D` | capture `0xBCAE`; load `0xBCBD` | captured/current compare time |
+| `0x20BC` | stores `0xBAB1`, `0xBBEC` | timed-output state byte |
+| `0x242F` | stores `0xBAB5`, `0xBAC6`; math/loads `0xBABE`, `0xBB49`, `0xBB53` | adjacent scheduler/state word |
+| `0x2431` | stores `0xBB68`, `0xBB79` | adjacent state byte/flag |
+
+This identifies the scheduler boundary but does not yet identify the actuator
+as injection or connect it to the `0x802E` candidate.
+
+ADC/load boundary:
+
+- ADC control/result register refs are concentrated around `0x1030-0x1034`.
+- Raw/processed sensor RAM remains `0x2007-0x200E` plus `0x2013`.
+- The load chain remains `0x00D0 -> 0x00CE -> 0x2034`.
+- Exact MAP/TPS/CTS/IAT/lambda/battery channel names remain unproven.
 
 ## Diagnostic / Service Routines
 

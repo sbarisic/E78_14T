@@ -12,22 +12,29 @@ Compared files:
 | `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_Stok.bin` | `65536` | `09e5d927bd6951ecf7b57f351ccd5d396dc95c191d12164f71671725b751a681` | Byte-identical to `M27C512_original.BIN` |
 | `1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin` | `65536` | `d3e4a451edd236104c79190372fa1be1e45aad09398eabe6f7b7e1479d810855` | Same ROM family, modified calibration/checksum bytes |
 | `Citroen Xantia 1.6L 8v iaw 8p.40 (607C).bin` | `65536` | `05470171f86b8525f962f13370846e6d4a1a6fbabc0107d90e1497f88a5dfe89` | Same-family comparison binary, not Peugeot offset proof |
+| `Peug.106Rally.org.bin` | `65536` | `fe7d7953298c575bc08e4c301ce7e911bce082d1515e1fca68509a2c980e0141` | Suspicious public/tuned comparison: reset vector is `0xB800`, but checksum validation fails and prefix is not zero-filled |
+| `RALLY13.ORI` | `65536` | `5f4ef679f6d262502d0023cf9f441111bc5c694cd4e281394ad0fcba810854cf` | Checksum-valid same-family comparison image, not Peugeot offset proof |
 
 Important result: the internet `Stok` BIN is exactly the same as the local original read. The `MOD2` file is therefore useful as a direct tuned-vs-stock comparison.
 
 The repeatable script `tools/iaw8p40_analyze.py` now reproduces these hashes,
-checksum words, diff counts, known table stats, same-offset Xantia comparisons,
-helper-call scans, and RAM/register reference scans.
+checksum words, diff counts, known table stats, same-offset comparison data,
+helper-call scans, and RAM/register reference scans for all six images.
 
 ## Shared ROM Structure
 
-All four available files:
+All clean stock/MOD2/Xantia/RALLY13-style images:
 
 - Are exactly `0x10000` bytes / `64 KiB`.
 - Have a zero-filled prefix from `0x0000-0x3FFF`.
 - Have real content from `0x4000`.
 - Have a zero-filled internal hole at `0xB600-0xB7FF`.
 - Share reset vector `0xB800` and a similar 68HC11 vector layout.
+
+`Peug.106Rally.org.bin` is also `64 KiB` and has reset vector `0xB800`, but it
+has a nonzero `0x0000-0x3FFF` prefix and checksum byte sum `0xE160` against the
+stored `0x4A65/0xB59A` pair. Keep it in comparisons, but do not treat it as a
+clean stock duplicate.
 
 Peugeot vector values:
 
@@ -70,6 +77,8 @@ Observed byte sums:
 | Stock | `0xB59A` | `0xB59A` | `0x4A65` |
 | MOD2 | `0xB841` | `0xB841` | `0x47BE` |
 | Xantia 607C | `0x607C` | `0x607C` | `0x9F83` |
+| `RALLY13.ORI` | `0x85BE` | `0x85BE` | `0x7A41` |
+| `Peug.106Rally.org.bin` | `0xE160` | `0xB59A` | `0x4A65` |
 
 The checksum routine appears to sum bytes down through the ROM while skipping `0xB600-0xB7FF`; that skipped range is zero-filled, so the practical sum is the same as summing `0x4000-0xFFFF`.
 
