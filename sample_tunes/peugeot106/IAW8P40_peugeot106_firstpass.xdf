@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-  <fileversion>0.48</fileversion>
+  <fileversion>0.52</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.48 renames 0x9291 as the raw TPS/load-delta breakpoint vector, separating direct $2017 users from indirect $2042 transient/state consumers.</description>
+    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.52 renames 0x869A as a raw fuel-cut/state-delay table by load-rise and RPM, adds its code-confirmed load-rise/RPM axis labels, and keeps the countdown values raw.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -296,137 +296,6 @@
     <MATH equation="X"><VAR id="X" /></MATH>
   </XDFCONSTANT>
 
-  <XDFTABLE uniqueid="0x200" flags="0x30">
-    <title>Unmapped Raw Lead 16x16 @ 0x5100</title>
-    <description>Structured region with lower entropy than surrounding code. Candidate constants or 1D/2D calibration bytes.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>16</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="00" />
-      <LABEL index="1" value="01" />
-      <LABEL index="2" value="02" />
-      <LABEL index="3" value="03" />
-      <LABEL index="4" value="04" />
-      <LABEL index="5" value="05" />
-      <LABEL index="6" value="06" />
-      <LABEL index="7" value="07" />
-      <LABEL index="8" value="08" />
-      <LABEL index="9" value="09" />
-      <LABEL index="10" value="0A" />
-      <LABEL index="11" value="0B" />
-      <LABEL index="12" value="0C" />
-      <LABEL index="13" value="0D" />
-      <LABEL index="14" value="0E" />
-      <LABEL index="15" value="0F" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>16</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="00" />
-      <LABEL index="1" value="10" />
-      <LABEL index="2" value="20" />
-      <LABEL index="3" value="30" />
-      <LABEL index="4" value="40" />
-      <LABEL index="5" value="50" />
-      <LABEL index="6" value="60" />
-      <LABEL index="7" value="70" />
-      <LABEL index="8" value="80" />
-      <LABEL index="9" value="90" />
-      <LABEL index="10" value="A0" />
-      <LABEL index="11" value="B0" />
-      <LABEL index="12" value="C0" />
-      <LABEL index="13" value="D0" />
-      <LABEL index="14" value="E0" />
-      <LABEL index="15" value="F0" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x5100" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x201" flags="0x30">
-    <title>Unmapped Raw Lead 16x16 @ 0x5200</title>
-    <description>Continuation of 0x5100 candidate region.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>16</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" />
-      <LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" />
-      <LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" />
-      <LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>16</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" />
-      <LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" />
-      <LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" />
-      <LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x5200" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x202" flags="0x30">
-    <title>Unmapped Raw Lead 16x16 @ 0x5300</title>
-    <description>Continuation of 0x5100 candidate region.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" />
-      <LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" />
-      <LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" />
-      <LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" />
-      <LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" />
-      <LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" />
-      <LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x5300" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
 
 
@@ -440,20 +309,6 @@
 
 
 
-
-
-  <XDFTABLE uniqueid="0x20A" flags="0x30">
-    <title>Unmapped Raw Lead 16x16 @ 0xB500</title>
-    <description>Late-file structured candidate block. May be correction constants or small maps.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0xB500" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
 
 
@@ -666,11 +521,11 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x22E" flags="0x30">
-    <title>Code-Confirmed 2D Table 24x9 @ 0x869A</title>
-    <description>B2D6 table used at 0x9B79-0x9BB4. Axis 1 is derived from RAM 0x2014 and stored at descriptor 0x238A. Axis 2 is RAM 0x2036. The interpolated byte is stored at RAM 0x2391. This table is not changed by MOD2.</description>
-    <CATEGORYMEM index="0" category="8" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <title>Fuel-Cut / State Delay vs Load Rise and RPM 24x9 @ 0x869A</title>
+    <description>Code-confirmed raw countdown/state-delay table used by routine 0x9B79 through helper B2D6. RAM $2394 snapshots $00CE at state entry; X is clamped positive load rise from $2014 - $2394, with the final 512 label representing the saturated &gt;=512 endpoint. Y is RPM axis $2036. The interpolated byte stores to $2391 and is decremented by the state machine. When the delay expires, the path sets $00A3=0x04, clears $00AB, and zeros $00C3. This is not direct fuel quantity, spark, VE, or a limiter threshold.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x869A" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
@@ -1524,19 +1379,19 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x26C" flags="0x30">
-    <title>Fuel Output Scheduler Scale vs $2040 1x9 @ 0x92FA</title>
-    <description>Unsigned scheduler-support vector indexed by internal $2040. D5DF interpolates this table with helper B2AB, multiplies the result by 40, and stores the 16-bit product to $2388. Keep raw; units are internal scheduler product units until timer scale is proven.</description>
+    <title>Fuel Output Scheduler Scale vs $00CC Surplus $2040 1x9 @ 0x92FA</title>
+    <description>Unsigned fuel-output scheduler-support vector indexed by internal $2040, where $2040 = max($00CC - 0x8000, 0) >> 4. D5DF interpolates this table with helper B2AB, multiplies the result by 40, and stores the 16-bit product to $2388. X labels are decimal $00CC display values for 0x8000, 0x9000, 0xA000, 0xB000, 0xC000, 0xD000, 0xE000, 0xF000, and 0xFFFF/end. Keep raw; this is scheduler timing support, not fuel quantity, and units remain internal until timer scale is proven.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="32768" /><LABEL index="1" value="36864" /><LABEL index="2" value="40960" /><LABEL index="3" value="45056" /><LABEL index="4" value="49152" /><LABEL index="5" value="53248" /><LABEL index="6" value="57344" /><LABEL index="7" value="61440" /><LABEL index="8" value="65535" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x92FA" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x26D" flags="0x30">
-    <title>Event Width Limit / Previous Width Vector vs $2040 1x9 @ 0x877E</title>
-    <description>Raw scheduler-support vector indexed by $2040. Feeds $00BF, which is compared with $00C1/$00C3 in the pulse scheduler.</description>
+    <title>Fuel Output Event Width Limit / Previous Width vs $00CC Surplus $2040 1x9 @ 0x877E</title>
+    <description>Raw fuel-output scheduler-support vector indexed by internal $2040, where $2040 = max($00CC - 0x8000, 0) >> 4. Feeds $00BF, which is compared with $00C1/$00C3 in the pulse scheduler. X labels are decimal $00CC display values for 0x8000, 0x9000, 0xA000, 0xB000, 0xC000, 0xD000, 0xE000, 0xF000, and 0xFFFF/end. Keep raw; this is scheduler support, not commanded fuel quantity.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="32768" /><LABEL index="1" value="36864" /><LABEL index="2" value="40960" /><LABEL index="3" value="45056" /><LABEL index="4" value="49152" /><LABEL index="5" value="53248" /><LABEL index="6" value="57344" /><LABEL index="7" value="61440" /><LABEL index="8" value="65535" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x877E" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1556,12 +1411,21 @@
   </XDFCONSTANT>
 
   <XDFTABLE uniqueid="0x26F" flags="0x30">
-    <title>Fuel Output Edge Offset / Deadline Candidate vs $2040 1x9 @ 0x8789</title>
-    <description>Raw 16-bit timer-tick view used by helper B26E to build $2086 from internal $2040. Provisional edge-offset/deadline candidate; disassembly labels 0x879B and 0x879C as separate data, not part of this table.</description>
+    <title>Fuel Output Edge Offset / Deadline vs $00CC Surplus $2040 1x9 @ 0x8789</title>
+    <description>Raw 16-bit timer-tick view used by helper B26E to build $2086 from internal $2040, where $2040 = max($00CC - 0x8000, 0) >> 4. X labels are decimal $00CC display values for 0x8000, 0x9000, 0xA000, 0xB000, 0xC000, 0xD000, 0xE000, 0xF000, and 0xFFFF/end. Provisional edge-offset/deadline support for the fuel output scheduler; this is not fuel quantity and not normal injector battery deadtime. 0x879B and 0x879C are separate data, not part of this table.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="32768" /><LABEL index="1" value="36864" /><LABEL index="2" value="40960" /><LABEL index="3" value="45056" /><LABEL index="4" value="49152" /><LABEL index="5" value="53248" /><LABEL index="6" value="57344" /><LABEL index="7" value="61440" /><LABEL index="8" value="65535" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8789" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x2AA" flags="0x30">
+    <title>Fuel Output Edge Offset / Deadline ms 2us Assumption 1x9 @ 0x8789</title>
+    <description>Provisional millisecond display for the 0x8789 fuel-output edge-offset/deadline table. Assumes 2 us/tick, so ms = raw ticks * 0.002. X labels are decimal $00CC display values for 0x8000, 0x9000, 0xA000, 0xB000, 0xC000, 0xD000, 0xE000, 0xF000, and 0xFFFF/end. Raw timer ticks remain authoritative until E-clock and timer prescaler are confirmed; this is scheduler timing support, not fuel quantity and not normal injector battery deadtime.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="32768" /><LABEL index="1" value="36864" /><LABEL index="2" value="40960" /><LABEL index="3" value="45056" /><LABEL index="4" value="49152" /><LABEL index="5" value="53248" /><LABEL index="6" value="57344" /><LABEL index="7" value="61440" /><LABEL index="8" value="65535" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="ms" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8789" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.000000</min><max>131.070000</max><outputtype>1</outputtype><MATH equation="X * 0.002"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
 
@@ -1874,10 +1738,10 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x292" flags="0x30">
-    <title>Scheduler $2040 Signed Subvector 1x10 @ 0x9303</title>
-    <description>DHC11 0xD6F5-0xD6FF indexes this signed byte subvector with $2040 through helper 0xB2BA and stores $2048. It begins immediately after the separate 1x9 table at 0x92FA and is exposed separately because the code uses 0x9303 as an exact base.</description>
+    <title>Fuel Scheduler Signed Correction vs $00CC Surplus $2040 1x10 @ 0x9303</title>
+    <description>DHC11 0xD6F5-0xD6FF indexes this signed byte scheduler correction/coefficient with $2040, where $2040 = max($00CC - 0x8000, 0) >> 4, through helper 0xB2BA and stores $2048. It begins immediately after the separate 1x9 table at 0x92FA and is exposed separately because the code uses 0x9303 as an exact base. X labels 32768 through 65535 are decimal $00CC display values for 0x8000 through 0xFFFF/end; the final 65536 label is a numeric-only display sentinel for the guard/unproven cell and is not a real 16-bit $00CC value. Keep signed raw.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>10</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><LABEL index="9" value="9" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>10</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="32768" /><LABEL index="1" value="36864" /><LABEL index="2" value="40960" /><LABEL index="3" value="45056" /><LABEL index="4" value="49152" /><LABEL index="5" value="53248" /><LABEL index="6" value="57344" /><LABEL index="7" value="61440" /><LABEL index="8" value="65535" /><LABEL index="9" value="65536" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="signed raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x9303" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="10" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>

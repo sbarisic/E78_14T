@@ -43,6 +43,11 @@ now agrees with the active XDF on the main runtime axis families:
   `0x92FA` is a separate unsigned `1x9` table multiplied by `40` into
   `$2388`, `0x9303` is a separate signed `1x10` subvector feeding `$2048`,
   and `0x8789` is a `1x9` word table feeding `$2086`.
+- XDF version `0.50` labels the shared scheduler axis as
+  `$2040 = max($00CC - 0x8000, 0) >> 4`, displays numeric decimal `$00CC`
+  sites so TunerPro does not coerce hex/text labels to zero, and keeps only a
+  provisional `2 us/tick` ms view for `0x8789`; raw timer ticks remain
+  authoritative.
 - Seeding `0xE9A8` as an entry point exposes the afterstart state handler and
   confirms `$203E` lookups for `0x845B/0x846C`, `0x847D/0x848E`,
   `0x849F/0x84B0`, and `0x84C1/0x84D2`.
@@ -77,7 +82,7 @@ records. These are exact inspection views, not final physical-unit claims.
 | Idle/state support | `0x8636`, `0x863F`, `0x8648`, `0x8652`, `0x8671`, `0x8689`, `0x899A` | `$203C` feeds the CTS state vectors; `$2042` feeds threshold/minimum vectors; `$2036` feeds the closed-loop entry offset. Outputs include `$20A8`, `$210E`, `$2110`, `$20F6`, and `$20F5`. |
 | Spark transition/state support | `0x87A6`, `0x87AB`, `0x8E04`, `0x8E0D`, `0x8E18` | `$2046` feeds compact transition vectors stored at `$214F`; capped `$2065` feeds spark-state decay vectors that contribute to `$2146`. |
 | Adaptive entry support | `0x8E36`, `0x8E3D`, `0x8E46`, `0x8E57` | `0x8E36/0x8E3D` are mixed threshold records read by the `0xCC00` gate; `$2044` feeds `0x8E46/0x8E57`, whose result is added to `$00C9`. |
-| Scheduler support | `0x9303` | `$2040` feeds signed helper `0xB2BA`; output `$2048`. This begins immediately after the separate `0x92FA` 1x9 scheduler vector and is a real exact code base. |
+| Scheduler support | `0x92FA`, `0x877E`, `0x8789`, `0x9303` | `$2040 = max($00CC - 0x8000, 0) >> 4` feeds scheduler lookups. XDF axes use decimal `$00CC` display labels `32768..65535` for hex `0x8000..0xFFFF/end` because TunerPro coerces text/hex labels to zero; `0x9303` uses `65536` only as a numeric guard-cell sentinel. `0x92FA` stores scaled output to `$2388`, `0x877E` feeds `$00BF`, `0x8789` feeds edge-offset/deadline term `$2086`, and exact signed base `0x9303` feeds `$2048`; final `0x9303` cell is guard/unproven. |
 
 ## Firmware / CPU Model
 
@@ -553,7 +558,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x9291-0x9299` | `TPS_load_delta_breakpoints` | Raw processed `$2017` load-delta vector used by `0xB383`, count/stride byte `0x929A = 0x09`; `$2017 = max(0, $00C9 - $0011)` | Direct: `0x9187`, `0x9073`; indirect via runtime `$2042`: `0x8508/0x8529/0x8558/0x8579/0x8652/0x8671` | High structural; cautious TPS/load-delta naming, not absolute TPS volts, MAP, or final load. |
 | `0x92CF-0x92D7` | `likely_CTS_ADC_breakpoints_B` | NTC-matching ADC vector `12,20,34,57,93,142,191,227,246`, count `0x92D8 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x2008 -> 0x2122 -> 0x203C/0x203E`; best current CTS/coolant path by consumers. | High NTC structure; exact pin/bench proof still pending. |
 | `0x92D9-0x92E1` | `likely_IAT_ADC_breakpoints_A` | Same NTC-matching ADC vector, count `0x92E2 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x200A -> 0x2124 -> 0x2038/0x203A`; X axis for `0x802B/0x8103`. | High NTC structure; best current IAT/air-temperature path by consumers. |
-| `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
+| `0x2014 - 0x2394` | `state_entry_load_rise_axis` | `0x2394` snapshots `$00CE` at state entry; routine `0x9B79` uses clamped positive `$2014 - $2394`, saturated at `>=512` raw counts | `0x869A` first axis | Medium-high structure; raw relative load-rise/count axis, not TPS %, MAP %, fuel %, or spark. |
 
 ### Confirmed Axis Consumers
 
@@ -571,7 +576,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x8970` | likely CTS axis `0x203E` | Idle target/cap vector stored to `0x2486`, part of the `0x888E -> 0x202B` idle actuator path. |
 | `0x84E3` | internal `$2040` axis | Exact `1x9` fuel-pulse correction vector; output `$2049` is applied to `$00C1`. The old oversized lambda-only view was wrong because `0x84EC` and `0x84ED` are separate DHC11 labels. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
-| `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
+| `0x869A` | positive load rise since state entry by `0x2036` RPM | Code-confirmed `24x9` fuel-cut/state-delay table. Output stores to `$2391` as a raw countdown tick value; expiry path sets `$00A3=0x04`, clears `$00AB`, and zeros `$00C3`. |
 | `0x9073` | direct `0x9291` / processed `$2017/$2018` TPS-load-delta breakpoints by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
 | `0x8E6F/0x8EC7/0x8F1C/0x8F71` | `0x00D0`-derived axis by `0x2044` | Adaptive trim dynamics cluster feeding `$24AB/$24AF/$24AC/$24AD` into the closed-loop/adaptive state machine. |
 
@@ -1152,7 +1157,7 @@ The newest XDF pass adds raw views for these additional code-confirmed tables:
 
 | Base | Shape exposed | Call site | Axes / source | Output / role clue |
 | ---: | ---: | ---: | --- | --- |
-| `0x869A` | `24x9` | `0x9B79-0x9BB4` | axis 1 derived from `0x2014`, axis 2 `0x2036` | stores `0x2391` |
+| `0x869A` | `24x9` | `0x9B79-0x9BB4` | clamped positive `$2014 - $2394` load rise by `0x2036` RPM | stores raw delay/countdown value to `$2391`; expiry path sets `$00A3=0x04`, clears `$00AB`, and zeros `$00C3` |
 | `0x87B1` | `24x9` | `0x7254-0x729B` | `0x2034` by `0x2036` | updates `0x00BE`; stock table is all zero |
 | `0x888E` | `24x9` | `0xBE74-0xBE93` | `0x2034` by `0x2036` | stores `0x2484`, later combined with `0x8970` vector |
 | `0x9073` | `11x9` | `0xC282-0xC2BE` | `0x9291`-derived axis by transformed `0x2044` | closed-loop ramp/target compared with `0x243C` |
@@ -2562,7 +2567,7 @@ physical units remain qualified where the transfer path is still incomplete.
 | `0x9291-0x9299` | `TPS_load_delta_breakpoints` | Raw processed `$2017` load-delta vector used by `0xB383`, count/stride byte `0x929A = 0x09`; `$2017 = max(0, $00C9 - $0011)` | Direct: `0x9187`, `0x9073`; indirect via runtime `$2042`: `0x8508/0x8529/0x8558/0x8579/0x8652/0x8671` | High structural; cautious TPS/load-delta naming, not absolute TPS volts, MAP, or final load. |
 | `0x92CF-0x92D7` | `likely_CTS_ADC_breakpoints_B` | NTC-matching ADC vector `12,20,34,57,93,142,191,227,246`, count `0x92D8 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x2008 -> 0x2122 -> 0x203C/0x203E`; best current CTS/coolant path by consumers. | High NTC structure; exact pin/bench proof still pending. |
 | `0x92D9-0x92E1` | `likely_IAT_ADC_breakpoints_A` | Same NTC-matching ADC vector, count `0x92E2 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x200A -> 0x2124 -> 0x2038/0x203A`; X axis for `0x802B/0x8103`. | High NTC structure; best current IAT/air-temperature path by consumers. |
-| `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
+| `0x2014 - 0x2394` | `state_entry_load_rise_axis` | `0x2394` snapshots `$00CE` at state entry; routine `0x9B79` uses clamped positive `$2014 - $2394`, saturated at `>=512` raw counts | `0x869A` first axis | Medium-high structure; raw relative load-rise/count axis, not TPS %, MAP %, fuel %, or spark. |
 
 Current confirmed consumer map:
 
@@ -2578,7 +2583,7 @@ Current confirmed consumer map:
 | `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase offset; stock-zero output updates `0x00BE -> 0x21C6` before OC1 schedules `TOC1 = $00B8 + $21C6`; changes timing/phase, not fuel quantity. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Idle-air / idle-bypass target candidate stored to `0x2484`, later combined with likely CTS vector `0x8970` and shaped toward `0x202B`. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
-| `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
+| `0x869A` | positive load rise since state entry by `0x2036` RPM | Code-confirmed `24x9` fuel-cut/state-delay table. Output stores to `$2391` as a raw countdown tick value; expiry path sets `$00A3=0x04`, clears `$00AB`, and zeros `$00C3`. |
 | `0x9073` | direct `0x9291` / processed `$2017/$2018` TPS-load-delta breakpoints by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
 | `0x8E6F/0x8EC7/0x8F1C/0x8F71` | `0x00D0`-derived axis by `0x2044` | Adaptive trim dynamics cluster feeding `$24AB/$24AF/$24AC/$24AD` into the closed-loop/adaptive state machine. |
 
@@ -3221,7 +3226,7 @@ New in `0.6`:
 
 New in `0.7`:
 
-- `Code-Confirmed 2D Table 24x9 @ 0x869A`.
+- `Fuel-Cut / State Delay vs Load Rise and RPM 24x9 @ 0x869A`.
 - `Injector/Event Phase Offset 24x9 @ 0x87B1`.
 - `Idle Air / Idle Bypass Target 24x9 @ 0x888E`.
 - `Closed-Loop Ramp / Target Table 11x9 @ 0x9073`.
@@ -3464,11 +3469,9 @@ Important vector values:
 
 Priority candidate calibration areas:
 
-- `0x5100-0x53FF`
 - `0x8200-0x83FF`
 - `0x8600-0x8900`
 - `0x8E00-0x90FF`
-- `0xB500-0xB5FF`
 
 Why these were chosen:
 
@@ -3476,9 +3479,14 @@ Why these were chosen:
 - Several contain smooth low-value gradients, repeated constants, or compact structured byte patterns.
 - `0x8800` is especially interesting and should be one of the first areas to inspect for small maps or correction tables.
 
+Retired raw lead ranges:
+
+- `0x5100-0x53FF` is executable service / hardware-control code. A pointer list at `0x4EF0` targets routines inside this range, including `0x50F4`, `0x515C`, `0x51CC`, `0x5224`, `0x5290`, and `0x5320`; the former 16x16 XDF views at `0x5100`, `0x5200`, and `0x5300` were removed in XDF v0.51.
+- `0xB500-0xB5FF` is executable scheduler / output-control code. The DHC11 listing decodes `0xB500` inside routine `LB48C`, which is called from the periodic path at `0xD373`; the former 16x16 XDF view was removed in XDF v0.51.
+
 What the XDF contains:
 
-- Raw 16x16 byte views for the most promising regions.
+- Raw inspection views only where the backing bytes are still plausible data rather than decoded executable code.
 - Scalar views for the 68HC11 vectors.
 - Conservative descriptions remain the default. The spark bank pair now has
   likely octane/default labels because the selector path and high-load timing
@@ -3597,7 +3605,7 @@ Candidate and code-confirmed offsets added to the XDF:
 - `0x87A0`: changed 16-bit threshold scalar, stock `0x07EF`, MOD2 `0xFFFF`.
 - `0x87A2`: alternate period threshold, stock `0x1770`, about `2500 RPM`.
 - `0x87A4`: alternate period threshold, stock `0x1979`, about `2300 RPM`.
-- `0x869A-0x8771`: code-confirmed `24x9` 2D parent table; the old visual `0x86DB` slice lies inside it.
+- `0x869A-0x8771`: code-confirmed fuel-cut/state-delay `24x9` table by positive load rise and RPM; the old visual `0x86DB` slice lies inside it.
 - `0x87B1-0x8888`: injector/event phase offset `24x9`; stock table is all
   zero, output updates `$00BE -> $21C6`, and changes affect phase/timing rather
   than fuel quantity.
@@ -3661,7 +3669,7 @@ Useful direct-reference hints from byte/opcode context:
 - `0x800E` is used by the checksum routine around `0x5AD8-0x5B17`.
 - `0x879E` / `0x87A0` are referenced around `0x6F14-0x6F2A`.
 - `0x87A2` / `0x87A4` are alternate thresholds in the same limiter-looking routine when `RAM 0x214F` is nonzero.
-- `0x869A` is loaded as a B2D6 table base around `0x9B79-0x9BAE`; result stores to `0x2391`.
+- `0x869A` is loaded as a B2D6 table base around `0x9B79-0x9BAE`; clamped positive `$2014 - $2394` load rise and `$2036` RPM index a raw countdown value stored to `$2391`.
 - `0x87B1` is loaded as a B2D6 table base around `0x7254-0x7270`; result updates `0x00BE`.
 - `0x888E` is loaded as a B2D6 table base around `0xBE74-0xBE90`; result stores to `0x2484`.
 - `0x9073` is loaded as a B2D6 table base around `0xC282-0xC2BE`; result is compared with `0x243C`.
@@ -4087,7 +4095,7 @@ After TunerPro visual review, additional split views were added:
 - `AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF`
 - `AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9`
 - `VEC_TEMP_RAW_OUTPUT_C_PLUS_40_9 @ 0x400E`
-- `Code-Confirmed 2D Table 24x9 @ 0x869A`
+- `Fuel-Cut / State Delay vs Load Rise and RPM 24x9 @ 0x869A`
 - `Code-Confirmed 2D Table 24x9 @ 0x87B1`
 - `Code-Confirmed 2D Table 24x9 @ 0x888E`
 - `Closed-Loop Ramp / Target Table 11x9 @ 0x9073`
