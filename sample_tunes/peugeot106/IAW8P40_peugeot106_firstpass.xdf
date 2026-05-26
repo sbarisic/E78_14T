@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-  <fileversion>0.45</fileversion>
+  <fileversion>0.48</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.45 corrects the 0x84E3 fuel-pulse correction boundary: 0x84E3 is a separate 1x9 $2040-indexed vector, 0x84EC is its own threshold byte, and 0x84ED remains the CTS scheduler threshold vector.</description>
+    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.48 renames 0x9291 as the raw TPS/load-delta breakpoint vector, separating direct $2017 users from indirect $2042 transient/state consumers.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -630,8 +630,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x22A" flags="0x30">
-    <title>Code-Referenced Axis Vector 1x9 @ 0x9291</title>
-    <description>Byte vector used by helper 0xB383 with count byte 0x929A=9. Confirmed callers include 0x41E0 and the 0x9187 lookup at 0x6344. Physical scaling is not named yet.</description>
+    <title>TPS / Load-Delta Breakpoints 1x9 @ 0x9291</title>
+    <description>AXIS_TPS_LOAD_DELTA_RAW_9. Raw processed $2017 load-delta breakpoint vector used by helper 0xB383 with count byte 0x929A = 0x09. DHC11 evidence shows $2017 = max(0, $00C9 - $0011), then helper output is used directly by 0x9187 and 0x9073 and is also stored as reusable runtime axis $2042 for transient/state vectors. Stored bytes are 00 03 0B 16 25 36 59 84 C9. Keep raw; this is baseline-subtracted TPS/load delta, not absolute TPS volts, MAP, or final load.</description>
     <CATEGORYMEM index="0" category="11" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -658,7 +658,7 @@
 
   <XDFTABLE uniqueid="0x22D" flags="0x30">
     <title>Load / Air-Charge Model Factor 24x9 @ 0x9187</title>
-    <description>Medium-high structural confidence view for the code-confirmed 0x9187 24x9 lookup. The routine at 0x6344 builds a B2D6 descriptor at RAM 0x218D, derives one axis through helper 0xB383 using vector 0x9291 and count/stride byte 0x929A=9, loads the second axis from RPM-like RAM 0x2036, sets base 0x9187, and returns the interpolated byte. Known callers store the result at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display with X / 230. Best current role is upstream load/air-charge modelling into 0x00D0/0x00CE/0x2034; not main fuel.</description>
+    <description>Medium-high structural confidence view for the code-confirmed 0x9187 24x9 lookup. Direct 0x9291 user: X labels are raw TPS/load-delta breakpoints from processed $2017 = max(0, $00C9 - $0011) through helper 0xB383 and count byte 0x929A=9. Y is RPM-like RAM 0x2036. Known callers store the interpolated byte at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display with X / 230. Best current role is upstream load/air-charge modelling into 0x00D0/0x00CE/0x2034; not main fuel.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -694,7 +694,7 @@
 
   <XDFTABLE uniqueid="0x231" flags="0x30">
     <title>Closed-Loop Ramp / Target Table 11x9 @ 0x9073</title>
-    <description>Closed-loop/adaptive ramp target. X uses 0x9291 processed delta/load axis; Y is limited 0x2044 RPM-like index. Output is compared with 0x243C and approached gradually.</description>
+    <description>Closed-loop/adaptive ramp target. Direct 0x9291 user: X labels are raw TPS/load-delta breakpoints after the smoothed $2017/$2018 path; Y is limited 0x2044 RPM-like index. Output is compared with 0x243C and approached gradually.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>11</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -775,7 +775,7 @@
 
   <XDFTABLE uniqueid="0x23F" flags="0x30">
     <title>Signed Fuel Quantity Trim A Raw 24x9 @ 0x821C</title>
-    <description>Developer raw signed view. 0xE38B selects bank A; 0xE715 applies roughly fuel += fuel * signed_trim / 256. Prefer percent or multiplier views for tuning.</description>
+    <description>Developer/debug raw signed count view. 0xE38B selects bank A; 0xE715 applies roughly fuel += fuel * signed_trim / 256. Use Fuel Multiplier A 24x9 @ 0x821C for tuning; this is not a VE or base fuel table.</description>
     <CATEGORYMEM index="0" category="24" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -784,7 +784,7 @@
 
   <XDFTABLE uniqueid="0x240" flags="0x30">
     <title>Signed Fuel Quantity Trim B Raw 24x9 @ 0x8318</title>
-    <description>Developer raw signed view. 0xE38B selects bank B; 0xE715 applies roughly fuel += fuel * signed_trim / 256. Prefer percent or multiplier views for tuning.</description>
+    <description>Developer/debug raw signed count view. 0xE38B selects bank B; 0xE715 applies roughly fuel += fuel * signed_trim / 256. Use Fuel Multiplier B 24x9 @ 0x8318 for tuning; this is not a VE or base fuel table.</description>
     <CATEGORYMEM index="0" category="24" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -793,7 +793,7 @@
 
   <XDFTABLE uniqueid="0x241" flags="0x30">
     <title>Signed RPM-only Fuel Trim Raw 1x24 @ 0x83F0</title>
-    <description>Developer raw signed view. RPM-only fuel trim used by 0xE38B when 0x00A9 bit 0x20 bypasses the 2D trim banks.</description>
+    <description>Developer/debug raw signed count view. RPM-only fuel trim used by 0xE38B when 0x00A9 bit 0x20 bypasses the 2D trim banks. Use RPM-only Fuel Multiplier 1x24 @ 0x83F0 for tuning.</description>
     <CATEGORYMEM index="0" category="24" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -889,7 +889,7 @@
   <XDFTABLE uniqueid="0x248" flags="0x30">
     <title>Internal $2040 Fuel Pulse Correction Vector 1x9 @ 0x84E3</title>
     <description>DHC11 label L84E3 is exactly 9 bytes. Routine 0xE83E-0xE848 indexes this vector with RAM $2040 and stores output $2049; the final fuel path applies $2049 to $00C1. Keep raw: $2040 source and physical units remain provisional. 0x84EC is a separate threshold byte and 0x84ED starts the CTS scheduler threshold vector.</description>
-    <CATEGORYMEM index="0" category="22" />
+    <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84E3" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -900,6 +900,314 @@
     <description>DHC11 0x7201-0x7206 compares RAM $00D3 against this standalone byte before enabling the 0x84ED CTS scheduler threshold path. Kept separate because L84EC is not part of the 0x84E3 or 0x84ED vectors.</description>
     <CATEGORYMEM index="0" category="13" />
     <EMBEDDEDDATA mmedaddress="0x84EC" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x294">
+    <title>Fuel Correction Enable / Base Scalar @ 0x81DB</title>
+    <description>Raw code-referenced fuel correction support byte loaded before $2050 in the branch-dependent signed correction path. Developer scalar; units remain raw.</description>
+    <CATEGORYMEM index="0" category="22" />
+    <EMBEDDEDDATA mmedaddress="0x81DB" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x295">
+    <title>Fuel Period Gate Threshold Word A @ 0x81DC</title>
+    <description>Raw word threshold used with $2014 to gate the 0x81E0 RPM-vector fuel support path. Developer scalar; units remain raw.</description>
+    <CATEGORYMEM index="0" category="22" />
+    <EMBEDDEDDATA mmedaddress="0x81DC" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x296">
+    <title>Fuel Period Gate Threshold Word B @ 0x81DE</title>
+    <description>Raw word threshold paired with 0x81DC as hysteresis/offset for the period-gated 0x81E0 RPM-vector fuel support path.</description>
+    <CATEGORYMEM index="0" category="22" />
+    <EMBEDDEDDATA mmedaddress="0x81DE" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x297">
+    <title>Fuel Correction Offset Word @ 0x8028</title>
+    <description>Raw word added into the $204E fuel correction path after $204D plus local offset state. Developer scalar; units remain raw.</description>
+    <CATEGORYMEM index="0" category="23" />
+    <EMBEDDEDDATA mmedaddress="0x8028" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x298">
+    <title>Fuel Correction Timer / Reload Byte @ 0x802A</title>
+    <description>Raw byte reloaded into $258A in the smoothing/period branch near the $204E fuel correction path.</description>
+    <CATEGORYMEM index="0" category="23" />
+    <EMBEDDEDDATA mmedaddress="0x802A" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x299">
+    <title>Afterstart TPS Hysteresis / Additive Byte @ 0x8419</title>
+    <description>Raw byte used around $00C9 and the 0x8990 threshold in afterstart/startup condition logic.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8419" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29A">
+    <title>Afterstart / Startup Seed Byte @ 0x841A</title>
+    <description>Raw byte copied to $2062 during fuel state initialization.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x841A" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29B">
+    <title>Afterstart Step / Timer Byte @ 0x844E</title>
+    <description>Raw byte used to seed $2061 in the afterstart state-machine path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x844E" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29C">
+    <title>Afterstart Reference Word @ 0x844F</title>
+    <description>Raw word used with $2014 in the afterstart decay calculation.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x844F" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29D">
+    <title>Afterstart Decay Multiplier Byte @ 0x8451</title>
+    <description>Raw byte multiplier applied to the 0x844F minus $2014 afterstart decay term.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8451" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29E">
+    <title>Transient Branch Scale Byte @ 0x8544</title>
+    <description>Raw byte used in the first transient branch near $2067.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8544" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x29F">
+    <title>Transient / Decay Threshold Byte @ 0x8545</title>
+    <description>Raw byte that gates the second transient branch by $00D3.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8545" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A0">
+    <title>Transient A Input Offset Byte @ 0x8595</title>
+    <description>Raw byte passed to the transient helper before the 0x8596 transient enrichment A vector.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8595" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A1">
+    <title>Transient B Entry Threshold A @ 0x85A8</title>
+    <description>Raw byte entry threshold for one transient-B state path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x85A8" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A2">
+    <title>Transient B Entry Threshold B @ 0x85A9</title>
+    <description>Raw byte entry threshold for the alternate transient-B state path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x85A9" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A3">
+    <title>Transient B Load/RPM Additive Threshold @ 0x85AA</title>
+    <description>Raw byte added to shifted $20A8 in the transient-B entry/limit path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x85AA" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A4">
+    <title>Transient B Lower Cutoff Word @ 0x85AB</title>
+    <description>Raw word compared against $2057 in the transient-B lower cutoff path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x85AB" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A5">
+    <title>Transient B Input Offset Byte @ 0x85AE</title>
+    <description>Raw byte passed to the transient helper before the 0x85AF transient enrichment B vector.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x85AE" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A6">
+    <title>Transient A Lower Cutoff Word @ 0x877B</title>
+    <description>Raw word compared against $2055 in the transient-A lower cutoff path.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x877B" mmedelementsizebits="16" />
+    <units>raw word</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>65535.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A7">
+    <title>Injector Phase Slew / Limit Byte @ 0x8889</title>
+    <description>Raw byte used while smoothing $00BE in the injector/event phase path. Output scheduling support only; not fuel quantity.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <EMBEDDEDDATA mmedaddress="0x8889" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A8">
+    <title>Idle / Afterstart Condition Threshold @ 0x896F</title>
+    <description>Raw byte threshold used in afterstart source selection and idle-adjacent condition logic.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x896F" mmedelementsizebits="8" />
+    <units>raw</units>
+    <outputtype>1</outputtype>
+    <datatype>0</datatype>
+    <decimalpl>0</decimalpl>
+    <min>0.000000</min>
+    <max>255.000000</max>
+    <MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2A9">
+    <title>TPS / Afterstart Threshold @ 0x8990</title>
+    <description>Raw byte threshold used with $00C9 and 0x8419 in afterstart/startup condition logic.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <EMBEDDEDDATA mmedaddress="0x8990" mmedelementsizebits="8" />
     <units>raw</units>
     <outputtype>1</outputtype>
     <datatype>0</datatype>
@@ -929,7 +1237,7 @@
 
   <XDFTABLE uniqueid="0x24C" flags="0x30">
     <title>Signed Low-RPM Fuel Trim A Raw 4x9 @ 0x81F8</title>
-    <description>Developer raw signed low-RPM/submode trim selected by 0xE38B before main bank A.</description>
+    <description>Developer/debug raw signed count view of the low-RPM/submode trim selected by 0xE38B before main bank A. Use Low-RPM Fuel Multiplier A 4x9 @ 0x81F8 for tuning.</description>
     <CATEGORYMEM index="0" category="24" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -937,62 +1245,62 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x24D" flags="0x30">
-    <title>Fuel Trim A % 24x9 @ 0x821C</title>
-    <description>User-facing percent view of signed fuel quantity trim A. 64 raw equals +25%.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x821C" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x24E" flags="0x30">
     <title>Fuel Multiplier A 24x9 @ 0x821C</title>
-    <description>User-facing multiplier view of signed fuel quantity trim A. 64 raw equals 1.25.</description>
+    <description>Primary tuning view of signed fuel quantity trim A as a proportional fuel multiplier, not a VE/base fuel table. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x821C" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x24F" flags="0x30">
-    <title>Low-RPM Fuel Trim A % 4x9 @ 0x81F8</title>
-    <description>Percent view of guarded low-RPM/submode fuel trim A.</description>
+  <XDFTABLE uniqueid="0x24E" flags="0x30">
+    <title>Fuel Trim A % 24x9 @ 0x821C</title>
+    <description>Reference percent view of signed fuel quantity trim A. The multiplier view is preferred for tuning. 64 raw equals +25.0%.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x81F8" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x821C" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x250" flags="0x30">
+  <XDFTABLE uniqueid="0x24F" flags="0x30">
     <title>Low-RPM Fuel Multiplier A 4x9 @ 0x81F8</title>
-    <description>Multiplier view of guarded low-RPM/submode fuel trim A.</description>
+    <description>Primary tuning view of guarded low-RPM/submode fuel trim A as a proportional fuel multiplier. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x81F8" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x251" flags="0x30">
-    <title>Fuel Trim B % 24x9 @ 0x8318</title>
-    <description>User-facing percent view of signed fuel quantity trim B. 64 raw equals +25%.</description>
+  <XDFTABLE uniqueid="0x250" flags="0x30">
+    <title>Low-RPM Fuel Trim A % 4x9 @ 0x81F8</title>
+    <description>Reference percent view of guarded low-RPM/submode fuel trim A. The multiplier view is preferred for tuning.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8318" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x81F8" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x252" flags="0x30">
+  <XDFTABLE uniqueid="0x251" flags="0x30">
     <title>Fuel Multiplier B 24x9 @ 0x8318</title>
-    <description>User-facing multiplier view of signed fuel quantity trim B. 64 raw equals 1.25.</description>
+    <description>Primary tuning view of signed fuel quantity trim B as a proportional fuel multiplier, not a VE/base fuel table. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8318" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
+  <XDFTABLE uniqueid="0x252" flags="0x30">
+    <title>Fuel Trim B % 24x9 @ 0x8318</title>
+    <description>Reference percent view of signed fuel quantity trim B. The multiplier view is preferred for tuning. 64 raw equals +25.0%.</description>
+    <CATEGORYMEM index="0" category="22" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8318" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
   <XDFTABLE uniqueid="0x253" flags="0x30">
     <title>Signed Low-RPM Fuel Trim B Raw 4x9 @ 0x82F4</title>
-    <description>Developer raw signed low-RPM/submode trim selected by 0xE38B before main bank B.</description>
+    <description>Developer/debug raw signed count view of the low-RPM/submode trim selected by 0xE38B before main bank B. Use Low-RPM Fuel Multiplier B 4x9 @ 0x82F4 for tuning.</description>
     <CATEGORYMEM index="0" category="24" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1000,39 +1308,39 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x254" flags="0x30">
-    <title>Low-RPM Fuel Trim B % 4x9 @ 0x82F4</title>
-    <description>Percent view of guarded low-RPM/submode fuel trim B.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x82F4" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x255" flags="0x30">
     <title>Low-RPM Fuel Multiplier B 4x9 @ 0x82F4</title>
-    <description>Multiplier view of guarded low-RPM/submode fuel trim B.</description>
+    <description>Primary tuning view of guarded low-RPM/submode fuel trim B as a proportional fuel multiplier. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x82F4" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x256" flags="0x30">
-    <title>RPM-only Fuel Trim % 1x24 @ 0x83F0</title>
-    <description>Percent view of RPM-only special/bypass fuel trim.</description>
+  <XDFTABLE uniqueid="0x255" flags="0x30">
+    <title>Low-RPM Fuel Trim B % 4x9 @ 0x82F4</title>
+    <description>Reference percent view of guarded low-RPM/submode fuel trim B. The multiplier view is preferred for tuning.</description>
     <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x83F0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x82F4" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x257" flags="0x30">
+  <XDFTABLE uniqueid="0x256" flags="0x30">
     <title>RPM-only Fuel Multiplier 1x24 @ 0x83F0</title>
-    <description>Multiplier view of RPM-only special/bypass fuel trim.</description>
+    <description>Primary tuning view of the RPM-only special/bypass fuel trim as a proportional fuel multiplier. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
     <CATEGORYMEM index="0" category="22" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x83F0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x257" flags="0x30">
+    <title>RPM-only Fuel Trim % 1x24 @ 0x83F0</title>
+    <description>Reference percent view of the RPM-only special/bypass fuel trim. The multiplier view is preferred for tuning.</description>
+    <CATEGORYMEM index="0" category="22" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x83F0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x258" flags="0x30">
@@ -1306,7 +1614,7 @@
 
   <XDFTABLE uniqueid="0x275" flags="0x30">
     <title>Transient $2042 Vector B 1x9 @ 0x8558</title>
-    <description>$2042-indexed raw byte transient vector. DHC11 shows 0xE4FF loading $2042 and 0xE502 loading base 0x8558 before helper 0xB2AB; output is traced to $207B. X labels mirror the 0x9291-derived $2042 helper axis. Units remain raw.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 shows 0xE4FF loading $2042 and 0xE502 loading base 0x8558 before helper 0xB2AB; output is traced to $207B. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Units remain raw.</description>
     <CATEGORYMEM index="0" category="21" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1378,7 +1686,7 @@
 
   <XDFTABLE uniqueid="0x27D" flags="0x30">
     <title>Transient $2042 Gain Vector A 1x9 @ 0x8508</title>
-    <description>DHC11 0xE3FD-0xE407 indexes this byte vector with $2042 and stores the result at $206D for the first transient fuel support branch. Values remain raw.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 0xE3FD-0xE407 indexes this byte vector with $2042 and stores the result at $206D for the first transient fuel support branch. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Values remain raw.</description>
     <CATEGORYMEM index="0" category="21" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1396,7 +1704,7 @@
 
   <XDFTABLE uniqueid="0x27F" flags="0x30">
     <title>Transient $2042 Word Target A 1x9 @ 0x8529</title>
-    <description>DHC11 0xE431-0xE45B uses word helper 0xB26E with base 0x8529 and a $2042-derived index, storing targets at $206E/$2070. Values remain raw words.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 0xE431-0xE45B uses word helper 0xB26E with base 0x8529 and a $2042-derived index, storing targets at $206E/$2070. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Values remain raw words.</description>
     <CATEGORYMEM index="0" category="21" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1414,7 +1722,7 @@
 
   <XDFTABLE uniqueid="0x281" flags="0x30">
     <title>Transient $2042 Word Target B 1x9 @ 0x8579</title>
-    <description>DHC11 0xE519-0xE523 and 0xE999-0xE9A3 use word helper 0xB26E with base 0x8579 and $2042-derived indexing, storing $207E/$207C. Values remain raw words.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 0xE519-0xE523 and 0xE999-0xE9A3 use word helper 0xB26E with base 0x8579 and $2042-derived indexing, storing $207E/$207C. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Values remain raw words.</description>
     <CATEGORYMEM index="0" category="21" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1450,7 +1758,7 @@
 
   <XDFTABLE uniqueid="0x285" flags="0x30">
     <title>State $2042 Threshold Vector 1x9 @ 0x8652</title>
-    <description>DHC11 0x5758-0x5765 indexes this byte vector with $2042, stores $210E, and compares it with $00D3 in a state/actuator branch. Values remain raw.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 0x5758-0x5765 indexes this byte vector with $2042, stores $210E, and compares it with $00D3 in a state/actuator branch. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Values remain raw.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1459,7 +1767,7 @@
 
   <XDFTABLE uniqueid="0x286" flags="0x30">
     <title>State $2042 Minimum Vector 1x9 @ 0x8671</title>
-    <description>DHC11 0x97DA-0x97E4 indexes this byte vector with $2042 and stores $2110 before later state/actuator decisions. Values remain raw.</description>
+    <description>Indirect $2042 consumer; this table does not load 0x9291 itself. DHC11 0x97DA-0x97E4 indexes this byte vector with $2042 and stores $2110 before later state/actuator decisions. X labels mirror the 0x9291 raw TPS/load-delta breakpoints used earlier to derive $2042 from processed $2017. Values remain raw.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>

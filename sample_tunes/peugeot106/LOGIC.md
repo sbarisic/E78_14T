@@ -550,7 +550,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x2034` | `MAP/load_kPa_estimate_axis_8p8` | `0x41A1-0x41AD` from clamped/doubled `0x00CE`, fed by `0x00D0` and load-model/state paths | `0x8A69`, `0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A` | Medium-high MAP/load; XDF displays spark labels as rounded integer `0-100 kPa`, exact ADC transfer unproven. |
 | `0x2044` | `rpm_400rpm_site_axis_8p8` | Derived from RPM-like `0x00D4`, clamped to `0x1200` | `0x89C7-0x8A67` vector family, `0x9073`, `0x8E6F/0x8EC7/0x8F1C/0x8F71` | High structure; integer sites are `0-7200 rpm` in 400 rpm steps. Not a vehicle-speed axis. |
 | `0x2046` | `secondary_transient_state_axis_8p8` | Built in the same normalized-axis runtime block as `0x2036` and `0x2044` | `0x8A0A` | Low-medium; exact source still needs tracing. |
-| `0x9291-0x9299` | `9_point_helper_breakpoint_vector_A` | EPROM vector used by `0xB383`, count/stride byte `0x929A = 0x09` | `0x9187`, `0x9073`, helper calls around `0x41E0` | High structural, physical units provisional. |
+| `0x9291-0x9299` | `TPS_load_delta_breakpoints` | Raw processed `$2017` load-delta vector used by `0xB383`, count/stride byte `0x929A = 0x09`; `$2017 = max(0, $00C9 - $0011)` | Direct: `0x9187`, `0x9073`; indirect via runtime `$2042`: `0x8508/0x8529/0x8558/0x8579/0x8652/0x8671` | High structural; cautious TPS/load-delta naming, not absolute TPS volts, MAP, or final load. |
 | `0x92CF-0x92D7` | `likely_CTS_ADC_breakpoints_B` | NTC-matching ADC vector `12,20,34,57,93,142,191,227,246`, count `0x92D8 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x2008 -> 0x2122 -> 0x203C/0x203E`; best current CTS/coolant path by consumers. | High NTC structure; exact pin/bench proof still pending. |
 | `0x92D9-0x92E1` | `likely_IAT_ADC_breakpoints_A` | Same NTC-matching ADC vector, count `0x92E2 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x200A -> 0x2124 -> 0x2038/0x203A`; X axis for `0x802B/0x8103`. | High NTC structure; best current IAT/air-temperature path by consumers. |
 | `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
@@ -564,7 +564,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x8C19` | `0x2036` RPM only | Likely WOT/fallback spark vector; in XDF `Confirmed` category. |
 | `0x802B` | likely IAT axis `0x92D9 -> 0x2038` by `0x2036` RPM | Signed `24x9` fuel correction table; XDF consumer labels display the inverted `-40..120 C` order; output `0x204A`, exact sensor pin still provisional. |
 | `0x8103` | likely IAT axis `0x92D9 -> 0x2038` by `0x2036` RPM | Paired signed `24x9` fuel correction table; XDF consumer labels display the inverted `-40..120 C` order; output `0x204D`, exact sensor pin still provisional. |
-| `0x9187` | `0x9291`-derived axis by `0x2036` RPM | Load / air-charge model factor that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
+| `0x9187` | direct `0x9291` / processed `$2017` TPS-load-delta breakpoints by `0x2036` RPM | Load / air-charge model factor that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
 | `0x85BA` | high-load transform / load by `0x2036` RPM | High-load pulse extension / duration-support candidate; output `0x2063` is doubled into the `0x00C3` path. |
 | `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase offset; stock-zero output updates `0x00BE -> 0x21C6` before OC1 schedules `TOC1 = $00B8 + $21C6`; changes timing/phase, not fuel quantity. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Idle-air / idle-bypass target candidate stored to `0x2484`, then combined with likely CTS vector `0x8970` and shaped toward `0x202B`. |
@@ -572,8 +572,25 @@ confirmed from code; the physical name can still be provisional.
 | `0x84E3` | internal `$2040` axis | Exact `1x9` fuel-pulse correction vector; output `$2049` is applied to `$00C1`. The old oversized lambda-only view was wrong because `0x84EC` and `0x84ED` are separate DHC11 labels. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
 | `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
-| `0x9073` | `0x9291`-derived axis by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
+| `0x9073` | direct `0x9291` / processed `$2017/$2018` TPS-load-delta breakpoints by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
 | `0x8E6F/0x8EC7/0x8F1C/0x8F71` | `0x00D0`-derived axis by `0x2044` | Adaptive trim dynamics cluster feeding `$24AB/$24AF/$24AC/$24AD` into the closed-loop/adaptive state machine. |
+
+### `0x9291` Direct And `$2042` Indirect Users
+
+The TPS/load-delta source chain is:
+
+```text
+$00C9 - $0011
+  -> clamp at 0
+  -> $2017
+  -> lookup against 0x9291 / count 0x929A
+  -> $2042
+```
+
+`0x9187` and `0x9073` are direct `0x9291` users. The transient/state vectors
+`0x8508`, `0x8529`, `0x8558`, `0x8579`, `0x8652`, and `0x8671` use the already
+converted runtime axis `$2042`; they should carry the same breakpoint labels,
+but they do not load the `0x9291` vector themselves.
 
 ## Interpolation / Calibration Helpers
 
@@ -627,7 +644,7 @@ their output units are independently proven.
 | likely IAT doubled `$203A` | `0x8C7C` | 17-point cold-to-hot `-40..120 C` in 10 C steps, by load |
 | likely CTS `$203C` | `0x8452`, `0x84ED`, `0x84F6`, `0x853B`, `0x8546`, `0x858B`, `0x859F`, `0x8636`, `0x863F`, `0x8648`, `0x8689`, `0x8DD9`, `0x90D6` | 9-point cold-to-hot `-40,-20,0,20,40,60,80,100,120 C` |
 | likely CTS doubled `$203E` | `0x8D15`, `0x8408`, `0x841B`, `0x843D`, `0x845B`, `0x846C`, `0x847D`, `0x848E`, `0x849F`, `0x84B0`, `0x84C1`, `0x84D2`, `0x8970`, `0x8DAE`, `0x9000`, `0x9011`, `0x9022`, `0x9033`, `0x9044`, `0x90EF` | 17-point cold-to-hot `-40..120 C` in 10 C steps |
-| `$2042` helper axis from `0x9291` | `0x8508`, `0x8529`, `0x8558`, `0x8579`, `0x8652`, `0x8671` | 9-point raw helper labels `0,3,11,22,37,54,89,132,201`; physical units still unnamed |
+| `$2042` helper axis derived from `0x9291` | `0x8508`, `0x8529`, `0x8558`, `0x8579`, `0x8652`, `0x8671` | Indirect `$2042` consumers; 9-point raw processed `$2017` TPS/load-delta labels `0,3,11,22,37,54,89,132,201` |
 
 The exact IAT/CTS channel assignment still needs pin, PCB, or live diagnostic
 proof. The active XDF exposes the CTS transient leads `0x84F6`, `0x853B`,
@@ -898,7 +915,8 @@ Confirmed behavior:
 - Table base: `0x9187`.
 - Shape: `24x9`.
 - Stride: `0x929A = 9`.
-- Axis 1: generated by `0xB383` using vector `0x9291-0x9299`.
+- Axis 1: generated by `0xB383` using the raw processed `$2017`
+  TPS/load-delta breakpoint vector `0x9291-0x9299`.
 - Axis 2: `0x2036`.
 - Direct callers found at `0x58EA` and `0x5E74`.
 
@@ -2541,7 +2559,7 @@ physical units remain qualified where the transfer path is still incomplete.
 | `0x2034` | `MAP/load_kPa_estimate_axis_8p8` | `0x41A1-0x41AD` from clamped/doubled `0x00CE`, fed by `0x00D0` and load-model/state paths | `0x8A69`, `0x8B41`, `0x85BA`, `0x87B1`, `0x888E`, `0x8A0A` | Medium-high MAP/load; XDF displays spark labels as rounded integer `0-100 kPa`, exact ADC transfer unproven. |
 | `0x2044` | `rpm_400rpm_site_axis_8p8` | Derived from RPM-like `0x00D4`, clamped to `0x1200` | `0x89C7-0x8A67` vector family, `0x9073`, `0x8E6F/0x8EC7/0x8F1C/0x8F71` | High structure; sites are `0-7200 rpm` in 400 rpm steps. Not a vehicle-speed axis. |
 | `0x2046` | `secondary_transient_state_axis_8p8` | Built in the same normalized-axis runtime block as `0x2036` and `0x2044` | `0x8A0A` | Low-medium; exact source still needs tracing. |
-| `0x9291-0x9299` | `9_point_helper_breakpoint_vector_A` | EPROM vector used by `0xB383`, count/stride byte `0x929A = 0x09` | `0x9187`, `0x9073`, helper calls around `0x41E0` | High structural, physical units provisional. |
+| `0x9291-0x9299` | `TPS_load_delta_breakpoints` | Raw processed `$2017` load-delta vector used by `0xB383`, count/stride byte `0x929A = 0x09`; `$2017 = max(0, $00C9 - $0011)` | Direct: `0x9187`, `0x9073`; indirect via runtime `$2042`: `0x8508/0x8529/0x8558/0x8579/0x8652/0x8671` | High structural; cautious TPS/load-delta naming, not absolute TPS volts, MAP, or final load. |
 | `0x92CF-0x92D7` | `likely_CTS_ADC_breakpoints_B` | NTC-matching ADC vector `12,20,34,57,93,142,191,227,246`, count `0x92D8 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x2008 -> 0x2122 -> 0x203C/0x203E`; best current CTS/coolant path by consumers. | High NTC structure; exact pin/bench proof still pending. |
 | `0x92D9-0x92E1` | `likely_IAT_ADC_breakpoints_A` | Same NTC-matching ADC vector, count `0x92E2 = 0x09`; shared output vector `0x400E` is `deg C + 40` | `0x200A -> 0x2124 -> 0x2038/0x203A`; X axis for `0x802B/0x8103`. | High NTC structure; best current IAT/air-temperature path by consumers. |
 | `0x2014` | `candidate_sensor_or_state_axis` | Producer not fully named | `0x869A` first axis | Low; keep provisional. |
@@ -2555,13 +2573,13 @@ Current confirmed consumer map:
 | `0x8C19` | `0x2036` RPM only | Likely WOT/fallback spark vector; in XDF `Confirmed` category. |
 | `0x802B` | likely IAT axis `0x92D9 -> 0x2038` by `0x2036` RPM | Signed `24x9` fuel correction table; XDF labels display firmware-inverted `-40..120 C`; output `0x204A`, exact sensor pin still provisional. |
 | `0x8103` | likely IAT axis `0x92D9 -> 0x2038` by `0x2036` RPM | Paired signed `24x9` fuel correction table; XDF labels display firmware-inverted `-40..120 C`; output `0x204D`, exact sensor pin still provisional. |
-| `0x9187` | `0x9291`-derived axis by `0x2036` RPM | Load / air-charge model factor that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
+| `0x9187` | direct `0x9291` / processed `$2017` TPS-load-delta breakpoints by `0x2036` RPM | Load / air-charge model factor that can seed `0x00D0 -> 0x00CE -> 0x2034`. |
 | `0x85BA` | high-load transform / load by `0x2036` RPM | High-load pulse extension / duration-support candidate; output `0x2063` is doubled into the `0x00C3` path. |
 | `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase offset; stock-zero output updates `0x00BE -> 0x21C6` before OC1 schedules `TOC1 = $00B8 + $21C6`; changes timing/phase, not fuel quantity. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Idle-air / idle-bypass target candidate stored to `0x2484`, later combined with likely CTS vector `0x8970` and shaped toward `0x202B`. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
 | `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
-| `0x9073` | `0x9291`-derived axis by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
+| `0x9073` | direct `0x9291` / processed `$2017/$2018` TPS-load-delta breakpoints by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
 | `0x8E6F/0x8EC7/0x8F1C/0x8F71` | `0x00D0`-derived axis by `0x2044` | Adaptive trim dynamics cluster feeding `$24AB/$24AF/$24AC/$24AD` into the closed-loop/adaptive state machine. |
 
 ## Code-Confirmed 1D Vector @ `0x89F3`
@@ -2762,7 +2780,15 @@ Axis / support bytes:
 0x929A:        09
 ```
 
-`0x929A` is loaded as the row stride/column count. The `0x9291` vector is used by helper `0xB383` to generate the first interpolation axis. `RAM 0x2036` supplies the second axis, matching the banked `0x8A69/0x8B41` maps.
+`0x929A` is loaded as the row stride/column count. In this direct `0x9187`
+user, the `0x9291` vector is used by helper `0xB383` to generate the first
+interpolation axis and `RAM 0x2036` supplies the second axis, matching the
+banked `0x8A69/0x8B41` maps.
+
+The wider TPS/load-delta path also stores the converted 8.8-style axis at
+`$2042`. Tables `0x8508`, `0x8529`, `0x8558`, `0x8579`, `0x8652`, and `0x8671`
+are therefore indirect consumers: they should use the same labels, but their
+code reads `$2042`, not `0x9291`.
 
 Direct calls to this routine were found at `0x58EA` and `0x5E74`; those callers are now the best next places to trace the returned interpolated value into strategy state.
 
@@ -3187,7 +3213,7 @@ New in `0.6`:
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`, displayed as `raw / 2` degrees.
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`, displayed as `15000000 / raw period`.
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
-- `Code-Referenced Axis Vector 1x9 @ 0x9291`.
+- `TPS / Load-Delta Breakpoints 1x9 @ 0x9291`.
 - `AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF`.
 - `AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9`.
 - `VEC_TEMP_RAW_OUTPUT_C_PLUS_40_9 @ 0x400E`.
@@ -3485,8 +3511,8 @@ What the XDF contains:
     `Peug.106Rally.org.bin` keeps these Peugeot offsets but has heavily
     altered bank values.
   - `0x879E`, `0x87A0`, `0x87A2`, and `0x87A4` as RPM-scaled period thresholds
-- `0x9291` as a code-referenced 9-byte helper axis vector, plus the paired
-  NTC-matching ADC breakpoint vectors at `0x92CF` and `0x92D9`
+- `0x9291` as the raw processed TPS/load-delta breakpoint vector, plus the
+  paired NTC-matching ADC breakpoint vectors at `0x92CF` and `0x92D9`
 
 Recommended next steps:
 
@@ -3604,7 +3630,7 @@ Candidate and code-confirmed offsets added to the XDF:
   `0x2034`, so it is probably load/air-charge model related rather than proven
   main fuel.
 - `0x929E-0x92CD`: code-confirmed period/RPM axis for runtime `0x2036`; count byte is `0x92CE = 0x18`; in the XDF `Confirmed` category.
-- `0x9291-0x9299`: code-referenced 9-byte helper breakpoint vector; count byte is `0x929A = 0x09`; in the XDF `Confirmed` category with physical units provisional.
+- `0x9291-0x9299`: raw processed `$2017` TPS/load-delta breakpoint vector; stored bytes are `00 03 0B 16 25 36 59 84 C9`; count byte is `0x929A = 0x09`; exposed in XDF as `TPS / Load-Delta Breakpoints 1x9 @ 0x9291`.
 - `0x92CF-0x92D7`: NTC-matching likely CTS ADC breakpoint vector; nearby count byte is `0x92D8 = 0x09`; paired with `0x92D9` and shared `0x400E` `deg C + 40` output vector.
 - `0x55A0-0x55B1`: raw diagnostic/event-code table indexed by `0x5982` for
   observed event IDs `0x00-0x11`.
@@ -3961,7 +3987,8 @@ The proving routine is at `0x6344-0x636A`:
 Notes:
 
 - `0x929A` is `0x09`, confirming a 9-column stride.
-- `0x9291-0x9299` is the supporting axis vector used by helper `0xB383`.
+- `0x9291-0x9299` is the raw processed `$2017` TPS/load-delta breakpoint
+  vector used by helper `0xB383`.
 - `RAM 0x2036` supplies the second interpolation axis.
 - MOD2 changes `62` bytes inside this confirmed table.
 - The old `0x91D9` view starts one byte after row 9 begins and has been removed
@@ -4056,7 +4083,7 @@ After TunerPro visual review, additional split views were added:
 - `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
 - `Load / Air-Charge Model Factor 24x9 @ 0x9187`
 - `Alternate RPM Thresholds @ 0x87A2/0x87A4`
-- `Code-Referenced Axis Vector 1x9 @ 0x9291`
+- `TPS / Load-Delta Breakpoints 1x9 @ 0x9291`
 - `AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF`
 - `AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9`
 - `VEC_TEMP_RAW_OUTPUT_C_PLUS_40_9 @ 0x400E`
