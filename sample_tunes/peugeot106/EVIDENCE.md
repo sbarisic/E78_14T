@@ -1,5 +1,12 @@
 # Marelli IAW 8P.40 Evidence Notes
 This is the consolidated source for confidence status, public-source context, sensor clues, comparison evidence, and generated analyzer snapshots. Local code-path interpretation belongs in `LOGIC.md`.
+## XDF Display Note
+XDF v0.44 uses 1-based `CATEGORYMEM category` values because TunerPro displays
+membership `N` as the Nth category definition. Category definitions still start
+at index `0x0`; the shifted memberships are intentional and keep the on-screen
+folders aligned with the subsystem names below. Version `0.44` also corrects
+the `$2040` scheduler-support table boundaries: `0x92FA` is a 1x9 table,
+`0x9303` is a separate signed subvector, and `0x8789` is a 1x9 word table.
 ## Evidence Status
 This table separates code-confirmed structures from MOD2/same-family-supported
 candidates and visual/public-index probes. The current corpus has six local
@@ -23,7 +30,7 @@ air-charge math, or injection scheduling.
 | `0x85BA-0x8631` | `24x5` | High-Load Fuel Pulse Extension / Duration Support | Yes; `$6E96` high-load path | No | Same-family comparison only | Raw; output `$2063` is doubled into the `$00C3` duration path | Fuel duration support | Do not treat as event phase or main fuel trim. |
 | `0x877E-0x8786` | `1x9` | Event Width Limit / Previous Width Vector | Yes; `$D5DF` scheduler-support path | No | Same-family comparison only | Raw byte vector indexed by `$2040`; feeds `$00BF` | Fuel output timing support | Keep raw until `$2040` physical role and scheduler units are proven. |
 | `0x8787-0x8788` | word | OC3 Period-Fit Guard Word | Yes; used around `$706C-$7074` | No | Same-family comparison only | Raw 16-bit timer ticks | Fuel output timing guard | Do not convert to ms or crank degrees until E-clock/prescaler proof. |
-| `0x8789-0x879C` | `1x10 words` | Fuel Output Edge Offset / Deadtime Candidate | Yes; `$B26E` path stores result to `$2086` | No | Same-family comparison only | Raw 16-bit timer-tick words indexed by `$2040`; adjacent `0x879D` left unexposed | Edge-offset/deadtime-style support | Not the main phase map; keep provisional until decoded. |
+| `0x8789-0x879A` | `1x9 words` | Fuel Output Edge Offset / Deadline Candidate | Yes; `$B26E` path stores result to `$2086` | No | Same-family comparison only | Raw 16-bit timer-tick words indexed by `$2040`; `0x879B` and `0x879C` are separate data | Edge-offset/deadline-style support | Not the main phase map; keep provisional until decoded. |
 | `0x87B1-0x8888` | `24x9` | Injector/Event Phase Offset | Yes; output `$00BE -> $21C6` | No | Same-family comparison only | Raw; X `$2034`, Y `$2036`; stock table is all zero | Strong fuel event phase candidate | Changes affect event timing/phase, not fuel quantity; use carefully. |
 | `0x84E3-0x84F5` | `1x19` | Lambda / Closed-Loop Fuel Correction Vector | Candidate path through `$200C -> $2040 -> $2049` | TBD | Same-family comparison only | Raw; output `$2049` applies to `$00C1` | Strongest lambda correction candidate | Scope or harness-proof `$200C` as lambda/O2. |
 | RAM `$20B9` | runtime word | Adaptive Fuel Trim | Yes; applied around `$E748` | Not ROM data | Strategy evidence | Centred at `$8000`; high byte differs from `$80` when active | Strong adaptive trim candidate | Confirm lambda behavior from logs/scope. |
@@ -52,7 +59,7 @@ air-charge math, or injection scheduling.
 | `0x9291-0x9299` | `1x9` | Code-Referenced Axis Vector A | Yes; XDF `Axes / Sensor Conversions` category | No | Same-family comparison only | Raw | High structural | Name physical units from consumers and live data. |
 | `0x92CF-0x92D7` | `1x9` | Likely CTS ADC Breakpoints B | Yes; XDF `Axes / Sensor Conversions` category | No | Same-family comparison only | NTC-matching ADC breakpoints `12..246`; count `0x92D8=9`; path `0x2008 -> 0x2122 -> $203C/$203E` | High NTC structure, medium-high CTS role | Confirm CTS role from ADC/pin/live evidence. |
 | `0x92D9-0x92E1` | `1x9` | Likely IAT ADC Breakpoints A | Yes; XDF `Axes / Sensor Conversions` category | No | Same-family comparison only | NTC-matching ADC breakpoints `12..246`; count `0x92E2=9`; path `0x200A -> 0x2124 -> $2038/$203A` | High NTC structure, medium-high IAT role | Confirm IAT role from ADC/pin/live evidence. |
-| `0x92FA-0x930C` | `1x19` | Scheduler Scaling Vector vs `$2040` | Yes; `$D5DF` scheduler-support path | No | Same-family comparison only | Signed 8-bit raw vector indexed by `$2040` | Fuel output timing support | Keep raw; no ms/crank-degree conversion until clock and prescaler are proven. |
+| `0x92FA-0x9302` | `1x9` | Fuel Output Scheduler Scale vs `$2040` | Yes; `$D5DF` scheduler-support path | No | Same-family comparison only | Unsigned raw byte; interpolated result is multiplied by `40` and stored to `$2388` | Fuel output timing support | Keep raw; no ms/crank-degree conversion until clock and prescaler are proven. |
 | `0x400E-0x4016` | `1x9` | Temperature Raw Output Vector | Yes; XDF `Axes / Sensor Conversions` category | No | Same-family comparison only | Stored `160..0`, best interpreted as `deg C + 40` for sites `120..-40 C` | High temp-transfer structure | Confirm exact CTS/IAT channel assignment from ADC/pin/live evidence. |
 | `0x55A0-0x55B1` | `1x18` | Diagnostic Event-Code Table | Yes, diagnostic queue | No | Not a tune map | Raw | High diagnostic | Decode external event meanings from callers and service protocol. |
 | `0x9131-0x9169` | `19x3` | State Descriptor Triples | Yes, descriptor subsystem | No | Not a tune map | Raw | High diagnostic/state | Decode descriptor fields and event/state semantics. |
@@ -138,7 +145,7 @@ usage and table boundaries, not proof of final physical output units.
 | Idle/state | `0x8636`, `0x863F`, `0x8648`, `0x8652`, `0x8671`, `0x8689`, `0x899A` | `$203C`, `$2042`, and `$2036` lookups feeding state/idle or closed-loop entry variables; raw byte values only. |
 | Spark transition/state | `0x87A6`, `0x87AB`, `0x8E04`, `0x8E0D`, `0x8E18` | `$2046` and capped `$2065` lookups feeding `$214F` and `$2146`; raw byte values only. |
 | Adaptive entry | `0x8E36`, `0x8E3D`, `0x8E46`, `0x8E57` | `0x8E36/0x8E3D` are heterogeneous raw threshold records; `0x8E46/0x8E57` are `$2044`-indexed raw RPM-offset vectors. |
-| Scheduler | `0x9303` | Signed helper `0xB2BA` exact base inside the broader `0x92FA` scheduler vector; output `$2048`. |
+| Scheduler | `0x9303` | Signed helper `0xB2BA` exact base immediately after the separate `0x92FA` 1x9 scheduler vector; output `$2048`. |
 
 The scalar helper bases around `0x89EE/0x89EF` remain represented by the
 existing `0x89ED-0x89F2` per-event control-scalar view because that path uses
@@ -855,7 +862,7 @@ Total differing bytes: `43767` in `954` contiguous regions.
 | `cts_idle_state_limit_8689_1x9` | `0x8689-0x8691` | `1x9` | `60..80 avg 66.7` | `60..80 avg 66.7; 0 cells +0..+0 avg +0.0` | `12..115 avg 61.2; 7 cells -68..+55 avg -7.0` | `60..80 avg 66.7; 0 cells +0..+0 avg +0.0` | `2..10 avg 3.4; 9 cells -78..-56 avg -63.2` | raw |
 | `event_width_limit_prev_width_877e_1x9` | `0x877E-0x8786` | `1x9` | `37..37 avg 37.0` | `37..37 avg 37.0; 0 cells +0..+0 avg +0.0` | `0..81 avg 28.0; 9 cells -37..+44 avg -9.0` | `37..37 avg 37.0; 0 cells +0..+0 avg +0.0` | `0..0 avg 0.0; 9 cells -37..-37 avg -37.0` | raw |
 | `oc3_period_fit_guard_8787_word` | `0x8787-0x8788` | `1x1` | `725..725 avg 725.0` | `725..725 avg 725.0; 0 cells +0..+0 avg +0.0` | `7967..7967 avg 7967.0; 1 cells +7242..+7242 avg +7242.0` | `725..725 avg 725.0; 0 cells +0..+0 avg +0.0` | `0..0 avg 0.0; 1 cells -725..-725 avg -725.0` | word16 raw |
-| `fuel_output_edge_offset_8789_1x10_words` | `0x8789-0x879C` | `1x10` | `1..1085 avg 447.1` | `1..1085 avg 447.1; 0 cells +0..+0 avg +0.0` | `7938..54530 avg 12620.4; 10 cells +6882..+54529 avg +12173.3` | `1..1085 avg 447.1; 0 cells +0..+0 avg +0.0` | `0..51280 avg 8684.2; 10 cells -1085..+50674 avg +8237.1` | word16 raw |
+| `fuel_output_edge_offset_8789_1x9_words` | `0x8789-0x879A` | `1x9` | `210..1085 avg 496.7` | `210..1085 avg 496.7; 0 cells +0..+0 avg +0.0` | `7938..7967 avg 7963.8; 9 cells +6882..+7728 avg +7467.1` | `210..1085 avg 496.7; 0 cells +0..+0 avg +0.0` | `0..51280 avg 8592.6; 9 cells -1085..+50674 avg +8095.9` | word16 raw |
 | `spark_transition_2046_a_87a6_1x5` | `0x87A6-0x87AA` | `1x5` | `1..2 avg 1.6` | `1..2 avg 1.6; 0 cells +0..+0 avg +0.0` | `0..216 avg 44.6; 5 cells -2..+215 avg +43.0` | `1..2 avg 1.6; 0 cells +0..+0 avg +0.0` | `37..37 avg 37.0; 5 cells +35..+36 avg +35.4` | raw |
 | `spark_transition_2046_b_87ab_1x6` | `0x87AB-0x87B0` | `1x6` | `2..10 avg 5.8` | `2..10 avg 5.8; 0 cells +0..+0 avg +0.0` | `0..170 avg 70.8; 6 cells -9..+165 avg +65.0` | `2..10 avg 5.8; 0 cells +0..+0 avg +0.0` | `2..213 avg 60.5; 6 cells -8..+211 avg +54.7` | raw |
 | `injector_event_phase_offset_87b1_24x9` | `0x87B1-0x8888` | `24x9` | `0..0 avg 0.0` | `0..0 avg 0.0; 0 cells +0..+0 avg +0.0` | `0..214 avg 3.0; 19 cells +2..+214 avg +33.8` | `0..0 avg 0.0; 0 cells +0..+0 avg +0.0` | `0..246 avg 9.9; 38 cells +1..+246 avg +56.0` | raw phase |
@@ -896,7 +903,7 @@ Total differing bytes: `43767` in `954` contiguous regions.
 | `rpm_axis_period_1x24` | `0x929E-0x92B5` | `1x24` | `22..239 avg 100.0` | `22..239 avg 100.0; 0 cells +0..+0 avg +0.0` | `4..253 avg 105.1; 24 cells -214..+227 avg +5.1` | `22..239 avg 100.0; 0 cells +0..+0 avg +0.0` | `75..245 avg 166.9; 24 cells -122..+220 avg +66.9` | period axis |
 | `likely_cts_adc_breakpoints_b_92cf_1x9` | `0x92CF-0x92D7` | `1x9` | `12..246 avg 113.6` | `12..246 avg 113.6; 0 cells +0..+0 avg +0.0` | `6..252 avg 82.0; 9 cells -122..+23 avg -31.6` | `12..246 avg 113.6; 0 cells +0..+0 avg +0.0` | `51..244 avg 135.1; 9 cells -195..+78 avg +21.6` | raw |
 | `likely_iat_adc_breakpoints_a_92d9_1x9` | `0x92D9-0x92E1` | `1x9` | `12..246 avg 113.6` | `12..246 avg 113.6; 0 cells +0..+0 avg +0.0` | `16..253 avg 101.7; 9 cells -230..+223 avg -11.9` | `12..246 avg 113.6; 0 cells +0..+0 avg +0.0` | `50..243 avg 128.1; 9 cells -192..+121 avg +14.6` | raw |
-| `scheduler_scaling_92fa_signed_1x19` | `0x92FA-0x930C` | `1x19` | `-2..124 avg 33.1` | `-2..124 avg 33.1; 0 cells +0..+0 avg +0.0` | `-77..64 avg 19.1; 18 cells -100..+48 avg -14.8` | `-2..124 avg 33.1; 0 cells +0..+0 avg +0.0` | `-77..94 avg 23.7; 19 cells -137..+85 avg -9.4` | signed8 |
+| `fuel_output_scheduler_scale_92fa_1x9` | `0x92FA-0x9302` | `1x9` | `39..124 avg 66.9` | `39..124 avg 66.9; 0 cells +0..+0 avg +0.0` | `16..253 avg 56.1; 9 cells -100..+158 avg -10.8` | `39..124 avg 66.9; 0 cells +0..+0 avg +0.0` | `42..243 avg 113.8; 9 cells -53..+198 avg +46.9` | raw |
 | `scheduler_2040_signed_subvector_9303_1x10` | `0x9303-0x930C` | `1x10` | `-2..16 avg 2.7` | `-2..16 avg 2.7; 0 cells +0..+0 avg +0.0` | `-77..64 avg 11.4; 9 cells -75..+48 avg +9.7` | `-2..16 avg 2.7; 0 cells +0..+0 avg +0.0` | `-77..84 avg 19.4; 10 cells -75..+85 avg +16.7` | signed8 |
 | `temp_raw_output_c_plus_40_400e_1x9` | `0x400E-0x4016` | `1x9` | `0..160 avg 80.0` | `0..160 avg 80.0; 0 cells +0..+0 avg +0.0` | `0..160 avg 80.0; 0 cells +0..+0 avg +0.0` | `0..160 avg 80.0; 0 cells +0..+0 avg +0.0` | `0..160 avg 80.0; 0 cells +0..+0 avg +0.0` | raw |
 | `control_scalars_1x6` | `0x89ED-0x89F2` | `1x6` | `0..144 avg 72.0` | `0..144 avg 72.0; 0 cells +0..+0 avg +0.0` | `17..50 avg 34.2; 6 cells -122..+44 avg -37.8` | `0..144 avg 72.0; 0 cells +0..+0 avg +0.0` | `14..17 avg 15.0; 6 cells -130..+14 avg -57.0` | raw |
@@ -2509,11 +2516,11 @@ Focused helper calls:
   - `xantia_607c` differs in `1/1` cells (`+7242..+7242`, avg `+7242.0`).
   - `peug_106rally_org` differs in `0/1` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `1/1` cells (`-725..-725`, avg `-725.0`).
-- `0x8789` `1x10` (word16 raw): Peugeot immediate word-reference hits `2`.
-  - `peugeot_mod2` differs in `0/10` cells (`+0..+0`, avg `+0.0`).
-  - `xantia_607c` differs in `10/10` cells (`+6882..+54529`, avg `+12173.3`).
-  - `peug_106rally_org` differs in `0/10` cells (`+0..+0`, avg `+0.0`).
-  - `rally13_ori` differs in `10/10` cells (`-1085..+50674`, avg `+8237.1`).
+- `0x8789` `1x9` (word16 raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`+6882..+7728`, avg `+7467.1`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-1085..+50674`, avg `+8095.9`).
 - `0x87A6` `1x5` (raw): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/5` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `5/5` cells (`-2..+215`, avg `+43.0`).
@@ -2714,11 +2721,11 @@ Focused helper calls:
   - `xantia_607c` differs in `9/9` cells (`-230..+223`, avg `-11.9`).
   - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
   - `rally13_ori` differs in `9/9` cells (`-192..+121`, avg `+14.6`).
-- `0x92FA` `1x19` (signed8): Peugeot immediate word-reference hits `2`.
-  - `peugeot_mod2` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
-  - `xantia_607c` differs in `18/19` cells (`-100..+48`, avg `-14.8`).
-  - `peug_106rally_org` differs in `0/19` cells (`+0..+0`, avg `+0.0`).
-  - `rally13_ori` differs in `19/19` cells (`-137..+85`, avg `-9.4`).
+- `0x92FA` `1x9` (raw): Peugeot immediate word-reference hits `2`.
+  - `peugeot_mod2` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `xantia_607c` differs in `9/9` cells (`-100..+158`, avg `-10.8`).
+  - `peug_106rally_org` differs in `0/9` cells (`+0..+0`, avg `+0.0`).
+  - `rally13_ori` differs in `9/9` cells (`-53..+198`, avg `+46.9`).
 - `0x9303` `1x10` (signed8): Peugeot immediate word-reference hits `1`.
   - `peugeot_mod2` differs in `0/10` cells (`+0..+0`, avg `+0.0`).
   - `xantia_607c` differs in `9/10` cells (`-75..+48`, avg `+9.7`).
@@ -2742,7 +2749,7 @@ Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x0
 Idle/actuator note: `0x888E` is best treated as an idle-air / idle-bypass target table, not fuel. It combines with likely CTS vector `0x8970` into `0x2484/0x2486`, shapes `0x202B`, and toggles external bit `0x1050.04`; actuator hardware proof remains open. DHC11 exact lookup views `0x8636/0x863F/0x8648` feed `$20A8` from `$203C`, `0x8652/0x8671` feed `$210E/$2110` from `$2042`, `0x8689` feeds `$20F6` from `$203C`, and `0x899A` feeds closed-loop entry offset `$20F5` from RPM.
 SPI frame note: `0x8010-0x8027` is a pointer frame consumed by `0x9F02-0xA001` to stream live RAM/status bytes through SPI data register `0x102A`. It is not calibration; the signed fuel correction table starts at `0x802B`.
 Fuel output timing note: `0x87B1 -> 0x00BE -> 0x21C6` is injector/event phase. OC1 schedules the interrupt at `TOC1=0x00B8+0x21C6` (`0x1016`), then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x00C3 -> 0x00BC` is pulse width / scheduled event width, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.
-Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`; DHC11 also uses exact signed subvector base `0x9303` to feed `$2048`. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x10 word vector that feeds `$2086`, an OC3 edge-offset/deadtime-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.
+Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`; DHC11 also uses exact signed subvector base `0x9303` to feed `$2048`. `0x92FA` is a separate unsigned 1x9 table whose interpolated byte is multiplied by 40 and stored to `$2388`; `0x9303` begins immediately afterward but is not part of that table. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x9 word vector that feeds `$2086`, an OC3 edge-offset/deadline-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.
 Ignition event note: `0x7CDA` and `0x7CEA` are compact event selector data tables, not executable code and not tune maps. They feed four 12-byte ignition event records at `0x2312/0x231E/0x232A/0x2336`, built from final per-event spark values `0x20E2-0x20E5`.
 Ignition output note: `0x2147 -> 0x2001 -> 0x00B6 -> 0x20E2-0x20E5 -> 0x2312/0x231E/0x232A/0x2336` is the current best software spark command/event chain. `0x89C7 -> 0x20E7 -> 0x20EB` looks like ignition phase, `0x89DA -> 0x20E8 -> 0x20ED` like width/dwell-window, `0x89F3 -> 0x20BC` is per-event retard/gain candidate, and `0x8A23-0x8A51` holds retard strategy scalars. DHC11 exact lookup views `0x87A6/0x87AB` feed spark transition output `$214F`, while `0x8E04/0x8E0D/0x8E18` feed `$2146` in spark-state decay branches. OC2/OC4 at `0x1018/0x101C` are the strongest software ignition-output candidates; exact coil driver/pin proof remains open.
 Adaptive entry note: DHC11 exact lookup views `0x8E36/0x8E3D` are mixed byte/word threshold records used by the `0xCC00` closed-loop/adaptive entry gate, while `0x8E46/0x8E57` are `$2044`-indexed RPM-offset vectors added to `$00C9` before the same entry comparison. Values are raw because the threshold fields are heterogeneous and the state-machine naming is still provisional.

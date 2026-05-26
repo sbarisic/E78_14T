@@ -16,6 +16,13 @@ Confidence labels used below:
 - Strong inference: supported by code shape and 68HC11 register usage, but physical meaning is not fully named.
 - Open: visible in code, but not understood enough to name.
 
+## XDF Category Display
+
+XDF v0.44 intentionally writes `CATEGORYMEM category` as a 1-based TunerPro
+display position, while the category definitions remain indexed from `0x0`.
+For example, a table intended for the `Fuel Warmup / Transient` category uses
+membership value `21`, which TunerPro displays as the 21st category definition.
+
 ## DHC11 Verification Pass
 
 The generated DHC11 listing at `analysis/dhc11/M27C512_original_dhc11.asm`
@@ -32,6 +39,10 @@ now agrees with the active XDF on the main runtime axis families:
 - DHC11 corrected two active XDF details: `0x8DD9` is a 1x9 `$203C` lookup
   at `0x44AD/0x44B1`, while `0x8558` is a `$2042` helper-axis lookup at
   `0xE4FF/0xE502`, not a `$203C` temperature vector.
+- XDF version `0.44` corrects `$2040` scheduler-support table boundaries:
+  `0x92FA` is a separate unsigned `1x9` table multiplied by `40` into
+  `$2388`, `0x9303` is a separate signed `1x10` subvector feeding `$2048`,
+  and `0x8789` is a `1x9` word table feeding `$2086`.
 - Seeding `0xE9A8` as an entry point exposes the afterstart state handler and
   confirms `$203E` lookups for `0x845B/0x846C`, `0x847D/0x848E`,
   `0x849F/0x84B0`, and `0x84C1/0x84D2`.
@@ -66,7 +77,7 @@ records. These are exact inspection views, not final physical-unit claims.
 | Idle/state support | `0x8636`, `0x863F`, `0x8648`, `0x8652`, `0x8671`, `0x8689`, `0x899A` | `$203C` feeds the CTS state vectors; `$2042` feeds threshold/minimum vectors; `$2036` feeds the closed-loop entry offset. Outputs include `$20A8`, `$210E`, `$2110`, `$20F6`, and `$20F5`. |
 | Spark transition/state support | `0x87A6`, `0x87AB`, `0x8E04`, `0x8E0D`, `0x8E18` | `$2046` feeds compact transition vectors stored at `$214F`; capped `$2065` feeds spark-state decay vectors that contribute to `$2146`. |
 | Adaptive entry support | `0x8E36`, `0x8E3D`, `0x8E46`, `0x8E57` | `0x8E36/0x8E3D` are mixed threshold records read by the `0xCC00` gate; `$2044` feeds `0x8E46/0x8E57`, whose result is added to `$00C9`. |
-| Scheduler support | `0x9303` | `$2040` feeds signed helper `0xB2BA`; output `$2048`. This overlaps the broader `0x92FA` vector but is a real exact code base. |
+| Scheduler support | `0x9303` | `$2040` feeds signed helper `0xB2BA`; output `$2048`. This begins immediately after the separate `0x92FA` 1x9 scheduler vector and is a real exact code base. |
 
 ## Firmware / CPU Model
 

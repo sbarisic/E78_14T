@@ -115,7 +115,7 @@ KNOWN_TABLES = [
     ("cts_idle_state_limit_8689_1x9", 0x8689, 1, 9, "raw"),
     ("event_width_limit_prev_width_877e_1x9", 0x877E, 1, 9, "raw"),
     ("oc3_period_fit_guard_8787_word", 0x8787, 1, 1, "word16 raw"),
-    ("fuel_output_edge_offset_8789_1x10_words", 0x8789, 1, 10, "word16 raw"),
+    ("fuel_output_edge_offset_8789_1x9_words", 0x8789, 1, 9, "word16 raw"),
     ("spark_transition_2046_a_87a6_1x5", 0x87A6, 1, 5, "raw"),
     ("spark_transition_2046_b_87ab_1x6", 0x87AB, 1, 6, "raw"),
     ("injector_event_phase_offset_87b1_24x9", 0x87B1, 24, 9, "raw phase"),
@@ -156,7 +156,7 @@ KNOWN_TABLES = [
     ("rpm_axis_period_1x24", 0x929E, 1, 24, "period axis"),
     ("likely_cts_adc_breakpoints_b_92cf_1x9", 0x92CF, 1, 9, "raw"),
     ("likely_iat_adc_breakpoints_a_92d9_1x9", 0x92D9, 1, 9, "raw"),
-    ("scheduler_scaling_92fa_signed_1x19", 0x92FA, 1, 19, "signed8"),
+    ("fuel_output_scheduler_scale_92fa_1x9", 0x92FA, 1, 9, "raw"),
     ("scheduler_2040_signed_subvector_9303_1x10", 0x9303, 1, 10, "signed8"),
     ("temp_raw_output_c_plus_40_400e_1x9", 0x400E, 1, 9, "raw"),
     ("control_scalars_1x6", 0x89ED, 1, 6, "raw"),
@@ -972,7 +972,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x8689, 1, 9, "raw"),
         (0x877E, 1, 9, "raw"),
         (0x8787, 1, 1, "word16 raw"),
-        (0x8789, 1, 10, "word16 raw"),
+        (0x8789, 1, 9, "word16 raw"),
         (0x87A6, 1, 5, "raw"),
         (0x87AB, 1, 6, "raw"),
         (0x87B1, 24, 9, "raw"),
@@ -1013,7 +1013,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x90EF, 1, 17, "raw"),
         (0x92CF, 1, 9, "raw"),
         (0x92D9, 1, 9, "raw"),
-        (0x92FA, 1, 19, "signed8"),
+        (0x92FA, 1, 9, "raw"),
         (0x9303, 1, 10, "signed8"),
         (0x400E, 1, 9, "raw"),
     ):
@@ -1040,7 +1040,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     print("Idle/actuator note: `0x888E` is best treated as an idle-air / idle-bypass target table, not fuel. It combines with likely CTS vector `0x8970` into `0x2484/0x2486`, shapes `0x202B`, and toggles external bit `0x1050.04`; actuator hardware proof remains open. DHC11 exact lookup views `0x8636/0x863F/0x8648` feed `$20A8` from `$203C`, `0x8652/0x8671` feed `$210E/$2110` from `$2042`, `0x8689` feeds `$20F6` from `$203C`, and `0x899A` feeds closed-loop entry offset `$20F5` from RPM.")
     print("SPI frame note: `0x8010-0x8027` is a pointer frame consumed by `0x9F02-0xA001` to stream live RAM/status bytes through SPI data register `0x102A`. It is not calibration; the signed fuel correction table starts at `0x802B`.")
     print("Fuel output timing note: `0x87B1 -> 0x00BE -> 0x21C6` is injector/event phase. OC1 schedules the interrupt at `TOC1=0x00B8+0x21C6` (`0x1016`), then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x00C3 -> 0x00BC` is pulse width / scheduled event width, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.")
-    print("Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`; DHC11 also uses exact signed subvector base `0x9303` to feed `$2048`. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x10 word vector that feeds `$2086`, an OC3 edge-offset/deadtime-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.")
+    print("Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`; DHC11 also uses exact signed subvector base `0x9303` to feed `$2048`. `0x92FA` is a separate unsigned 1x9 table whose interpolated byte is multiplied by 40 and stored to `$2388`; `0x9303` begins immediately afterward but is not part of that table. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x9 word vector that feeds `$2086`, an OC3 edge-offset/deadline-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.")
     print("Ignition event note: `0x7CDA` and `0x7CEA` are compact event selector data tables, not executable code and not tune maps. They feed four 12-byte ignition event records at `0x2312/0x231E/0x232A/0x2336`, built from final per-event spark values `0x20E2-0x20E5`.")
     print("Ignition output note: `0x2147 -> 0x2001 -> 0x00B6 -> 0x20E2-0x20E5 -> 0x2312/0x231E/0x232A/0x2336` is the current best software spark command/event chain. `0x89C7 -> 0x20E7 -> 0x20EB` looks like ignition phase, `0x89DA -> 0x20E8 -> 0x20ED` like width/dwell-window, `0x89F3 -> 0x20BC` is per-event retard/gain candidate, and `0x8A23-0x8A51` holds retard strategy scalars. DHC11 exact lookup views `0x87A6/0x87AB` feed spark transition output `$214F`, while `0x8E04/0x8E0D/0x8E18` feed `$2146` in spark-state decay branches. OC2/OC4 at `0x1018/0x101C` are the strongest software ignition-output candidates; exact coil driver/pin proof remains open.")
     print("Adaptive entry note: DHC11 exact lookup views `0x8E36/0x8E3D` are mixed byte/word threshold records used by the `0xCC00` closed-loop/adaptive entry gate, while `0x8E46/0x8E57` are `$2044`-indexed RPM-offset vectors added to `$00C9` before the same entry comparison. Values are raw because the threshold fields are heterogeneous and the state-machine naming is still provisional.")
