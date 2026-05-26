@@ -91,7 +91,8 @@ KNOWN_TABLES = [
     ("cts_afterstart_target_limit_b_84b0_1x17", 0x84B0, 1, 17, "raw"),
     ("cts_afterstart_decay_blend_a_84c1_1x17", 0x84C1, 1, 17, "raw"),
     ("cts_afterstart_decay_blend_b_84d2_1x17", 0x84D2, 1, 17, "raw"),
-    ("lambda_closed_loop_fuel_84e3_1x19", 0x84E3, 1, 19, "raw"),
+    ("internal_2040_fuel_pulse_corr_84e3_1x9", 0x84E3, 1, 9, "raw"),
+    ("scheduler_00d3_threshold_84ec_1x1", 0x84EC, 1, 1, "raw"),
     ("cts_scheduler_threshold_84ed_1x9", 0x84ED, 1, 9, "raw"),
     ("cts_transient_word_scale_a_84f6_1x9_words", 0x84F6, 1, 9, "word16 raw"),
     ("transient_2042_gain_a_8508_1x9", 0x8508, 1, 9, "raw"),
@@ -197,6 +198,7 @@ TABLE_BASES = [
     0x84C1,
     0x84D2,
     0x84E3,
+    0x84EC,
     0x84ED,
     0x84F6,
     0x8508,
@@ -948,7 +950,8 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x84B0, 1, 17, "raw"),
         (0x84C1, 1, 17, "raw"),
         (0x84D2, 1, 17, "raw"),
-        (0x84E3, 1, 19, "raw"),
+        (0x84E3, 1, 9, "raw"),
+        (0x84EC, 1, 1, "raw"),
         (0x84ED, 1, 9, "raw"),
         (0x84F6, 1, 9, "word16 raw"),
         (0x8508, 1, 9, "raw"),
@@ -1033,7 +1036,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
     print("Retired boundary-probe note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the old 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is historical evidence only, not an active XDF table.")
     print()
     print("Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed likely IAT/RPM corrections; `0x821C/0x8318` signed fuel quantity trims, guarded low-RPM `0x81F8/0x82F4` 4x9 trims, or `0x83F0` RPM-only trim feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC` is the current strongest software fuel pulse-width / event-width path. `0xE715` scale is roughly fuel += fuel * signed_trim / 256, so raw 64 is about +25%.")
-    print("Lambda/closed-loop note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` is the current strongest lambda fuel correction candidate. The `0x200C` physical O2/lambda assignment still needs scope or harness proof.")
+    print("Internal $2040 fuel-pulse note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` remains an important fuel correction path, but DHC11 labels prove `0x84E3` is a separate 1x9 vector, `0x84EC` is a standalone threshold byte, and `0x84ED` begins the CTS scheduler threshold vector. The `0x200C` physical O2/lambda assignment still needs scope or harness proof, so the XDF now uses neutral `$2040` fuel-pulse wording instead of a lambda-only name.")
     print("Closed-loop/adaptive note: `0x9000-0x912B` is now best grouped as lambda / closed-loop / adaptive calibration. `0x9000/0x9011/0x9022` are CTS-like base vectors, `0x9033/0x9044/0x90EF` are delay/timer vectors, `0x9068` is dynamic load-change correction, and `0x9073` is a ramp/target table compared with `0x243C`.")
     print("Adaptive trim note: `0x20B9` is a slow closed-loop/adaptive fuel trim centred at `0x8000`. RAM cells `0x0060/0x0069` are learned adaptive trim cells interpolated by `0xC94B`; the `0x8E6F/0x8EC7/0x8F1C/0x8F71` 17x5 cluster feeds `0x24AB/0x24AF/0x24AC/0x24AD`, which are consumed by the `0xCC00-0xD0C6` adaptive state machine.")
     print("Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x00C6` active correction terms. `0x8408-0x84D2` are CTS warmup/afterstart fuel support maps. DHC11 adds exact warmup/startup helpers `0x841B`, `0x843D`, `0x8452`, and `0x84ED`. `0x84F6`, `0x853B`, `0x8546`, `0x858B`, and `0x859F` are CTS `$203C` transient support vectors/word tables feeding `$2588`, `$206B`, `$2586`, `$2079`, and `$2054`; `0x8508`, `0x8529`, `0x8558`, and `0x8579` are `$2042` transient support vectors/word tables feeding `$206D`, `$206E/$2070`, `$207B`, and `$207E/$207C`; `0x8511` and `0x8561` are RPM transient gain vectors feeding `$206C/$207A`; `0x8596/0x85AF` feed additive transient fuel terms `0x2055/0x2057` via the `0xEB16` helper.")

@@ -569,7 +569,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase offset; stock-zero output updates `0x00BE -> 0x21C6` before OC1 schedules `TOC1 = $00B8 + $21C6`; changes timing/phase, not fuel quantity. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Idle-air / idle-bypass target candidate stored to `0x2484`, then combined with likely CTS vector `0x8970` and shaped toward `0x202B`. |
 | `0x8970` | likely CTS axis `0x203E` | Idle target/cap vector stored to `0x2486`, part of the `0x888E -> 0x202B` idle actuator path. |
-| `0x84E3` | lambda/dynamic axis `0x2040` | Likely lambda / closed-loop fuel correction vector; output `0x2049` is applied to `0x00C1`. |
+| `0x84E3` | internal `$2040` axis | Exact `1x9` fuel-pulse correction vector; output `$2049` is applied to `$00C1`. The old `1x19` lambda-only view was wrong because `0x84EC` and `0x84ED` are separate DHC11 labels. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
 | `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
 | `0x9073` | `0x9291`-derived axis by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
@@ -952,7 +952,8 @@ fuel-search priority is now expressed as confidence-tier working labels:
 | `0x83F0-0x8407` | `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0` | Code-referenced | Signed RPM-only bypass vector selected by `$E38B` in a special mode and stored to `$2084`; not a standalone VE table. |
 | `0x802E/0x80EB/0x81A8/0x80F1` | Retired signed/misaligned probes | Historical evidence only | Removed from the active XDF in v0.42 after exact `0x802B/0x8103` views superseded them. `0x80EB` is a signed boundary slice at `0x802B+0xC0`; do not tune these as VE or main fuel. |
 | `0x89ED-0x89F2` | `Per-event Correction Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes around the `0x2044` vector family. |
-| `0x84E3-0x84F5` | `Lambda / Closed-Loop Fuel Correction Vector 1x19 @ 0x84E3` | Candidate | `0x2040`-indexed likely lambda fuel correction; output `$2049` is applied to `$00C1`. `$200C` lambda/O2 identity still needs hardware proof. |
+| `0x84E3-0x84EB` | `Internal $2040 Fuel Pulse Correction Vector 1x9 @ 0x84E3` | Code-referenced | `0x2040`-indexed fuel correction; output `$2049` is applied to `$00C1`. `$200C` lambda/O2 identity remains provisional, so the active XDF uses neutral `$2040` fuel-pulse wording. |
+| `0x84EC` | `Scheduler $00D3 Threshold Byte @ 0x84EC` | Code-referenced | Standalone threshold byte compared with `$00D3` at `0x7203` before the `0x84ED` scheduler threshold path. Not part of the `0x84E3` vector. |
 | `0x888E-0x8965` | `Idle Air / Idle Bypass Target 24x9 @ 0x888E` | Code-referenced | Load/RPM idle-air target candidate; output `$2484` combines with `0x8970` and shapes `$202B`. |
 | `0x8970-0x8980` | `CTS Idle Target / Cap Vector 1x17 @ 0x8970` | Candidate | Likely CTS-axis idle vector stored to `$2486`; exact actuator hardware unproven. |
 | `0x8010-0x8027` | `SPI Output Pointer Frame 1x12 @ 0x8010` | Code-referenced non-tune | Pointer frame streamed by `0x9F02-0xA001` through SPI register `$102A`; not calibration. |
