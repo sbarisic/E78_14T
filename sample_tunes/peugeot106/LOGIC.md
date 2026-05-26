@@ -569,7 +569,7 @@ confirmed from code; the physical name can still be provisional.
 | `0x87B1` | `0x2034` MAP/load by `0x2036` RPM | Injector/event phase offset; stock-zero output updates `0x00BE -> 0x21C6` before OC1 schedules `TOC1 = $00B8 + $21C6`; changes timing/phase, not fuel quantity. |
 | `0x888E` | `0x2034` MAP/load by `0x2036` RPM | Idle-air / idle-bypass target candidate stored to `0x2484`, then combined with likely CTS vector `0x8970` and shaped toward `0x202B`. |
 | `0x8970` | likely CTS axis `0x203E` | Idle target/cap vector stored to `0x2486`, part of the `0x888E -> 0x202B` idle actuator path. |
-| `0x84E3` | internal `$2040` axis | Exact `1x9` fuel-pulse correction vector; output `$2049` is applied to `$00C1`. The old `1x19` lambda-only view was wrong because `0x84EC` and `0x84ED` are separate DHC11 labels. |
+| `0x84E3` | internal `$2040` axis | Exact `1x9` fuel-pulse correction vector; output `$2049` is applied to `$00C1`. The old oversized lambda-only view was wrong because `0x84EC` and `0x84ED` are separate DHC11 labels. |
 | `0x8A0A` | `0x2034` MAP/load by `0x2046` secondary transient/state axis | Code-confirmed `5x5` table. |
 | `0x869A` | `0x2014` candidate sensor/state axis by `0x2036` RPM | Code-confirmed `24x9` parent table stored to `0x2391`. |
 | `0x9073` | `0x9291`-derived axis by transformed `0x2044` | Closed-loop ramp/target `11x9` table compared with `$243C`.  |
