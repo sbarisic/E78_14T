@@ -2,27 +2,27 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-  <fileversion>0.36</fileversion>
+  <fileversion>0.42</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.36 adds raw likely CTS-index axes to closed-loop/adaptive vectors and keeps fuel output timing separated. Hardware pin proof remains provisional.</description>
+    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.42 reorganizes the active table tree by firmware subsystem and retires duplicate legacy/raw probe views now superseded by exact code-referenced entries. Intentional alternate scaling views remain where useful.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
     <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x10000" regionflags="0x0" name="Binary File" desc="Full 27C512 image" />
     <CATEGORY index="0x0" name="Notes" />
-    <CATEGORY index="0x1" name="68HC11 Vectors" />
-    <CATEGORY index="0x2" name="Candidate Calibration Blocks" />
-    <CATEGORY index="0x3" name="Raw Block Views" />
+    <CATEGORY index="0x1" name="Firmware Vectors" />
+    <CATEGORY index="0x2" name="Unmapped Raw Leads" />
+    <CATEGORY index="0x3" name="Reserved / Firmware Support" />
     <CATEGORY index="0x4" name="Checksum" />
-    <CATEGORY index="0x5" name="MOD2 Compared Candidates" />
-    <CATEGORY index="0x6" name="Scaled / Likely Named Views" />
-    <CATEGORY index="0x7" name="Code-Confirmed Additional Tables" />
+    <CATEGORY index="0x5" name="Air / Load Models" />
+    <CATEGORY index="0x6" name="Limiter / Mode Config" />
+    <CATEGORY index="0x7" name="Code-Confirmed Support" />
     <CATEGORY index="0x8" name="Diagnostics / Service Data" />
-    <CATEGORY index="0x9" name="Public Index Leads" />
-    <CATEGORY index="0xA" name="Confirmed" />
-    <CATEGORY index="0xB" name="Legacy" />
+    <CATEGORY index="0x9" name="Reserved" />
+    <CATEGORY index="0xA" name="Axes / Sensor Conversions" />
+    <CATEGORY index="0xB" name="Reserved / Retired" />
     <CATEGORY index="0xC" name="Fuel Output / Timing" />
-    <CATEGORY index="0xD" name="Lambda / Closed Loop" />
+    <CATEGORY index="0xD" name="Lambda / Closed Loop / Adaptive" />
     <CATEGORY index="0xE" name="Idle / Actuator" />
     <CATEGORY index="0xF" name="SPI / Status Frame" />
     <CATEGORY index="0x10" name="Ignition Main" />
@@ -31,8 +31,8 @@
     <CATEGORY index="0x13" name="Ignition Output / Retard" />
     <CATEGORY index="0x14" name="Fuel Warmup / Transient" />
     <CATEGORY index="0x15" name="Fuel Quantity / Trim" />
-    <CATEGORY index="0x16" name="Fuel Temperature / RPM Corrections" />
-    <CATEGORY index="0x17" name="Developer / Raw Views" />
+    <CATEGORY index="0x16" name="Fuel IAT/RPM Corrections" />
+    <CATEGORY index="0x17" name="Fuel Raw Baseline Views" />
   </XDFHEADER>
 
   <XDFCONSTANT uniqueid="0x100">
@@ -174,7 +174,7 @@
   <XDFCONSTANT uniqueid="0x112">
     <title>MOD2 Changed 16-bit Scalar A @ 0x879E</title>
     <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EB to 0x00FA. Code references were observed around 0x6F2A.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="6" />
     <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" />
     <units>raw</units>
     <outputtype>3</outputtype>
@@ -189,7 +189,7 @@
   <XDFCONSTANT uniqueid="0x113">
     <title>MOD2 Changed 16-bit Scalar B @ 0x87A0</title>
     <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EF to 0xFFFF. Code references were observed around 0x6F14.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="6" />
     <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" />
     <units>raw</units>
     <outputtype>3</outputtype>
@@ -204,7 +204,7 @@
   <XDFCONSTANT uniqueid="0x114">
     <title>MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18</title>
     <description>Single byte changed by MOD2 from 0x38 to 0x3C. Disassembly of the 0x48EE routine shows this is row 23 column 8 of the 24x9 bank at 0x8B41, not a separate adjacent vector.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="16" />
     <EMBEDDEDDATA mmedaddress="0x8C18" mmedelementsizebits="8" />
     <units>raw</units>
     <outputtype>1</outputtype>
@@ -219,7 +219,7 @@
   <XDFCONSTANT uniqueid="0x115">
     <title>Code-Confirmed Signed Offset Byte @ 0x8A68</title>
     <description>The routine at 0x48EE sign-extends this byte and adds it to the 0x8A69/0x8B41 interpolated result when flag A2 bit 0x02 is set. Stock and MOD2 both store 0x00 here.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="19" />
     <EMBEDDEDDATA mmedaddress="0x8A68" mmedelementsizebits="8" />
     <units>raw</units>
     <outputtype>1</outputtype>
@@ -297,7 +297,7 @@
   </XDFCONSTANT>
 
   <XDFTABLE uniqueid="0x200" flags="0x30">
-    <title>Raw 16x16 @ 0x5100</title>
+    <title>Unmapped Raw Lead 16x16 @ 0x5100</title>
     <description>Structured region with lower entropy than surrounding code. Candidate constants or 1D/2D calibration bytes.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
@@ -365,7 +365,7 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x201" flags="0x30">
-    <title>Raw 16x16 @ 0x5200</title>
+    <title>Unmapped Raw Lead 16x16 @ 0x5200</title>
     <description>Continuation of 0x5100 candidate region.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
@@ -400,7 +400,7 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x202" flags="0x30">
-    <title>Raw 16x16 @ 0x5300</title>
+    <title>Unmapped Raw Lead 16x16 @ 0x5300</title>
     <description>Continuation of 0x5100 candidate region.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
@@ -428,99 +428,22 @@
     </XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x203" flags="0x30">
-    <title>Raw 16x16 @ 0x8200</title>
-    <description>Candidate table region detected by lower local entropy. Good place to start manual map hunting.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8200" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x204" flags="0x30">
-    <title>Raw 16x16 @ 0x8300</title>
-    <description>Strong candidate map or axis area. One of the lowest-entropy structured windows in the file.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8300" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x205" flags="0x30">
-    <title>Raw 16x16 @ 0x8600</title>
-    <description>Structured block inside the densest candidate calibration cluster.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8600" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x206" flags="0x30">
-    <title>Raw 16x16 @ 0x8700</title>
-    <description>Very low-entropy candidate table region. May contain small correction tables or axes.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8700" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x207" flags="0x30">
-    <title>Raw 16x16 @ 0x8800</title>
-    <description>Contains smooth low-valued gradients and repeated values. High-priority manual inspection area.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8800" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x208" flags="0x30">
-    <title>Raw 16x16 @ 0x8E00</title>
-    <description>Another strong candidate map/correction area with repeated structured values.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E00" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x209" flags="0x30">
-    <title>Developer Raw Closed-Loop Block 16x16 @ 0x9000</title>
-    <description>Continuation of the 0x8E00 structured cluster.</description>
-    <CATEGORYMEM index="0" category="23" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9000" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
+
+
+
+
+
+
+
 
   <XDFTABLE uniqueid="0x20A" flags="0x30">
-    <title>Raw 16x16 @ 0xB500</title>
+    <title>Unmapped Raw Lead 16x16 @ 0xB500</title>
     <description>Late-file structured candidate block. May be correction constants or small maps.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
@@ -532,267 +455,21 @@
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0xB500" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x20B" flags="0x30">
-    <title>Raw 16x16 @ 0xFF00</title>
-    <description>Tail block that contains sparse data plus interrupt/reset vectors. Useful for sanity-checking end-of-ROM content.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="01" /><LABEL index="2" value="02" /><LABEL index="3" value="03" /><LABEL index="4" value="04" /><LABEL index="5" value="05" /><LABEL index="6" value="06" /><LABEL index="7" value="07" /><LABEL index="8" value="08" /><LABEL index="9" value="09" /><LABEL index="10" value="0A" /><LABEL index="11" value="0B" /><LABEL index="12" value="0C" /><LABEL index="13" value="0D" /><LABEL index="14" value="0E" /><LABEL index="15" value="0F" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>16</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="00" /><LABEL index="1" value="10" /><LABEL index="2" value="20" /><LABEL index="3" value="30" /><LABEL index="4" value="40" /><LABEL index="5" value="50" /><LABEL index="6" value="60" /><LABEL index="7" value="70" /><LABEL index="8" value="80" /><LABEL index="9" value="90" /><LABEL index="10" value="A0" /><LABEL index="11" value="B0" /><LABEL index="12" value="C0" /><LABEL index="13" value="D0" /><LABEL index="14" value="E0" /><LABEL index="15" value="F0" />
-      <MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0xFF00" mmedelementsizebits="8" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x20E" flags="0x30">
-    <title>Candidate Flag/Scalar Block 16x5 @ 0x8880</title>
-    <description>Mixed block containing zeros, a short scalar cluster, and a long run of 0x01 values before the triangular structure begins. Useful for inspecting setup bytes separately from the packed table at 0x88CA.</description>
-    <CATEGORYMEM index="0" category="3" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>16</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" />
-      <LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>5</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x8880" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x210" flags="0x30">
-    <title>Historical Slice Inside 0x888E Parent 17x9 @ 0x88CD</title>
-    <description>Historical visual slice retained only for screenshot continuity. This is not a standalone candidate map: later disassembly confirms the parent structure is the 24x9 B2D6 table at 0x888E, used around 0xBE74 with axes RAM 0x2034 and RAM 0x2036. Prefer the code-confirmed 24x9 @ 0x888E entry for analysis/editing.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>9</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>17</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" />
-      <LABEL index="15" value="15" /><LABEL index="16" value="16" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x88CD" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x212" flags="0x30">
-    <title>MOD2 Compared Scalar Block 1x8 @ 0x879C</title>
-    <description>Eight-byte block around the changed 16-bit scalar pair. MOD2 changes bytes at 0x879E-0x87A1 from 07 EB 07 EF to 00 FA FF FF. Treat as raw until the referenced routine is fully decoded.</description>
-    <CATEGORYMEM index="0" category="5" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>8</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x879C" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x214" flags="0x30">
-    <title>Legacy Raw 0x8A68 Banked Block View 48x9</title>
-    <description>Legacy raw view retained for context. Disassembly of the 0x48EE routine shows 0x8A68 is a separate signed offset byte, followed by two code-selected 24x9 banks at 0x8A69 and 0x8B41.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>9</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>48</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" />
-      <LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" />
-      <LABEL index="18" value="18" /><LABEL index="19" value="19" /><LABEL index="20" value="20" />
-      <LABEL index="21" value="21" /><LABEL index="22" value="22" /><LABEL index="23" value="23" />
-      <LABEL index="24" value="24" /><LABEL index="25" value="25" /><LABEL index="26" value="26" />
-      <LABEL index="27" value="27" /><LABEL index="28" value="28" /><LABEL index="29" value="29" />
-      <LABEL index="30" value="30" /><LABEL index="31" value="31" /><LABEL index="32" value="32" />
-      <LABEL index="33" value="33" /><LABEL index="34" value="34" /><LABEL index="35" value="35" />
-      <LABEL index="36" value="36" /><LABEL index="37" value="37" /><LABEL index="38" value="38" />
-      <LABEL index="39" value="39" /><LABEL index="40" value="40" /><LABEL index="41" value="41" />
-      <LABEL index="42" value="42" /><LABEL index="43" value="43" /><LABEL index="44" value="44" />
-      <LABEL index="45" value="45" /><LABEL index="46" value="46" /><LABEL index="47" value="47" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x8A68" mmedelementsizebits="8" mmedrowcount="48" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x215" flags="0x30">
-    <title>Legacy Raw 1x32 View @ 0x8C18</title>
-    <description>Legacy raw view retained for context. Disassembly now shows 0x8C18 is the last cell of the 24x9 bank at 0x8B41, not the start of a separate adjacent vector.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>32</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" />
-      <LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" />
-      <LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" />
-      <LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" />
-      <LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" />
-      <LABEL index="18" value="18" /><LABEL index="19" value="19" /><LABEL index="20" value="20" />
-      <LABEL index="21" value="21" /><LABEL index="22" value="22" /><LABEL index="23" value="23" />
-      <LABEL index="24" value="24" /><LABEL index="25" value="25" /><LABEL index="26" value="26" />
-      <LABEL index="27" value="27" /><LABEL index="28" value="28" /><LABEL index="29" value="29" />
-      <LABEL index="30" value="30" /><LABEL index="31" value="31" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="0" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x8C18" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="32" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
-      <max>255.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x217" flags="0x30">
-    <title>Legacy Misaligned 24-Row Slice Inside 0x802B @ 0x802E</title>
-    <description>Legacy unsigned boundary view retained only for comparison. Targeted disassembly points to signed table base 0x802B; this 0x802E view starts three bytes into that table and must not be treated as VE or main fuel.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="128" /><LABEL index="2" value="256" /><LABEL index="3" value="384" /><LABEL index="4" value="512" /><LABEL index="5" value="640" /><LABEL index="6" value="768" /><LABEL index="7" value="896" /><LABEL index="8" value="1024" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" />
-      <LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" />
-      <LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedaddress="0x802E" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x218" flags="0x30">
-    <title>Legacy Signed Alignment Probe 25x9 @ 0x80F1</title>
-    <description>Legacy signed alignment probe retained for comparison after the 0x802B/0x8103 signed table discovery. Not a standalone physical table; axes remain raw until a code consumer proves this view.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>25</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" />
-      <LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" />
-      <LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" /><LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" />
-      <LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" /><LABEL index="19" value="19" /><LABEL index="20" value="20" /><LABEL index="21" value="21" /><LABEL index="22" value="22" /><LABEL index="23" value="23" /><LABEL index="24" value="24" />
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x80F1" mmedelementsizebits="8" mmedrowcount="25" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype>
-      <MATH equation="X"><VAR id="X" /></MATH>
-    </XDFAXIS>
-  </XDFTABLE>
+
+
+
+
+
+
+
+
 
   <XDFTABLE uniqueid="0x21B" flags="0x30">
     <title>Per-event Correction Scalars 1x6 @ 0x89ED</title>
@@ -865,7 +542,7 @@
   <XDFTABLE uniqueid="0x220" flags="0x30">
     <title>Code-Confirmed 1D Vector 1x19 @ 0x8A27</title>
     <description>The routine around 0xBA5D loads D from RAM 0x2044, loads Y with 0x8A27, and calls the 1D interpolation helper at 0xB2AB. MOD2 does not change this vector.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>19</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" /><LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8A27" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -874,7 +551,7 @@
   <XDFTABLE uniqueid="0x221" flags="0x30">
     <title>Code-Confirmed 1D Vector 1x19 @ 0x8A3A</title>
     <description>The routine around 0xBA84 loads D from RAM 0x2044, loads Y with 0x8A3A, and calls the 1D interpolation helper at 0xB2AB. Bytes 0x8A4D-0x8A51 are exposed separately because direct code references treat them as scalars/sentinels.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>19</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><LABEL index="9" value="9" /><LABEL index="10" value="10" /><LABEL index="11" value="11" /><LABEL index="12" value="12" /><LABEL index="13" value="13" /><LABEL index="14" value="14" /><LABEL index="15" value="15" /><LABEL index="16" value="16" /><LABEL index="17" value="17" /><LABEL index="18" value="18" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8A3A" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="19" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -901,7 +578,7 @@
   <XDFTABLE uniqueid="0x224" flags="0x30">
     <title>Code-Referenced Scalar Block 1x3 @ 0x8A65</title>
     <description>Scalar bytes between the 0x8A52 vector and the signed offset byte at 0x8A68. Direct references include 0x8A65, 0x8A66, and 0x8A67.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>3</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="8A65" /><LABEL index="1" value="8A66" /><LABEL index="2" value="8A67" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8A65" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="3" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -919,7 +596,7 @@
   <XDFTABLE uniqueid="0x226" flags="0x30">
     <title>Code-Confirmed 2D Table 5x5 @ 0x8A0A</title>
     <description>The routine around 0xBA35 builds a B2D6 descriptor using RAM 0x2034 and RAM 0x2046, sets base 0x8A0A, uses stride 5, and stores the interpolated result at RAM 0x20BB. The following bytes 0x8A23-0x8A27 appear to act as scalars/sentinel data before the 0x8A27 vector.</description>
-    <CATEGORYMEM index="0" category="5" />
+    <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8A0A" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -962,11 +639,11 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x22B" flags="0x30">
-    <title>Likely CTS Axis B Breakpoints 1x9 @ 0x92CF</title>
-    <description>Raw breakpoints for the 0x2008 to 0x2122 to 0x203C/0x203E path. Best current role is CTS/coolant; confirm by pin or bench.</description>
+    <title>AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF</title>
+    <description>NTC-matching 8-bit ADC breakpoint vector for the 0x2008 -> 0x2122 -> 0x203C/0x203E path. Stored ADC breakpoints remain raw counts; X labels show the pre-inversion hot-to-cold 0x400E transfer sites 120 to -40 deg C. Consumer maps indexed by $203C/$203E use the inverted cold-to-hot order. Best current role is CTS/coolant, but pin/live proof is still pending.</description>
     <CATEGORYMEM index="0" category="10" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="120" /><LABEL index="1" value="100" /><LABEL index="2" value="80" /><LABEL index="3" value="60" /><LABEL index="4" value="40" /><LABEL index="5" value="20" /><LABEL index="6" value="0" /><LABEL index="7" value="-20" /><LABEL index="8" value="-40" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="ADC" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x92CF" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
@@ -982,7 +659,7 @@
   <XDFTABLE uniqueid="0x22D" flags="0x30">
     <title>Load / Air-Charge Model Factor 24x9 @ 0x9187</title>
     <description>Medium-high structural confidence view for the code-confirmed 0x9187 24x9 lookup. The routine at 0x6344 builds a B2D6 descriptor at RAM 0x218D, derives one axis through helper 0xB383 using vector 0x9291 and count/stride byte 0x929A=9, loads the second axis from RPM-like RAM 0x2036, sets base 0x9187, and returns the interpolated byte. Known callers store the result at RAM 0x210F and RAM 0x00D0; one path then stores 0x00CE = 0x00D0 left-shifted by 2, feeding the 0x2034 load/MAP-like axis used by the spark maps. Values display with X / 230. Best current role is upstream load/air-charge modelling into 0x00D0/0x00CE/0x2034; not main fuel.</description>
-    <CATEGORYMEM index="0" category="6" />
+    <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9187" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>2</decimalpl><min>0.000000</min><max>2.000000</max><outputtype>1</outputtype><MATH equation="X / 230"><VAR id="X" /></MATH></XDFAXIS>
@@ -1080,18 +757,18 @@
 
   <XDFTABLE uniqueid="0x239" flags="0x30">
     <title>Signed Fuel IAT/RPM Correction A 24x9 @ 0x802B</title>
-    <description>Signed likely IAT/RPM fuel correction. X uses raw 0x92D9 labels into RAM 0x2038; Y uses 0x929E RPM labels. Output 0x204A feeds 0x204B/0x00C1.</description>
+    <description>Signed likely IAT/RPM fuel correction. X uses runtime $2038 from the 0x200A -> 0x2124 -> 0x92D9 path; labels display the firmware-inverted cold-to-hot consumer order. Y uses 0x929E RPM labels. Cell values remain signed raw counts. Output 0x204A feeds 0x204B/0x00C1.</description>
     <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="12" /><LABEL index="1" value="20" /><LABEL index="2" value="34" /><LABEL index="3" value="57" /><LABEL index="4" value="93" /><LABEL index="5" value="142" /><LABEL index="6" value="191" /><LABEL index="7" value="227" /><LABEL index="8" value="246" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x802B" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x23A" flags="0x30">
     <title>Signed Fuel IAT/RPM Correction B 24x9 @ 0x8103</title>
-    <description>Paired signed likely IAT/RPM fuel correction. X uses raw 0x92D9 labels into RAM 0x2038; Y uses 0x929E RPM labels. Output 0x204D feeds 0x204E blend path.</description>
+    <description>Paired signed likely IAT/RPM fuel correction. X uses runtime $2038 from the 0x200A -> 0x2124 -> 0x92D9 path; labels display the firmware-inverted cold-to-hot consumer order. Y uses 0x929E RPM labels. Cell values remain signed raw counts. Output 0x204D feeds 0x204E blend path.</description>
     <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="12" /><LABEL index="1" value="20" /><LABEL index="2" value="34" /><LABEL index="3" value="57" /><LABEL index="4" value="93" /><LABEL index="5" value="142" /><LABEL index="6" value="191" /><LABEL index="7" value="227" /><LABEL index="8" value="246" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8103" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1125,57 +802,43 @@
 
   <XDFTABLE uniqueid="0x23B" flags="0x30">
     <title>Signed Spark IAT/Load Correction A 17x9 @ 0x8C7C</title>
-    <description>Signed spark correction by load and likely IAT axis. Output feeds 0x214C and is added into spark accumulator 0x2147.</description>
+    <description>Signed spark correction by load and likely IAT axis. Y labels display the doubled $203A IAT consumer axis in firmware-inverted cold-to-hot order; cell values remain signed raw. Degree display is provided by a separate raw/2 view. Output feeds 0x214C and is added into spark accumulator 0x2147.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8C7C" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x23C" flags="0x30">
     <title>Signed Spark CTS/Load Correction B 17x9 @ 0x8D15</title>
-    <description>Signed spark correction by load and likely CTS axis. Output feeds 0x214C and is added into spark accumulator 0x2147.</description>
+    <description>Signed spark correction by load and likely CTS axis. Y labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain signed raw. Degree display is provided by a separate raw/2 view. Output feeds 0x214C and is added into spark accumulator 0x2147.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8D15" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
 
-  <XDFTABLE uniqueid="0x23D" flags="0x30">
-    <title>Legacy Signed Boundary Slice 21x9 @ 0x80EB</title>
-    <description>Legacy signed slice only. Starts inside 0x802B and crosses into 0x8103; not standalone fuel or VE.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="slice c0" /><LABEL index="1" value="slice c1" /><LABEL index="2" value="slice c2" /><LABEL index="3" value="slice c3" /><LABEL index="4" value="slice c4" /><LABEL index="5" value="slice c5" /><LABEL index="6" value="slice c6" /><LABEL index="7" value="slice c7" /><LABEL index="8" value="slice c8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>21</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="slice r0" /><LABEL index="1" value="slice r1" /><LABEL index="2" value="slice r2" /><LABEL index="3" value="slice r3" /><LABEL index="4" value="slice r4" /><LABEL index="5" value="slice r5" /><LABEL index="6" value="slice r6" /><LABEL index="7" value="slice r7" /><LABEL index="8" value="slice r8" /><LABEL index="9" value="slice r9" /><LABEL index="10" value="slice r10" /><LABEL index="11" value="slice r11" /><LABEL index="12" value="slice r12" /><LABEL index="13" value="slice r13" /><LABEL index="14" value="slice r14" /><LABEL index="15" value="slice r15" /><LABEL index="16" value="slice r16" /><LABEL index="17" value="slice r17" /><LABEL index="18" value="slice r18" /><LABEL index="19" value="slice r19" /><LABEL index="20" value="slice r20" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x80EB" mmedtypeflags="0x01" mmedelementsizebits="8" mmedrowcount="21" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x23E" flags="0x30">
-    <title>Legacy Public-Index Alignment Probe Tail 5x9 @ 0x81A8</title>
-    <description>Legacy tail probe retained for comparison after demoting the 0x802E visual lead. It may be adjacent data or a small correction block; not a standalone fuel table.</description>
-    <CATEGORYMEM index="0" category="11" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="tail0" /><LABEL index="1" value="tail1" /><LABEL index="2" value="tail2" /><LABEL index="3" value="tail3" /><LABEL index="4" value="tail4" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x81A8" mmedelementsizebits="8" mmedrowcount="5" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
+
+
 
   <XDFTABLE uniqueid="0x242" flags="0x30">
-    <title>Likely IAT Axis A Breakpoints 1x9 @ 0x92D9</title>
-    <description>Raw breakpoints for the 0x200A to 0x2124 to 0x2038/0x203A path. Best current role is IAT/air temperature; confirm by pin or bench.</description>
+    <title>AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9</title>
+    <description>NTC-matching 8-bit ADC breakpoint vector for the 0x200A -> 0x2124 -> 0x2038/0x203A path. Stored ADC breakpoints remain raw counts; X labels show the pre-inversion hot-to-cold 0x400E transfer sites 120 to -40 deg C. Consumer maps indexed by $2038/$203A use the inverted cold-to-hot order. Best current role is IAT/air temperature, but pin/live proof is still pending.</description>
     <CATEGORYMEM index="0" category="10" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="120" /><LABEL index="1" value="100" /><LABEL index="2" value="80" /><LABEL index="3" value="60" /><LABEL index="4" value="40" /><LABEL index="5" value="20" /><LABEL index="6" value="0" /><LABEL index="7" value="-20" /><LABEL index="8" value="-40" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="ADC" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x92D9" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x243" flags="0x30">
-    <title>Sensor Transfer Vector 1x9 @ 0x400E</title>
-    <description>Transfer/display vector used while building both temperature-like axes. Raw labels only; physical units unconfirmed.</description>
+    <title>VEC_TEMP_RAW_OUTPUT_C_PLUS_40_9 @ 0x400E</title>
+    <description>Shared transfer/output vector used by both NTC/ADC temperature producers. Stored bytes are 160,140,120,100,80,60,40,20,0, matching a C+40 representation of 120,100,80,60,40,20,0,-20,-40 deg C. XDF displays deg C with X-40; the CTS/IAT channel assignment remains provisional until pin/live proof.</description>
     <CATEGORYMEM index="0" category="10" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x400E" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="deg C" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x400E" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-40.000000</min><max>120.000000</max><outputtype>1</outputtype><MATH equation="X - 40"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x244" flags="0x30">
@@ -1206,19 +869,19 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x247" flags="0x30">
-    <title>CTS Spark Decay / Transition Vector 1x9 @ 0x8DAE</title>
-    <description>Likely CTS-axis spark decay or transition correction vector stored near 0x2134. Exact mode role provisional.</description>
+    <title>CTS Spark Decay / Transition Vector 1x17 @ 0x8DAE</title>
+    <description>CTS-indexed spark decay or transition correction vector stored near 0x2134. X labels use the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order. Cell values remain raw.</description>
     <CATEGORYMEM index="0" category="18" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="12" /><LABEL index="1" value="20" /><LABEL index="2" value="34" /><LABEL index="3" value="57" /><LABEL index="4" value="93" /><LABEL index="5" value="142" /><LABEL index="6" value="191" /><LABEL index="7" value="227" /><LABEL index="8" value="246" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8DAE" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8DAE" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x24B" flags="0x30">
     <title>CTS Spark Mode Delay / Counter Vector 1x9 @ 0x8DD9</title>
-    <description>Likely CTS-axis spark mode delay/counter vector. Spark strategy use is code-supported; exact mode name provisional.</description>
+    <description>CTS-indexed spark mode delay or counter vector. DHC11 shows the only direct lookup loading $203C at 0x44B1 before calling helper 0xB2AB with base 0x8DD9, so X labels use the non-doubled CTS consumer axis in firmware-inverted cold-to-hot order. Cell values remain raw.</description>
     <CATEGORYMEM index="0" category="18" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="12" /><LABEL index="1" value="20" /><LABEL index="2" value="34" /><LABEL index="3" value="57" /><LABEL index="4" value="93" /><LABEL index="5" value="142" /><LABEL index="6" value="191" /><LABEL index="7" value="227" /><LABEL index="8" value="246" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8DD9" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1234,9 +897,9 @@
 
   <XDFTABLE uniqueid="0x249" flags="0x30">
     <title>CTS Idle Target / Cap Vector 1x17 @ 0x8970</title>
-    <description>Likely CTS-axis idle target/cap vector. Indexed by 0x203E and stored to 0x2486, then shapes 0x202B idle actuator target.</description>
+    <description>Likely CTS-indexed idle target/cap vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="14" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8970" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1360,81 +1023,81 @@
 
   <XDFTABLE uniqueid="0x258" flags="0x30">
     <title>CTS Warmup Fuel Correction 1x17 @ 0x8408</title>
-    <description>CTS-indexed warmup fuel correction feeding 0x2085.</description>
+    <description>CTS-indexed warmup fuel correction vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8408" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x259" flags="0x30">
     <title>CTS Warmup / Afterstart Initial Correction A 1x17 @ 0x845B</title>
-    <description>CTS-indexed warmup/afterstart initial correction feeding 0x00C5.</description>
+    <description>CTS-indexed warmup/afterstart initial correction vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x845B" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25A" flags="0x30">
     <title>CTS Warmup / Afterstart Initial Correction B 1x17 @ 0x846C</title>
-    <description>Alternate CTS-indexed warmup/afterstart initial correction feeding 0x00C5.</description>
+    <description>Alternate CTS-indexed warmup/afterstart initial correction vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x846C" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25B" flags="0x30">
     <title>CTS Afterstart Timer A 1x17 @ 0x847D</title>
-    <description>CTS-indexed afterstart timer/count vector feeding 0x2060.</description>
+    <description>CTS-indexed afterstart timer vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw count/timer.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x847D" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25C" flags="0x30">
     <title>CTS Afterstart Timer B 1x17 @ 0x848E</title>
-    <description>Alternate CTS-indexed afterstart timer/count vector feeding 0x2060.</description>
+    <description>Alternate CTS-indexed afterstart timer vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw count/timer.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x848E" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25D" flags="0x30">
     <title>CTS Afterstart Target / Limit A 1x17 @ 0x849F</title>
-    <description>CTS-indexed afterstart target/limit vector.</description>
+    <description>CTS-indexed afterstart target/limit vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x849F" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25E" flags="0x30">
     <title>CTS Afterstart Target / Limit B 1x17 @ 0x84B0</title>
-    <description>Alternate CTS-indexed afterstart target/limit vector.</description>
+    <description>Alternate CTS-indexed afterstart target/limit vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84B0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x25F" flags="0x30">
     <title>CTS Afterstart Decay / Blend Target A 1x17 @ 0x84C1</title>
-    <description>CTS-indexed afterstart decay/blend target vector.</description>
+    <description>CTS-indexed afterstart decay/blend target vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84C1" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x260" flags="0x30">
     <title>CTS Afterstart Decay / Blend Target B 1x17 @ 0x84D2</title>
-    <description>Alternate CTS-indexed afterstart decay/blend target vector.</description>
+    <description>Alternate CTS-indexed afterstart decay/blend target vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="20" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="t0" /><LABEL index="1" value="t1" /><LABEL index="2" value="t2" /><LABEL index="3" value="t3" /><LABEL index="4" value="t4" /><LABEL index="5" value="t5" /><LABEL index="6" value="t6" /><LABEL index="7" value="t7" /><LABEL index="8" value="t8" /><LABEL index="9" value="t9" /><LABEL index="10" value="t10" /><LABEL index="11" value="t11" /><LABEL index="12" value="t12" /><LABEL index="13" value="t13" /><LABEL index="14" value="t14" /><LABEL index="15" value="t15" /><LABEL index="16" value="t16" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84D2" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1459,45 +1122,45 @@
 
   <XDFTABLE uniqueid="0x263" flags="0x30">
     <title>Closed-Loop Base Vector A 1x17 @ 0x9000</title>
-    <description>Likely CTS-indexed closed-loop base vector feeding 0x2093. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Likely CTS-indexed closed-loop base vector feeding 0x2093. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9000" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x264" flags="0x30">
     <title>Closed-Loop Base Vector B 1x17 @ 0x9011</title>
-    <description>Alternate likely CTS-indexed closed-loop base vector. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Alternate likely CTS-indexed closed-loop base vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9011" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x265" flags="0x30">
     <title>Closed-Loop Base Vector C 1x17 @ 0x9022</title>
-    <description>Alternate likely CTS-indexed closed-loop base vector. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Alternate likely CTS-indexed closed-loop base vector. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9022" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x266" flags="0x30">
     <title>Closed-Loop Initial Delay / Count Vector 1x17 @ 0x9033</title>
-    <description>Likely CTS-indexed closed-loop delay/count vector feeding 0x2096. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Likely CTS-indexed closed-loop delay/count vector feeding 0x2096. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw count/timer.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9033" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x267" flags="0x30">
     <title>Closed-Loop Timer / Reload Vector 1x17 @ 0x9044</title>
-    <description>Likely CTS-indexed timer/reload vector feeding 0x244C/0x245E. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Likely CTS-indexed timer/reload vector feeding 0x244C/0x245E. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw count/timer.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x9044" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1513,18 +1176,18 @@
 
   <XDFTABLE uniqueid="0x269" flags="0x30">
     <title>Closed-Loop Ramp Temperature Scale Vector 1x9 @ 0x90D6</title>
-    <description>Temperature-indexed scale/cap for the 0x9073 ramp target output.</description>
+    <description>Temperature-indexed scale/cap for the 0x9073 ramp target output. X labels display the $203C CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="12" /><LABEL index="1" value="20" /><LABEL index="2" value="34" /><LABEL index="3" value="57" /><LABEL index="4" value="93" /><LABEL index="5" value="142" /><LABEL index="6" value="191" /><LABEL index="7" value="227" /><LABEL index="8" value="246" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x90D6" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x26A" flags="0x30">
     <title>Closed-Loop State Delay Vector 1x17 @ 0x90EF</title>
-    <description>Likely CTS-indexed closed-loop state delay/timer vector feeding 0x243F. X labels are raw 0..1024 index values, not degrees.</description>
+    <description>Likely CTS-indexed closed-loop state delay/timer vector feeding 0x243F. X labels display the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order; cell values remain raw count/timer.</description>
     <CATEGORYMEM index="0" category="13" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="64" /><LABEL index="2" value="128" /><LABEL index="3" value="192" /><LABEL index="4" value="256" /><LABEL index="5" value="320" /><LABEL index="6" value="384" /><LABEL index="7" value="448" /><LABEL index="8" value="512" /><LABEL index="9" value="576" /><LABEL index="10" value="640" /><LABEL index="11" value="704" /><LABEL index="12" value="768" /><LABEL index="13" value="832" /><LABEL index="14" value="896" /><LABEL index="15" value="960" /><LABEL index="16" value="1024" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x90EF" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
@@ -1580,5 +1243,321 @@
   </XDFTABLE>
 
 
+
+
+  <XDFTABLE uniqueid="0x270" flags="0x30">
+    <title>Spark IAT/Load Correction A Deg 17x9 @ 0x8C7C</title>
+    <description>Convenience degree display for the signed raw 0x8C7C spark correction. Axes match the raw view; Y is the doubled $203A IAT consumer axis in firmware-inverted cold-to-hot order. Raw signed view remains authoritative.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8C7C" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-64.000000</min><max>63.500000</max><outputtype>1</outputtype><MATH equation="X / 2"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x271" flags="0x30">
+    <title>Spark CTS/Load Correction B Deg 17x9 @ 0x8D15</title>
+    <description>Convenience degree display for the signed raw 0x8D15 spark correction. Axes match the raw view; Y is the doubled $203E CTS consumer axis in firmware-inverted cold-to-hot order. Raw signed view remains authoritative.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8D15" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-64.000000</min><max>63.500000</max><outputtype>1</outputtype><MATH equation="X / 2"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x272" flags="0x30">
+    <title>CTS Transient Word Scale A 1x9 @ 0x84F6</title>
+    <description>$203C-indexed raw 16-bit Temp-B transient scale/word table. X labels display the CTS consumer axis in firmware-inverted cold-to-hot order; output is traced to $2588. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84F6" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x273" flags="0x30">
+    <title>CTS Transient Vector A 1x9 @ 0x853B</title>
+    <description>$203C-indexed raw byte Temp-B transient vector. X labels display the CTS consumer axis in firmware-inverted cold-to-hot order; output is traced to $206B. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x853B" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x274" flags="0x30">
+    <title>CTS Transient Word Scale B 1x9 @ 0x8546</title>
+    <description>$203C-indexed raw 16-bit Temp-B transient scale/word table. X labels display the CTS consumer axis in firmware-inverted cold-to-hot order; output is traced to $2586. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8546" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x275" flags="0x30">
+    <title>Transient $2042 Vector B 1x9 @ 0x8558</title>
+    <description>$2042-indexed raw byte transient vector. DHC11 shows 0xE4FF loading $2042 and 0xE502 loading base 0x8558 before helper 0xB2AB; output is traced to $207B. X labels mirror the 0x9291-derived $2042 helper axis. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8558" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x276" flags="0x30">
+    <title>CTS Transient Vector C 1x9 @ 0x858B</title>
+    <description>$203C-indexed raw byte Temp-B transient vector. X labels display the CTS consumer axis in firmware-inverted cold-to-hot order; output is traced to $2079. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x858B" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x277" flags="0x30">
+    <title>CTS Transient Temperature Scale / Limit 1x9 @ 0x859F</title>
+    <description>$203C-indexed raw byte Temp-B transient scale/limit vector. X labels display the CTS consumer axis in firmware-inverted cold-to-hot order; output is traced to $2054 and used by transient enrichment support. Units remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x859F" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x278" flags="0x30">
+    <title>Fuel Period-Gated RPM Multiplier Vector 1x24 @ 0x81E0</title>
+    <description>DHC11 0xE8B3-0xE8BA indexes this byte vector with $2036 RPM when the period guard at 0x81DC/0x81DE is active; the result scales the $2014-derived term and stores the word contribution at $24D9. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="21" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x81E0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x279" flags="0x30">
+    <title>CTS Afterstart Threshold Word Vector 1x17 @ 0x841B</title>
+    <description>DHC11 0x7125-0x7135 copies $203E to $21CF and calls word helper 0xB26E with base 0x841B, then compares the result with $205D. X labels use the doubled CTS consumer axis; values remain raw words.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x841B" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27A" flags="0x30">
+    <title>CTS Afterstart Decay Scale Vector 1x17 @ 0x843D</title>
+    <description>DHC11 0x7167-0x7174 indexes this byte vector with $203E, shifts the result, and stores the word at $205B for the afterstart/warmup transition path. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-30" /><LABEL index="2" value="-20" /><LABEL index="3" value="-10" /><LABEL index="4" value="0" /><LABEL index="5" value="10" /><LABEL index="6" value="20" /><LABEL index="7" value="30" /><LABEL index="8" value="40" /><LABEL index="9" value="50" /><LABEL index="10" value="60" /><LABEL index="11" value="70" /><LABEL index="12" value="80" /><LABEL index="13" value="90" /><LABEL index="14" value="100" /><LABEL index="15" value="110" /><LABEL index="16" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x843D" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27B" flags="0x30">
+    <title>CTS Startup Output Seed Vector 1x9 @ 0x8452</title>
+    <description>DHC11 0x72BC-0x72C6 indexes this byte vector with $203C during startup state initialization and stores the result at $21CA. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8452" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27C" flags="0x30">
+    <title>CTS Scheduler Threshold Vector 1x9 @ 0x84ED</title>
+    <description>DHC11 0x720B-0x721F indexes this byte vector with $203C, shifts the result, compares it with $00BF, and controls scheduler/state bits. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="12" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x84ED" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27D" flags="0x30">
+    <title>Transient $2042 Gain Vector A 1x9 @ 0x8508</title>
+    <description>DHC11 0xE3FD-0xE407 indexes this byte vector with $2042 and stores the result at $206D for the first transient fuel support branch. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8508" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27E" flags="0x30">
+    <title>RPM Transient Gain Vector A 1x24 @ 0x8511</title>
+    <description>DHC11 0xE444-0xE44E indexes this byte vector with $2036 RPM and stores the result at $206C in the first transient branch. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8511" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x27F" flags="0x30">
+    <title>Transient $2042 Word Target A 1x9 @ 0x8529</title>
+    <description>DHC11 0xE431-0xE45B uses word helper 0xB26E with base 0x8529 and a $2042-derived index, storing targets at $206E/$2070. Values remain raw words.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8529" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x280" flags="0x30">
+    <title>RPM Transient Gain Vector B 1x24 @ 0x8561</title>
+    <description>DHC11 0xE50C-0xE516 indexes this byte vector with $2036 RPM and stores the result at $207A in the second transient branch. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8561" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x281" flags="0x30">
+    <title>Transient $2042 Word Target B 1x9 @ 0x8579</title>
+    <description>DHC11 0xE519-0xE523 and 0xE999-0xE9A3 use word helper 0xB26E with base 0x8579 and $2042-derived indexing, storing $207E/$207C. Values remain raw words.</description>
+    <CATEGORYMEM index="0" category="20" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw word" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8579" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>65535.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x282" flags="0x30">
+    <title>CTS Idle/State Target Vector A 1x9 @ 0x8636</title>
+    <description>DHC11 0x55F8-0x5612 indexes this byte vector with $203C in one idle/state branch and stores the result at $20A8. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8636" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x283" flags="0x30">
+    <title>CTS Idle/State Target Vector B 1x9 @ 0x863F</title>
+    <description>DHC11 0x55F8-0x5618 selects this byte vector in the alternate $0090/$202D branch, indexes it with $203C, and stores $20A8. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x863F" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x284" flags="0x30">
+    <title>CTS Idle/State Target Vector C 1x9 @ 0x8648</title>
+    <description>DHC11 0x55F8-0x5618 selects this byte vector when $0090 is clear, indexes it with $203C, and stores $20A8. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8648" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x285" flags="0x30">
+    <title>State $2042 Threshold Vector 1x9 @ 0x8652</title>
+    <description>DHC11 0x5758-0x5765 indexes this byte vector with $2042, stores $210E, and compares it with $00D3 in a state/actuator branch. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8652" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x286" flags="0x30">
+    <title>State $2042 Minimum Vector 1x9 @ 0x8671</title>
+    <description>DHC11 0x97DA-0x97E4 indexes this byte vector with $2042 and stores $2110 before later state/actuator decisions. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="3" /><LABEL index="2" value="11" /><LABEL index="3" value="22" /><LABEL index="4" value="37" /><LABEL index="5" value="54" /><LABEL index="6" value="89" /><LABEL index="7" value="132" /><LABEL index="8" value="201" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8671" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x287" flags="0x30">
+    <title>CTS Idle/State Limit Vector 1x9 @ 0x8689</title>
+    <description>DHC11 0x9B61-0x9B6B indexes this byte vector with $203C and stores $20F6 in the idle/state setup path. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="-40" /><LABEL index="1" value="-20" /><LABEL index="2" value="0" /><LABEL index="3" value="20" /><LABEL index="4" value="40" /><LABEL index="5" value="60" /><LABEL index="6" value="80" /><LABEL index="7" value="100" /><LABEL index="8" value="120" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8689" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x288" flags="0x30">
+    <title>Spark Transition $2046 Vector A 1x5 @ 0x87A6</title>
+    <description>DHC11 0x46CA-0x46EE selects this compact byte vector when $202D is set, indexes it with $2046, and stores the transition output at $214F. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>5</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2046_0" /><LABEL index="1" value="2046_1" /><LABEL index="2" value="2046_2" /><LABEL index="3" value="2046_3" /><LABEL index="4" value="2046_4" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x87A6" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x289" flags="0x30">
+    <title>Spark Transition $2046 Vector B 1x6 @ 0x87AB</title>
+    <description>DHC11 0x46CA-0x46EE selects this compact byte vector in the default branch, indexes it with $2046, and stores the transition output at $214F. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>6</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2046_0" /><LABEL index="1" value="2046_1" /><LABEL index="2" value="2046_2" /><LABEL index="3" value="2046_3" /><LABEL index="4" value="2046_4" /><LABEL index="5" value="2046_5" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x87AB" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="6" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28A" flags="0x30">
+    <title>RPM Closed-Loop Entry Offset Vector 1x24 @ 0x899A</title>
+    <description>DHC11 0x9D13-0x9D20 indexes this byte vector with $2036 RPM, negates the result, adds it to $0010, and stores $20F5 for the closed-loop/adaptive state path. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x899A" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28B" flags="0x30">
+    <title>Spark State Decay Vector A 1x9 @ 0x8E04</title>
+    <description>DHC11 0x457B-0x459C indexes this byte vector with capped $2065 in one spark-state branch and contributes to $2146 after a mode multiplier. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2065_0" /><LABEL index="1" value="2065_1" /><LABEL index="2" value="2065_2" /><LABEL index="3" value="2065_3" /><LABEL index="4" value="2065_4" /><LABEL index="5" value="2065_5" /><LABEL index="6" value="2065_6" /><LABEL index="7" value="2065_7" /><LABEL index="8" value="2065_8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E04" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28C" flags="0x30">
+    <title>Spark State Decay Vector B 1x9 @ 0x8E0D</title>
+    <description>DHC11 0x457B-0x459C selects this byte vector when $00A9.4 is set, indexes it with capped $2065, and contributes to $2146. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2065_0" /><LABEL index="1" value="2065_1" /><LABEL index="2" value="2065_2" /><LABEL index="3" value="2065_3" /><LABEL index="4" value="2065_4" /><LABEL index="5" value="2065_5" /><LABEL index="6" value="2065_6" /><LABEL index="7" value="2065_7" /><LABEL index="8" value="2065_8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E0D" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28D" flags="0x30">
+    <title>Spark State Decay Vector C 1x9 @ 0x8E18</title>
+    <description>DHC11 0x4587-0x459C selects this byte vector when $0090 is set, indexes it with capped $2065, and contributes to $2146. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="18" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2065_0" /><LABEL index="1" value="2065_1" /><LABEL index="2" value="2065_2" /><LABEL index="3" value="2065_3" /><LABEL index="4" value="2065_4" /><LABEL index="5" value="2065_5" /><LABEL index="6" value="2065_6" /><LABEL index="7" value="2065_7" /><LABEL index="8" value="2065_8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E18" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28E" flags="0x30">
+    <title>Adaptive Entry Threshold Record A 1x7 @ 0x8E36</title>
+    <description>DHC11 0xCC2E-0xCC78 uses this mixed byte/word threshold record with $00CB, $00BA, and $00CA while selecting adaptive/closed-loop state entry. Exposed as raw bytes because fields are heterogeneous.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>7</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="b0" /><LABEL index="1" value="b1" /><LABEL index="2" value="b2" /><LABEL index="3" value="b3" /><LABEL index="4" value="b4" /><LABEL index="5" value="b5" /><LABEL index="6" value="b6" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw bytes" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E36" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x28F" flags="0x30">
+    <title>Adaptive Entry Threshold Record B 1x7 @ 0x8E3D</title>
+    <description>DHC11 0xCC23-0xCC78 uses this alternate mixed byte/word threshold record with $00CB, $00BA, and $00CA while selecting adaptive/closed-loop state entry. Exposed as raw bytes because fields are heterogeneous.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>7</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="b0" /><LABEL index="1" value="b1" /><LABEL index="2" value="b2" /><LABEL index="3" value="b3" /><LABEL index="4" value="b4" /><LABEL index="5" value="b5" /><LABEL index="6" value="b6" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw bytes" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E3D" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x290" flags="0x30">
+    <title>Adaptive Entry RPM Offset Vector A 1x17 @ 0x8E46</title>
+    <description>DHC11 0xCC2E-0xCC3B indexes this byte vector with $2044 and adds the result to $00C9 before adaptive/closed-loop entry comparison. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="400" /><LABEL index="2" value="800" /><LABEL index="3" value="1200" /><LABEL index="4" value="1600" /><LABEL index="5" value="2000" /><LABEL index="6" value="2400" /><LABEL index="7" value="2800" /><LABEL index="8" value="3200" /><LABEL index="9" value="3600" /><LABEL index="10" value="4000" /><LABEL index="11" value="4400" /><LABEL index="12" value="4800" /><LABEL index="13" value="5200" /><LABEL index="14" value="5600" /><LABEL index="15" value="6000" /><LABEL index="16" value="6400" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E46" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x291" flags="0x30">
+    <title>Adaptive Entry RPM Offset Vector B 1x17 @ 0x8E57</title>
+    <description>DHC11 0xCC23-0xCC3B indexes this alternate byte vector with $2044 and adds the result to $00C9 before adaptive/closed-loop entry comparison. Values remain raw.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>17</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="400" /><LABEL index="2" value="800" /><LABEL index="3" value="1200" /><LABEL index="4" value="1600" /><LABEL index="5" value="2000" /><LABEL index="6" value="2400" /><LABEL index="7" value="2800" /><LABEL index="8" value="3200" /><LABEL index="9" value="3600" /><LABEL index="10" value="4000" /><LABEL index="11" value="4400" /><LABEL index="12" value="4800" /><LABEL index="13" value="5200" /><LABEL index="14" value="5600" /><LABEL index="15" value="6000" /><LABEL index="16" value="6400" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedaddress="0x8E57" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
+
+  <XDFTABLE uniqueid="0x292" flags="0x30">
+    <title>Scheduler $2040 Signed Subvector 1x10 @ 0x9303</title>
+    <description>DHC11 0xD6F5-0xD6FF indexes this signed byte subvector with $2040 through helper 0xB2BA and stores $2048. It overlaps the tail of the broader 0x92FA scheduler vector but is exposed separately because the code uses 0x9303 as an exact base.</description>
+    <CATEGORYMEM index="0" category="12" />
+    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>10</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="2040_sub_0" /><LABEL index="1" value="2040_sub_1" /><LABEL index="2" value="2040_sub_2" /><LABEL index="3" value="2040_sub_3" /><LABEL index="4" value="2040_sub_4" /><LABEL index="5" value="2040_sub_5" /><LABEL index="6" value="2040_sub_6" /><LABEL index="7" value="2040_sub_7" /><LABEL index="8" value="2040_sub_8" /><LABEL index="9" value="2040_sub_9" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="signed raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x9303" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="10" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>0</decimalpl><min>-128.000000</min><max>127.000000</max><outputtype>1</outputtype><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
+  </XDFTABLE>
 
 </XDFFORMAT>

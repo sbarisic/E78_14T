@@ -19,16 +19,11 @@ from typing import Callable, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ANALYSIS_DIR = ROOT / "analysis"
+EVIDENCE_PATH = ROOT / "EVIDENCE.md"
+GENERATED_BEGIN = "<!-- BEGIN GENERATED ANALYSIS -->"
+GENERATED_END = "<!-- END GENERATED ANALYSIS -->"
 
-SECTION_FILES = {
-    "overview": "overview.md",
-    "diffs": "diff_regions.md",
-    "tables": "table_stats.md",
-    "helpers": "helper_calls.md",
-    "ram": "ram_refs.md",
-    "trace": "trace_notes.md",
-}
+GENERATED_ANALYSIS_SECTIONS = ("overview", "diffs", "tables", "helpers", "ram", "trace")
 
 
 @dataclass(frozen=True)
@@ -83,7 +78,11 @@ KNOWN_TABLES = [
     ("signed_low_rpm_fuel_trim_b_82f4_4x9", 0x82F4, 4, 9, "signed8 raw/256 trim"),
     ("signed_fuel_quantity_trim_b_8318_24x9", 0x8318, 24, 9, "signed8 raw/256 trim"),
     ("rpm_only_fuel_trim_bypass_83f0_signed_1x24", 0x83F0, 1, 24, "signed8"),
+    ("fuel_period_gated_rpm_multiplier_81e0_1x24", 0x81E0, 1, 24, "raw"),
     ("cts_warmup_fuel_corr_8408_1x17", 0x8408, 1, 17, "raw"),
+    ("cts_afterstart_threshold_841b_1x17_words", 0x841B, 1, 17, "word16 raw"),
+    ("cts_afterstart_decay_scale_843d_1x17", 0x843D, 1, 17, "raw"),
+    ("cts_startup_output_seed_8452_1x9", 0x8452, 1, 9, "raw"),
     ("cts_warmup_afterstart_init_a_845b_1x17", 0x845B, 1, 17, "raw"),
     ("cts_warmup_afterstart_init_b_846c_1x17", 0x846C, 1, 17, "raw"),
     ("cts_afterstart_timer_a_847d_1x17", 0x847D, 1, 17, "raw"),
@@ -93,15 +92,36 @@ KNOWN_TABLES = [
     ("cts_afterstart_decay_blend_a_84c1_1x17", 0x84C1, 1, 17, "raw"),
     ("cts_afterstart_decay_blend_b_84d2_1x17", 0x84D2, 1, 17, "raw"),
     ("lambda_closed_loop_fuel_84e3_1x19", 0x84E3, 1, 19, "raw"),
+    ("cts_scheduler_threshold_84ed_1x9", 0x84ED, 1, 9, "raw"),
+    ("cts_transient_word_scale_a_84f6_1x9_words", 0x84F6, 1, 9, "word16 raw"),
+    ("transient_2042_gain_a_8508_1x9", 0x8508, 1, 9, "raw"),
+    ("rpm_transient_gain_a_8511_1x24", 0x8511, 1, 24, "raw"),
+    ("transient_2042_word_target_a_8529_1x9_words", 0x8529, 1, 9, "word16 raw"),
+    ("cts_transient_vector_a_853b_1x9", 0x853B, 1, 9, "raw"),
+    ("cts_transient_word_scale_b_8546_1x9_words", 0x8546, 1, 9, "word16 raw"),
+    ("transient_2042_vector_b_8558_1x9", 0x8558, 1, 9, "raw"),
+    ("rpm_transient_gain_b_8561_1x24", 0x8561, 1, 24, "raw"),
+    ("transient_2042_word_target_b_8579_1x9_words", 0x8579, 1, 9, "word16 raw"),
+    ("cts_transient_vector_c_858b_1x9", 0x858B, 1, 9, "raw"),
     ("transient_enrichment_a_8596_1x9", 0x8596, 1, 9, "raw"),
+    ("cts_transient_temperature_scale_859f_1x9", 0x859F, 1, 9, "raw"),
     ("transient_enrichment_b_85af_1x9", 0x85AF, 1, 9, "raw"),
     ("high_load_fuel_pulse_extension_85ba_24x5", 0x85BA, 24, 5, "raw duration support"),
+    ("cts_idle_state_target_a_8636_1x9", 0x8636, 1, 9, "raw"),
+    ("cts_idle_state_target_b_863f_1x9", 0x863F, 1, 9, "raw"),
+    ("cts_idle_state_target_c_8648_1x9", 0x8648, 1, 9, "raw"),
+    ("state_2042_threshold_8652_1x9", 0x8652, 1, 9, "raw"),
+    ("state_2042_minimum_8671_1x9", 0x8671, 1, 9, "raw"),
+    ("cts_idle_state_limit_8689_1x9", 0x8689, 1, 9, "raw"),
     ("event_width_limit_prev_width_877e_1x9", 0x877E, 1, 9, "raw"),
     ("oc3_period_fit_guard_8787_word", 0x8787, 1, 1, "word16 raw"),
     ("fuel_output_edge_offset_8789_1x10_words", 0x8789, 1, 10, "word16 raw"),
+    ("spark_transition_2046_a_87a6_1x5", 0x87A6, 1, 5, "raw"),
+    ("spark_transition_2046_b_87ab_1x6", 0x87AB, 1, 6, "raw"),
     ("injector_event_phase_offset_87b1_24x9", 0x87B1, 24, 9, "raw phase"),
     ("idle_air_bypass_target_888e_24x9", 0x888E, 24, 9, "raw"),
     ("cts_idle_target_cap_8970_1x17", 0x8970, 1, 17, "raw"),
+    ("rpm_closed_loop_entry_offset_899a_1x24", 0x899A, 1, 24, "raw"),
     ("spark_high_default_24x9", 0x8A69, 24, 9, "raw/2 deg"),
     ("spark_low_alternate_24x9", 0x8B41, 24, 9, "raw/2 deg"),
     ("wot_spark_vector_1x24", 0x8C19, 1, 24, "raw/2 deg"),
@@ -110,8 +130,15 @@ KNOWN_TABLES = [
     ("spark_mode_vector_c_8c61_1x24", 0x8C61, 1, 24, "raw/2 deg"),
     ("spark_iat_load_corr_a_8c7c_signed_17x9", 0x8C7C, 17, 9, "signed8"),
     ("spark_cts_load_corr_b_8d15_signed_17x9", 0x8D15, 17, 9, "signed8"),
-    ("spark_temp_decay_8dae_1x9", 0x8DAE, 1, 9, "raw"),
-    ("spark_mode_delay_8dd9_1x9", 0x8DD9, 1, 9, "raw"),
+    ("spark_cts_temp_decay_8dae_1x17", 0x8DAE, 1, 17, "raw"),
+    ("spark_cts_mode_delay_8dd9_1x9", 0x8DD9, 1, 9, "raw"),
+    ("spark_state_decay_a_8e04_1x9", 0x8E04, 1, 9, "raw"),
+    ("spark_state_decay_b_8e0d_1x9", 0x8E0D, 1, 9, "raw"),
+    ("spark_state_decay_c_8e18_1x9", 0x8E18, 1, 9, "raw"),
+    ("adaptive_entry_threshold_a_8e36_1x7", 0x8E36, 1, 7, "raw"),
+    ("adaptive_entry_threshold_b_8e3d_1x7", 0x8E3D, 1, 7, "raw"),
+    ("adaptive_entry_rpm_offset_a_8e46_1x17", 0x8E46, 1, 17, "raw"),
+    ("adaptive_entry_rpm_offset_b_8e57_1x17", 0x8E57, 1, 17, "raw"),
     ("adaptive_trim_dynamics_a_8e6f_17x5", 0x8E6F, 17, 5, "raw"),
     ("adaptive_trim_dynamics_b_8ec7_17x5", 0x8EC7, 17, 5, "raw"),
     ("adaptive_trim_timer_8f1c_17x5", 0x8F1C, 17, 5, "raw"),
@@ -127,10 +154,11 @@ KNOWN_TABLES = [
     ("closed_loop_state_delay_90ef_1x17", 0x90EF, 1, 17, "raw"),
     ("load_aircharge_model_factor_9187_24x9", 0x9187, 24, 9, "raw/230 hypothesis"),
     ("rpm_axis_period_1x24", 0x929E, 1, 24, "period axis"),
-    ("likely_cts_axis_b_92cf_1x9", 0x92CF, 1, 9, "raw"),
-    ("likely_iat_axis_a_92d9_1x9", 0x92D9, 1, 9, "raw"),
+    ("likely_cts_adc_breakpoints_b_92cf_1x9", 0x92CF, 1, 9, "raw"),
+    ("likely_iat_adc_breakpoints_a_92d9_1x9", 0x92D9, 1, 9, "raw"),
     ("scheduler_scaling_92fa_signed_1x19", 0x92FA, 1, 19, "signed8"),
-    ("sensor_transfer_400e_1x9", 0x400E, 1, 9, "raw"),
+    ("scheduler_2040_signed_subvector_9303_1x10", 0x9303, 1, 10, "signed8"),
+    ("temp_raw_output_c_plus_40_400e_1x9", 0x400E, 1, 9, "raw"),
     ("control_scalars_1x6", 0x89ED, 1, 6, "raw"),
     ("ignition_phase_factor_89c7_1x19", 0x89C7, 1, 19, "raw"),
     ("ignition_width_dwell_factor_89da_1x19", 0x89DA, 1, 19, "raw"),
@@ -150,12 +178,16 @@ TABLE_BASES = [
     0x8103,
     0x8106,
     0x81A8,
+    0x81E0,
     0x81F8,
     0x821C,
     0x82F4,
     0x8318,
     0x83F0,
     0x8408,
+    0x841B,
+    0x843D,
+    0x8452,
     0x845B,
     0x846C,
     0x847D,
@@ -165,6 +197,7 @@ TABLE_BASES = [
     0x84C1,
     0x84D2,
     0x84E3,
+    0x84ED,
     0x84F6,
     0x8508,
     0x8511,
@@ -179,10 +212,18 @@ TABLE_BASES = [
     0x859F,
     0x85AF,
     0x85BA,
+    0x8636,
+    0x863F,
+    0x8648,
+    0x8652,
+    0x8671,
+    0x8689,
     0x869A,
     0x877E,
     0x8787,
     0x8789,
+    0x87A6,
+    0x87AB,
     0x87B1,
     0x879E,
     0x87A0,
@@ -197,6 +238,7 @@ TABLE_BASES = [
     0x896E,
     0x8970,
     0x8981,
+    0x899A,
     0x8A27,
     0x8A3A,
     0x8A52,
@@ -210,6 +252,13 @@ TABLE_BASES = [
     0x8D15,
     0x8DAE,
     0x8DD9,
+    0x8E04,
+    0x8E0D,
+    0x8E18,
+    0x8E36,
+    0x8E3D,
+    0x8E46,
+    0x8E57,
     0x8E6F,
     0x8EC7,
     0x8F1C,
@@ -232,6 +281,7 @@ TABLE_BASES = [
     0x92CF,
     0x92D9,
     0x92FA,
+    0x9303,
     0x400E,
 ]
 
@@ -885,7 +935,11 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x82F4, 4, 9, "signed8 low-rpm"),
         (0x8318, 24, 9, "signed8"),
         (0x83F0, 1, 24, "signed8"),
+        (0x81E0, 1, 24, "raw"),
         (0x8408, 1, 17, "raw"),
+        (0x841B, 1, 17, "word16 raw"),
+        (0x843D, 1, 17, "raw"),
+        (0x8452, 1, 9, "raw"),
         (0x845B, 1, 17, "raw"),
         (0x846C, 1, 17, "raw"),
         (0x847D, 1, 17, "raw"),
@@ -895,22 +949,50 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x84C1, 1, 17, "raw"),
         (0x84D2, 1, 17, "raw"),
         (0x84E3, 1, 19, "raw"),
+        (0x84ED, 1, 9, "raw"),
+        (0x84F6, 1, 9, "word16 raw"),
+        (0x8508, 1, 9, "raw"),
+        (0x8511, 1, 24, "raw"),
+        (0x8529, 1, 9, "word16 raw"),
+        (0x853B, 1, 9, "raw"),
+        (0x8546, 1, 9, "word16 raw"),
+        (0x8558, 1, 9, "raw"),
+        (0x8561, 1, 24, "raw"),
+        (0x8579, 1, 9, "word16 raw"),
+        (0x858B, 1, 9, "raw"),
         (0x8596, 1, 9, "raw"),
+        (0x859F, 1, 9, "raw"),
         (0x85AF, 1, 9, "raw"),
         (0x85BA, 24, 5, "raw"),
+        (0x8636, 1, 9, "raw"),
+        (0x863F, 1, 9, "raw"),
+        (0x8648, 1, 9, "raw"),
+        (0x8652, 1, 9, "raw"),
+        (0x8671, 1, 9, "raw"),
+        (0x8689, 1, 9, "raw"),
         (0x877E, 1, 9, "raw"),
         (0x8787, 1, 1, "word16 raw"),
         (0x8789, 1, 10, "word16 raw"),
+        (0x87A6, 1, 5, "raw"),
+        (0x87AB, 1, 6, "raw"),
         (0x87B1, 24, 9, "raw"),
         (0x888E, 24, 9, "raw"),
         (0x8970, 1, 17, "raw"),
+        (0x899A, 1, 24, "raw"),
         (0x8C31, 1, 24, "raw/2 deg"),
         (0x8C49, 1, 24, "raw/2 deg"),
         (0x8C61, 1, 24, "raw/2 deg"),
         (0x8C7C, 17, 9, "signed8"),
         (0x8D15, 17, 9, "signed8"),
-        (0x8DAE, 1, 9, "raw"),
+        (0x8DAE, 1, 17, "raw"),
         (0x8DD9, 1, 9, "raw"),
+        (0x8E04, 1, 9, "raw"),
+        (0x8E0D, 1, 9, "raw"),
+        (0x8E18, 1, 9, "raw"),
+        (0x8E36, 1, 7, "raw"),
+        (0x8E3D, 1, 7, "raw"),
+        (0x8E46, 1, 17, "raw"),
+        (0x8E57, 1, 17, "raw"),
         (0x8E6F, 17, 5, "raw"),
         (0x8EC7, 17, 5, "raw"),
         (0x8F1C, 17, 5, "raw"),
@@ -932,6 +1014,7 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
         (0x92CF, 1, 9, "raw"),
         (0x92D9, 1, 9, "raw"),
         (0x92FA, 1, 19, "signed8"),
+        (0x9303, 1, 10, "signed8"),
         (0x400E, 1, 9, "raw"),
     ):
         cell_count = rows * cols
@@ -945,21 +1028,22 @@ def print_targeted_trace_notes(roms: dict[str, bytes]) -> None:
             print(f"  - `{key}` differs in `{count}/{cell_count}` cells (`{delta_min:+d}..{delta_max:+d}`, avg `{delta_avg:+.1f}`).")
 
     print()
-    print("Sensor-axis split note: `0x200A -> 0x2124 -> 0x92D9` builds runtime `0x2038/0x203A`, while `0x2008 -> 0x2122 -> 0x92CF` builds runtime `0x203C/0x203E`. Both breakpoint vectors carry raw labels `12,20,34,57,93,142,191,227,246`, and `0x400E` is the shared transfer/display vector. By consumers, `0x2038/0x203A` is now the best likely IAT/air-temperature axis and `0x203C/0x203E` is the best likely CTS/coolant axis; pin or bench proof is still pending.")
-    print("Signed IAT/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 -> 0x2038` likely IAT axis and RPM labels from `0x929E -> 0x2036`; outputs are `0x204A`/`0x204D`.")
-    print("Legacy boundary note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is only an alignment probe.")
+    print("Sensor-axis split note: `0x200A -> 0x2124 -> 0x92D9` builds runtime `0x2038/0x203A`, while `0x2008 -> 0x2122 -> 0x92CF` builds runtime `0x203C/0x203E`. Both raw helper vectors carry the NTC-matching ADC breakpoints `12,20,34,57,93,142,191,227,246`; the adjacent count bytes `0x92E2` and `0x92D8` are both `0x09`. Shared vector `0x400E` stores `160,140,120,100,80,60,40,20,0`, best interpreted as temperature raw output `deg C + 40`, so raw helper labels stay hot-to-cold as `120,100,80,60,40,20,0,-20,-40 deg C`. Runtime consumer maps use the firmware-inverted axis and display cold-to-hot labels. By consumers, `0x2038/0x203A` is now the best likely IAT/air-temperature axis and `0x203C/0x203E` is the best likely CTS/coolant axis; pin or bench proof is still pending.")
+    print("Signed IAT/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 -> 0x2038` likely IAT axis and RPM labels from `0x929E -> 0x2036`; their XDF X labels now display the firmware-inverted consumer order `-40..120 deg C` rather than raw ADC breakpoints. Outputs are `0x204A`/`0x204D`.")
+    print("Retired boundary-probe note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the old 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is historical evidence only, not an active XDF table.")
     print()
     print("Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed likely IAT/RPM corrections; `0x821C/0x8318` signed fuel quantity trims, guarded low-RPM `0x81F8/0x82F4` 4x9 trims, or `0x83F0` RPM-only trim feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC` is the current strongest software fuel pulse-width / event-width path. `0xE715` scale is roughly fuel += fuel * signed_trim / 256, so raw 64 is about +25%.")
     print("Lambda/closed-loop note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` is the current strongest lambda fuel correction candidate. The `0x200C` physical O2/lambda assignment still needs scope or harness proof.")
     print("Closed-loop/adaptive note: `0x9000-0x912B` is now best grouped as lambda / closed-loop / adaptive calibration. `0x9000/0x9011/0x9022` are CTS-like base vectors, `0x9033/0x9044/0x90EF` are delay/timer vectors, `0x9068` is dynamic load-change correction, and `0x9073` is a ramp/target table compared with `0x243C`.")
     print("Adaptive trim note: `0x20B9` is a slow closed-loop/adaptive fuel trim centred at `0x8000`. RAM cells `0x0060/0x0069` are learned adaptive trim cells interpolated by `0xC94B`; the `0x8E6F/0x8EC7/0x8F1C/0x8F71` 17x5 cluster feeds `0x24AB/0x24AF/0x24AC/0x24AD`, which are consumed by the `0xCC00-0xD0C6` adaptive state machine.")
-    print("Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x00C6` active correction terms. `0x8408-0x84D2` are CTS warmup/afterstart fuel support maps, while `0x8596/0x85AF` feed additive transient fuel terms `0x2055/0x2057` via the `0xEB16` helper.")
-    print("Idle/actuator note: `0x888E` is best treated as an idle-air / idle-bypass target table, not fuel. It combines with likely CTS vector `0x8970` into `0x2484/0x2486`, shapes `0x202B`, and toggles external bit `0x1050.04`; actuator hardware proof remains open.")
+    print("Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x00C6` active correction terms. `0x8408-0x84D2` are CTS warmup/afterstart fuel support maps. DHC11 adds exact warmup/startup helpers `0x841B`, `0x843D`, `0x8452`, and `0x84ED`. `0x84F6`, `0x853B`, `0x8546`, `0x858B`, and `0x859F` are CTS `$203C` transient support vectors/word tables feeding `$2588`, `$206B`, `$2586`, `$2079`, and `$2054`; `0x8508`, `0x8529`, `0x8558`, and `0x8579` are `$2042` transient support vectors/word tables feeding `$206D`, `$206E/$2070`, `$207B`, and `$207E/$207C`; `0x8511` and `0x8561` are RPM transient gain vectors feeding `$206C/$207A`; `0x8596/0x85AF` feed additive transient fuel terms `0x2055/0x2057` via the `0xEB16` helper.")
+    print("Idle/actuator note: `0x888E` is best treated as an idle-air / idle-bypass target table, not fuel. It combines with likely CTS vector `0x8970` into `0x2484/0x2486`, shapes `0x202B`, and toggles external bit `0x1050.04`; actuator hardware proof remains open. DHC11 exact lookup views `0x8636/0x863F/0x8648` feed `$20A8` from `$203C`, `0x8652/0x8671` feed `$210E/$2110` from `$2042`, `0x8689` feeds `$20F6` from `$203C`, and `0x899A` feeds closed-loop entry offset `$20F5` from RPM.")
     print("SPI frame note: `0x8010-0x8027` is a pointer frame consumed by `0x9F02-0xA001` to stream live RAM/status bytes through SPI data register `0x102A`. It is not calibration; the signed fuel correction table starts at `0x802B`.")
     print("Fuel output timing note: `0x87B1 -> 0x00BE -> 0x21C6` is injector/event phase. OC1 schedules the interrupt at `TOC1=0x00B8+0x21C6` (`0x1016`), then vector `0x6FE4` configures OC3/PA5 action bits at `0x1020`, forces an OC3 edge through `0x100B`, and schedules the opposite edge at `0x101A`. `0x00C3 -> 0x00BC` is pulse width / scheduled event width, while `0x85BA -> 0x2063 -> 0x00C3` is high-load duration support.")
-    print("Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x10 word vector that feeds `$2086`, an OC3 edge-offset/deadtime-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.")
+    print("Fuel output support-vector note: `$2040` indexes scheduler support at `0x92FA`, `0x877E`, and `0x8789`; DHC11 also uses exact signed subvector base `0x9303` to feed `$2048`. `0x877E` feeds `$00BF`; `0x8787` is the OC3 period-fit guard word; `0x8789` is a provisional 1x10 word vector that feeds `$2086`, an OC3 edge-offset/deadtime-style term. Normal inactive-output edge timing is best summarized as `TOC3 = $21CB + $2086 + $00BC + 5`. Absolute ms/crank-degree conversion still needs E-clock and timer prescaler proof.")
     print("Ignition event note: `0x7CDA` and `0x7CEA` are compact event selector data tables, not executable code and not tune maps. They feed four 12-byte ignition event records at `0x2312/0x231E/0x232A/0x2336`, built from final per-event spark values `0x20E2-0x20E5`.")
-    print("Ignition output note: `0x2147 -> 0x2001 -> 0x00B6 -> 0x20E2-0x20E5 -> 0x2312/0x231E/0x232A/0x2336` is the current best software spark command/event chain. `0x89C7 -> 0x20E7 -> 0x20EB` looks like ignition phase, `0x89DA -> 0x20E8 -> 0x20ED` like width/dwell-window, `0x89F3 -> 0x20BC` is per-event retard/gain candidate, and `0x8A23-0x8A51` holds retard strategy scalars. OC2/OC4 at `0x1018/0x101C` are the strongest software ignition-output candidates; exact coil driver/pin proof remains open.")
+    print("Ignition output note: `0x2147 -> 0x2001 -> 0x00B6 -> 0x20E2-0x20E5 -> 0x2312/0x231E/0x232A/0x2336` is the current best software spark command/event chain. `0x89C7 -> 0x20E7 -> 0x20EB` looks like ignition phase, `0x89DA -> 0x20E8 -> 0x20ED` like width/dwell-window, `0x89F3 -> 0x20BC` is per-event retard/gain candidate, and `0x8A23-0x8A51` holds retard strategy scalars. DHC11 exact lookup views `0x87A6/0x87AB` feed spark transition output `$214F`, while `0x8E04/0x8E0D/0x8E18` feed `$2146` in spark-state decay branches. OC2/OC4 at `0x1018/0x101C` are the strongest software ignition-output candidates; exact coil driver/pin proof remains open.")
+    print("Adaptive entry note: DHC11 exact lookup views `0x8E36/0x8E3D` are mixed byte/word threshold records used by the `0xCC00` closed-loop/adaptive entry gate, while `0x8E46/0x8E57` are `$2044`-indexed RPM-offset vectors added to `$00C9` before the same entry comparison. Values are raw because the threshold fields are heterogeneous and the state-machine naming is still provisional.")
     print()
     print("Main fuel status: a pure VE/base table is still not proven, but `0x821C/0x8318` are now the strongest signed fuel quantity trim tables. `0x81F8/0x82F4` are guarded low-RPM 4x9 trims selected by `0xE38B`, and `0x83F0` is an RPM-only trim/bypass vector. Fuel quantity/duration and fuel timing/phase are now separated: `$00C3/$00BC` is duration, `$21C6` is phase, and `$2086` is edge-offset support. The exact injector driver/pin remains a hardware-level proof item. The old `0x802E` VE-looking surface remains a legacy misaligned slice inside the signed `0x802B` table.")
 
@@ -1136,13 +1220,32 @@ def render_section(roms: dict[str, bytes], section: str) -> str:
     return out.getvalue()
 
 
+def render_generated_analysis(roms: dict[str, bytes]) -> str:
+    parts = [
+        "## Generated Analyzer Snapshots\n",
+        "Generated by `python tools/iaw8p40_analyze.py --write-analysis`.\n",
+    ]
+    for section in GENERATED_ANALYSIS_SECTIONS:
+        parts.append(render_section(roms, section).rstrip())
+        parts.append("")
+    return "\n".join(parts).rstrip() + "\n"
+
+
 def write_analysis_files(roms: dict[str, bytes]) -> None:
-    ANALYSIS_DIR.mkdir(exist_ok=True)
-    for section, filename in SECTION_FILES.items():
-        path = ANALYSIS_DIR / filename
-        text = render_section(roms, section)
-        path.write_text(text, encoding="ascii", newline="\n")
-        print(f"wrote {path.relative_to(ROOT)}")
+    generated = render_generated_analysis(roms)
+    replacement = f"{GENERATED_BEGIN}\n{generated}{GENERATED_END}"
+    text = EVIDENCE_PATH.read_text(encoding="ascii")
+    begin = text.find(GENERATED_BEGIN)
+    end = text.find(GENERATED_END)
+    if begin == -1 or end == -1 or end < begin:
+        raise ValueError(
+            f"{EVIDENCE_PATH.relative_to(ROOT)} must contain "
+            f"{GENERATED_BEGIN!r} and {GENERATED_END!r}"
+        )
+    end += len(GENERATED_END)
+    updated = text[:begin] + replacement + text[end:]
+    EVIDENCE_PATH.write_text(updated, encoding="ascii", newline="\n")
+    print(f"updated {EVIDENCE_PATH.relative_to(ROOT)}")
 
 
 def main() -> None:
@@ -1156,7 +1259,7 @@ def main() -> None:
     parser.add_argument(
         "--write-analysis",
         action="store_true",
-        help="Write generated Markdown snapshots under analysis/ and exit.",
+        help="Update the generated analyzer snapshot block in EVIDENCE.md and exit.",
     )
     args = parser.parse_args()
 
