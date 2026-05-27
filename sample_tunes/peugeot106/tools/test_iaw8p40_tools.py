@@ -53,6 +53,23 @@ class ChecksumToolTests(unittest.TestCase):
         self.assertEqual(info.byte_sum, 0xE160)
         self.assertFalse(info.valid)
 
+    def test_direct_byte_helpers_reject_wrong_size_data(self) -> None:
+        wrong_size_inputs = (
+            b"",
+            bytearray(checksum.ROM_SIZE - 1),
+            bytes(checksum.ROM_SIZE + 1),
+        )
+        helpers = (
+            checksum.calculate,
+            checksum.repaired_words,
+            checksum.repair_bytes,
+        )
+        for helper in helpers:
+            for data in wrong_size_inputs:
+                with self.subTest(helper=helper.__name__, size=len(data)):
+                    with self.assertRaisesRegex(ValueError, "expected 65536"):
+                        helper(data)
+
     def test_repair_writes_only_new_output(self) -> None:
         source = ROOT / "M27C512_original.BIN"
         original = source.read_bytes()

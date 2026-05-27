@@ -44,6 +44,11 @@ def fmt(value: int) -> str:
     return f"0x{value:04X}"
 
 
+def require_rom_size(data: bytes | bytearray) -> None:
+    if len(data) != ROM_SIZE:
+        raise ValueError(f"data is {len(data)} bytes, expected {ROM_SIZE}")
+
+
 def read_rom(path: Path) -> bytes:
     data = path.read_bytes()
     if len(data) != ROM_SIZE:
@@ -52,6 +57,7 @@ def read_rom(path: Path) -> bytes:
 
 
 def calculate(data: bytes | bytearray) -> ChecksumInfo:
+    require_rom_size(data)
     checksum_word = u16be(data, CHECKSUM_WORD_ADDR)
     checksum_complement = u16be(data, CHECKSUM_COMPLEMENT_ADDR)
     pair_sum = (checksum_word + checksum_complement) & 0xFFFF
@@ -61,6 +67,7 @@ def calculate(data: bytes | bytearray) -> ChecksumInfo:
 
 
 def repaired_words(data: bytes | bytearray) -> tuple[int, int]:
+    require_rom_size(data)
     sum_without_pair = (
         sum(data[SUM_START:CHECKSUM_WORD_ADDR])
         + sum(data[CHECKSUM_COMPLEMENT_ADDR + 2 :])
@@ -71,6 +78,7 @@ def repaired_words(data: bytes | bytearray) -> tuple[int, int]:
 
 
 def repair_bytes(data: bytes | bytearray) -> bytes:
+    require_rom_size(data)
     repaired = bytearray(data)
     checksum_word, checksum_complement = repaired_words(repaired)
     put_u16be(repaired, CHECKSUM_WORD_ADDR, checksum_word)
