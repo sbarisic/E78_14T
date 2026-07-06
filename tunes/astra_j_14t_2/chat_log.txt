@@ -1,0 +1,14 @@
+codex://threads/019f3624-aad8-7ca2-b3a4-cbc04d1d63e2
+
+Updated [E78_Astra_047922_TableSearch.xdf](<C:/Projects/E78_14T/tunes/astra_j_14t_2/E78_Astra_047922_TableSearch.xdf>).
+
+Confirmed table added:
+
+`TurbochargerKnockMaxAirmass_04DD68`
+- Z table: `0x04DD68-0x04DEC7`
+- Format: `8 x 11`, 32-bit big-endian float
+- Math: `X / 1000`, units `g`
+- X axis: `0x04DEC8` = `-25, -20, -15, -13, -11, -9, -7, -5, -3, -1, 0`
+- Y axis: `0x04DF3C` = `1400, 1700, 2000, 2300, 3000, 4000, 5000, 6000`
+
+I also added a raw stored-value view and two Scav search views. I did not mark Scav as confirmed yet: the second exact spark-axis cluster is at `0x04E588`, but I did not find another equally clean adjacent `8 x 11` airmass table there. XML validation passed; the XDF now has 17 tables.
