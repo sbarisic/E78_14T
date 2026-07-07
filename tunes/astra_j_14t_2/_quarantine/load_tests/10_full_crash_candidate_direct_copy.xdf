@@ -2,7 +2,7 @@
 <XDFFORMAT version="1.80">
   <XDFHEADER>
     <flags>0x1</flags>
-    <description>Focused E78 table-search views around HexView047922. Screenshot +0x04A0 maps to raw file address 0x047DC2. Target bin contains aligned 32-bit float vectors at +0x486 and a 2x8 float table at +0x4EA. Full-bin 8x11 similarity scan for HP Tuners [ECM] 33482 confirms TurbochargerKnockMaxAirmass at 0x04DD68; [ECM] 33495 Knock Airmass Scav is confirmed at 0x04E350; [ECM] 33460 Max Boost Limit is confirmed at 0x04DFB4. Torque tables [ECM] 32920/32923/32924 are confirmed in the 0x053464-0x053664 ECPR cluster. Driver Demand A/B/C are confirmed as the DTRC PedProgReq cluster at 0x046944/0x046DC8/0x04724C. HP Tuners [ECM] 14044/14045 TPS delta limit tables are confirmed in the relocated 0x07A59E-0x07A5D8 cluster.</description>
+    <description>Focused E78 table-search views around HexView047922. Screenshot +0x04A0 maps to raw file address 0x047DC2. Target bin contains aligned 32-bit float vectors at +0x486 and a 2x8 float table at +0x4EA. Full-bin 8x11 similarity scan for HP Tuners [ECM] 33482 confirms TurbochargerKnockMaxAirmass at 0x04DD68; [ECM] 33495 Knock Airmass Scav is confirmed at 0x04E350; [ECM] 33460 Max Boost Limit is confirmed at 0x04DFB4. Turbo compressor pressure-ratio/surge tables [ECM] 33491/33435 are mapped at 0x04D9BC and 0x029858. Torque tables [ECM] 32920/32923/32924 are confirmed in the 0x053464-0x053664 ECPR cluster. Driver Demand A/B/C are confirmed as the DTRC PedProgReq cluster at 0x046944/0x046DC8/0x04724C. HP Tuners [ECM] 14044/14045 TPS delta limit tables are confirmed in the relocated 0x07A59E-0x07A5D8 cluster. FEQR power-enrichment EQ, enable, delay, and ramp entries are confirmed around 0x062096-0x0625D8; knock/pre-ignition enrichment entries are confirmed around 0x05FB44-0x05FC9C. Fuel temperature-control/protection discoveries are documented in INFO.md but currently quarantined from this XDF after TunerPro load crashes.</description>
     <BASEOFFSET offset="0" subtract="0" />
     <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
     <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
@@ -1449,84 +1449,6 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
-  <XDFTABLE uniqueid="0x7240" flags="0x0">
-    <title>TurboOverspeedMaxPressureRatio_04D9BC</title>
-    <description>Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DC44" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
-      <units>g/s</units>
-      <indexcount>8</indexcount>
-      <decimalpl>1</decimalpl>
-      <embedinfo type="1" />
-      <datatype>6</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="Pressure Ratio" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4D9BC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>Pressure Ratio</units>
-      <decimalpl>2</decimalpl>
-      <min>0.000000</min>
-      <max>10.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-  <XDFTABLE uniqueid="0x7241" flags="0x0">
-    <title>CompressorSurgeLimit_029858</title>
-    <description>Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29870" mmedelementsizebits="32" mmedcolcount="6" mmedmajorstridebits="32" mmedminorstridebits="0" />
-      <units>g/s</units>
-      <indexcount>6</indexcount>
-      <decimalpl>1</decimalpl>
-      <embedinfo type="1" />
-      <datatype>6</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
-      <datatype>0</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <LABEL index="0" value="Surge Limit" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29858" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="6" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>Pressure Ratio</units>
-      <decimalpl>2</decimalpl>
-      <min>0.000000</min>
-      <max>10.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-  </XDFTABLE>
   <XDFTABLE uniqueid="0x721F" flags="0x0">
     <title>PowerEnrichEQRatio_06233E</title>
     <description>Confirmed HP Tuners [ECM] 12400 Power Enrich EQ Ratio equivalent. FEQR KtFEQR_eqr_PE_RPM, 5x33 unsigned 16-bit big-endian table. Stored values are EQ ratio * 1024, with editor range 0 to 64. X axis is the generated CM_T_RPMa engine-speed axis; Y axis is manifold temperature. The companion E80 table follows at 0x06248C.</description>
@@ -1681,6 +1603,7 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
+  <!-- Power enrichment enable/ramp and knock enrichment entries added 2026-07-08 -->
   <XDFTABLE uniqueid="0x7221" flags="0x0">
     <title>PowerEnrichmentMinRPM_062096</title>
     <description>FEQR PE minimum enable RPM scalar near the confirmed HP Tuners [ECM] 12400 EQ-ratio cluster. Source/reference KeFEQR_n_PE_EngSpdThrsh plus local FEQR relocation. This Astra BIN decodes to 700 rpm; the screenshot example shows 8000 rpm.</description>
@@ -2450,6 +2373,85 @@
       <max>10.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <!-- Airflow turbocharger pressure-ratio entries added 2026-07-08 -->
+  <XDFTABLE uniqueid="0x7240" flags="0x0">
+    <title>TurboOverspeedMaxPressureRatio_04D9BC</title>
+    <description>Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DC44" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <indexcount>8</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Pressure Ratio" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4D9BC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Pressure Ratio</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7241" flags="0x0">
+    <title>CompressorSurgeLimit_029858</title>
+    <description>Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29870" mmedelementsizebits="32" mmedcolcount="6" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <indexcount>6</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Surge Limit" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29858" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="6" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Pressure Ratio</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
