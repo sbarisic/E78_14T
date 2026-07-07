@@ -232,7 +232,8 @@ Format and range:
 - Storage: 32-bit big-endian float
 - Format: `17 x 17`
 - TunerPro math: `X`
-- Editor/display range: `-500000 to 500000`
+- HP Tuners nominal edit range: `-500000 to 500000`
+- TunerPro graph/display Z range in the XDF: `-100 to 160 Nm`
 
 Target axes in `opel_astra_original.bin`:
 
@@ -265,6 +266,46 @@ Notes:
 - The clean target table bodies begin one 17-float row after the raw source+`0x6E18` body anchors, at `0x046944`, `0x046DC8`, and `0x04724C`.
 - A full-bin signed-16-bit similarity scan did not find a better direct match to the HP Tuners screenshot values.
 - The raw target bytes at `0x03D922 + 0x0500..0x06F0` are erased `0xFF`, so the HP Tuners `HexView03D922` screenshot is not a direct raw-file address in `opel_astra_original.bin`.
+- 2026-07-07 graph-view fix: TunerPro's table graph view did not behave well with the original `-500000 to 500000` Z min/max on these small-value float tables. The XDF now keeps the linked embedded X/Y axis addresses, adds static `LABEL` values for graph compatibility, adds Z units `Nm`, and uses a graph-scaled Z min/max of `-100 to 160`.
+
+### HP Tuners [ECM] 14044 / 14045 - TPS Delta Limits
+
+Confirmed TunerPro entries:
+
+- `[ECM] 14044 Maximum Airflow Delta vs. TPS`: `MaximumAirflowDeltaVsTPS_07A59E`
+- `[ECM] 14045 Maximum MAP Delta vs. TPS`: `MaximumMAPDeltaVsTPS_07A5B2`
+
+Format and range:
+
+- Storage: 16-bit big-endian
+- Format: `1 x 9`
+- Value math: `X / 128`
+- `[ECM] 14044` is unsigned, XDF range `0 to 512`; screenshot unit is `g/s`
+- `[ECM] 14045` is signed-style, XDF range `-256 to 256 kPa`
+
+Target axis in `opel_astra_original.bin`:
+
+- TPS axis address: `0x07A5C6`
+- TPS axis storage: 16-bit big-endian, math `X / 655.35`
+- Target TPS axis values: `1.0, 6.0, 12.0, 15.0, 20.0, 25.0, 30.0, 40.0, 60.0`
+
+Target table addresses and readback:
+
+```text
+14044 / Airflow Delta @ 0x07A59E:
+5.50 7.00 9.60 11.70 14.84 19.13 27.27 56.00 150.00
+
+14045 / MAP Delta @ 0x07A5B2:
+36.00 37.00 32.00 42.00 41.50 46.00 47.00 69.00 150.00
+```
+
+Evidence:
+
+- The HP Tuners screenshot values are an exact 16-bit big-endian `X / 128` fingerprint in the Corsa reference bin: `[ECM] 14044` at `0x07BFEE`, `[ECM] 14045` at `0x07C002`.
+- The reference TPS axis follows at `0x07C016`, stored as 16-bit big-endian percent with math `X / 655.35`, and decodes to `5, 12, 15, 20, 25, 30, 35, 40, 60`.
+- A local exact-context match maps source `0x07BF00` to target `0x07A4C8`, so the surrounding neighborhood relocates by `-0x1A38`; the clean table-to-table starts use `-0x1A50`, landing at `0x07A59E` and `0x07A5B2`.
+- The HP Tuners `HexView07B922` screenshot is not a direct raw-file address in `opel_astra_original.bin`; raw `0x07B922 + 0x0650` is erased `0xFF` in this target BIN.
+- The target calibration differs from the reference screenshot values and has a different TPS axis first cells, but the table shape, count markers, axis encoding, and local relocation are coherent.
 
 ## XDF Maintenance Notes
 
@@ -274,7 +315,8 @@ Notes:
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
 - Keep `PeakEngineTorque_0534A4`, `MaxEngineTorqueLimit_0535A4`, and `OverboostTorqueLimit_053464` as the confirmed torque-table views for HP Tuners `[ECM] 32920`, `[ECM] 32923`, and `[ECM] 32924`; their Z ranges are `-8192 to 8192 Nm`.
-- Keep `DriverDemand_A_046944`, `DriverDemand_B_046DC8`, and `DriverDemand_C_04724C` as the confirmed target Driver Demand A/B/C views; their Z ranges are `-500000 to 500000`.
+- Keep `DriverDemand_A_046944`, `DriverDemand_B_046DC8`, and `DriverDemand_C_04724C` as the confirmed target Driver Demand A/B/C views; their HPT nominal range is `-500000 to 500000`, but the XDF uses `-100 to 160 Nm` for TunerPro graph readability.
+- Keep `MaximumAirflowDeltaVsTPS_07A59E` and `MaximumMAPDeltaVsTPS_07A5B2` as the confirmed HP Tuners `[ECM] 14044`/`[ECM] 14045` equivalents; both use the shared TPS axis at `0x07A5C6`.
 - Embedded float axes in the confirmed knock-airmass views use XDF `datatype` `6` plus `<embedinfo type="1" />`; leaving either out can make TunerPro display zeroed axis labels.
 - Do not patch `opel_astra_original.bin` directly without checksum/CVN handling.
 - When a table is found, record at minimum: table name, address, dimensions, endian/format, math, units, axes, confidence level, and how it was validated.

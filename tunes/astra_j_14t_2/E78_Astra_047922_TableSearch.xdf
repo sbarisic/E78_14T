@@ -2,7 +2,7 @@
 <XDFFORMAT version="1.80">
   <XDFHEADER>
     <flags>0x1</flags>
-    <description>Focused E78 table-search views around HexView047922. Screenshot +0x04A0 maps to raw file address 0x047DC2. Target bin contains aligned 32-bit float vectors at +0x486 and a 2x8 float table at +0x4EA. Full-bin 8x11 similarity scan for HP Tuners [ECM] 33482 confirms TurbochargerKnockMaxAirmass at 0x04DD68; [ECM] 33495 Knock Airmass Scav is confirmed at 0x04E350; [ECM] 33460 Max Boost Limit is confirmed at 0x04DFB4. Torque tables [ECM] 32920/32923/32924 are confirmed in the 0x053464-0x053664 ECPR cluster. Driver Demand A/B/C are confirmed as the DTRC PedProgReq cluster at 0x046944/0x046DC8/0x04724C.</description>
+    <description>Focused E78 table-search views around HexView047922. Screenshot +0x04A0 maps to raw file address 0x047DC2. Target bin contains aligned 32-bit float vectors at +0x486 and a 2x8 float table at +0x4EA. Full-bin 8x11 similarity scan for HP Tuners [ECM] 33482 confirms TurbochargerKnockMaxAirmass at 0x04DD68; [ECM] 33495 Knock Airmass Scav is confirmed at 0x04E350; [ECM] 33460 Max Boost Limit is confirmed at 0x04DFB4. Torque tables [ECM] 32920/32923/32924 are confirmed in the 0x053464-0x053664 ECPR cluster. Driver Demand A/B/C are confirmed as the DTRC PedProgReq cluster at 0x046944/0x046DC8/0x04724C. HP Tuners [ECM] 14044/14045 TPS delta limit tables are confirmed in the relocated 0x07A59E-0x07A5D8 cluster.</description>
     <BASEOFFSET offset="0" subtract="0" />
     <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
     <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
@@ -1130,7 +1130,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721A" flags="0x0">
     <title>DriverDemand_A_046944</title>
-    <description>Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. Editor range -500000 to 500000.</description>
+    <description>Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1140,6 +1140,23 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
@@ -1153,15 +1170,33 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x46944" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
       <decimalpl>2</decimalpl>
-      <min>-500000.000000</min>
-      <max>500000.000000</max>
+      <min>-100.000000</min>
+      <max>160.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X">
         <VAR id="X" />
@@ -1170,7 +1205,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721B" flags="0x0">
     <title>DriverDemand_B_046DC8</title>
-    <description>Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. Editor range -500000 to 500000.</description>
+    <description>Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1180,6 +1215,23 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
@@ -1193,15 +1245,33 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x46DC8" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
       <decimalpl>2</decimalpl>
-      <min>-500000.000000</min>
-      <max>500000.000000</max>
+      <min>-100.000000</min>
+      <max>160.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X">
         <VAR id="X" />
@@ -1210,7 +1280,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721C" flags="0x0">
     <title>DriverDemand_C_04724C</title>
-    <description>Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. Editor range -500000 to 500000.</description>
+    <description>Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1220,6 +1290,23 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
@@ -1233,17 +1320,131 @@
       <datatype>6</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
       <MATH equation="X">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4724C" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
       <decimalpl>2</decimalpl>
-      <min>-500000.000000</min>
-      <max>500000.000000</max>
+      <min>-100.000000</min>
+      <max>160.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721D" flags="0x0">
+    <title>MaximumAirflowDeltaVsTPS_07A59E</title>
+    <description>Confirmed HP Tuners [ECM] 14044 Maximum Airflow Delta vs. TPS equivalent. Source Corsa/HP Tuners fingerprint at 0x07BFEE maps by table-to-table offset -0x1A50 to this Astra table at 0x07A59E. 1x9 unsigned 16-bit big-endian, scaled X / 128. Screenshot unit is g/s; editor range is 0 to 512.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.0" />
+      <LABEL index="1" value="6.0" />
+      <LABEL index="2" value="12.0" />
+      <LABEL index="3" value="15.0" />
+      <LABEL index="4" value="20.0" />
+      <LABEL index="5" value="25.0" />
+      <LABEL index="6" value="30.0" />
+      <LABEL index="7" value="40.0" />
+      <LABEL index="8" value="60.0" />
+      <MATH equation="X / 655.35">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Airflow Max Delta" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A59E" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>512.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721E" flags="0x0">
+    <title>MaximumMAPDeltaVsTPS_07A5B2</title>
+    <description>Confirmed HP Tuners [ECM] 14045 Maximum MAP Delta vs. TPS equivalent. Source Corsa/HP Tuners fingerprint at 0x07C002 maps by table-to-table offset -0x1A50 to this Astra table at 0x07A5B2. 1x9 signed 16-bit big-endian, scaled X / 128. Editor range is -256 to 256 kPa.</description>
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.0" />
+      <LABEL index="1" value="6.0" />
+      <LABEL index="2" value="12.0" />
+      <LABEL index="3" value="15.0" />
+      <LABEL index="4" value="20.0" />
+      <LABEL index="5" value="25.0" />
+      <LABEL index="6" value="30.0" />
+      <LABEL index="7" value="40.0" />
+      <LABEL index="8" value="60.0" />
+      <MATH equation="X / 655.35">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="MAP Max Delta" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x7A5B2" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>kPa</units>
+      <decimalpl>2</decimalpl>
+      <min>-256.000000</min>
+      <max>256.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
         <VAR id="X" />
       </MATH>
     </XDFAXIS>
