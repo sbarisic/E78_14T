@@ -3461,8 +3461,8 @@
     </XDFAXIS>
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7271" flags="0x0">
-    <title>ColdMaxDesiredECT_079CB0</title>
-    <description>Cold Max Desired ECT from KaTHMC_T_EngCoolLoAmbMaxLim[x]. The packed OS12646746 block at 0x078164 relocates to 0x077B02, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CB0.</description>
+    <title>ColdMaxDesiredECT_RawPairs_077B02</title>
+    <description>Cold Max Desired ECT candidate from KaTHMC_T_EngCoolLoAmbMaxLim[x]. Exact OS12646746 block at 0x078164 relocates to this Astra BIN at 0x077B02. Exposed as two 16-bit raw words per logical value until the packed E78 temperature conversion is confirmed in TunerPro.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3482,27 +3482,28 @@
     </XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
+      <indexcount>2</indexcount>
       <decimalpl>0</decimalpl>
       <datatype>0</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
-      <LABEL index="0" value="Deg C" />
+      <LABEL index="0" value="Word A" />
+      <LABEL index="1" value="Word B" />
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79CB0" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>deg C</units>
-      <decimalpl>1</decimalpl>
-      <min>-200.000000</min>
-      <max>200.000000</max>
+      <EMBEDDEDDATA mmedaddress="0x77B02" mmedelementsizebits="16" mmedrowcount="2" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>raw</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7272" flags="0x0">
-    <title>ColdMinDesiredECT_079CCC</title>
-    <description>Cold Min Desired ECT from KaTHMC_T_EngCoolLoLim[x]. The packed OS12646746 block at 0x078180 relocates to 0x077B1E, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CCC.</description>
+    <title>ColdMinDesiredECT_RawPairs_077B1E</title>
+    <description>Cold Min Desired ECT candidate from KaTHMC_T_EngCoolLoLim[x]. Exact OS12646746 block at 0x078180 relocates to this Astra BIN at 0x077B1E. Exposed as two 16-bit raw words per logical value until the packed E78 temperature conversion is confirmed in TunerPro.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3522,27 +3523,28 @@
     </XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
+      <indexcount>2</indexcount>
       <decimalpl>0</decimalpl>
       <datatype>0</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
-      <LABEL index="0" value="Deg C" />
+      <LABEL index="0" value="Word A" />
+      <LABEL index="1" value="Word B" />
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79CCC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>deg C</units>
-      <decimalpl>1</decimalpl>
-      <min>-200.000000</min>
-      <max>200.000000</max>
+      <EMBEDDEDDATA mmedaddress="0x77B1E" mmedelementsizebits="16" mmedrowcount="2" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>raw</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7273" flags="0x0">
-    <title>ColdDesiredECTThreshold_079D18</title>
-    <description>Cold Desired ECT threshold/hysteresis row from KaTHMC_T_EngCoolTrshLo[x]. The packed OS12646746 block at 0x07819C relocates to 0x077B3A, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079D18.</description>
+    <title>ColdDesiredECTThreshold_RawPairs_077B3A</title>
+    <description>Cold Desired ECT threshold/hysteresis candidate from KaTHMC_T_EngCoolTrshLo[x]. Exact OS12646746 block at 0x07819C relocates to this Astra BIN at 0x077B3A. Included with the cold max/min ECT controls because it selects the low-limit cold ambient state.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3562,20 +3564,21 @@
     </XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
-      <indexcount>1</indexcount>
+      <indexcount>2</indexcount>
       <decimalpl>0</decimalpl>
       <datatype>0</datatype>
       <unittype>0</unittype>
       <DALINK index="0" />
-      <LABEL index="0" value="Deg C" />
+      <LABEL index="0" value="Word A" />
+      <LABEL index="1" value="Word B" />
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>
     <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79D18" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>deg C</units>
-      <decimalpl>1</decimalpl>
-      <min>-200.000000</min>
-      <max>200.000000</max>
+      <EMBEDDEDDATA mmedaddress="0x77B3A" mmedelementsizebits="16" mmedrowcount="2" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>raw</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X"><VAR id="X" /></MATH>
     </XDFAXIS>

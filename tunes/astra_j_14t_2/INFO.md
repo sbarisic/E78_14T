@@ -14,6 +14,74 @@ This folder is for locating and documenting tables in `opel_astra_original.bin`,
 
 `E78_HexView.xdf` in `E:\Projects\E78_14T\xdf` is used as a numeric raw view in VCM Editor to see where bytes changed and how much. `E78_Astra_047922_TableSearch.xdf` is the focused TunerPro work file for the `HexView047922` area and the nearby knock-airmass calibration block.
 
+## Project Orientation
+
+Goal: build a usable TunerPro XDF for the Opel Astra J 1.4T E78 calibration by finding HP Tuners/VCM Editor tables in `opel_astra_original.bin`, validating the offsets against available Damos/WinOLS/reference-XDF sources, and recording enough evidence that future work can continue without rediscovering the same landmarks.
+
+Primary working files:
+
+- Main folder: `E:\Projects\E78_14T\tunes\astra_j_14t_2`
+- Target binary: `E:\Projects\E78_14T\tunes\astra_j_14t_2\opel_astra_original.bin`
+- Working XDF: `E:\Projects\E78_14T\tunes\astra_j_14t_2\E78_Astra_047922_TableSearch.xdf`
+- Knowledge log: `E:\Projects\E78_14T\tunes\astra_j_14t_2\INFO.md`
+- Raw VCM Editor numeric view: `E:\Projects\E78_14T\xdf\E78_HexView.xdf`
+- Load-test/quarantine XDFs: `E:\Projects\E78_14T\tunes\astra_j_14t_2\_quarantine\load_tests`
+
+Important source/reference files:
+
+- Damos/WinOLS CSV for the Astra OS: `E:\Projects\E78_14T\sources\Uni78\DamosCSVParser\data\winols_astra.csv`
+- Corsa reference/change-bin folder: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins`
+- Corsa original bin: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins\Original.bin`
+- Corsa edited bin: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins\Change1.bin`
+- Corsa sandbox bin: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins\Sandbox.bin`
+- Corsa local WinOLS export: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins\winols_desc.csv`
+- Corsa local XDFs: `E78_Test.xdf`, `E78_Adam.xdf`, and `E78_DesiredECT_OS_12646746.xdf` in the Corsa `change_everything_bins` folder.
+- Shared XDF references: `E:\Projects\E78_14T\xdf\acdelco_e78_views.xdf`, `E:\Projects\E78_14T\xdf\acdelco_e78_os12669508.xdf`, and `E:\Projects\E78_14T\xdf\E78_DesiredECT_OS_12646746.xdf`
+- Relocation report: `E:\Projects\E78_14T\tunes\astra_j_14t_2\opel_astra_original_relocation_report.md`
+- High-confidence relocation CSV: `E:\Projects\E78_14T\tunes\astra_j_14t_2\relocations_high_confidence.csv`
+
+Useful meaning of each source:
+
+- `winols_astra.csv` is the main symbol and metadata source. It gives source names, comments, nominal dimensions, unit, factor/offset, data organization, and source addresses. Its addresses are not always the final Astra BIN address, so use it as a map, not as proof.
+- Reference XDFs show table shapes and TunerPro XML conventions. They can have wrong or misleading data types for this BIN; always validate the bytes. Example: `E78_DesiredECT_OS_12646746.xdf` declares a THMC table as 32-bit floats, but the real bytes are packed `00xx` word pairs.
+- HP Tuners screenshots provide table names, dimensions, axes, units, and approximate values. Screenshots are often from a different or edited calibration, so exact values may differ.
+- `E78_HexView.xdf` and VCM Editor HexView screenshots show where bytes changed. Treat the HexView window base as a clue; it is not always a direct file-address base in this Astra BIN.
+- Edited/reference bins are best for fingerprints: compare original vs edited bytes, then search the same changed byte pattern or nearby table structure in `opel_astra_original.bin`.
+- Quarantine/load-test XDFs preserve intermediate states. Use them when TunerPro starts crashing or when bisecting a bad table/category definition.
+
+## Table-Finding Methodology
+
+Default workflow for a new HP Tuners table request:
+
+1. Capture the HP Tuners metadata from the user screenshot: ECM number, full display name, units, axis labels, dimensions, value range, and visible values.
+2. Search `winols_astra.csv` by likely subsystem prefix and keywords. Examples: `BSTC`/`BSTD` for turbo, `ECPR` for engine torque, `DTRC` for driver demand, `FEQR` for enrichment, `SPRK` for spark, `THMC` for thermal/coolant.
+3. Inspect reference XDFs for matching table names, dimensions, axes, math, and storage type.
+4. Decode candidate byte regions from the Astra bin as all plausible formats: 8-bit signed/unsigned, 16-bit big-endian signed/unsigned, 32-bit big-endian float, and common fixed-point scales.
+5. Search for exact fingerprints first: full table bytes, axis bytes, changed-bin byte diffs, or known reference-table byte sequences.
+6. If exact fingerprints fail, search by shape and values: dimensions, monotonic axes, common axis sets, value ranges, repeated neighboring tables, and local count markers.
+7. Establish relocation deltas from source/reference addresses to Astra target addresses. Prefer a cluster of matching table/axis deltas over a single table hit.
+8. Confirm axes separately. A table body can be right while the nearest duplicate axis is wrong; record X and Y axis addresses explicitly.
+9. Add the table to the XDF only when the offset, dimensions, storage format, math, units, and axes are good enough to be useful. Mark candidates as candidate/raw when uncertainty remains.
+10. Validate the XDF mechanically: XML parse, unique `uniqueid` values, category membership references, and address bounds against the 3 MB bin.
+11. Preserve a backup or load-test XDF before risky edits. If TunerPro crashes, bisect by table group and category metadata before changing confirmed offsets.
+12. Update this `INFO.md` with the new table name, address, dimensions, format, math, units, axes, confidence, source evidence, and any caveats.
+
+Confidence rules:
+
+- Confirmed: exact changed-byte or reference fingerprint plus matching axes/shape/value range, or multiple independent sources agree.
+- High confidence: strong symbol/cluster relocation and matching axes/shape/value range, but no edited-bin fingerprint yet.
+- Candidate: plausible local match, but one or more of source symbol, axes, values, or conversion is unresolved.
+- Raw/inspection view: useful for looking at bytes, but not yet a proper table definition.
+
+XDF editing conventions:
+
+- TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`; category declarations are zero-based and table memberships are one-based.
+- Keep category names stable. Prior TunerPro crashes were caused by bad XDF metadata/order, so add tables in small groups and preserve load-test copies.
+- Use 32-bit big-endian floats with `mmedtypeflags="0x10000"` only after byte-level float decoding is verified.
+- Use `mmedtypeflags="0x01"` for signed table data where previous definitions established it.
+- Do not blindly copy reference XDF storage definitions. Verify the target bytes first.
+- Do not edit `opel_astra_original.bin` directly without checksum/CVN handling.
+
 ## Current Confirmed Tables
 
 ### HP Tuners [ECM] 33482 - Turbocharger Knock Max Airmass
@@ -496,6 +564,38 @@ Evidence and caveats:
 - The HPT `[ECM] 12232` COT Max Enrichment screenshot is a `1 x 5` alcohol table with all cells around `1.37`; the contiguous repeated block at `0x0636CC` fits that display shape. The nearby CCTI scalar at `0x04E900` also decodes to `1.370`, so both are kept in the XDF until the exact HPT source symbol is nailed down.
 - `COT` enable and `Turbo Overtemp` enable dropdown enum/boolean targets were not added yet because the local raw words near the cluster do not uniquely identify the HPT switch without a changed-bin fingerprint.
 
+## Spark Table Search - 2026-07-08
+
+Spark entries were added to `E78_Astra_047922_TableSearch.xdf` under new `Spark->...` categories. Category declarations continue the stable TunerPro convention: declarations are zero-based and `CATEGORYMEM` references are one-based.
+
+Confirmed/high-confidence additions:
+
+| XDF title | Source symbol | Address | Shape / format | Axes | Notes |
+| --- | --- | ---: | --- | --- | --- |
+| `SparkHighOctaneBase_07394D` | `KtSPRK_phi_BaseHiOctane` | `0x07394D` | `33 x 33`, signed byte, `X * 0.5 deg` | RPM33 `0x073900`, APC33 `0x077360` | High Octane base spark. |
+| `SparkLowOctaneBase_073FC5` | `KtSPRK_phi_BaseLowOctane` | `0x073FC5` | `33 x 33`, signed byte, `X * 0.5 deg` | RPM33 `0x073900`, APC33 `0x077360` | Low Octane base spark. |
+| `SparkSmoothingRunFilterRefs_075C36` | `KeSPRK_Cnt_RunSprkFilterRefs` | `0x075C36` | scalar, unsigned 16-bit, count | static scalar axes | Closest local equivalent for HPT Spark Smoothing; Astra value is `20`. |
+| `SparkFlexFuel_075D6F` | `KtSPRK_phi_FFS` | `0x075D6F` | `33 x 33`, signed byte, `X * 0.5 deg` | RPM33 `0x073900`, APC33 `0x077360` | Flex Fuel spark correction; stock Astra table is zero-filled. |
+| `SparkFlexFuelEqRatio_075C3F` | `KtSPRK_phi_FFS_EqRatio1` | `0x075C3F` | `17 x 17`, signed byte, `X * 0.5 deg` | static `800-7200 rpm`, EQR17 `0x07727A` | Flex Fuel EQ-ratio spark correction; stock Astra table is zero-filled. |
+| `SparkFlexFuelBlendFactor_075D62` | `KtSPRK_Scl_FFS_BlendFactor` | `0x075D62` | `1 x 5`, unsigned 16-bit, `X * 0.000015258789 ratio` | static alcohol labels | Nearby Flex Fuel support row; stock Astra row is zero-filled. |
+| `SparkVCPSpark_07463D` | `KtSPRK_phi_Phaser` | `0x07463D` | `33 x 17`, signed byte, `X * 0.5 deg` | RPM17 `0x0784AC`, APC33 `0x077360` | VCP Spark / cam phaser spark table. |
+| `MinimumSparkBase_07895E` | `KtSPRK_phi_MinSpkAdvLimitSht` | `0x07895E` | `33 x 17`, signed 16-bit, `X * 0.0078125 deg` | RPM17 `0x0784AC`, APC33 `0x077360` | Minimum Spark Base / short-term minimum spark limit. |
+
+Candidate additions that need an HPT edit fingerprint:
+
+| XDF title | Source symbol / reason | Address | Shape / format | Notes |
+| --- | --- | ---: | --- | --- |
+| `SparkHumidityBaseMax_Candidate_076843` | `KtSPRK_phi_HumidityMax` structural relocation | `0x076843` | `33 x 33`, signed byte, `X * 0.5 deg` | Layout fits the SPRK humidity/minimum-spark cluster, but decoded values are implausibly wide. Treat as weak until an HPT edit proves the address. |
+| `SparkVCPHumidityAdderDry_Candidate_076C87` | `KtSPRK_phi_PhaserHumidMin` structural relocation | `0x076C87` | `33 x 17`, signed byte, `X * 0.5 deg` | Candidate for HPT VCP Humidity Adder Dry; stock Astra table is zero-filled. |
+| `SparkVCPHumidityAdderWet_Candidate_076EBB` | `KtSPRK_phi_PhaserHumidMax` structural relocation | `0x076EBB` | `33 x 17`, signed byte, `X * 0.5 deg` | Candidate for HPT VCP Humidity Adder Wet; stock Astra table is zero-filled. |
+| `MinimumSparkLongTerm_Candidate_078E2A` | clean local 33x17 table near `KtSPRK_phi_MinSpkAdvLimitLng` | `0x078E2A` | `33 x 17`, signed 16-bit, `X * 0.0078125 deg` | Direct expected long-term address `0x078DC4` decodes into mixed data; `0x078E2A` is clean and all `-15 deg`, but remains candidate. |
+
+Spark axis notes:
+
+- The target RPM/APC/EQR axes have count words before the real breakpoint data. Use `0x073900`, `0x077360`, `0x0784AC`, and `0x07727A`, not the preceding count-marker addresses.
+- The main SPRK relocation is not one global delta. Base/Flex/VCP Spark body addresses use the `CSV + 0x386C` family, while the humidity/minimum-spark cluster uses a different local layout.
+- TunerPro XML validation after insertion: 61 tables, 61 unique IDs, 13 valid categories, no out-of-bounds embedded addresses.
+
 ## Offset Ledger - Confirmed HPT Tables
 
 These offsets are additive deltas to the Astra target address in `opel_astra_original.bin`. They are useful search hints, but they are not one global OS-to-OS offset. The most reliable pattern is by calibration family or local cluster.
@@ -512,6 +612,14 @@ Reference/WinOLS source to Astra target:
 | ECPR torque | `[ECM] 32924` Overboost Torque Limit | `KtECPR_M_Overboost` `0x04C0B8` | `0x053464` | `+0x73AC` | Shared RPM axis `0x04C920 -> 0x053AD0` is `+0x71B0`. |
 | ECPR torque | `[ECM] 32920` Peak Engine Torque | `KtECPR_M_IndicatedPeakTorq` `0x04C0D8` | `0x0534A4` | `+0x73CC` | Alcohol axis `0x04C988 -> 0x053B10` is `+0x7188`. |
 | ECPR torque | `[ECM] 32923` Max Engine Torque Limit | unresolved exact CSV symbol | `0x0535A4` | n/a | In the target cluster it is exactly `+0x100` after Peak Engine Torque. |
+| TSXC driveline torque | Trans Output Max | `KeTSXC_M_TransOutputTorqLimit` `0x021D28` | `0x021648` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `100000 Nm`; HPT screenshot example shows `131072 Nm`. |
+| TSXC driveline torque | Front Axle Max | `KeTSXC_M_FrontAxleTorqLimit` `0x021D18` | `0x021638` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `100000 Nm`. |
+| TSXC driveline torque | Front Axle Max 4WD Low | `KeTSXC_M_4LoFrontAxleTorqLimit` `0x021D10` | `0x021630` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `131072 Nm`. |
+| TSXC driveline torque | Front Propshaft Max | `KeTSXC_M_FrontDrvShftTorqLimit` `0x021D1C` | `0x02163C` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `100000 Nm`. |
+| TSXC driveline torque | Rear Axle Max | `KeTSXC_M_RearAxleTorqLimit` `0x021D20` | `0x021640` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `100000 Nm`; HPT screenshot example shows `2000 Nm`. |
+| TSXC driveline torque | Rear Axle Max 4WD Low | `KeTSXC_M_4LoRearAxleTorqLimit` `0x021D14` | `0x021634` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `131072 Nm`. |
+| TSXC driveline torque | Rear Propshaft Max | `KeTSXC_M_RearDrvShftTorqLimit` `0x021D24` | `0x021644` | `-0x06E0` | High-confidence local TSXC scalar island. Astra stock decodes to `100000 Nm`; HPT screenshot example shows `500 Nm`. |
+| BRKC brake torque | Brake Torque Limit / driver intended brake torque scale | `KeBRKC_M_MaxDrvIntBrkTorq` `0x03F620` | `0x047CE4` | `+0x86C4` | High-confidence scalar from the DTRC/BRKC target island. Astra stock decodes to `6000 Nm`. This may correspond to HPT Brake Torque Limit, but the separate BTRC BTM table remains unresolved. |
 | DTRC driver demand | `[ECM] 33050` Driver Demand A | `KtDTRC_P_M_PedProgReqA` `0x03FAE8` | `0x046944` | `+0x6E5C` | Source axes relocate by `+0x6E18`: X `0x040EF4 -> 0x047D0C`, Y `0x040E04 -> 0x047C1C`. |
 | DTRC driver demand | Driver Demand B | `KtDTRC_P_M_PedProgReqB` `0x03FF6C` | `0x046DC8` | `+0x6E5C` | Same shared target axes as A/C. |
 | DTRC driver demand | Driver Demand C | `KtDTRC_P_M_PedProgReqC` `0x0403F0` | `0x04724C` | `+0x6E5C` | Same shared target axes as A/B. |
@@ -553,6 +661,12 @@ HPT HexView window name to Astra target:
 | `HexView05C122` | Knock Enrichment EQ Ratio | `0x05FBF8` | `+0x3AD6` |
 | `HexView05C122` | Hot engine / piston protection cluster | `0x05FA44` | `+0x3922` |
 | `HexView05C122` | COT Max Enrichment HPT-shaped row | `0x0636CC` | `+0x75AA` |
+| THMC float value block | Cold Max Desired ECT / `KaTHMC_T_EngCoolLoAmbMaxLim[x]` | `0x079CB0` | Corsa float row `0x07B694 -> 0x079CB0`; values are `105 deg C` across all 7 cells. |
+| THMC float value block | Cold Min Desired ECT / `KaTHMC_T_EngCoolLoLim[x]` | `0x079CCC` | Corsa float row `0x07B6B0 -> 0x079CCC`; values are `97.5, 97.5, 100, 100, 105, 105, 105 deg C`. |
+| THMC float value block | Cold Desired ECT threshold / `KaTHMC_T_EngCoolTrshLo[x]` | `0x079D18` | Corsa float row `0x07B6CC -> 0x079D18`; values are `10, 5, 0, -5, -10, -20, -40 deg C`. |
+| OS12646746 packed reference | Desired ECT / `KaTHMC_T_TMS_EngCoolReq[x]` | `0x077B56` | `-0x0662` from source `0x0781B8`; raw inspection only until the matching engineering-value row is confirmed. |
+| OS12646746 packed reference | Cold Max/Min/threshold packed context | `0x077B02-0x077B47` | Exact packed relocation from source `0x078164-0x0781A9`, but not the editable degree-C float rows. |
+| OS12646746 packed reference | `E78_DesiredECT_OS_12646746.xdf` `KaTHMC_T_EngCool` block | `0x077B9E` | `-0x0662` from source `0x078200`; raw inspection only. |
 
 Search heuristics from the confirmed tables:
 
@@ -561,6 +675,8 @@ Search heuristics from the confirmed tables:
 - For BSTD turbo compressor diagnostic/surge tables, the Corsa reference to Astra target shift was `-0x04B4` for both table and axis.
 - For DTRC driver-demand tables, body anchors used `+0x6E5C`; shared axes used `+0x6E18`.
 - For ECPR torque, table bodies are around `+0x73xx`; shared axes are around `+0x71xx`.
+- For TSXC driveline torque limit scalars, the confirmed target subgroup uses a clean `-0x06E0` shift from the CSV source symbols. Values in this Astra BIN differ from the provided HPT screenshot for several limits, so use symbol order and local island shape rather than exact screenshot values.
+- For the THMC Desired ECT cluster, do not use the packed `00xx` relocation block at `0x077B02` as the editable degree-C table. It is a useful context/fingerprint match, but a `2 x 7` raw-pair view reads straight through adjacent 7-cell calibrations. The confirmed editable cold ECT rows are normal 32-bit big-endian floats at `0x079CB0`, `0x079CCC`, and `0x079D18`.
 - For the TPS delta pair, the table and axis relocation was a clean `-0x1A50`.
 - For FEQR Power Enrich EQ Ratio, both table bodies used a clean `+0x61FC`.
 - For FEQR Power Enrichment enable/delay/ramp tables, the nearby `0x0620xx` entries also use the `+0x61FC` family delta, but the Astra calibration values can differ heavily from the HPT screenshot example.
@@ -583,6 +699,11 @@ Name notes:
 - Keep `TurboOverspeedMaxPressureRatio_04D9BC` and `CompressorSurgeLimit_029858` active in the main XDF. They load successfully in the regenerated `09_all_quarantined_groups_regenerated.xdf` layout, with turbo pressure-ratio/surge entries inserted before the PE and knock-enrichment blocks.
 - Treat `CompressorSurgeLimit_029858` as confirmed exact. Treat `TurboOverspeedMaxPressureRatio_04D9BC` as high confidence because its axis matches exactly, but the stock Astra original row is higher in the middle cells than the provided HPT screenshot.
 - Keep `PeakEngineTorque_0534A4`, `MaxEngineTorqueLimit_0535A4`, and `OverboostTorqueLimit_053464` as the confirmed torque-table views for HP Tuners `[ECM] 32920`, `[ECM] 32923`, and `[ECM] 32924`; their Z ranges are `-8192 to 8192 Nm`.
+- Keep `TransOutputMax_021648`, `FrontAxleMax_021638`, `FrontAxleMax4WDLow_021630`, `FrontPropshaftMax_02163C`, `RearAxleMax_021640`, `RearAxleMax4WDLow_021634`, and `RearPropshaftMax_021644` as the high-confidence TSXC driveline torque limit scalars. Current Astra stock values are `100000/131072 Nm` depending on scalar and do not exactly match the HPT screenshot example.
+- Keep `BrakeTorqueLimit_MaxDriverIntended_047CE4` as the high-confidence `KeBRKC_M_MaxDrvIntBrkTorq` scalar (`6000 Nm`). Treat it as the best current brake torque limit scalar match, not as proof that the BTRC brake torque management limit table has been found.
+- Do not add `Default Trans Limit`, `Brake Torque Limit` BTRC table, or `Brake Torque Mult` until a changed-bin fingerprint or cleaner local match is available. The CSV BTRC entries `KtBTRC_K_TorqLimit_ExtBrk_OBD` (`0x0488CC`, `3 x 9` floats) and `KtBTRC_M_BTM_Lim` (`0x0488F0`, `1 x 17` eHiLo) overlap in source space; the latter appears to reinterpret the multiplier table bytes and produces nonsensical values. Candidate multiplier-looking target blocks were seen near `0x050268`, `0x068880`, and `0x06F220`, but they are not active in the XDF.
+- Keep the editable cold ECT entries in `Engine->Thermal`: `ColdMaxDesiredECT_079CB0`, `ColdMinDesiredECT_079CCC`, and `ColdDesiredECTThreshold_079D18`. These are normal 32-bit big-endian float rows in deg C and match the Damos/WinOLS value lists.
+- Keep `DesiredECT_TMSRequest_RawPairs_077B56` and `KaTHMC_T_EngCool_OS12646746_RawPairs_077B9E` as raw inspection views only. Do not reintroduce `ColdMaxDesiredECT_RawPairs_077B02` or `ColdMinDesiredECT_RawPairs_077B1E` as editable views; those windows showed one table plus the next adjacent table, which is why they looked wrong in TunerPro.
 - Keep `DriverDemand_A_046944`, `DriverDemand_B_046DC8`, and `DriverDemand_C_04724C` as the confirmed target Driver Demand A/B/C views; their HPT nominal range is `-500000 to 500000`, but the XDF uses `-100 to 160 Nm` for TunerPro graph readability.
 - Keep `MaximumAirflowDeltaVsTPS_07A59E` and `MaximumMAPDeltaVsTPS_07A5B2` as the confirmed HP Tuners `[ECM] 14044`/`[ECM] 14045` equivalents; both use the shared TPS axis at `0x07A5C6`.
 - Keep `PowerEnrichEQRatio_06233E` as the confirmed HP Tuners `[ECM] 12400` Power Enrich EQ Ratio view; `PowerEnrichEQRatioE80_06248C` is the byte-identical E80 companion in this BIN.
@@ -591,7 +712,7 @@ Name notes:
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
 - Current active XDF uses the regenerated 49-table layout from `09_all_quarantined_groups_regenerated.xdf`: stable 28-table base plus turbo pressure-ratio/surge, PE EQ, PE enable/delay/ramp, and knock-enrichment entries. Fuel temperature-control definitions remain quarantined.
-- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->TPS Delta`, `Fuel->Power Enrich`, and `Fuel->Knock Enrichment`.
+- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->TPS Delta`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
 - Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:
