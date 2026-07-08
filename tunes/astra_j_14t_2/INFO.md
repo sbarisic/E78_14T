@@ -396,23 +396,27 @@ Notes:
 - The raw target bytes at `0x03D922 + 0x0500..0x06F0` are erased `0xFF`, so the HP Tuners `HexView03D922` screenshot is not a direct raw-file address in `opel_astra_original.bin`.
 - 2026-07-07 graph-view fix: TunerPro's table graph view did not behave well with the original `-500000 to 500000` Z min/max on these small-value float tables. The XDF now keeps the linked embedded X/Y axis addresses, adds static `LABEL` values for graph compatibility, adds Z units `Nm`, and uses a graph-scaled Z min/max of `-100 to 160`.
 
-### HP Tuners [ECM] 14044 / 14045 - TPS Delta Limits
+### HP Tuners Airflow Correlation / P0068 - TPSD Limits
 
 Confirmed TunerPro entries:
 
-- `[ECM] 14044 Maximum Airflow Delta vs. TPS`: `MaximumAirflowDeltaVsTPS_07A59E`
-- `[ECM] 14045 Maximum MAP Delta vs. TPS`: `MaximumMAPDeltaVsTPS_07A5B2`
+- `Enable RPM`: `AirflowCorrelationEnableRPM_07A570`
+- `Max Airflow vs. RPM`: `MaxAirflowVsRPM_07A59C`
+- `Max Airflow vs. IGNV`: `MaxAirflowVsIGNV_07A586`
+- `Airflow Delta` / `[ECM] 14044 Maximum Airflow Delta vs. TPS`: `MaximumAirflowDeltaVsTPS_07A59E`
+- `MAP Delta` / `[ECM] 14045 Maximum MAP Delta vs. TPS`: `MaximumMAPDeltaVsTPS_07A5B2`
 
 Format and range:
 
-- Storage: 16-bit big-endian
-- Format: `1 x 9`
-- Value math: `X / 128`
-- `[ECM] 14044` is unsigned, XDF range `0 to 512`; screenshot unit is `g/s`
-- `[ECM] 14045` is signed-style, XDF range `-256 to 256 kPa`
+- `Enable RPM`: 32-bit big-endian float at `0x07A570`.
+- The four `1 x 9` tables use 16-bit big-endian storage and value math `X / 128`.
+- `Max Airflow vs. RPM`, `Max Airflow vs. IGNV`, and `Airflow Delta` are unsigned `g/s` views.
+- `MAP Delta` is signed-style, XDF range `-256 to 256 kPa`.
 
 Target axis in `opel_astra_original.bin`:
 
+- `Max Airflow vs. RPM`: generated RPM axis `600, 1400, 2200, 3000, 3800, 4600, 5400, 6200, 7000`.
+- `Max Airflow vs. IGNV`: generated voltage axis `6, 7, 8, 9, 10, 11, 12, 13, 14 V`.
 - TPS axis address: `0x07A5C6`
 - TPS axis storage: 16-bit big-endian, math `X / 655.35`
 - Target TPS axis values: `1.0, 6.0, 12.0, 15.0, 20.0, 25.0, 30.0, 40.0, 60.0`
@@ -420,6 +424,15 @@ Target axis in `opel_astra_original.bin`:
 Target table addresses and readback:
 
 ```text
+Enable RPM @ 0x07A570:
+800
+
+Max Airflow vs. IGNV @ 0x07A586:
+1.48 1.95 13.74 42.67 102.67 205.24 300.70 300.70 300.70
+
+Max Airflow vs. RPM @ 0x07A59C:
+0.07 5.50 7.00 9.60 11.70 14.84 19.13 27.27 56.00
+
 14044 / Airflow Delta @ 0x07A59E:
 5.50 7.00 9.60 11.70 14.84 19.13 27.27 56.00 150.00
 
@@ -429,6 +442,9 @@ Target table addresses and readback:
 
 Evidence:
 
+- The Astra WinOLS CSV names this family as TPSD airflow actuation diagnostics: `KeTPSD_n_AirflowActMin`, `KtTPSD_dm_MaxMAF_VsVoltage`, `KtTPSD_dm_MaxMAF_VsRPM`, `KtTPSD_dm_MAF_DesThrDelt`, and `KtTPSD_p_MAP_DesThrDelt`.
+- The CSV/Damos TPSD source block maps to this Astra target block with a local `+0x1AB0` shift: `0x078AC0 -> 0x07A570`, `0x078AD6 -> 0x07A586`, `0x078AEC -> 0x07A59C`, `0x078AEE -> 0x07A59E`, and `0x078B02 -> 0x07A5B2`.
+- `Max Airflow vs. RPM` intentionally starts two bytes before `Airflow Delta`; this overlap exists in the WinOLS/Damos layout too.
 - The HP Tuners screenshot values are an exact 16-bit big-endian `X / 128` fingerprint in the Corsa reference bin: `[ECM] 14044` at `0x07BFEE`, `[ECM] 14045` at `0x07C002`.
 - The reference TPS axis follows at `0x07C016`, stored as 16-bit big-endian percent with math `X / 655.35`, and decodes to `5, 12, 15, 20, 25, 30, 35, 40, 60`.
 - A local exact-context match maps source `0x07BF00` to target `0x07A4C8`, so the surrounding neighborhood relocates by `-0x1A38`; the clean table-to-table starts use `-0x1A50`, landing at `0x07A59E` and `0x07A5B2`.
@@ -623,8 +639,11 @@ Reference/WinOLS source to Astra target:
 | DTRC driver demand | `[ECM] 33050` Driver Demand A | `KtDTRC_P_M_PedProgReqA` `0x03FAE8` | `0x046944` | `+0x6E5C` | Source axes relocate by `+0x6E18`: X `0x040EF4 -> 0x047D0C`, Y `0x040E04 -> 0x047C1C`. |
 | DTRC driver demand | Driver Demand B | `KtDTRC_P_M_PedProgReqB` `0x03FF6C` | `0x046DC8` | `+0x6E5C` | Same shared target axes as A/C. |
 | DTRC driver demand | Driver Demand C | `KtDTRC_P_M_PedProgReqC` `0x0403F0` | `0x04724C` | `+0x6E5C` | Same shared target axes as A/B. |
-| TPS delta | `[ECM] 14044` Maximum Airflow Delta vs. TPS | HPT/Corsa fingerprint `0x07BFEE` | `0x07A59E` | `-0x1A50` | Shared TPS axis `0x07C016 -> 0x07A5C6` is also `-0x1A50`. |
-| TPS delta | `[ECM] 14045` Maximum MAP Delta vs. TPS | HPT/Corsa fingerprint `0x07C002` | `0x07A5B2` | `-0x1A50` | Same shared TPS axis. |
+| TPSD airflow correlation | P0068 Enable RPM | `KeTPSD_n_AirflowActMin` `0x078AC0` | `0x07A570` | `+0x1AB0` | 32-bit big-endian float; target decodes to `800 rpm`. |
+| TPSD airflow correlation | P0068 Max Airflow vs. IGNV | `KtTPSD_dm_MaxMAF_VsVoltage` `0x078AD6` | `0x07A586` | `+0x1AB0` | 1x9 unsigned 16-bit big-endian, `X / 128`; generated axis `6-14 V`. |
+| TPSD airflow correlation | P0068 Max Airflow vs. RPM | `KtTPSD_dm_MaxMAF_VsRPM` `0x078AEC` | `0x07A59C` | `+0x1AB0` | 1x9 unsigned 16-bit big-endian, `X / 128`; generated axis `600-7000 rpm`. |
+| TPSD airflow correlation | `[ECM] 14044` Airflow Delta / Maximum Airflow Delta vs. TPS | `KtTPSD_dm_MAF_DesThrDelt` `0x078AEE`; HPT/Corsa fingerprint `0x07BFEE` | `0x07A59E` | `+0x1AB0` / `-0x1A50` | Shared TPS axis `0x07C016 -> 0x07A5C6` is also `-0x1A50`. |
+| TPSD airflow correlation | `[ECM] 14045` MAP Delta / Maximum MAP Delta vs. TPS | `KtTPSD_p_MAP_DesThrDelt` `0x078B02`; HPT/Corsa fingerprint `0x07C002` | `0x07A5B2` | `+0x1AB0` / `-0x1A50` | Same shared TPS axis. |
 | FEQR power enrichment | `[ECM] 12400` Power Enrich EQ Ratio | `KtFEQR_eqr_PE_RPM` `0x05C142` | `0x06233E` | `+0x61FC` | Generated/static RPM axis in XDF. |
 | FEQR power enrichment | `[ECM] 12400` companion E80 | `KtFEQR_eqr_PE_RPM_E80` `0x05C290` | `0x06248C` | `+0x61FC` | Byte-identical companion in this Astra BIN. |
 | FEQR power enrichment | `[ECM] 12418` Power Enrichment Enable Torque % | `KtFEQR_Pct_PE_LoadThrsh` `0x05BEB2` | `0x0620AE` | `+0x61FC` | Target values are all `0%`, unlike the `97%` screenshot example. |
@@ -661,6 +680,9 @@ HPT HexView window name to Astra target:
 | `HexView05C122` | Knock Enrichment EQ Ratio | `0x05FBF8` | `+0x3AD6` |
 | `HexView05C122` | Hot engine / piston protection cluster | `0x05FA44` | `+0x3922` |
 | `HexView05C122` | COT Max Enrichment HPT-shaped row | `0x0636CC` | `+0x75AA` |
+| THMC float value block | `KaTHMC_T_EngCool_Labels_Candidate` | `0x079C88` | Candidate 32-bit big-endian float row inferred from the OS12646746 reference XDF. Exact symbol is absent from the Astra WinOLS CSV; inspection context only. |
+| THMC float value block | `KaTHMC_T_EngCool_Candidate` | `0x079C50` | Candidate 2x7 32-bit big-endian float view using labels at `0x079C88`. The standalone `KaTHMC_T_EngCool` symbol is absent from the Astra WinOLS CSV and the values look implausible as Max/Min desired ECT. |
+| THMC float value block | `KaTHMC_T_EngCoolReq_Candidate` | `0x079C6C` | Candidate 1x24 32-bit big-endian float view from the OS12646746 reference XDF. Astra WinOLS has no `KaTHMC_T_EngCoolReq`; the closest real 24-cell symbol is `KaTHMC_T_TMS_EngCoolReq[x]` at source `$781B8`. |
 | THMC float value block | Cold Max Desired ECT / `KaTHMC_T_EngCoolLoAmbMaxLim[x]` | `0x079CB0` | Corsa float row `0x07B694 -> 0x079CB0`; values are `105 deg C` across all 7 cells. |
 | THMC float value block | Cold Min Desired ECT / `KaTHMC_T_EngCoolLoLim[x]` | `0x079CCC` | Corsa float row `0x07B6B0 -> 0x079CCC`; values are `97.5, 97.5, 100, 100, 105, 105, 105 deg C`. |
 | THMC float value block | Cold Desired ECT threshold / `KaTHMC_T_EngCoolTrshLo[x]` | `0x079D18` | Corsa float row `0x07B6CC -> 0x079D18`; values are `10, 5, 0, -5, -10, -20, -40 deg C`. |
@@ -676,7 +698,7 @@ Search heuristics from the confirmed tables:
 - For DTRC driver-demand tables, body anchors used `+0x6E5C`; shared axes used `+0x6E18`.
 - For ECPR torque, table bodies are around `+0x73xx`; shared axes are around `+0x71xx`.
 - For TSXC driveline torque limit scalars, the confirmed target subgroup uses a clean `-0x06E0` shift from the CSV source symbols. Values in this Astra BIN differ from the provided HPT screenshot for several limits, so use symbol order and local island shape rather than exact screenshot values.
-- For the THMC Desired ECT cluster, do not use the packed `00xx` relocation block at `0x077B02` as the editable degree-C table. It is a useful context/fingerprint match, but a `2 x 7` raw-pair view reads straight through adjacent 7-cell calibrations. The confirmed editable cold ECT rows are normal 32-bit big-endian floats at `0x079CB0`, `0x079CCC`, and `0x079D18`.
+- For the THMC Desired ECT cluster, do not use the packed `00xx` relocation block at `0x077B02` as the editable degree-C table. It is a useful context/fingerprint match, but raw-pair views can read straight through adjacent calibrations. The confirmed Astra cold-limit degree-C views are normal 32-bit big-endian floats at `0x079CB0`, `0x079CCC`, and `0x079D18`; surrounding OS12646746-style `KaTHMC_T_EngCool*` views are candidates only until a changed-bin fingerprint confirms them.
 - For the TPS delta pair, the table and axis relocation was a clean `-0x1A50`.
 - For FEQR Power Enrich EQ Ratio, both table bodies used a clean `+0x61FC`.
 - For FEQR Power Enrichment enable/delay/ramp tables, the nearby `0x0620xx` entries also use the `+0x61FC` family delta, but the Astra calibration values can differ heavily from the HPT screenshot example.
@@ -702,17 +724,18 @@ Name notes:
 - Keep `TransOutputMax_021648`, `FrontAxleMax_021638`, `FrontAxleMax4WDLow_021630`, `FrontPropshaftMax_02163C`, `RearAxleMax_021640`, `RearAxleMax4WDLow_021634`, and `RearPropshaftMax_021644` as the high-confidence TSXC driveline torque limit scalars. Current Astra stock values are `100000/131072 Nm` depending on scalar and do not exactly match the HPT screenshot example.
 - Keep `BrakeTorqueLimit_MaxDriverIntended_047CE4` as the high-confidence `KeBRKC_M_MaxDrvIntBrkTorq` scalar (`6000 Nm`). Treat it as the best current brake torque limit scalar match, not as proof that the BTRC brake torque management limit table has been found.
 - Do not add `Default Trans Limit`, `Brake Torque Limit` BTRC table, or `Brake Torque Mult` until a changed-bin fingerprint or cleaner local match is available. The CSV BTRC entries `KtBTRC_K_TorqLimit_ExtBrk_OBD` (`0x0488CC`, `3 x 9` floats) and `KtBTRC_M_BTM_Lim` (`0x0488F0`, `1 x 17` eHiLo) overlap in source space; the latter appears to reinterpret the multiplier table bytes and produces nonsensical values. Candidate multiplier-looking target blocks were seen near `0x050268`, `0x068880`, and `0x06F220`, but they are not active in the XDF.
+- Keep the OS12646746-style THMC entries in `Engine->Thermal` as candidate/inspection views only: `KaTHMC_T_EngCool_Labels_Candidate_079C88`, `KaTHMC_T_EngCool_Candidate_079C50`, and `KaTHMC_T_EngCoolReq_Candidate_079C6C`. The scales decode as literal 32-bit big-endian floats, but the Astra WinOLS CSV does not contain those exact symbols and the `0x079C50` values are not credible as a confirmed Max/Min desired ECT table.
 - Keep the editable cold ECT entries in `Engine->Thermal`: `ColdMaxDesiredECT_079CB0`, `ColdMinDesiredECT_079CCC`, and `ColdDesiredECTThreshold_079D18`. These are normal 32-bit big-endian float rows in deg C and match the Damos/WinOLS value lists.
 - Keep `DesiredECT_TMSRequest_RawPairs_077B56` and `KaTHMC_T_EngCool_OS12646746_RawPairs_077B9E` as raw inspection views only. Do not reintroduce `ColdMaxDesiredECT_RawPairs_077B02` or `ColdMinDesiredECT_RawPairs_077B1E` as editable views; those windows showed one table plus the next adjacent table, which is why they looked wrong in TunerPro.
 - Keep `DriverDemand_A_046944`, `DriverDemand_B_046DC8`, and `DriverDemand_C_04724C` as the confirmed target Driver Demand A/B/C views; their HPT nominal range is `-500000 to 500000`, but the XDF uses `-100 to 160 Nm` for TunerPro graph readability.
-- Keep `MaximumAirflowDeltaVsTPS_07A59E` and `MaximumMAPDeltaVsTPS_07A5B2` as the confirmed HP Tuners `[ECM] 14044`/`[ECM] 14045` equivalents; both use the shared TPS axis at `0x07A5C6`.
+- Keep the P0068 Airflow Correlation entries active in `Airflow->P0068 Correlation`: `AirflowCorrelationEnableRPM_07A570`, `MaxAirflowVsIGNV_07A586`, `MaxAirflowVsRPM_07A59C`, `MaximumAirflowDeltaVsTPS_07A59E`, and `MaximumMAPDeltaVsTPS_07A5B2`. The two delta tables use the shared TPS axis at `0x07A5C6`; `MaxAirflowVsRPM_07A59C` intentionally overlaps the first eight Airflow Delta cells.
 - Keep `PowerEnrichEQRatio_06233E` as the confirmed HP Tuners `[ECM] 12400` Power Enrich EQ Ratio view; `PowerEnrichEQRatioE80_06248C` is the byte-identical E80 companion in this BIN.
 - Keep the `PowerEnrichment*` entries around `0x062096-0x0625D8` active in the main XDF, with the caveat that `PowerEnrichmentMinRPM_062096` and `PowerEnrichmentEnableTorquePct_0620AE` do not match the screenshot values in this Astra BIN (`700 rpm` vs `8000 rpm`, and `0%` vs `97%`).
 - Keep `KnockEnrichment*` entries around `0x05FB44-0x05FC9C` active in the main XDF as the confirmed FEQR pre-ignition/knock-enrichment cluster. Do not claim a separate alcohol/E80 knock enrichment EQ table until a unique non-all-1.0 fingerprint is found.
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
 - Current active XDF uses the regenerated 49-table layout from `09_all_quarantined_groups_regenerated.xdf`: stable 28-table base plus turbo pressure-ratio/surge, PE EQ, PE enable/delay/ramp, and knock-enrichment entries. Fuel temperature-control definitions remain quarantined.
-- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->TPS Delta`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
+- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
 - Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:
