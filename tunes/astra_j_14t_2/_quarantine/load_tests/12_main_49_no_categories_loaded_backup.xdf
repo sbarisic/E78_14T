@@ -6,18 +6,10 @@
     <BASEOFFSET offset="0" subtract="0" />
     <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
     <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
-    <CATEGORY index="0x0" name="Search->Raw Views" />
-    <CATEGORY index="0x1" name="Airflow->Turbocharger" />
-    <CATEGORY index="0x2" name="Engine->Torque" />
-    <CATEGORY index="0x3" name="Engine->Driver Demand" />
-    <CATEGORY index="0x4" name="Airflow->TPS Delta" />
-    <CATEGORY index="0x5" name="Fuel->Power Enrich" />
-    <CATEGORY index="0x6" name="Fuel->Knock Enrichment" />
   </XDFHEADER>
   <XDFTABLE uniqueid="0x7200" flags="0x30">
     <title>HexView047922</title>
     <description>Raw 8-bit view of 0x047922-0x048121. Axes are byte offsets from 0x047922.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>16</indexcount>
@@ -196,7 +188,6 @@
   <XDFTABLE uniqueid="0x7201" flags="0x30">
     <title>Candidate047DC2_8bit_14x16</title>
     <description>Exact screenshot offset +0x04A0 from HexView047922. This is a raw byte view at 0x047DC2, not float-aligned.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>16</indexcount>
@@ -261,7 +252,6 @@
   <XDFTABLE uniqueid="0x7202" flags="0x0">
     <title>FloatVector047C24_16</title>
     <description>Float vector at HexView047922 +0x0302.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>16</indexcount>
@@ -313,7 +303,6 @@
   <XDFTABLE uniqueid="0x7203" flags="0x0">
     <title>FloatVector047C64_15</title>
     <description>Float vector at HexView047922 +0x0342.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>15</indexcount>
@@ -364,7 +353,6 @@
   <XDFTABLE uniqueid="0x7204" flags="0x0">
     <title>FloatVector047CA0_9</title>
     <description>Float vector at HexView047922 +0x037E.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>9</indexcount>
@@ -409,7 +397,6 @@
   <XDFTABLE uniqueid="0x7205" flags="0x0">
     <title>FloatVector047CC4_9</title>
     <description>Float vector at HexView047922 +0x03A2.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>9</indexcount>
@@ -454,7 +441,6 @@
   <XDFTABLE uniqueid="0x7206" flags="0x0">
     <title>FloatVector047CE8_26</title>
     <description>Float vector at HexView047922 +0x03C6.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>26</indexcount>
@@ -516,7 +502,6 @@
   <XDFTABLE uniqueid="0x7207" flags="0x0">
     <title>FloatVector047D50_5</title>
     <description>Float vector at HexView047922 +0x042E.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>5</indexcount>
@@ -557,7 +542,6 @@
   <XDFTABLE uniqueid="0x7208" flags="0x0">
     <title>FloatVector047D64_17</title>
     <description>Float vector at HexView047922 +0x0442.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>17</indexcount>
@@ -610,7 +594,6 @@
   <XDFTABLE uniqueid="0x7209" flags="0x0">
     <title>FloatVector047DA8_17_NearPlus04A0</title>
     <description>Float vector at HexView047922 +0x0486; this crosses the requested +0x04A0 area.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>17</indexcount>
@@ -663,7 +646,6 @@
   <XDFTABLE uniqueid="0x720A" flags="0x0">
     <title>FloatVector047DEC_8_RPMAxis</title>
     <description>8-value float axis immediately before candidate table at 0x047E0C.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>8</indexcount>
@@ -707,7 +689,6 @@
   <XDFTABLE uniqueid="0x720B" flags="0x0">
     <title>FloatVector047E0C_16_TableFlat</title>
     <description>Flat 16-float view at HexView047922 +0x04EA. Same data as FloatTable047E0C_2x8_Candidate.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>16</indexcount>
@@ -759,7 +740,6 @@
   <XDFTABLE uniqueid="0x720C" flags="0x0">
     <title>FloatTable047E0C_2x8_Candidate</title>
     <description>Closest coherent float table after the requested +0x04A0 area. X axis reads 0x047DEC: 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47DEC" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>8</indexcount>
@@ -798,7 +778,6 @@
   <XDFTABLE uniqueid="0x7210" flags="0x0">
     <title>TurbochargerKnockMaxAirmass_04DD68</title>
     <description>Confirmed HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. 8x11 32-bit big-endian float table; values are stored as g * 1000. X axis at 0x04DEC8 is spark retard, Y axis at 0x04DF3C is RPM. Best full-bin match to the HPT screenshot; nearby matches are only byte-shifted views of this same table.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>11</indexcount>
@@ -838,7 +817,6 @@
   <XDFTABLE uniqueid="0x7211" flags="0x0">
     <title>TurbochargerKnockMaxAirmass_04DD68_RawStored</title>
     <description>Raw stored-value view for confirmed HP Tuners [ECM] 33482 at 0x04DD68. This should show approximately 275-725 before conversion to grams.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>11</indexcount>
@@ -878,7 +856,6 @@
   <XDFTABLE uniqueid="0x7212" flags="0x0">
     <title>TurbochargerKnockAirmassScav_Candidate_04E088</title>
     <description>Inspection view only. This 8x11 direct-float block near the confirmed table is not HP Tuners [ECM] 33495; the confirmed Knock Airmass Scav equivalent is the 16-bit scaled table at 0x04E350.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>11</indexcount>
@@ -916,7 +893,6 @@
   <XDFTABLE uniqueid="0x7214" flags="0x0">
     <title>TurbochargerKnockAirmassScav_04E350</title>
     <description>Confirmed HP Tuners [ECM] 33495 Knock Airmass Scav. 8x11 16-bit big-endian table; values are stored as raw counts with 0.0625 mg/count. X axis at 0x04E588 is spark retard, Y axis at 0x04E50C is RPM. The raw changed-byte fingerprint lines up with the edited HexView047922 screenshot.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E588" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>11</indexcount>
@@ -956,7 +932,6 @@
   <XDFTABLE uniqueid="0x7215" flags="0x0">
     <title>TurbochargerKnockAirmassScav_04E350_RawStored</title>
     <description>Raw stored-value view for confirmed HP Tuners [ECM] 33495 at 0x04E350. Values should show approximately 4320-11600 before conversion to grams.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E588" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <indexcount>11</indexcount>
@@ -996,7 +971,6 @@
   <XDFTABLE uniqueid="0x7216" flags="0x0">
     <title>MaxBoostLimit_04DFB4</title>
     <description>Confirmed HP Tuners [ECM] 33460 Max Boost Limit. 1x7 32-bit big-endian float table in kPa with editor range 0-512 kPa. X axis at 0x04E4F0 is manifold temperature in deg C.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E4F0" mmedelementsizebits="32" mmedcolcount="7" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>deg C</units>
@@ -1036,7 +1010,6 @@
   <XDFTABLE uniqueid="0x7217" flags="0x0">
     <title>PeakEngineTorque_0534A4</title>
     <description>Confirmed HP Tuners [ECM] 32920 Peak Engine Torque. 4x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM; Y axis at 0x053B10 is alcohol composition percent. Editor range -8192 to 8192 Nm.</description>
-    <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1078,7 +1051,6 @@
   <XDFTABLE uniqueid="0x7218" flags="0x0">
     <title>MaxEngineTorqueLimit_0535A4</title>
     <description>Confirmed HP Tuners [ECM] 32923 Max Engine Torque Limit. 4x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM; Y axis at 0x053B10 is alcohol composition percent. Editor range -8192 to 8192 Nm.</description>
-    <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1120,7 +1092,6 @@
   <XDFTABLE uniqueid="0x7219" flags="0x0">
     <title>OverboostTorqueLimit_053464</title>
     <description>Confirmed HP Tuners [ECM] 32924 Overboost Torque Limit. 1x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM. Editor range -8192 to 8192 Nm.</description>
-    <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1160,7 +1131,6 @@
   <XDFTABLE uniqueid="0x721A" flags="0x0">
     <title>DriverDemand_A_046944</title>
     <description>Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
-    <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1236,7 +1206,6 @@
   <XDFTABLE uniqueid="0x721B" flags="0x0">
     <title>DriverDemand_B_046DC8</title>
     <description>Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
-    <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1312,7 +1281,6 @@
   <XDFTABLE uniqueid="0x721C" flags="0x0">
     <title>DriverDemand_C_04724C</title>
     <description>Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
-    <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>RPM/VSS</units>
@@ -1388,7 +1356,6 @@
   <XDFTABLE uniqueid="0x721D" flags="0x0">
     <title>MaximumAirflowDeltaVsTPS_07A59E</title>
     <description>Confirmed HP Tuners [ECM] 14044 Maximum Airflow Delta vs. TPS equivalent. Source Corsa/HP Tuners fingerprint at 0x07BFEE maps by table-to-table offset -0x1A50 to this Astra table at 0x07A59E. 1x9 unsigned 16-bit big-endian, scaled X / 128. Screenshot unit is g/s; editor range is 0 to 512.</description>
-    <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
       <units>%</units>
@@ -1437,7 +1404,6 @@
   <XDFTABLE uniqueid="0x721E" flags="0x0">
     <title>MaximumMAPDeltaVsTPS_07A5B2</title>
     <description>Confirmed HP Tuners [ECM] 14045 Maximum MAP Delta vs. TPS equivalent. Source Corsa/HP Tuners fingerprint at 0x07C002 maps by table-to-table offset -0x1A50 to this Astra table at 0x07A5B2. 1x9 signed 16-bit big-endian, scaled X / 128. Editor range is -256 to 256 kPa.</description>
-    <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
       <units>%</units>
@@ -1486,7 +1452,6 @@
   <XDFTABLE uniqueid="0x7240" flags="0x0">
     <title>TurboOverspeedMaxPressureRatio_04D9BC</title>
     <description>Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DC44" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>g/s</units>
@@ -1526,7 +1491,6 @@
   <XDFTABLE uniqueid="0x7241" flags="0x0">
     <title>CompressorSurgeLimit_029858</title>
     <description>Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
-    <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29870" mmedelementsizebits="32" mmedcolcount="6" mmedmajorstridebits="32" mmedminorstridebits="0" />
       <units>g/s</units>
@@ -1566,7 +1530,6 @@
   <XDFTABLE uniqueid="0x721F" flags="0x0">
     <title>PowerEnrichEQRatio_06233E</title>
     <description>Confirmed HP Tuners [ECM] 12400 Power Enrich EQ Ratio equivalent. FEQR KtFEQR_eqr_PE_RPM, 5x33 unsigned 16-bit big-endian table. Stored values are EQ ratio * 1024, with editor range 0 to 64. X axis is the generated CM_T_RPMa engine-speed axis; Y axis is manifold temperature. The companion E80 table follows at 0x06248C.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1644,7 +1607,6 @@
   <XDFTABLE uniqueid="0x7220" flags="0x0">
     <title>PowerEnrichEQRatioE80_06248C</title>
     <description>Companion FEQR KtFEQR_eqr_PE_RPM_E80 table for HP Tuners [ECM] 12400 Power Enrich EQ Ratio family. 5x33 unsigned 16-bit big-endian table, stored as EQ ratio * 1024. This target BIN has the same values as PowerEnrichEQRatio_06233E.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1722,7 +1684,6 @@
   <XDFTABLE uniqueid="0x7221" flags="0x0">
     <title>PowerEnrichmentMinRPM_062096</title>
     <description>FEQR PE minimum enable RPM scalar near the confirmed HP Tuners [ECM] 12400 EQ-ratio cluster. Source/reference KeFEQR_n_PE_EngSpdThrsh plus local FEQR relocation. This Astra BIN decodes to 700 rpm; the screenshot example shows 8000 rpm.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -1762,7 +1723,6 @@
   <XDFTABLE uniqueid="0x7222" flags="0x0">
     <title>PowerEnrichmentEnableTorquePct_0620AE</title>
     <description>Likely HP Tuners [ECM] 12418 Power Enrichment Enable Torque %. FEQR KtFEQR_Pct_PE_LoadThrsh, 1x17 unsigned 16-bit big-endian table, stored as percent / 0.001525878906. The Astra target values currently decode as all 0%, while the screenshot example shows 97%.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1820,7 +1780,6 @@
   <XDFTABLE uniqueid="0x7223" flags="0x0">
     <title>PowerEnrichmentEnablePedalPct_0620D2</title>
     <description>Power Enrichment Enable Pedal threshold vs engine speed. FEQR KtFEQR_Pct_PE_ThrotThrshEngSpd, 1x17 unsigned 16-bit big-endian table. This Astra BIN decodes as 80% across the row.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -1878,7 +1837,6 @@
   <XDFTABLE uniqueid="0x7224" flags="0x0">
     <title>PowerEnrichmentDelayRPM_0620A0</title>
     <description>Power Enrichment Delay RPM high threshold. FEQR KfFEQR_n_PE_DelayRPM_HiThrsh; this Astra BIN decodes to 6000 rpm.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -1918,7 +1876,6 @@
   <XDFTABLE uniqueid="0x7225" flags="0x0">
     <title>PowerEnrichmentDelayTorquePct_0625D8</title>
     <description>Power Enrichment delay torque-percent scalar located from the local FEQR delay group. 32-bit big-endian float; this Astra BIN decodes to 100%.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -1958,7 +1915,6 @@
   <XDFTABLE uniqueid="0x7226" flags="0x0">
     <title>PowerEnrichmentDelayStep_0620F8</title>
     <description>Power Enrichment delay step/adjust table from FEQR KtFEQR_t_PE_DelayAdjust. 17x17 unsigned 16-bit big-endian table, stored as time / 0.05; screenshot-visible values around 0.100 match raw value 2.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <units>%</units>
@@ -2032,7 +1988,6 @@
   <XDFTABLE uniqueid="0x7227" flags="0x0">
     <title>PowerEnrichmentRampIn_0620A6</title>
     <description>Power Enrichment ramp-in scalar. FEQR KfFEQR_eqr_PE_RampIn; this Astra BIN decodes to approximately 0.1000.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2072,7 +2027,6 @@
   <XDFTABLE uniqueid="0x7230" flags="0x0">
     <title>PowerEnrichmentRampOut_0620A8</title>
     <description>Power Enrichment ramp-out companion scalar. FEQR KfFEQR_eqr_PE_RampOut; this Astra BIN decodes to approximately 0.0100.</description>
-    <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2112,7 +2066,6 @@
   <XDFTABLE uniqueid="0x7228" flags="0x0">
     <title>KnockEnrichmentAirmassHyst_05FB44</title>
     <description>Knock Enrichment / FEQR pre-ignition protection airmass hysteresis. Stored as 0.125 mg/count; displayed in grams. This Astra BIN decodes to 0.030 g.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2152,7 +2105,6 @@
   <XDFTABLE uniqueid="0x7229" flags="0x0">
     <title>KnockEnrichmentEnableRPM_05FB46</title>
     <description>Knock Enrichment enable RPM threshold. FEQR pre-ignition protection scalar; this Astra BIN decodes to 3200 rpm.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2192,7 +2144,6 @@
   <XDFTABLE uniqueid="0x722A" flags="0x0">
     <title>KnockEnrichmentRPMHyst_05FB48</title>
     <description>Knock Enrichment RPM hysteresis. FEQR pre-ignition protection scalar; this Astra BIN decodes to 200 rpm.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2232,7 +2183,6 @@
   <XDFTABLE uniqueid="0x722B" flags="0x0">
     <title>KnockEnrichmentEnableECT_05FB4A</title>
     <description>Knock Enrichment enable coolant-temperature threshold. Signed 16-bit big-endian with 1/128 deg C scaling; this Astra BIN decodes to 60 deg C.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2272,7 +2222,6 @@
   <XDFTABLE uniqueid="0x722C" flags="0x0">
     <title>KnockEnrichmentDelayStep_05FB50</title>
     <description>Knock Enrichment / FEQR pre-ignition protection delay-step table. Two 0x0009 dimension words precede the table at 0x05FB4C/0x05FB4E; data starts at 0x05FB50.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -2332,7 +2281,6 @@
   <XDFTABLE uniqueid="0x722D" flags="0x0">
     <title>KnockEnrichmentEnableDelay_05FBF2</title>
     <description>Knock Enrichment enable delay scalar. FEQR pre-ignition protection delay maximum; this Astra BIN decodes to 60.0 in the HPT display units.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2372,7 +2320,6 @@
   <XDFTABLE uniqueid="0x722E" flags="0x0">
     <title>KnockEnrichmentEQRatio_05FBF8</title>
     <description>Knock Enrichment / FEQR pre-ignition protection EQ-ratio table. Two 0x0009 dimension words precede the table at 0x05FBF4/0x05FBF6; data starts at 0x05FBF8. The separate alcohol/E80 equivalent has not been uniquely isolated yet in this Astra BIN.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
       <units>rpm</units>
@@ -2432,7 +2379,6 @@
   <XDFTABLE uniqueid="0x722F" flags="0x0">
     <title>KnockEnrichmentRampIn_05FC9C</title>
     <description>Knock Enrichment ramp-in scalar. FEQR pre-ignition protection ramp-in; this Astra BIN decodes to approximately 0.0060.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2472,7 +2418,6 @@
   <XDFTABLE uniqueid="0x7231" flags="0x0">
     <title>KnockEnrichmentRampOut_05FC9A</title>
     <description>Knock Enrichment ramp-out scalar. FEQR pre-ignition protection ramp-out; this Astra BIN decodes to approximately 0.0300.</description>
-    <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>1</indexcount>
@@ -2512,7 +2457,6 @@
   <XDFTABLE uniqueid="0x7213" flags="0x0">
     <title>ScavSparkAxisCluster04E588_FloatView</title>
     <description>Float inspection view around the second exact spark-retard axis at 0x04E588. Related RPM axes are present at 0x04E50C/0x04E52C for 1400-6000 and at 0x04E62C for 1300-6000; this cluster did not produce another HPT33482-like 8x11 airmass table.</description>
-    <CATEGORYMEM index="0" category="1" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
       <indexcount>16</indexcount>

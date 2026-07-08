@@ -591,6 +591,9 @@ Name notes:
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
 - Current active XDF uses the regenerated 49-table layout from `09_all_quarantined_groups_regenerated.xdf`: stable 28-table base plus turbo pressure-ratio/surge, PE EQ, PE enable/delay/ramp, and knock-enrichment entries. Fuel temperature-control definitions remain quarantined.
+- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->TPS Delta`, `Fuel->Power Enrich`, and `Fuel->Knock Enrichment`.
+- TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
+- A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
 - Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:
   - `01_turbo_pressure_ratio_only.xdf`: base XDF plus `TurboOverspeedMaxPressureRatio_04D9BC` and `CompressorSurgeLimit_029858` only.
   - `02_power_enrich_eq_only.xdf`: base XDF plus `PowerEnrichEQRatio_06233E` and `PowerEnrichEQRatioE80_06248C` only.
@@ -605,7 +608,7 @@ Name notes:
   - `09_all_quarantined_groups_regenerated.xdf`: base XDF plus turbo, PE, and knock-enrichment groups regenerated from the quarantine blocks.
   - `10_full_crash_candidate_direct_copy.xdf`: direct copy of the full 49-table crash candidate, for checking whether regeneration/order changed behavior.
 - User confirmed `07`, `08`, and regenerated full variant `09` load, while direct copy `10` crashes. The main XDF was promoted from `09` on 2026-07-08. The crash appears tied to the old direct candidate's metadata/order/line-ending state, not the table definitions themselves.
-- Do not re-add XDF `<CATEGORY>` or `<CATEGORYMEM>` tags until the current uncategorized XDF load-tests successfully in TunerPro; the original working XDF had no category tags, and the category-bearing file crashed.
+- If the categorized main XDF crashes in TunerPro, compare against `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf` first before changing table definitions.
 - Treat `COTMaxEnrichment_0636CC` as the HPT-shaped `[ECM] 12232` view and `COTMaxEnrichmentScalar_04E900` as the local CCTI scalar reference until a changed-bin fingerprint proves which one HPT edits.
 - Embedded float axes in the confirmed knock-airmass views use XDF `datatype` `6` plus `<embedinfo type="1" />`; leaving either out can make TunerPro display zeroed axis labels.
 - Do not patch `opel_astra_original.bin` directly without checksum/CVN handling.
