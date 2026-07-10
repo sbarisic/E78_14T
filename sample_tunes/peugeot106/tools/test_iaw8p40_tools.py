@@ -3,9 +3,11 @@
 
 from __future__ import annotations
 
+import csv
 import sys
 import tempfile
 import unittest
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -115,6 +117,54 @@ class ChecksumToolTests(unittest.TestCase):
             existing_output.write_bytes(b"existing")
             with self.assertRaises(ValueError):
                 checksum.repair_file(input_path, existing_output)
+
+
+class XdfMetadataTests(unittest.TestCase):
+    def test_vectors_and_firmware_support_constants(self) -> None:
+        root = ET.parse(ROOT / "IAW8P40_peugeot106_firstpass.xdf").getroot()
+        self.assertEqual(root.findtext("XDFHEADER/fileversion"), "0.53")
+
+        nodes = root.findall("XDFCONSTANT") + root.findall("XDFTABLE")
+        unique_ids = [node.get("uniqueid") for node in nodes]
+        self.assertEqual(len(unique_ids), len(set(unique_ids)))
+
+        constants: dict[int, list[ET.Element]] = {}
+        for constant in root.findall("XDFCONSTANT"):
+            embedded = constant.find("EMBEDDEDDATA")
+            if embedded is None or not embedded.get("mmedaddress"):
+                continue
+            address = int(embedded.get("mmedaddress"), 16)
+            constants.setdefault(address, []).append(constant)
+
+        with (ROOT / "reverse_eng/IAW8P40_peugeot106_vectors.csv").open(
+            newline="", encoding="utf-8-sig"
+        ) as source:
+            vectors = {
+                int(row["vector_address"], 16): int(row["target"], 16)
+                for row in csv.DictReader(source)
+            }
+
+        rom = (ROOT / "M27C512_original.BIN").read_bytes()
+        self.assertEqual(len(vectors), 21)
+        for address, target in vectors.items():
+            with self.subTest(vector=f"0x{address:04X}"):
+                self.assertEqual(len(constants.get(address, [])), 1)
+                embedded = constants[address][0].find("EMBEDDEDDATA")
+                self.assertIsNotNone(embedded)
+                self.assertEqual(embedded.get("mmedelementsizebits"), "16")
+                self.assertEqual(int.from_bytes(rom[address : address + 2], "big"), target)
+
+        support = ((0x916A, "16", 0x27FF), (0x916E, "8", 0xFF))
+        for address, bits, expected in support:
+            with self.subTest(support=f"0x{address:04X}"):
+                self.assertEqual(len(constants.get(address, [])), 1)
+                embedded = constants[address][0].find("EMBEDDEDDATA")
+                self.assertIsNotNone(embedded)
+                self.assertEqual(embedded.get("mmedelementsizebits"), bits)
+                size = int(bits) // 8
+                self.assertEqual(
+                    int.from_bytes(rom[address : address + size], "big"), expected
+                )
 
 
 if __name__ == "__main__":

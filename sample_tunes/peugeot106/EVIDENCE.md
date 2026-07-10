@@ -18,6 +18,11 @@ ranges are executable code, not calibration tables.
 Version `0.52` renames `0x869A` as a raw fuel-cut/state-delay table by
 positive load rise since state entry and RPM, with numeric raw load-rise labels
 and raw countdown tick values.
+Version `0.53` adds the complete 21-word ROM vector table and exact non-tuning
+firmware-support constants for expected stack top `0x916A = 0x27FF` and
+checksum-service enable byte `0x916E = 0xFF`. It also records the corrected
+main-loop addresses `D2EE/D2F1/D2F4`, loop-back jump at `D6A9`, and incremental
+checksum routine range `0x5AD6-0x5B19`; calibration maps and scaling are unchanged.
 ## Evidence Status
 This table separates code-confirmed structures from MOD2/same-family-supported
 candidates and visual/public-index probes. The current corpus has six local

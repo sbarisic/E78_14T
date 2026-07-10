@@ -1,0 +1,224 @@
+address,name,kind,confidence,description
+0x4017,adc_sample_group_a,routine,confirmed,Read ADC result group and seed RAM input channels.
+0x4034,adc_sample_group_b,routine,confirmed,Read alternate ADC result group and seed RAM input channels.
+0x4155,adc_filter_helper_4155,routine,strong,ADC preprocessing helper used by the 0x200D path.
+0x41A1,build_load_axis_2034,routine,confirmed,Build normalized load/MAP-like axis in RAM 0x2034.
+0x41D6,build_transient_axis_2042,routine,confirmed,Build normalized transient/helper axis in RAM 0x2042.
+0x431A,preprocess_cts_path,routine,strong,Preprocess temperature channel used by the CTS-like axis path.
+0x4340,convert_cts_axis,routine,confirmed,Use calibration 0x92CF through the axis helper to produce 0x203C/0x203E.
+0x436A,preprocess_iat_path,routine,strong,Preprocess temperature channel used by the IAT-like axis path.
+0x4390,convert_iat_axis,routine,confirmed,Use calibration 0x92D9 through the axis helper to produce 0x2038/0x203A.
+0x48EE,lookup_base_spark,routine,confirmed,"Select RPM-only or 24x9 spark bank, interpolate, add optional signed offset, accumulate in 0x2147."
+0x4943,apply_spark_temperature_correction,routine,strong,Apply signed temperature/load spark correction to the base spark result.
+0x4F10,hardware_io_service_init,routine,strong,Initialize extended I/O/service hardware state and related RAM flags.
+0x4FE1,hardware_io_service_state_machine,routine,strong,Timed I/O/service state machine using countdown/state at 0x246B and pointer/state data.
+0x506A,hardware_io_scan_group_506a,routine,strong,Scan extended I/O status registers and mirror individual bits into RAM flags.
+0x50F4,hardware_io_scan_group_50f4,routine,strong,"Extended I/O bit scan/update routine; contains byte 0x5100 as an instruction operand, not a table."
+0x515C,hardware_io_scan_group_515c,routine,strong,Extended I/O bit scan/update routine.
+0x51CC,hardware_io_scan_group_51cc,routine,strong,Extended I/O bit scan/update routine.
+0x51FB,hardware_io_scan_group_51fb,routine,strong,Extended I/O bit scan/update routine; spans 0x5200 as executable instruction bytes.
+0x5224,hardware_io_scan_group_5224,routine,strong,Extended I/O bit scan/update routine.
+0x5243,hardware_io_scan_group_5243,routine,strong,Extended I/O bit scan/update routine.
+0x5290,hardware_io_scan_group_5290,routine,strong,Extended I/O bit scan/update routine.
+0x52DD,hardware_io_scan_group_52dd,routine,strong,Extended I/O configuration routine; spans 0x5300 as executable instruction bytes.
+0x5320,hardware_io_scan_group_5320,routine,strong,Extended I/O bit scan/update routine.
+0x5361,hardware_io_scan_group_5361,routine,strong,Extended I/O bit scan/update routine.
+0x53A9,hardware_io_scan_group_53a9,routine,strong,Extended I/O bit scan/update routine.
+0x5419,hardware_io_scan_group_5419,routine,strong,Extended I/O bit scan/update routine.
+0x545F,hardware_io_scan_group_545f,routine,strong,Small extended I/O flag mirror routine.
+0x546B,hardware_io_service_546b,routine,strong,Extended I/O service routine with port/control writes.
+0x5497,hardware_io_scan_group_5497,routine,strong,Small extended I/O flag mirror routine.
+0x54A3,hardware_io_flag_helper_54a3,routine,strong,Update a RAM flag from a selected hardware/service bit.
+0x54B6,hardware_io_countdown_helper_54b6,routine,strong,Update service countdown/state.
+0x54C8,hardware_io_bit_clear_helper,routine,confirmed,Clear a selected RAM bit when the tested condition is false.
+0x54EB,hardware_io_bit_set_helper,routine,confirmed,Set/clear selected RAM bit according to tested condition.
+0x54FE,hardware_io_bit_update_helper,routine,confirmed,Update selected RAM bit according to tested condition.
+0x5652,mode_control_init_5652,routine,open,Reset-time mode/control initialization; exact physical role remains open.
+0x5828,runtime_input_processing_5828,routine,open,Periodic input/state processing call.
+0x5AD6,incremental_rom_checksum,routine,confirmed,Incremental runtime additive checksum over 0x4000-0xFFFF while skipping 0xB600-0xB7FF.
+0x5E82,adc_conversion_helper_5e82,routine,strong,Convert/filter ADC source used to produce RAM 0x2013.
+0x602F,runtime_stage_602f,routine,open,Periodic runtime stage.
+0x6107,runtime_stage_6107,routine,open,Periodic runtime stage.
+0x6133,runtime_stage_6133,routine,open,Periodic runtime stage.
+0x615B,runtime_stage_615b,routine,open,Periodic runtime stage.
+0x6187,runtime_stage_6187,routine,open,Periodic runtime stage.
+0x62DC,runtime_stage_62dc,routine,open,Periodic runtime stage.
+0x6344,load_aircharge_model,routine,strong,Interpolate the 0x9187 24x9 factor table and update load/air-charge state.
+0x6405,interrupt_handler_6405,routine,confirmed,Vector target; exact hardware interrupt source depends on MCU mask.
+0x650D,runtime_state_650d,routine,open,Periodic state update.
+0x67A3,state_or_comms_init_67a3,routine,open,Reset-time state-machine/communications initialization.
+0x6836,mode_handler_6836,routine,open,Mode handler selected by RAM 0x21A6.
+0x68F3,mode_handler_68f3,routine,open,Mode handler selected by RAM 0x21A6.
+0x6A12,mode_handler_6a12,routine,open,Mode handler selected by RAM 0x21A6.
+0x6BBE,mode_handler_6bbe,routine,open,Mode handler selected by RAM 0x21A6.
+0x6D43,mode_handler_6d43,routine,open,Mode handler selected by RAM 0x21A6.
+0x6E96,high_load_final_fuel_stage,routine,strong,High-load/final fuel-duration support path.
+0x6EEE,fuel_output_scheduler,routine,confirmed,Fuel output scheduler/timing path using period and event-width support calibrations.
+0x6F01,rpm_limiter_hysteresis,routine,confirmed,Set/clear RAM 0x00A4 bit 0x10 from engine period and primary/alternate threshold pairs.
+0x7392,timer_capture_handler,routine,confirmed,Capture 68HC11 TIC3 value at 0x1014 into RAM 0x00D9.
+0x7660,engine_period_update,routine,confirmed,Update prior capture and calculate RAM 0x00BA engine-period delta.
+0x956B,period_history_init,routine,confirmed,"Initialize period/timer history, including 0x00BA = 0xFFFF."
+0x95F3,interrupt_handler_95f3,routine,confirmed,Vector target; exact source depends on MCU mask.
+0x9D25,runtime_stage_9d25,routine,open,Periodic runtime stage.
+0x9F02,spi_status_stream,routine,confirmed,Stream selected live RAM/status bytes through the SPI peripheral using pointer frame 0x8010.
+0xA696,sci_mode_init,routine,strong,Initialize SCI diagnostic mode from calibration/config bytes 0x8009/0x800B.
+0xA6E5,sci_buffers_init,routine,strong,Initialize SCI/service buffers and packet state.
+0xAAD0,sci_service_dispatch_aad0,routine,strong,SCI/service dispatch path that can jump to hardware service initialization at 0x4F10.
+0xAAE0,sci_service_55_entry,routine,confirmed,"Special SCI response/service entry: sets mode 0x06, stack 0x916A, then jumps to 0xD80B."
+0xB26E,interp_1d_word,routine,confirmed,One-dimensional 16-bit interpolation helper.
+0xB2AB,interp_1d_u8,routine,confirmed,One-dimensional unsigned byte interpolation helper.
+0xB2BA,interp_1d_s8,routine,strong,One-dimensional signed-byte interpolation helper.
+0xB2D6,interp_2d_u8,routine,confirmed,Two-dimensional unsigned byte interpolation helper.
+0xB32B,interp_2d_s8,routine,confirmed,Two-dimensional signed-byte interpolation helper.
+0xB383,axis_lookup_u8,routine,confirmed,Axis/index helper.
+0xB3B9,period_axis_lookup,routine,confirmed,Axis/index helper used to normalize engine period into the RPM axis.
+0xB447,fuel_runtime_sequence,routine,strong,"Central ordered fuel path: scheduler/state, signed trims, and final high-load stage."
+0xB476,runtime_stage_b476,routine,open,Periodic runtime stage.
+0xB48C,runtime_stage_b48c,routine,open,Periodic runtime stage.
+0xB555,countdown_init_b555,routine,strong,Initialize countdown/timer pair 0x2469/0x246A and status flag 0x009C.
+0xB562,runtime_stage_b562,routine,open,Periodic runtime state update.
+0xB800,reset_entry,routine,confirmed,"Reset entry: stack/register init, watchdog, calibration-window copy, subsystem init, jump to main loop."
+0xB93D,fault_soft_restart_bit01,routine,confirmed,Set RAM 0x0094 bit 0x01 and re-enter reset flow.
+0xB942,fault_soft_restart_bit02,routine,confirmed,Set RAM 0x0094 bit 0x02 and re-enter reset flow.
+0xB948,fault_fatal_bit04,routine,confirmed,Set RAM 0x0094 bit 0x04 and enter fatal path.
+0xB94D,fault_stop_bit08,routine,confirmed,"Set RAM 0x0094 bit 0x08, force outputs safe, loop forever."
+0xBA5D,ignition_output_vector_lookup,routine,strong,Lookup ignition output phase/width/retard support vectors.
+0xBB98,ignition_output_init,routine,strong,Initialize ignition output/vector state.
+0xBE65,idle_air_control,routine,strong,"Interpolate 0x888E and CTS support 0x8970, update 0x2484/0x2486 and actuator state."
+0xC000,closed_loop_adaptive_state_machine,routine,confirmed,Closed-loop/adaptive state machine using calibration region 0x9000-0x912B.
+0xC910,runtime_stage_c910,routine,open,Periodic runtime stage.
+0xC94B,adaptive_cell_interpolation,routine,confirmed,Interpolate learned/adaptive trim cells.
+0xCBEF,seed_bank_selector_20b1,routine,confirmed,"Load calibration 0x800A, decrement it, and store runtime bank selector 0x20B1."
+0xCC00,adaptive_trim_update_gate,routine,strong,Adaptive trim update/entry logic.
+0xD17D,adaptive_substate,routine,strong,Adaptive/closed-loop substate calculation.
+0xD2D9,main_runtime_loop,routine,confirmed,Timer/stack/watchdog guard followed by the fixed periodic scheduler.
+0xD36F,main_periodic_body,routine,confirmed,Main ordered periodic call body.
+0xD46D,build_rpm_axis_2036,routine,confirmed,Normalize RAM 0x00BA through axis 0x929E into RAM 0x2036.
+0xD482,build_rpm_index_2044,routine,confirmed,Build 19-site RPM index used by ignition/adaptive support vectors.
+0xD6AC,runtime_variables_init,routine,confirmed,Initialize main runtime variables.
+0xE38B,fuel_signed_trim_lookup,routine,confirmed,"Select 1D/2D and A/B signed fuel trim banks, interpolate, store raw correction in 0x2084."
+0xE5E8,fuel_base_accumulator,routine,strong,Combine load/air-charge and correction terms into base pulse-width accumulator 0x00C1.
+0xE652,fuel_final_stack,routine,strong,Build final fuel duration path ending in RAM 0x00C3.
+0xE715,apply_signed_fraction,routine,confirmed,Apply approximately value += value * signed_raw / 256.
+0xE748,apply_adaptive_trim,routine,confirmed,Apply adaptive trim word centered at 0x8000.
+0xE84B,fuel_iat_rpm_corrections,routine,confirmed,Lookup signed 0x802B/0x8103 IAT-like by RPM correction banks.
+0xE927,sum_fuel_corrections,routine,strong,Sum correction terms into RAM 0x204B.
+0xE9A8,afterstart_state_handler,routine,confirmed,Afterstart/warmup state handler using CTS-like support vectors.
+0x800A,cal_spark_fuel_bank_config,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x800C,checksum_word,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x800E,checksum_complement_target,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x8010,spi_pointer_frame,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x802B,fuel_iat_rpm_corr_a_24x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8103,fuel_iat_rpm_corr_b_24x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x81F8,low_rpm_fuel_trim_a_4x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x821C,fuel_quantity_trim_a_24x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x82F4,low_rpm_fuel_trim_b_4x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8318,fuel_quantity_trim_b_24x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x83F0,rpm_only_fuel_trim_1x24_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8408,cts_warmup_fuel_corr_1x17,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x84E3,scheduler_fuel_pulse_corr_1x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x85BA,high_load_fuel_duration_support_24x5,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x869A,fuel_cut_state_delay_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x877E,event_width_limit_1x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8787,oc3_period_fit_guard,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x8789,fuel_edge_offset_1x9_words,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x879E,rpm_limit_primary_set_period,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x87A0,rpm_limit_primary_clear_period,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x87A2,rpm_limit_alternate_set_period,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x87A4,rpm_limit_alternate_clear_period,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x87B1,injector_event_phase_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x888E,idle_air_bypass_target_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8970,cts_idle_target_cap_1x17,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x89C7,ignition_phase_factor_1x19,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x89DA,ignition_width_factor_1x19,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x89F3,ignition_retard_gain_1x19,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8A69,spark_high_default_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8B41,spark_low_alternate_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8C19,spark_wot_or_bypass_1x24,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8C7C,spark_iat_load_corr_17x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8D15,spark_cts_load_corr_17x9_s8,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8E6F,adaptive_dynamics_table_a_17x5,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8EC7,adaptive_dynamics_table_b_17x5,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8F1C,adaptive_dynamics_table_c_17x5,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x8F71,adaptive_dynamics_table_d_17x5,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x916A,expected_stack_top,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x916E,checksum_service_enable,rom_data,confirmed,"Code-confirmed enable byte read at 0x5AD7 before each incremental checksum step; stock 0xFF, zero bypasses accumulation and clears the checksum fault bit."
+0x9187,load_aircharge_factor_24x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x929E,rpm_period_axis_24_words,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x92CF,cts_adc_axis,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x92D9,iat_adc_axis,rom_data,confirmed,Calibration/data symbol; see report for units and role limitations.
+0x92FA,scheduler_axis_table_1x9,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x9303,scheduler_signed_subvector,rom_data,confirmed-structure,Calibration/data symbol; see report for units and role limitations.
+0x0094,reset_fault_cause,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x0099,runtime_fault_flags,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x009C,scheduler_status_flags,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00A2,spark_mode_flags,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00A4,limiter_mode_flags,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00A9,operating_mode_flags,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00B8,previous_capture_or_schedule_base,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00BA,engine_period_delta,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00BC,fuel_output_duration,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00BE,fuel_event_phase,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00BF,fuel_event_width_limit,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00C1,base_fuel_pulse_accumulator,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00C3,final_fuel_duration,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00CE,load_aircharge_word,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00D0,load_aircharge_byte,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x00D9,captured_timer_value,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2007,adc_processed_input_2007,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2008,adc_raw_input_2008,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x200A,adc_raw_input_200a,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x200C,adc_raw_input_200c,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x200D,adc_raw_input_200d,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x200E,adc_raw_input_200e,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2013,processed_sensor_2013,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2034,normalized_load_axis,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2036,normalized_rpm_axis,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2038,iat_axis_index,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x203C,cts_axis_index,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x203E,cts_axis_fraction_or_value,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2040,scheduler_axis_index,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2042,transient_helper_axis,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2044,rpm_site_index_19,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2046,spark_transition_axis,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x204B,summed_fuel_correction,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2084,signed_fuel_trim_raw,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2086,fuel_edge_deadline_term,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x20B1,spark_fuel_bank_selector,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x20B9,adaptive_fuel_trim_word,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2147,spark_accumulator,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x214F,alternate_limiter_mode,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x21A6,operating_state_selector,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x21C6,fuel_event_phase_runtime,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2388,scheduler_scaled_output,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2391,fuel_cut_state_countdown,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2484,idle_air_target,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x2486,idle_cts_target_or_cap,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x24E5,main_loop_elapsed_max_or_budget,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x24E7,main_loop_previous_timer,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x24EA,main_loop_saved_sp,ram,working,Runtime RAM symbol based on producer/consumer paths.
+0x1000,PORTA,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1008,PORTD,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1009,DDRD,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x100B,CFORC,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x100E,TCNT,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1014,TIC3,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x101C,TOC4,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1023,TFLG1,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1024,TMSK2_or_status,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1025,TFLG2,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1028,SPCR,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1029,SPSR,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102A,SPDR,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102B,BAUD,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102C,SCCR1,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102D,SCCR2,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102E,SCSR,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x102F,SCDR,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1030,ADCTL,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1031,ADR1,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1032,ADR2,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1033,ADR3,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x1034,ADR4,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x103A,COPRST,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.
+0x103D,INIT,mcu_io,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.

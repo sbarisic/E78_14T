@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-  <fileversion>0.52</fileversion>
+  <fileversion>0.53</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.52 renames 0x869A as a raw fuel-cut/state-delay table by load-rise and RPM, adds its code-confirmed load-rise/RPM axis labels, and keeps the countdown values raw.</description>
+    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.53 adds all 21 code-confirmed ROM vector words plus exact firmware-support constants for the expected stack top at 0x916A and checksum-service enable byte at 0x916E. Calibration table definitions are unchanged.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -37,7 +37,7 @@
 
   <XDFCONSTANT uniqueid="0x100">
     <title>Reset Vector @ 0xFFFE</title>
-    <description>Likely 68HC11 reset vector. Expected to point into executable code.</description>
+    <description>Code-confirmed reset vector. Stock target is 0xB800.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFFE" mmedelementsizebits="16" />
     <units>addr</units>
@@ -50,7 +50,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x101">
-    <title>SWI/IRQ Vector @ 0xFFF8</title>
+    <title>Fatal Fault Vector -&gt; 0xB948 @ 0xFFF8</title>
+    <description>Code-confirmed vector target 0xB948 enters the fatal fault handler that records cause bit 0x04. Exact MCU slot naming remains mask/variant-dependent.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFF8" mmedelementsizebits="16" />
     <units>addr</units>
@@ -63,7 +64,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x102">
-    <title>Vector @ 0xFFFA</title>
+    <title>Soft-Restart Fault Vector 1 -&gt; 0xB93D @ 0xFFFA</title>
+    <description>Code-confirmed vector target 0xB93D records fault cause bit 0x01 and enters soft restart handling.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFFA" mmedelementsizebits="16" />
     <units>addr</units>
@@ -76,7 +78,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x103">
-    <title>Vector @ 0xFFFC</title>
+    <title>Soft-Restart Fault Vector 2 -&gt; 0xB942 @ 0xFFFC</title>
+    <description>Code-confirmed vector target 0xB942 records fault cause bit 0x02 and enters soft restart handling.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFFC" mmedelementsizebits="16" />
     <units>addr</units>
@@ -89,7 +92,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x104">
-    <title>Vector @ 0xFFF0</title>
+    <title>Interrupt Vector -&gt; 0x95F3 @ 0xFFF0</title>
+    <description>Code-confirmed interrupt target 0x95F3. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFF0" mmedelementsizebits="16" />
     <units>addr</units>
@@ -102,7 +106,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x105">
-    <title>Vector @ 0xFFF2</title>
+    <title>Interrupt Vector -&gt; 0x6405 @ 0xFFF2</title>
+    <description>Code-confirmed interrupt target 0x6405. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFF2" mmedelementsizebits="16" />
     <units>addr</units>
@@ -115,7 +120,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x106">
-    <title>Vector @ 0xFFF4</title>
+    <title>Fault-Stop Vector -&gt; 0xB94D @ 0xFFF4</title>
+    <description>Code-confirmed vector target 0xB94D enters the fail-safe stop handler with cause bit 0x08.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFF4" mmedelementsizebits="16" />
     <units>addr</units>
@@ -128,7 +134,8 @@
     </MATH>
   </XDFCONSTANT>
   <XDFCONSTANT uniqueid="0x107">
-    <title>Vector @ 0xFFF6</title>
+    <title>Fault-Stop Vector -&gt; 0xB94D @ 0xFFF6</title>
+    <description>Code-confirmed vector target 0xB94D enters the fail-safe stop handler with cause bit 0x08.</description>
     <CATEGORYMEM index="0" category="2" />
     <EMBEDDEDDATA mmedaddress="0xFFF6" mmedelementsizebits="16" />
     <units>addr</units>
@@ -139,6 +146,113 @@
     <MATH equation="X">
       <VAR id="X" />
     </MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2AB">
+    <title>Vector -&gt; 0xA7DE @ 0xFFD6</title>
+    <description>Code-confirmed vector target 0xA7DE. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFD6" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2AC">
+    <title>Fault-Stop Vector -&gt; 0xB94D @ 0xFFD8</title>
+    <description>Code-confirmed vector target 0xB94D enters the fail-safe stop handler with cause bit 0x08.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFD8" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2AD">
+    <title>Fault-Stop Vector -&gt; 0xB94D @ 0xFFDA</title>
+    <description>Code-confirmed vector target 0xB94D enters the fail-safe stop handler with cause bit 0x08.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFDA" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2AE">
+    <title>Timer Capture Vector -&gt; 0x7392 @ 0xFFDC</title>
+    <description>Code-confirmed vector target 0x7392 reads input-capture register 0x1014 and feeds the engine-period path. Exact MCU slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFDC" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2AF">
+    <title>Vector -&gt; 0x72CB @ 0xFFDE</title>
+    <description>Code-confirmed vector target 0x72CB. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFDE" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B0">
+    <title>Vector -&gt; 0x583A @ 0xFFE0</title>
+    <description>Code-confirmed vector target 0x583A. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFE0" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B1">
+    <title>Vector -&gt; 0xBC91 @ 0xFFE2</title>
+    <description>Code-confirmed vector target 0xBC91. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFE2" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B2">
+    <title>Vector -&gt; 0x5565 @ 0xFFE4</title>
+    <description>Code-confirmed vector target 0x5565. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFE4" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B3">
+    <title>Vector -&gt; 0x7F33 @ 0xFFE6</title>
+    <description>Code-confirmed vector target 0x7F33. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFE6" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B4">
+    <title>Vector -&gt; 0x6FE4 @ 0xFFE8</title>
+    <description>Code-confirmed vector target 0x6FE4 enters output-compare scheduling logic. Exact MCU slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFE8" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B5">
+    <title>Vector -&gt; 0xE0E7 @ 0xFFEA</title>
+    <description>Code-confirmed vector target 0xE0E7. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFEA" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B6">
+    <title>Vector -&gt; 0x9315 @ 0xFFEC</title>
+    <description>Code-confirmed vector target 0x9315, the first executable address after the 0x8000-0x9314 calibration/data window. Exact MCU slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFEC" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B7">
+    <title>Vector -&gt; 0xEB37 @ 0xFFEE</title>
+    <description>Code-confirmed vector target 0xEB37. Exact MCU peripheral slot naming remains mask/variant-dependent.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <EMBEDDEDDATA mmedaddress="0xFFEE" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+
+  <XDFCONSTANT uniqueid="0x2B8">
+    <title>Expected Stack Top Word @ 0x916A</title>
+    <description>Code-confirmed big-endian stack-top word. Reset loads SP from this address and the main-loop guard compares the saved SP against it at 0xD2F4. Stock value is 0x27FF. Firmware support, not a tuning calibration.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <EMBEDDEDDATA mmedaddress="0x916A" mmedelementsizebits="16" />
+    <units>addr</units><outputtype>3</outputtype><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><MATH equation="X"><VAR id="X" /></MATH>
+  </XDFCONSTANT>
+  <XDFCONSTANT uniqueid="0x2B9">
+    <title>Checksum Service Enable Byte @ 0x916E</title>
+    <description>Code-confirmed byte read at 0x5AD7 before each incremental checksum step. Zero bypasses accumulation and clears the checksum fault bit; stock value is 0xFF. Firmware/checksum support, not a tuning calibration.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <EMBEDDEDDATA mmedaddress="0x916E" mmedelementsizebits="8" />
+    <units>raw</units><outputtype>1</outputtype><datatype>0</datatype><decimalpl>0</decimalpl><min>0.000000</min><max>255.000000</max><MATH equation="X"><VAR id="X" /></MATH>
   </XDFCONSTANT>
 
   <XDFCONSTANT uniqueid="0x110">

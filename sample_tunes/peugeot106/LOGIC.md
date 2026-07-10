@@ -211,7 +211,7 @@ Confirmed:
 
 - Reset eventually jumps to `0xD2D9`.
 - `0xD2D9` performs scheduler/timebase checks, stack-integrity checks, watchdog service, and then enters the main ordered runtime body.
-- The loop eventually jumps back to `0xD2D9` through `0xD6A7`.
+- The loop jumps back to `0xD2D9` at `0xD6A9` after the final call at `0xD6A6`.
 
 ### Runtime Entry / Guard @ `0xD2D9`
 
@@ -226,10 +226,10 @@ Important behavior:
 Stack check pattern:
 
 ```asm
-D2ED: BF 24 EA      STS $24EA
-D2F0: FE 24 EA      LDX $24EA
-D2F3: BC 91 6A      CPX $916A
-D2F6: 26 18         BNE $D310
+D2EE: BF 24 EA      STS $24EA
+D2F1: FE 24 EA      LDX $24EA
+D2F4: BC 91 6A      CPX $916A
+D2F7: 26 18         BNE $D311
 ```
 
 Inference:
@@ -238,7 +238,7 @@ Inference:
 - The main loop checks for stack imbalance/corruption.
 - A mismatch changes fault/status bits and can alter the runtime path.
 
-### Main Body Call Order @ `0xD36D-0xD6A7`
+### Main Body Call Order @ `0xD36D-0xD6A9`
 
 The main loop has a long fixed call order. Some calls are still unnamed, but the execution shape is now visible.
 
@@ -282,7 +282,7 @@ D4A9-D517: additional period/sensor/correction calculations
 
 D590-D6A6: final runtime calls, map helpers, output/state updates
 
-D6A7: JMP D2D9
+D6A9: JMP D2D9
 ```
 
 Important caution:
@@ -1741,7 +1741,8 @@ Initialization:
 
 Confirmed:
 
-- Routine at `0x5AD8-0x5B18` sums ROM bytes using `X` and `Y`.
+- Routine `0x5AD6-0x5B19` performs one incremental checksum step per periodic call using `X` and `Y`.
+- Each enabled invocation reads or skips one ROM address, stores the updated cursor/accumulator, and returns; it does not scan the full ROM in one call.
 - It skips `0xB600-0xB7FF`.
 - It compares the accumulated sum with the word at `0x800E`.
 - It sets or clears `RAM 0x0099 bit 0x04`.
@@ -2146,15 +2147,17 @@ still the best candidate behind the normalized `0x2034` load axis because the
 vehicle uses a 100 kPa PRT03-family MAP sensor and the axis clamps near
 `0x0800`, but ADC transfer proof is still open.
 
-## Checksum Routine @ `0x5AD8-0x5B18`
+## Incremental Checksum Routine @ `0x5AD6-0x5B19`
 
 The checksum routine is confirmed as 68HC11 code.
 
 Core behavior:
 
+- `0xD40F` calls entry `0x5AD6` once in the periodic runtime sequence.
+- Byte `0x916E` enables the service; stock stores `0xFF`, while zero bypasses accumulation and clears the fault bit.
 - Uses `X` as the current ROM pointer stored at RAM `0x2188`.
 - Uses `Y` as the accumulated byte sum stored at RAM `0x218A`.
-- Reads byte at `0,X`.
+- Reads at most one byte at `0,X` per invocation.
 - Adds it into `Y` with `ABY`.
 - Decrements `X`.
 - Skips `0xB600-0xB7FF`.
@@ -3666,7 +3669,7 @@ External sensor clue:
 
 Useful direct-reference hints from byte/opcode context:
 
-- `0x800E` is used by the checksum routine around `0x5AD8-0x5B17`.
+- `0x800E` is used by the incremental checksum routine at `0x5AD6-0x5B19`.
 - `0x879E` / `0x87A0` are referenced around `0x6F14-0x6F2A`.
 - `0x87A2` / `0x87A4` are alternate thresholds in the same limiter-looking routine when `RAM 0x214F` is nonzero.
 - `0x869A` is loaded as a B2D6 table base around `0x9B79-0x9BAE`; clamped positive `$2014 - $2394` load rise and `$2036` RPM index a raw countdown value stored to `$2391`.
@@ -3812,7 +3815,7 @@ store checksum_complement big-endian at 0x800E
 Relevant code area:
 
 ```text
-0x5AD8-0x5B17
+0x5AD6-0x5B19
 ```
 
 The routine loads a rolling pointer/sum from RAM, accumulates bytes, skips the zero hole, and compares the accumulated value against the 16-bit value at `0x800E`.
@@ -4040,6 +4043,11 @@ Current code-reference summary:
 Some earlier naive byte-reference hits were false positives. For example, the apparent `0x802E` hit around `0xC620` decodes as `CPD #$FF80` followed by a branch and is not a real table reference.
 
 ## XDF Updates Made
+
+The current active XDF is version `0.53`. This metadata pass adds all 21
+code-confirmed ROM vector words, `Expected Stack Top Word @ 0x916A`, and
+`Checksum Service Enable Byte @ 0x916E`. These are firmware-support inspection
+items only; no fuel, spark, axis, scheduler, or correction table changed.
 
 `IAW8P40_peugeot106_firstpass.xdf` was updated to version `0.5` in this pass and later to `0.6` after comparing against an online Peugeot 106 Rallye XDF screenshot.
 

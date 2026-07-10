@@ -6,6 +6,7 @@ This directory contains reverse-engineering notes and calibration evidence for t
 
 - `LOGIC.md` - firmware behavior, disassembly notes, map candidates, offset markup, checksum logic, and XDF implementation notes.
 - `EVIDENCE.md` - evidence status, external/public-source references, sensor clues, comparison evidence, XDF crash-bisect notes, and generated analyzer snapshots.
+- `reverse_eng/IAW8P40_peugeot106_reverse_engineering_report.md` - latest conservative executable-code pass, pseudocode, code/data boundary findings, and remaining proof items.
 
 ## Key Local Files
 
@@ -15,6 +16,7 @@ This directory contains reverse-engineering notes and calibration evidence for t
 - `IAW8P40_peugeot106_firstpass.xdf` - current broad TunerPro definition.
 - `IAW8P40_peugeot106_tunerpro_safe_v014.xdf` - safer TunerPro-focused definition.
 - `tools/iaw8p40_analyze.py` - read-only comparison/scanner used to regenerate the analyzer snapshot inside `EVIDENCE.md`.
+- `reverse_eng/` - annotated recursive disassembly snapshot, code ranges, direct-call edges, symbols, vectors, and exact stock/MOD2 difference regions.
 
 ## Regeneration
 
