@@ -6,7 +6,8 @@ This directory contains reverse-engineering notes and calibration evidence for t
 
 - `LOGIC.md` - firmware behavior, disassembly notes, map candidates, offset markup, checksum logic, and XDF implementation notes.
 - `EVIDENCE.md` - evidence status, external/public-source references, sensor clues, comparison evidence, XDF crash-bisect notes, and generated analyzer snapshots.
-- `reverse_eng/IAW8P40_peugeot106_reverse_engineering_report.md` - latest conservative executable-code pass, pseudocode, code/data boundary findings, and remaining proof items.
+- `reverse_eng/v1/IAW8P40_peugeot106_reverse_engineering_report.md` - original conservative executable-code report, code/data boundary findings, and stock/MOD2 diff summary.
+- `reverse_eng/v3/README.md` - latest reproducible annotation/symbol-database package and corrected executable ownership model.
 
 ## Key Local Files
 
@@ -16,7 +17,8 @@ This directory contains reverse-engineering notes and calibration evidence for t
 - `IAW8P40_peugeot106_firstpass.xdf` - current broad TunerPro definition.
 - `IAW8P40_peugeot106_tunerpro_safe_v014.xdf` - safer TunerPro-focused definition.
 - `tools/iaw8p40_analyze.py` - read-only comparison/scanner used to regenerate the analyzer snapshot inside `EVIDENCE.md`.
-- `reverse_eng/` - annotated recursive disassembly snapshot, code ranges, direct-call edges, symbols, vectors, and exact stock/MOD2 difference regions.
+- `reverse_eng/v1/` - original annotated listing, code ranges, direct-call edges, symbols, vectors, and exact stock/MOD2 difference regions.
+- `reverse_eng/v3/` - current raw/annotated listing, canonical symbols, resolved CSV/SQLite outputs, routine code blocks, and ownership regression tests. `v2` is retained as superseded history.
 
 ## Regeneration
 
@@ -25,6 +27,17 @@ python tools/iaw8p40_analyze.py --write-analysis
 ```
 
 The command updates only the generated-analysis block in `EVIDENCE.md`. Console-only section output is still available with `--section`.
+
+The v3 annotation regression suite is standard-library-only:
+
+```powershell
+python reverse_eng\v3\test_generator.py
+```
+
+`reverse_eng\v3\verify_reproducibility.py` currently verifies CSV content but
+reports platform-serialization mismatches for ASM line endings and SQLite file
+bytes on Windows; `EVIDENCE.md` records the distinction between semantic and
+byte-for-byte reproducibility.
 
 ## Current Interpretation
 

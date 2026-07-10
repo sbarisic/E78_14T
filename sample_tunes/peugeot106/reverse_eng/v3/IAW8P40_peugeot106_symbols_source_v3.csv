@@ -1,0 +1,527 @@
+address,end_address,name,kind,subtype,size_bytes,width_bits,signed,rows,cols,subsystem,confidence,description,evidence,aliases,generated
+0x0094,0x0094,reset_fault_cause,ram,variable,1,8,,,,fault,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x0099,0x0099,runtime_fault_flags,ram,variable,1,8,,,,fault,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x009C,0x009C,scheduler_status_flags,ram,variable,1,8,,,,scheduler,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00A2,0x00A2,spark_mode_flags,ram,variable,1,8,,,,ignition,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00A4,0x00A4,limiter_mode_flags,ram,variable,1,8,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00A9,0x00A9,operating_mode_flags,ram,variable,1,8,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00B8,0x00B9,previous_capture_or_schedule_base,ram,u16be,2,16,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00BA,0x00BB,engine_period_delta,ram,u16be,2,16,,,,speed-rpm,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00BC,0x00BD,fuel_output_duration,ram,u16be,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00BE,0x00BE,fuel_event_phase,ram,variable,1,8,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00BF,0x00BF,fuel_event_width_limit,ram,variable,1,8,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00C1,0x00C2,base_fuel_pulse_accumulator,ram,u16be,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00C3,0x00C4,final_fuel_duration,ram,u16be,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00CC,0x00CD,filtered_o2_or_lambda_word,ram,u16,2,16,,,,closed-loop,strong,Filtered analog word feeding shared axis 0x2040; physical O2/lambda identity remains hardware-provisional.,decoded producer/consumer instruction flow,,false
+0x00CE,0x00CF,load_aircharge_word,ram,u16be,2,16,,,,air-load,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00D0,0x00D0,load_aircharge_byte,ram,variable,1,8,,,,air-load,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00D3,0x00D3,inverse_period_rpm_byte,ram,u8,1,8,,,,speed-rpm,strong,Reduced inverse-period RPM-like value derived by 0x4292.,decoded producer/consumer instruction flow,,false
+0x00D4,0x00D5,inverse_period_rpm_word,ram,u16,2,16,,,,speed-rpm,confirmed,Inverse-period RPM-like word derived from engine period 0x00BA.,decoded producer/consumer instruction flow,,false
+0x00D9,0x00DA,captured_timer_value,ram,u16be,2,16,,,,scheduler,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x00FD,0x00FD,math_work_lo,ram,u8,1,8,,,,math,confirmed,Low byte / pointer scratch used by multiply helpers.,decoded producer/consumer instruction flow,,false
+0x00FE,0x00FE,math_work_hi,ram,u8,1,8,,,,math,confirmed,High byte scratch used by multiply helpers.,decoded producer/consumer instruction flow,,false
+0x00FF,0x00FF,math_work_ext,ram,u8,1,8,,,,math,confirmed,Extension byte used by saturating multiply/shift helpers.,decoded producer/consumer instruction flow,,false
+0x1000,0x1000,PORTA,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1008,0x1008,PORTD,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1009,0x1009,DDRD,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x100B,0x100B,CFORC,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x100E,0x100E,TCNT,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1014,0x1014,TIC3,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1016,0x1017,TOC1,mcu_io,u16,2,16,,,,mcu,confirmed-family,68HC11 timer output compare 1 register.,decoded producer/consumer instruction flow,,false
+0x1018,0x1019,TOC2,mcu_io,u16,2,16,,,,mcu,confirmed-family,68HC11 timer output compare 2 register.,decoded producer/consumer instruction flow,,false
+0x101A,0x101B,TOC3,mcu_io,u16,2,16,,,,mcu,confirmed-family,68HC11 timer output compare 3 register.,decoded producer/consumer instruction flow,,false
+0x101C,0x101C,TOC4,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1020,0x1020,TCTL1,mcu_io,u8,1,8,,,,mcu,confirmed-family,68HC11 output compare action control register.,decoded producer/consumer instruction flow,,false
+0x1022,0x1022,TMSK1,mcu_io,u8,1,8,,,,mcu,confirmed-family,68HC11 timer interrupt mask 1 register.,decoded producer/consumer instruction flow,,false
+0x1023,0x1023,TFLG1,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1024,0x1024,TMSK2_or_status,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1025,0x1025,TFLG2,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1028,0x1028,SPCR,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1029,0x1029,SPSR,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102A,0x102A,SPDR,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102B,0x102B,BAUD,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102C,0x102C,SCCR1,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102D,0x102D,SCCR2,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102E,0x102E,SCSR,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x102F,0x102F,SCDR,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1030,0x1030,ADCTL,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1031,0x1031,ADR1,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1032,0x1032,ADR2,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1033,0x1033,ADR3,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1034,0x1034,ADR4,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x103A,0x103A,COPRST,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x103B,0x103B,SERVICE_IO_103B,mcu_io,u8,1,8,,,,hardware-service,strong,Extended service/serial transfer register used by the 0xBD6E state machine.,decoded producer/consumer instruction flow,,false
+0x103D,0x103D,INIT,mcu_io,register,1,8,,,,mcu,confirmed-family,Standard 68HC11 register-layout name; exact MCU mask remains to be identified.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x1040,0x1040,EXT_IO_1040,mcu_io,u8,1,8,,,,external-asic,open,External ASIC/I/O register block used by hardware service code.,decoded producer/consumer instruction flow,,false
+0x1050,0x1050,EXT_IO_1050,mcu_io,u8,1,8,,,,external-asic,strong,External ASIC/I/O register; idle path toggles bit 0x04.,decoded producer/consumer instruction flow,,false
+0x1060,0x1060,EXT_IO_1060,mcu_io,u8,1,8,,,,external-asic,open,External ASIC/I/O register block used by hardware scan code.,decoded producer/consumer instruction flow,,false
+0x1080,0x1080,EXT_IO_1080,mcu_io,u8,1,8,,,,external-asic,open,External ASIC/I/O register block used by hardware scan code.,decoded producer/consumer instruction flow,,false
+0x2007,0x2007,adc_processed_input_2007,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2008,0x2008,adc_raw_input_2008,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x200A,0x200A,adc_raw_input_200a,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x200C,0x200C,adc_raw_input_200c,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x200D,0x200D,adc_raw_input_200d,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x200E,0x200E,adc_raw_input_200e,ram,variable,1,8,,,,sensors,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2013,0x2013,processed_sensor_2013,ram,variable,1,8,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2014,0x2015,load_model_working_2014,ram,u16,2,16,,,,air-load,strong,Modeled load/air-charge working value and source for load-rise/state-delay logic.,decoded producer/consumer instruction flow,,false
+0x2017,0x2017,positive_load_delta_2017,ram,u8,1,8,,,,air-load,confirmed,"Clamped positive difference max(0, 0x00C9-0x0011) used by the 0x9291 axis.",decoded producer/consumer instruction flow,,false
+0x2030,0x2031,transient_working_axis_2030,ram,s16,2,16,,,,fuel-transient,strong,Signed/limited transient working axis.,decoded producer/consumer instruction flow,,false
+0x2034,0x2035,normalized_load_axis,ram,q8.8,2,16,,,,air-load,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2036,0x2037,normalized_rpm_axis,ram,q8.8,2,16,,,,speed-rpm,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2038,0x2039,iat_axis_index,ram,q8.8,2,16,,,,temperature,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x203C,0x203D,cts_axis_index,ram,q8.8,2,16,,,,temperature,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x203E,0x203F,cts_axis_fraction_or_value,ram,q8.8,2,16,,,,temperature,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2040,0x2041,shared_scheduler_axis_2040,ram,q8.8,2,16,,,,scheduler,confirmed,Shared 8.8 axis derived from filtered 0x00CC and used by scheduler/fuel support vectors.,decoded producer/consumer instruction flow,scheduler_axis_index,false
+0x2042,0x2043,transient_helper_axis,ram,q8.8,2,16,,,,axes,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2044,0x2045,rpm_site_index_19,ram,q8.8,2,16,,,,speed-rpm,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2046,0x2047,spark_transition_axis,ram,q8.8,2,16,,,,ignition,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2048,0x2048,scheduler_signed_correction_2048,ram,s8,1,8,,,,scheduler,strong,Signed scheduler support result from the 0x9303 subvector.,decoded producer/consumer instruction flow,,false
+0x2049,0x2049,fast_lambda_fuel_correction_2049,ram,u8,1,8,,,,closed-loop,strong,Fast fuel correction selected from 0x84E3 by shared axis 0x2040.,decoded producer/consumer instruction flow,,false
+0x204A,0x204A,iat_rpm_fuel_correction_a_204a,ram,s8,1,8,,,,fuel,confirmed,Signed output from 0x802B IAT/RPM correction table.,decoded producer/consumer instruction flow,,false
+0x204B,0x204C,summed_fuel_correction,ram,s16,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x204D,0x204D,iat_rpm_fuel_correction_b_204d,ram,s8,1,8,,,,fuel,confirmed,Signed output from 0x8103 IAT/RPM correction table.,decoded producer/consumer instruction flow,,false
+0x204E,0x204F,fuel_blend_word_204e,ram,u16,2,16,,,,fuel,strong,Nonnegative blend/scale term derived from correction B.,decoded producer/consumer instruction flow,,false
+0x2050,0x2050,signed_fuel_correction_2050,ram,s8,1,8,,,,fuel,strong,Additional signed correction combined into the central fuel stack.,decoded producer/consumer instruction flow,,false
+0x2051,0x2052,corrected_fuel_charge_2051,ram,u16,2,16,,,,fuel,strong,Corrected fuel/charge value in the final duration calculation.,decoded producer/consumer instruction flow,,false
+0x2053,0x2053,fuel_multiplier_2053,ram,u8,1,8,,,,fuel,strong,Multiplier-style correction applied to the fuel accumulator.,decoded producer/consumer instruction flow,,false
+0x2055,0x2056,transient_fuel_add_a_2055,ram,u16,2,16,,,,fuel-transient,strong,First additive transient enrichment term.,decoded producer/consumer instruction flow,,false
+0x2057,0x2058,transient_fuel_add_b_2057,ram,u16,2,16,,,,fuel-transient,strong,Second additive transient enrichment term.,decoded producer/consumer instruction flow,,false
+0x2059,0x2059,afterstart_state_2059,ram,u8,1,8,,,,fuel-warmup,confirmed,Warmup/afterstart state selector.,decoded producer/consumer instruction flow,,false
+0x2060,0x2061,afterstart_timer_2060,ram,u16,2,16,,,,fuel-warmup,strong,Afterstart timer/countdown working value.,decoded producer/consumer instruction flow,,false
+0x2062,0x2062,afterstart_count_2062,ram,u8,1,8,,,,fuel-warmup,strong,Afterstart counter.,decoded producer/consumer instruction flow,,false
+0x2084,0x2084,signed_fuel_trim_raw,ram,variable,1,8,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2085,0x2085,warmup_fuel_correction_2085,ram,u8,1,8,,,,fuel-warmup,strong,CTS-indexed warmup fuel correction.,decoded producer/consumer instruction flow,,false
+0x2086,0x2087,fuel_edge_deadline_term,ram,u16be,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2090,0x2090,closed_loop_state_2090,ram,u8,1,8,,,,closed-loop,confirmed,Closed-loop/adaptive state.,decoded producer/consumer instruction flow,,false
+0x2091,0x2092,closed_loop_integrator_2091,ram,u16,2,16,,,,closed-loop,strong,Closed-loop/adaptive integrator accumulator.,decoded producer/consumer instruction flow,,false
+0x2093,0x2093,closed_loop_base_2093,ram,s8,1,8,,,,closed-loop,strong,Base closed-loop correction selected from the 0x9000 vector group.,decoded producer/consumer instruction flow,,false
+0x2094,0x2094,learned_trim_cell_a_2094,ram,s8,1,8,,,,closed-loop,confirmed,Interpolated learned correction from RAM cell table 0x0060.,decoded producer/consumer instruction flow,,false
+0x2095,0x2095,learned_trim_cell_b_2095,ram,s8,1,8,,,,closed-loop,confirmed,Interpolated learned correction from RAM cell table 0x0069.,decoded producer/consumer instruction flow,,false
+0x2096,0x2096,closed_loop_delay_2096,ram,u8,1,8,,,,closed-loop,strong,Closed-loop delay/count selected from 0x9033.,decoded producer/consumer instruction flow,,false
+0x2099,0x2099,closed_loop_dynamic_2099,ram,s8,1,8,,,,closed-loop,strong,Dynamic load-change correction from 0x9068.,decoded producer/consumer instruction flow,,false
+0x209A,0x209A,closed_loop_ramp_209a,ram,s8,1,8,,,,closed-loop,strong,Closed-loop ramp/target term from 0x9073/0x90D6.,decoded producer/consumer instruction flow,,false
+0x209B,0x209B,closed_loop_mode_add_209b,ram,s8,1,8,,,,closed-loop,strong,Mode-dependent additive closed-loop term.,decoded producer/consumer instruction flow,,false
+0x20A2,0x20A3,closed_loop_total_20a2,ram,s16,2,16,,,,closed-loop,strong,Synthesized closed-loop/adaptive command value.,decoded producer/consumer instruction flow,,false
+0x20A4,0x20A5,closed_loop_command_20a4,ram,s16,2,16,,,,closed-loop,strong,Closed-loop control command.,decoded producer/consumer instruction flow,,false
+0x20A6,0x20A7,closed_loop_command_20a6,ram,s16,2,16,,,,closed-loop,strong,Closed-loop control command after proportional/integral processing.,decoded producer/consumer instruction flow,,false
+0x20A8,0x20A8,closed_loop_reference_20a8,ram,u8,1,8,,,,closed-loop,strong,Closed-loop reference or threshold working value.,decoded producer/consumer instruction flow,,false
+0x20B1,0x20B1,spark_fuel_bank_selector,ram,variable,1,8,,,,ignition,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x20B9,0x20BA,adaptive_fuel_trim_word,ram,q8.8-centered,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2147,0x2148,spark_accumulator,ram,s16,2,16,,,,ignition,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x214F,0x214F,alternate_limiter_mode,ram,variable,1,8,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x21A6,0x21A6,operating_state_selector,ram,variable,1,8,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x21C6,0x21C7,fuel_event_phase_runtime,ram,u16be,2,16,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2388,0x2389,scheduler_scaled_output,ram,u16be,2,16,,,,scheduler,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2391,0x2391,fuel_cut_state_countdown,ram,variable,1,8,,,,fuel,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2484,0x2484,idle_air_target,ram,variable,1,8,,,,idle,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x2486,0x2486,idle_cts_target_or_cap,ram,variable,1,8,,,,idle,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x24E5,0x24E6,main_loop_elapsed_max_or_budget,ram,u16be,2,16,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x24E7,0x24E8,main_loop_previous_timer,ram,u16be,2,16,,,,scheduler,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x24EA,0x24EB,main_loop_saved_sp,ram,u16be,2,16,,,,unknown,working,Runtime RAM symbol based on producer/consumer paths.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x25BA,0x25BB,descriptor_word_25ba,ram,u16,2,16,,,,math,confirmed,Cached masked 12-bit descriptor word.,decoded producer/consumer instruction flow,,false
+0x25BF,0x25C0,descriptor_delta_limit_25bf,ram,u16,2,16,,,,math,strong,Limit used when comparing descriptor-word deltas.,decoded producer/consumer instruction flow,,false
+0x4017,0x4033,adc_sample_group_a,routine,code,,8,,,,sensors,confirmed,Read ADC result group and seed RAM input channels.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4034,0x4078,adc_sample_group_b,routine,code,,8,,,,sensors,confirmed,Read alternate ADC result group and seed RAM input channels.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4079,0x409B,clear_runtime_axis_state,routine,code,,,,,,initialization,confirmed,Clear normalized-axis and runtime working state used by the first control iteration.,decoded instruction flow at 0x4079; caller/callee context,,false
+0x409C,0x40A7,latch_initial_load_state,routine,code,,,,,,initialization,confirmed,Copy the current load/air-charge word into startup history and display working values.,decoded instruction flow at 0x409C; caller/callee context,,false
+0x40A8,0x40E4,initialize_filtered_temperature_channels,routine,code,,,,,,sensors,strong,Initialize/filter the 0x2008 and 0x200A analog paths into the 0x2122/0x2124 filter words.,decoded instruction flow at 0x40A8; caller/callee context,,false
+0x40E5,0x4153,sample_adc_group_a_runtime,routine,code,,,,,,sensors,strong,Runtime ADC sequence for the 0x2008/0x200A channel group with interrupt masking and accumulator update.,decoded instruction flow at 0x40E5; caller/callee context,,false
+0x4155,0x4169,adc_filter_helper_4155,routine,code,,8,,,,sensors,strong,ADC preprocessing helper used by the 0x200D path.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x416B,0x41A0,update_adc_200e_filter_and_load_axis,routine,code,,,,,,sensors,strong,"Filter the 0x200E analog path, update difference accumulation, and continue into load-axis preparation.",decoded instruction flow at 0x416B; caller/callee context,,false
+0x41A1,0x41B0,build_load_axis_2034,routine,code,,8,,,,air-load,confirmed,Build normalized load/MAP-like axis in RAM 0x2034.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x41B2,0x41D4,scale_sensor_word_with_929b_929c,routine,code,,,,,,math,confirmed,"Scale a 16-bit input using calibration byte 0x929B and offset word 0x929C, returning a saturated byte-like result.",decoded instruction flow at 0x41B2; caller/callee context,,false
+0x41D6,0x4212,build_transient_axis_2042,routine,code,,8,,,,axes,confirmed,Build normalized transient/helper axis in RAM 0x2042.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4214,0x4290,update_adaptive_sensor_baseline,routine,code,,,,,,sensors,strong,Maintain low-RAM sensor baseline/minimum state using thresholds and timers in the 0x8990/0x9102 area.,decoded instruction flow at 0x4214; caller/callee context,,false
+0x4292,0x42CE,derive_inverse_period_speed_values,routine,code,,,,,,speed-rpm,confirmed,Derive inverse-period RPM-like working values 0x00D4/0x00D3 and preserve previous samples.,decoded instruction flow at 0x4292; caller/callee context,,false
+0x42D0,0x4318,update_load_sensor_snapshot,routine,code,,,,,,sensors,strong,Conditionally capture load and analog input snapshots into 0x2022/0x2012 and restore defaults when invalid.,decoded instruction flow at 0x42D0; caller/callee context,,false
+0x431A,0x433F,preprocess_cts_path,routine,code,,8,,,,temperature,strong,Preprocess temperature channel used by the CTS-like axis path.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4340,0x4368,convert_cts_axis,routine,code,,8,,,,temperature,confirmed,Use calibration 0x92CF through the axis helper to produce 0x203C/0x203E.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x436A,0x438F,preprocess_iat_path,routine,code,,8,,,,temperature,strong,Preprocess temperature channel used by the IAT-like axis path.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4390,0x43B8,convert_iat_axis,routine,code,,8,,,,temperature,confirmed,Use calibration 0x92D9 through the axis helper to produce 0x2038/0x203A.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x43BA,0x43DA,update_filtered_o2_and_shared_axis,routine,code,,,,,,closed-loop,strong,"Update filtered 0x00CC from the 0x200C candidate input, then rebuild shared axis 0x2040.",decoded instruction flow at 0x43BA; caller/callee context,,false
+0x43DC,0x43F1,sample_and_filter_o2_candidate,routine,code,,,,,,closed-loop,strong,Read/check the 0x200C analog candidate and apply the configured filter coefficient into the 0x00CC path.,decoded instruction flow at 0x43DC; caller/callee context,,false
+0x43F3,0x4403,build_shared_axis_2040,routine,code,,,,,,scheduler,confirmed,"Compute 0x2040 = max(0x00CC - 0x8000, 0) >> 4.",decoded instruction flow at 0x43F3; caller/callee context,,false
+0x4405,0x440B,clear_external_output_request,routine,code,,,,,,outputs,confirmed,Clear bit 0x01 at extended I/O offset 0x40 from base 0x1000.,decoded instruction flow at 0x4405; caller/callee context,,false
+0x440D,0x441F,sub_440D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4421,0x4460,sub_4421,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4461,0x4536,sub_4461,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4538,0x4554,sub_4538,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4556,0x4562,sub_4556,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4564,0x45AE,sub_4564,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x45B0,0x45B6,sub_45B0,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x45B8,0x45CA,sub_45B8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x45CC,0x45D2,sub_45CC,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x45D4,0x45F1,sub_45D4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x45F3,0x4608,sub_45F3,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x460A,0x4640,sub_460A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4642,0x4696,sub_4642,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4698,0x46BC,sub_4698,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x46BE,0x4724,sub_46BE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4726,0x4770,sub_4726,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4772,0x477A,sub_4772,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x477B,0x48D6,sub_477B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x48D8,0x48EC,compute_spark_command,routine,code,,,,,,ignition,strong,Invoke base spark and correction paths and form the current spark command accumulator.,decoded instruction flow at 0x48D8; caller/callee context,,false
+0x48EE,0x4941,lookup_base_spark,routine,code,,8,,,,ignition,confirmed,"Select RPM-only or 24x9 spark bank, interpolate, add optional signed offset, accumulate in 0x2147.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4943,0x494E,apply_spark_temperature_correction,routine,code,,8,,,,ignition,strong,Apply signed temperature/load spark correction to the base spark result.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x494F,0x497E,apply_cts_load_spark_correction,routine,code,,,,,,ignition,strong,Apply the second signed temperature/load spark-correction table to the spark accumulator.,decoded instruction flow at 0x494F; caller/callee context,,false
+0x4980,0x49A1,sub_4980,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x49A3,0x49A8,sub_49A3,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x49A9,0x49B8,sub_49A9,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x49BA,0x49C8,sub_49BA,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x49CA,0x4AA0,sub_49CA,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4AA7,0x4B12,sub_4AA7,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4B13,0x4B51,sub_4B13,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4B52,0x4B62,sub_4B52,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4B63,0x4B86,sub_4B63,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4B87,0x4BB4,sub_4B87,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4BB5,0x4BCC,sub_4BB5,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4BCD,0x4C35,sub_4BCD,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x4C36,0x4C5A,sci_prepare_tx_state,routine,code,,,,,,diagnostics,strong,Prepare SCI transmit state/flags and enable the appropriate serial control bits.,decoded instruction flow at 0x4C36; caller/callee context,,false
+0x4C5B,0x4D20,sci_command_state_machine,routine,code,,,,,,diagnostics,strong,"Service SCI command/response state, timeouts, and transmit staging in RAM 0x2164-0x2171.",decoded instruction flow at 0x4C5B; caller/callee context,,false
+0x4D21,0x4D83,sci_transmit_service,routine,code,,,,,,diagnostics,confirmed,Write pending byte 0x2167 to SCDR and maintain SCI transmit counters/state.,decoded instruction flow at 0x4D21; caller/callee context,,false
+0x4E0B,0x4EA2,sci_service_mode_update,routine,code,,,,,,diagnostics,strong,Update service-mode state flags and command staging before periodic SCI processing.,decoded instruction flow at 0x4E0B; caller/callee context,,false
+0x4EA3,0x4ECC,decode_service_selector,routine,code,,,,,,diagnostics,strong,Decode service/command selector through ROM lookup blocks around 0xB67F/0xB6FF.,decoded instruction flow at 0x4EA3; caller/callee context,,false
+0x4ECD,0x4EEF,sci_periodic_trigger,routine,code,,,,,,diagnostics,strong,Conditionally stage an SCI command byte when operating and serial-state gates allow it.,decoded instruction flow at 0x4ECD; caller/callee context,,false
+0x4F10,0x4FE0,hardware_io_service_init,routine,code,,8,,,,hardware-service,strong,Initialize extended I/O/service hardware state and related RAM flags.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x4FE1,0x5069,hardware_io_service_state_machine,routine,code,,8,,,,hardware-service,strong,Timed I/O/service state machine using countdown/state at 0x246B and pointer/state data.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x506A,0x50F3,hardware_io_scan_group_506a,routine,code,,8,,,,unknown,strong,Scan extended I/O status registers and mirror individual bits into RAM flags.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x50F4,0x515B,hardware_io_scan_group_50f4,routine,code,,8,,,,unknown,strong,"Extended I/O bit scan/update routine; contains byte 0x5100 as an instruction operand, not a table.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0x515C,0x51CB,hardware_io_scan_group_515c,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x51CC,0x51FA,hardware_io_scan_group_51cc,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x51FB,0x5223,hardware_io_scan_group_51fb,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine; spans 0x5200 as executable instruction bytes.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5224,0x5242,hardware_io_scan_group_5224,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5243,0x528F,hardware_io_scan_group_5243,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5290,0x52DC,hardware_io_scan_group_5290,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x52DD,0x531F,hardware_io_scan_group_52dd,routine,code,,8,,,,unknown,strong,Extended I/O configuration routine; spans 0x5300 as executable instruction bytes.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5320,0x5360,hardware_io_scan_group_5320,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5361,0x53A8,hardware_io_scan_group_5361,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x53A9,0x5418,hardware_io_scan_group_53a9,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5419,0x545E,hardware_io_scan_group_5419,routine,code,,8,,,,unknown,strong,Extended I/O bit scan/update routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x545F,0x546A,hardware_io_scan_group_545f,routine,code,,8,,,,unknown,strong,Small extended I/O flag mirror routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x546B,0x5496,hardware_io_service_546b,routine,code,,8,,,,hardware-service,strong,Extended I/O service routine with port/control writes.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5497,0x54A2,hardware_io_scan_group_5497,routine,code,,8,,,,unknown,strong,Small extended I/O flag mirror routine.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x54A3,0x54B5,hardware_io_flag_helper_54a3,routine,code,,8,,,,unknown,strong,Update a RAM flag from a selected hardware/service bit.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x54B6,0x54C7,hardware_io_countdown_helper_54b6,routine,code,,8,,,,unknown,strong,Update service countdown/state.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x54C8,0x54EA,hardware_io_bit_clear_helper,routine,code,,8,,,,unknown,confirmed,Clear a selected RAM bit when the tested condition is false.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x54EB,0x54FD,hardware_io_bit_set_helper,routine,code,,8,,,,unknown,confirmed,Set/clear selected RAM bit according to tested condition.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x54FE,0x5510,hardware_io_bit_update_helper,routine,code,,8,,,,unknown,confirmed,Update selected RAM bit according to tested condition.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5511,0x554F,sub_5511,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5550,0x555E,sub_5550,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5565,0x559F,sub_5565,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x55F8,0x5629,sub_55F8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x562A,0x5651,sub_562A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5652,0x5678,mode_control_init_5652,routine,code,,8,,,,unknown,open,Reset-time mode/control initialization; exact physical role remains open.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5679,0x56FA,sub_5679,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x56FB,0x571E,sub_56FB,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x571F,0x5740,sub_571F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5741,0x5791,sub_5741,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5792,0x57B3,sub_5792,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x57B4,0x57BF,sub_57B4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x57C0,0x5827,sub_57C0,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5828,0x5839,runtime_input_processing_5828,routine,code,,8,,,,unknown,open,Periodic input/state processing call.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x583A,0x5875,sub_583A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5877,0x589A,sub_5877,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x589C,0x58B5,sub_589C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x58B7,0x58F0,sub_58B7,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x58F2,0x5980,update_descriptor_state,routine,code,,,,,,diagnostics,strong,Update one flag/state descriptor selected by X using thresholds/values addressed through Y.,decoded instruction flow at 0x58F2; caller/callee context,,false
+0x5982,0x59A6,dispatch_descriptor_action,routine,code,,,,,,diagnostics,strong,Translate a descriptor result through the 0x55A0 action table and update associated status lists.,decoded instruction flow at 0x5982; caller/callee context,,false
+0x59A8,0x59C8,sub_59A8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x59CA,0x59F2,sub_59CA,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x59F4,0x5A27,sub_59F4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5A29,0x5A77,sub_5A29,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5A79,0x5AD4,sub_5A79,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5AD6,0x5B19,incremental_rom_checksum,routine,code,,8,,,,integrity,confirmed,Incremental runtime additive checksum over 0x4000-0xFFFF while skipping 0xB600-0xB7FF.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5B1B,0x5B94,sub_5B1B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5B95,0x5BEA,sub_5B95,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5BEC,0x5CF4,sub_5BEC,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5CF6,0x5D06,sub_5CF6,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5D08,0x5D79,sub_5D08,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5D7B,0x5D8B,sub_5D7B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5D8D,0x5E80,sub_5D8D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5E82,0x5F25,adc_conversion_helper_5e82,routine,code,,8,,,,sensors,strong,Convert/filter ADC source used to produce RAM 0x2013.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x5F27,0x5F6F,sub_5F27,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5F71,0x5FDA,sub_5F71,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x5FDC,0x602D,sub_5FDC,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x602F,0x6059,runtime_stage_602f,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x605B,0x60AF,sub_605B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x60B1,0x6105,sub_60B1,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6107,0x6131,runtime_stage_6107,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6133,0x6159,runtime_stage_6133,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x615B,0x6185,runtime_stage_615b,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6187,0x6217,runtime_stage_6187,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6219,0x6250,sub_6219,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6252,0x62DA,sub_6252,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x62DC,0x6310,runtime_stage_62dc,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6312,0x6342,sub_6312,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6344,0x636A,load_aircharge_model,routine,code,,8,,,,air-load,strong,Interpolate the 0x9187 24x9 factor table and update load/air-charge state.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x636C,0x6403,sub_636C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6405,0x644F,interrupt_handler_6405,routine,code,,8,,,,unknown,confirmed,Vector target; exact hardware interrupt source depends on MCU mask.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6451,0x650C,sub_6451,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x650D,0x654A,runtime_state_650d,routine,code,,8,,,,unknown,open,Periodic state update.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x654C,0x6567,sub_654C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6568,0x65D6,sub_6568,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x65D8,0x663B,sub_65D8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x663D,0x6652,sub_663D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6654,0x665C,sub_6654,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x665E,0x6666,sub_665E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x667C,0x66F8,sub_667C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x66FA,0x672C,sub_66FA,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x672E,0x6793,sub_672E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6795,0x67A1,sub_6795,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x67A3,0x67B1,state_or_comms_init_67a3,routine,code,,8,,,,unknown,open,Reset-time state-machine/communications initialization.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6836,0x6848,mode_handler_6836,routine,code,,8,,,,unknown,open,Mode handler selected by RAM 0x21A6.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x68F3,0x6943,mode_handler_68f3,routine,code,,8,,,,unknown,open,Mode handler selected by RAM 0x21A6.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x69B8,0x69CE,sub_69B8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x69CF,0x69DD,sub_69CF,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x69DE,0x69FF,sub_69DE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6A12,0x6A27,mode_handler_6a12,routine,code,,8,,,,unknown,open,Mode handler selected by RAM 0x21A6.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6A2C,0x6A67,sub_6A2C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6AEB,0x6B53,sub_6AEB,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6B54,0x6BBD,sub_6B54,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6BBE,0x6BCA,mode_handler_6bbe,routine,code,,8,,,,unknown,open,Mode handler selected by RAM 0x21A6.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6BCB,0x6C05,sub_6BCB,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6C06,0x6C1A,sub_6C06,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6C1B,0x6C30,sub_6C1B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6C31,0x6C55,sub_6C31,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6C56,0x6C64,sub_6C56,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6C6A,0x6CFA,output_compare_scheduler_isr_6c6a,routine,code,,,,,,scheduler,strong,"Output-compare scheduler interrupt path: updates TOC3/action state, dispatches mode work, and returns with RTI.",Decoded contiguous ISR block 0x6C6A-0x6CFA; writes 0x101A/0x1020 and terminates in RTI.,,false
+0x6CFB,0x6D32,periodic_service_isr_6cfb,routine,code,,,,,,scheduler,strong,"Periodic interrupt service path that runs state helpers, conditionally services the watchdog, and returns with RTI.",Decoded contiguous ISR block 0x6CFB-0x6D32; direct calls at 0x6CFB/0x6CFE/0x6D2F and terminal RTI.,,false
+0x6D33,0x6D42,sub_6D33,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6D43,0x6E6F,mode_handler_6d43,routine,code,,8,,,,unknown,open,Mode handler selected by RAM 0x21A6.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6E70,0x6E85,sub_6E70,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6E86,0x6E95,sub_6E86,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x6E96,0x6EEC,high_load_final_fuel_stage,routine,code,,8,,,,fuel,strong,High-load/final fuel-duration support path.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6EEE,0x6F00,fuel_output_scheduler,routine,code,,8,,,,fuel,confirmed,Fuel output scheduler/timing path using period and event-width support calibrations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6F01,0x6FE2,rpm_limiter_hysteresis,routine,code,,8,,,,speed-rpm,confirmed,Set/clear RAM 0x00A4 bit 0x10 from engine period and primary/alternate threshold pairs.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x6FE4,0x70FF,sub_6FE4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7101,0x723C,sub_7101,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x723E,0x729B,sub_723E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x729D,0x72C9,sub_729D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x72CB,0x7390,sub_72CB,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7392,0x74BE,timer_capture_handler,routine,code,,8,,,,scheduler,confirmed,Capture 68HC11 TIC3 value at 0x1014 into RAM 0x00D9.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x74BF,0x74C9,sub_74BF,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x74CA,0x765F,timer_capture_isr_preamble_74ca,routine,code,,,,,,speed-rpm,strong,"Timer capture/output scheduling ISR preamble; samples TIC3, updates compare state, and falls through into engine_period_update at 0x7660.",Decoded contiguous block 0x74CA-0x765F; accesses 0x1014/0x1018 and falls through to the code-confirmed period path.,,false
+0x7660,0x77A0,engine_period_update,routine,code,,8,,,,speed-rpm,confirmed,Update prior capture and calculate RAM 0x00BA engine-period delta.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x77A2,0x7BD7,sub_77A2,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7BD9,0x7C55,sub_7BD9,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7C57,0x7C6C,sub_7C57,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7C6E,0x7C88,sub_7C6E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7C8A,0x7C9F,sub_7C8A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7CA1,0x7CB2,sub_7CA1,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7CB3,0x7CD8,sub_7CB3,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7CF4,0x7D12,sub_7CF4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7D14,0x7D32,sub_7D14,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7D34,0x7D52,sub_7D34,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7D54,0x7D72,sub_7D54,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7D74,0x7DCD,sub_7D74,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7DCF,0x7E76,sub_7DCF,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7E78,0x7E9A,sub_7E78,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7E9B,0x7F1A,sub_7E9B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7F1C,0x7F31,sub_7F1C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x7F33,0x7FFC,sub_7F33,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x800A,0x800A,cal_spark_fuel_bank_config,rom_data,u8,1,8,false,1,1,configuration,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x800C,0x800D,checksum_word,rom_data,u16be,2,16,false,1,1,checksum,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x800E,0x800F,checksum_complement_target,rom_data,u16be,2,16,false,1,1,checksum,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8010,0x8027,spi_pointer_frame,rom_data,u16be-pointer-table,24,16,false,1,12,firmware-data,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x802B,0x8102,fuel_iat_rpm_corr_a_24x9_s8,rom_data,s8-table,216,8,true,24,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8103,0x81DA,fuel_iat_rpm_corr_b_24x9_s8,rom_data,s8-table,216,8,true,24,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x81F8,0x821B,low_rpm_fuel_trim_a_4x9_s8,rom_data,s8-table,36,8,true,4,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x821C,0x82F3,fuel_quantity_trim_a_24x9_s8,rom_data,s8-table,216,8,true,24,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x82F4,0x8317,low_rpm_fuel_trim_b_4x9_s8,rom_data,s8-table,36,8,true,4,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8318,0x83EF,fuel_quantity_trim_b_24x9_s8,rom_data,s8-table,216,8,true,24,9,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x83F0,0x8407,rpm_only_fuel_trim_1x24_s8,rom_data,s8-vector,24,8,true,1,24,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8408,0x8418,cts_warmup_fuel_corr_1x17,rom_data,u8-vector,17,8,false,1,17,fuel-warmup,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x84E3,0x84EB,scheduler_fuel_pulse_corr_1x9,rom_data,u8-vector,9,8,false,1,9,fuel-scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x85BA,0x8631,high_load_fuel_duration_support_24x5,rom_data,u8-table,120,8,false,24,5,fuel,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x869A,0x8771,fuel_cut_state_delay_24x9,rom_data,u8-table,216,8,false,24,9,fuel-state,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x877E,0x8786,event_width_limit_1x9,rom_data,u8-vector,9,8,false,1,9,scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8787,0x8788,oc3_period_fit_guard,rom_data,u16be,2,16,false,1,1,scheduler,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8789,0x879A,fuel_edge_offset_1x9_words,rom_data,u16be-vector,18,16,false,1,9,scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x879E,0x879F,rpm_limit_primary_set_period,rom_data,u16be,2,16,false,1,1,limiter,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x87A0,0x87A1,rpm_limit_primary_clear_period,rom_data,u16be,2,16,false,1,1,limiter,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x87A2,0x87A3,rpm_limit_alternate_set_period,rom_data,u16be,2,16,false,1,1,limiter,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x87A4,0x87A5,rpm_limit_alternate_clear_period,rom_data,u16be,2,16,false,1,1,limiter,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x87B1,0x8888,injector_event_phase_24x9,rom_data,u8-table,216,8,false,24,9,fuel-scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x888E,0x8965,idle_air_bypass_target_24x9,rom_data,u8-table,216,8,false,24,9,idle,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8970,0x8980,cts_idle_target_cap_1x17,rom_data,u8-vector,17,8,false,1,17,idle,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x89C7,0x89D9,ignition_phase_factor_1x19,rom_data,u8-vector,19,8,false,1,19,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x89DA,0x89EC,ignition_width_factor_1x19,rom_data,u8-vector,19,8,false,1,19,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x89F3,0x8A05,ignition_retard_gain_1x19,rom_data,u8-vector,19,8,false,1,19,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8A69,0x8B40,spark_high_default_24x9,rom_data,u8-table,216,8,false,24,9,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8B41,0x8C18,spark_low_alternate_24x9,rom_data,u8-table,216,8,false,24,9,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8C19,0x8C30,spark_wot_or_bypass_1x24,rom_data,u8-vector,24,8,false,1,24,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8C7C,0x8D14,spark_iat_load_corr_17x9_s8,rom_data,s8-table,153,8,true,17,9,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8D15,0x8DAD,spark_cts_load_corr_17x9_s8,rom_data,s8-table,153,8,true,17,9,ignition,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8E6F,0x8EC3,adaptive_dynamics_table_a_17x5,rom_data,u8-table,85,8,false,17,5,closed-loop,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8EC7,0x8F1B,adaptive_dynamics_table_b_17x5,rom_data,u8-table,85,8,false,17,5,closed-loop,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8F1C,0x8F70,adaptive_dynamics_table_c_17x5,rom_data,u8-table,85,8,false,17,5,closed-loop,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x8F71,0x8FC5,adaptive_dynamics_table_d_17x5,rom_data,u8-table,85,8,false,17,5,closed-loop,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x916A,0x916B,expected_stack_top,rom_data,u16be,2,16,false,1,1,initialization,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x9187,0x925E,load_aircharge_factor_24x9,rom_data,u8-table,216,8,false,24,9,air-load,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x929E,0x92CD,rpm_period_axis_24_words,rom_data,u16be-vector,48,16,false,1,24,speed-rpm,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x92CF,0x92D7,cts_adc_axis,rom_data,u8-axis,9,8,false,1,9,temperature,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x92D9,0x92E1,iat_adc_axis,rom_data,u8-axis,9,8,false,1,9,temperature,confirmed,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x92FA,0x9302,scheduler_axis_table_1x9,rom_data,u8-vector,9,8,false,1,9,scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x9303,0x930C,scheduler_signed_subvector,rom_data,s8-vector,10,8,true,1,10,scheduler,confirmed-structure,Calibration/data symbol; see report for units and role limitations.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x9315,0x93BC,sub_9315,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x93BE,0x9433,sub_93BE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9435,0x94AA,sub_9435,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x94AC,0x94E0,sub_94AC,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x94E2,0x9521,sub_94E2,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9523,0x9534,sub_9523,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9536,0x9569,sub_9536,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x956B,0x95F1,period_history_init,routine,code,,8,,,,speed-rpm,confirmed,"Initialize period/timer history, including 0x00BA = 0xFFFF.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0x95F3,0x96CF,interrupt_handler_95f3,routine,code,,8,,,,unknown,confirmed,Vector target; exact source depends on MCU mask.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x96D3,0x96D9,sub_96D3,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x96DA,0x96E8,sub_96DA,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x96E9,0x96F2,sub_96E9,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x96F3,0x96FA,sub_96F3,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9707,0x9746,sub_9707,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9747,0x9758,sub_9747,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9759,0x9788,sub_9759,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9789,0x97C3,sub_9789,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x97C5,0x9A14,sub_97C5,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9A16,0x9B60,sub_9A16,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9B61,0x9B78,sub_9B61,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9B79,0x9BB4,sub_9B79,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9BB5,0x9BFD,sub_9BB5,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9BFE,0x9D12,sub_9BFE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9D13,0x9D23,sub_9D13,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9D25,0x9D4F,runtime_stage_9d25,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0x9D51,0x9D55,sub_9D51,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9D56,0x9D7B,sub_9D56,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9D88,0x9D9E,sub_9D88,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9E87,0x9E97,sub_9E87,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9E98,0x9EAE,sub_9E98,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9EAF,0x9EC4,sub_9EAF,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9EC5,0x9F01,sub_9EC5,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0x9F02,0xA001,spi_status_stream,routine,code,,8,,,,diagnostics,confirmed,Stream selected live RAM/status bytes through the SPI peripheral using pointer frame 0x8010.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xA002,0xA011,sub_A002,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA012,0xA021,sub_A012,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA3DE,0xA5F6,sub_A3DE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA5F7,0xA618,sub_A5F7,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA619,0xA66A,sub_A619,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA696,0xA6E4,sci_mode_init,routine,code,,8,,,,diagnostics,strong,Initialize SCI diagnostic mode from calibration/config bytes 0x8009/0x800B.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xA6E5,0xA758,sci_buffers_init,routine,code,,8,,,,diagnostics,strong,Initialize SCI/service buffers and packet state.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xA759,0xA777,sub_A759,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xA7DE,0xA9EA,sub_A7DE,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xAAD0,0xAAD2,sci_service_dispatch_aad0,routine,code,,8,,,,diagnostics,strong,SCI/service dispatch path that can jump to hardware service initialization at 0x4F10.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xAAE0,0xAE76,sci_service_55_entry,routine,code,,8,,,,diagnostics,confirmed,"Special SCI response/service entry: sets mode 0x06, stack 0x916A, then jumps to 0xD80B.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xAFC0,0xB26C,sub_AFC0,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xB26E,0xB2A9,interp_1d_word,routine,code,,8,,,,math,confirmed,One-dimensional 16-bit interpolation helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB2AB,0xB2B9,interp_1d_u8,routine,code,,8,,,,math,confirmed,One-dimensional unsigned byte interpolation helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB2BA,0xB2D4,interp_1d_s8,routine,code,,8,,,,math,strong,One-dimensional signed-byte interpolation helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB2D6,0xB329,interp_2d_u8,routine,code,,8,,,,math,confirmed,Two-dimensional unsigned byte interpolation helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB32B,0xB381,interp_2d_s8,routine,code,,8,,,,math,confirmed,Two-dimensional signed-byte interpolation helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB383,0xB3B7,axis_lookup_u8,routine,code,,8,,,,axes,confirmed,Axis/index helper.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB3B9,0xB3F4,period_axis_lookup,routine,code,,8,,,,speed-rpm,confirmed,Axis/index helper used to normalize engine period into the RPM axis.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB3F6,0xB405,iir_step_u8_to_q8_8,routine,code,,,,,,math,confirmed,First-order signed step: move a Q8.8 state at X toward byte input A using gain B.,decoded instruction flow at 0xB3F6; caller/callee context,,false
+0xB407,0xB41B,iir_step_s16,routine,code,,,,,,math,strong,Signed 16-bit first-order step toward an input using a gain/scale stored with the state descriptor.,decoded instruction flow at 0xB407; caller/callee context,,false
+0xB41C,0xB42D,scale_signed_delta,routine,code,,,,,,math,strong,Internal signed-delta multiply/scale helper used by the 16-bit IIR step.,decoded instruction flow at 0xB41C; caller/callee context,,false
+0xB42F,0xB446,saturating_u8_gain_product,routine,code,,,,,,math,confirmed,Saturating unsigned/signed byte combine followed by gain multiplication; used by ADC filters.,decoded instruction flow at 0xB42F; caller/callee context,,false
+0xB447,0xB474,fuel_runtime_sequence,routine,code,,8,,,,fuel,strong,"Central ordered fuel path: scheduler/state, signed trims, and final high-load stage.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB476,0xB48B,runtime_stage_b476,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB48C,0xB554,runtime_stage_b48c,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB555,0xB561,countdown_init_b555,routine,code,,8,,,,unknown,strong,Initialize countdown/timer pair 0x2469/0x246A and status flag 0x009C.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB562,0xB57E,runtime_stage_b562,routine,code,,8,,,,unknown,open,Periodic runtime state update.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB57F,0xB582,sub_B57F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xB800,0xB93C,reset_entry,routine,code,,8,,,,initialization,confirmed,"Reset entry: stack/register init, watchdog, calibration-window copy, subsystem init, jump to main loop.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB93D,0xB941,fault_soft_restart_bit01,routine,code,,8,,,,fault,confirmed,Set RAM 0x0094 bit 0x01 and re-enter reset flow.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB942,0xB947,fault_soft_restart_bit02,routine,code,,8,,,,fault,confirmed,Set RAM 0x0094 bit 0x02 and re-enter reset flow.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB948,0xB94C,fault_fatal_bit04,routine,code,,8,,,,fault,confirmed,Set RAM 0x0094 bit 0x04 and enter fatal path.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB94D,0xB95E,fault_stop_bit08,routine,code,,8,,,,fault,confirmed,"Set RAM 0x0094 bit 0x08, force outputs safe, loop forever.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xB95F,0xBA33,sub_B95F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBA34,0xBA5C,sub_BA34,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBA5D,0xBB3D,ignition_output_vector_lookup,routine,code,,8,,,,ignition,strong,Lookup ignition output phase/width/retard support vectors.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xBB3F,0xBB96,sub_BB3F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBB98,0xBC11,ignition_output_init,routine,code,,8,,,,ignition,strong,Initialize ignition output/vector state.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xBC12,0xBC19,sub_BC12,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBC1A,0xBC8F,sub_BC1A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBC91,0xBD11,sub_BC91,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBD13,0xBD57,sub_BD13,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBD59,0xBD6C,sub_BD59,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBD6E,0xBDEB,service_transfer_state_machine,routine,code,,,,,,hardware-service,strong,Timed byte-transfer state machine using 0x103B and RAM 0x246B-0x2472.,decoded instruction flow at 0xBD6E; caller/callee context,,false
+0xBDEC,0xBDF5,reset_service_transfer_state,routine,code,,,,,,hardware-service,confirmed,Clear transfer state/countdown and hardware register 0x103B.,decoded instruction flow at 0xBDEC; caller/callee context,,false
+0xBDF6,0xBE64,sub_BDF6,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xBE65,0xBF60,idle_air_control,routine,code,,8,,,,idle,strong,"Interpolate 0x888E and CTS support 0x8970, update 0x2484/0x2486 and actuator state.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xBF62,0xBF6D,sub_BF62,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xC000,0xC90E,closed_loop_adaptive_state_machine,routine,code,,8,,,,closed-loop,confirmed,Closed-loop/adaptive state machine using calibration region 0x9000-0x912B.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xC910,0xC949,runtime_stage_c910,routine,code,,8,,,,unknown,open,Periodic runtime stage.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xC94B,0xC97B,adaptive_cell_interpolation,routine,code,,8,,,,closed-loop,confirmed,Interpolate learned/adaptive trim cells.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xC97C,0xC9C3,sub_C97C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xC9C8,0xCAC3,sub_C9C8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCAC5,0xCAD5,clamp_d_to_range_at_x,routine,code,,,,,,math,confirmed,Clamp D to the inclusive 16-bit bounds stored at X+0 and X+2.,decoded instruction flow at 0xCAC5; caller/callee context,,false
+0xCAD7,0xCB42,sub_CAD7,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCB43,0xCB5A,sub_CB43,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCB5B,0xCB6D,sub_CB5B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCB6E,0xCB9A,sub_CB6E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCB9B,0xCBA8,sub_CB9B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCBA9,0xCBC2,sub_CBA9,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCBC4,0xCBEE,sub_CBC4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCBEF,0xCBFF,seed_bank_selector_20b1,routine,code,,8,,,,unknown,confirmed,"Load calibration 0x800A, decrement it, and store runtime bank selector 0x20B1.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xCC00,0xCD39,adaptive_trim_update_gate,routine,code,,8,,,,closed-loop,strong,Adaptive trim update/entry logic.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xCD3A,0xCD6C,sub_CD3A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xCD6D,0xCE38,adaptive_trim_slew_update,routine,code,,,,,,closed-loop,strong,Update adaptive correction accumulator 0x24A2/0x24B0 using state flags and calibrated step sizes.,decoded instruction flow at 0xCD6D; caller/callee context,,false
+0xCE3A,0xD00E,sub_CE3A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD00F,0xD03B,clamp_word_delta_to_s8_range,routine,code,,,,,,math,confirmed,Clamp a word relative to calibration 0x8FFD to the signed-byte interval -256..255.,decoded instruction flow at 0xD00F; caller/callee context,,false
+0xD03C,0xD04B,adaptive_cell_update_setup,routine,code,,,,,,closed-loop,strong,"Initialize bounds, pointers, and step for the adaptive learned-cell update worker.",decoded instruction flow at 0xD03C; caller/callee context,,false
+0xD04C,0xD0C6,adaptive_cell_update_worker,routine,code,,,,,,closed-loop,strong,Accumulate adaptive trim and periodically move a learned RAM cell within calibrated bounds.,decoded instruction flow at 0xD04C; caller/callee context,,false
+0xD0C8,0xD103,sub_D0C8,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD105,0xD174,sub_D105,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD176,0xD17C,sub_D176,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD17D,0xD1A3,adaptive_substate,routine,code,,8,,,,closed-loop,strong,Adaptive/closed-loop substate calculation.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD1A4,0xD1B2,sub_D1A4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD2D9,0xD36E,main_runtime_loop,routine,code,,8,,,,unknown,confirmed,Timer/stack/watchdog guard followed by the fixed periodic scheduler.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD36F,0xD46C,main_periodic_body,routine,code,,8,,,,speed-rpm,confirmed,Main ordered periodic call body.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD46D,0xD481,build_rpm_axis_2036,routine,code,,8,,,,speed-rpm,confirmed,Normalize RAM 0x00BA through axis 0x929E into RAM 0x2036.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD482,0xD6AB,build_rpm_index_2044,routine,code,,8,,,,speed-rpm,confirmed,Build 19-site RPM index used by ignition/adaptive support vectors.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD6AC,0xD6F4,runtime_variables_init,routine,code,,8,,,,unknown,confirmed,Initialize main runtime variables.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xD6F5,0xD702,sub_D6F5,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD703,0xD799,sub_D703,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD79B,0xD7D5,sub_D79B,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD80B,0xD828,sci_service_runtime_loop_d80b,routine,code,,,,,,diagnostics,confirmed,"Special SCI/service runtime loop entered by the 0xAAE0 service entry; validates mode 0x06, services COP, and dispatches service helpers.","Direct JMP from 0xAAE9; decoded loop 0xD80B-0xD828 with calls to 0xD829, 0xD896, and 0xD941.",,false
+0xD829,0xD895,sub_D829,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD896,0xD90B,sub_D896,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD90C,0xD927,sub_D90C,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD928,0xD940,sub_D928,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xD941,0xD982,sub_D941,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xDA5A,0xDA5F,sub_DA5A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xDCD9,0xDCE4,sub_DCD9,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xDD29,0xDD2C,sub_DD29,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xDD2D,0xDD36,sub_DD2D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xDD37,0xDD3F,sub_DD37,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE078,0xE07F,sub_E078,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE080,0xE0CB,timer_compare_isr_e080,routine,code,,,,,,scheduler,strong,"Timer compare interrupt path that selects event helpers, updates TOC2/action bits, and returns with RTI.",Decoded contiguous ISR block 0xE080-0xE0CB; writes 0x1018 and clears output-compare action bits before RTI.,,false
+0xE0CC,0xE0E6,sub_E0CC,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE0E7,0xE104,sub_E0E7,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE132,0xE163,sub_E132,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE227,0xE325,sub_E227,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE326,0xE32E,sub_E326,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE32F,0xE33E,sub_E32F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE33F,0xE364,sub_E33F,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE365,0xE38A,sub_E365,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE38B,0xE5E7,fuel_signed_trim_lookup,routine,code,,8,,,,fuel,confirmed,"Select 1D/2D and A/B signed fuel trim banks, interpolate, store raw correction in 0x2084.",existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE5E8,0xE651,fuel_base_accumulator,routine,code,,8,,,,fuel,strong,Combine load/air-charge and correction terms into base pulse-width accumulator 0x00C1.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE652,0xE6D8,fuel_final_stack,routine,code,,8,,,,fuel,strong,Build final fuel duration path ending in RAM 0x00C3.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE6DA,0xE714,scaled_u16_multiply_accumulate,routine,code,,,,,,math,confirmed,"Multiply a 16-bit value in 0x00FD/0x00FE by A, then apply a shift count in B with saturation.",decoded instruction flow at 0xE6DA; caller/callee context,,false
+0xE715,0xE747,apply_signed_fraction,routine,code,,8,,,,unknown,confirmed,Apply approximately value += value * signed_raw / 256.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE748,0xE77D,apply_adaptive_trim,routine,code,,8,,,,closed-loop,confirmed,Apply adaptive trim word centered at 0x8000.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE77E,0xE7DC,sub_E77E,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE7DD,0xE84A,sub_E7DD,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE84B,0xE926,fuel_iat_rpm_corrections,routine,code,,8,,,,fuel,confirmed,Lookup signed 0x802B/0x8103 IAT-like by RPM correction banks.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE927,0xE970,sum_fuel_corrections,routine,code,,8,,,,fuel,strong,Sum correction terms into RAM 0x204B.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xE972,0xE991,sub_E972,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE993,0xE9A6,sub_E993,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xE9A8,0xEB14,afterstart_state_handler,routine,code,,8,,,,unknown,confirmed,Afterstart/warmup state handler using CTS-like support vectors.,existing reverse-engineering bundle / repository LOGIC.md,,false
+0xEB16,0xEB35,sub_EB16,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEB37,0xEBB2,sub_EB37,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEBB4,0xEF28,sub_EBB4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEF2A,0xEF6F,sub_EF2A,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEF71,0xEF7C,sub_EF71,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEF7D,0xEFB5,sub_EF7D,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEFB6,0xEFBF,sub_EFB6,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEFC0,0xEFC7,load_12bit_descriptor_word,routine,code,,,,,,math,confirmed,"Load a descriptor word from X, mask its high nibble, and cache it at 0x25BA.",decoded instruction flow at 0xEFC0; caller/callee context,,false
+0xEFC8,0xEFD3,compare_abs_delta_to_limit,routine,code,,,,,,math,confirmed,Compare the absolute difference from cached 0x25BA against limit 0x25BF.,decoded instruction flow at 0xEFC8; caller/callee context,,false
+0xEFD4,0xEFDF,sub_EFD4,routine,unclassified-code,,,,,,unknown,unclassified,Reachable direct-call or vector entry not yet semantically classified.,recursive control-flow graph,,true
+0xEFE0,0xEFFE,test_descriptor_window,routine,code,,,,,,math,strong,Test adjacent 12-bit descriptor words against a center/window pair in 0x20AC/0x20AE.,decoded instruction flow at 0xEFE0; caller/callee context,,false
+0xEFFF,0xF020,count_leading_shift_positions,routine,code,,,,,,math,strong,Count left shifts required to normalize words in low-RAM range 0x0072-0x0087.,decoded instruction flow at 0xEFFF; caller/callee context,,false

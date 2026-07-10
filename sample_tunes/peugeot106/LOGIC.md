@@ -23,6 +23,95 @@ display position, while the category definitions remain indexed from `0x0`.
 For example, a table intended for the `Fuel Warmup / Transient` category uses
 membership value `21`, which TunerPro displays as the 21st category definition.
 
+## v3 Reachable-Code Synthesis
+
+The `reverse_eng/v3` pass keeps the same `13,755` decoded address records,
+`680` direct calls, and `21` vector words as v1, but corrects routine ownership
+and represents discontiguous routines as explicit decoded blocks instead of
+claiming that every byte in a bounding span is executable.
+
+### Corrected Interrupt / Service Ownership
+
+| Entry | Code-proven software role | Important downstream effect |
+| ---: | --- | --- |
+| `0x6C6A-0x6CFA` | Output-compare scheduler ISR | Updates TOC3/action state, dispatches scheduler work, terminates with `RTI`. |
+| `0x6CFB-0x6D32` | Periodic service ISR | Runs state helpers, conditionally services the watchdog, terminates with `RTI`. |
+| `0x74CA-0x765F` | Timer-capture ISR preamble | Samples TIC3, updates compare state, then falls through to engine-period processing at `0x7660`. |
+| `0xD80B-0xD828` | SCI service runtime loop | Validates service mode `0x06`, services COP, and dispatches service-transfer helpers. |
+| `0xE080-0xE0CB` | Timer-compare ISR | Selects event helpers, updates TOC2/action bits, terminates with `RTI`. |
+
+These entries repair 19 call sites that v2 incorrectly attached to preceding
+routines. They strengthen scheduler, diagnostic, and period-path ownership but
+do not change any calibration table boundary.
+
+### What Static Code Tracing Proves
+
+Without hardware, a table can still be assigned a strong software role when
+the disassembly proves its lookup helper, width, signedness, runtime index,
+selection guards, destination RAM, and downstream consumer. This is enough to
+separate fuel quantity from event phase, spark advance from dwell support, and
+tunable corrections from diagnostic or firmware data.
+
+The main remaining hardware-dependent questions are exact ADC pin identity,
+absolute MAP scaling, timer tick duration, final injector/coil pins, and the
+physical identity of the `$200C -> $00CC -> $2040` analog path.
+
+### Software Fuel Path
+
+```text
+0x9187 load/air-charge model
+    -> $00D0 / $00CE
+    -> normalized load $2034
+
+0x802B / 0x8103 signed likely-IAT/RPM corrections
+    -> $204A / $204D
+    -> $204B / $204E correction and blend terms
+
+0x821C / 0x8318, guarded 0x81F8 / 0x82F4, or bypass 0x83F0
+    -> signed trim $2084
+    -> fuel += fuel * signed_trim / 256
+
+warmup + afterstart + transient + adaptive + $2040 correction
+    -> central fuel accumulator $00C1
+    -> final duration $00C3
+    -> scheduled event width $00BC
+```
+
+This proves that the ECU does not expose one obvious standalone VE table.
+`0x9187` is upstream load/air-charge modelling, while `0x821C/0x8318` are the
+closest code-proven load/RPM fuel quantity trims.
+
+### Software-Proven Calibration Roles
+
+| Calibration family | Exact bases | Code-traced use |
+| --- | --- | --- |
+| RPM/load/temperature axes | `0x929E`, `0x9291`, `0x92CF`, `0x92D9`, `0x400E` | Build `$2036` RPM, processed load-delta axes, likely CTS `$203C/$203E`, and likely IAT `$2038/$203A`; temperature consumer order is firmware-inverted cold-to-hot. |
+| Load / air-charge model | `0x9187` | Processed load rise by RPM lookup that can produce `$00D0 -> $00CE -> $2034`; not a direct VE or injector-characteristic table. |
+| IAT/RPM fuel corrections | `0x802B`, `0x8103` | Signed outputs `$204A/$204D` feed the central fuel correction/blend chain. |
+| Fuel quantity trims | `0x821C`, `0x8318`, `0x81F8`, `0x82F4`, `0x83F0`, `0x81E0` | Main banked, guarded low-RPM, RPM-only bypass, and period-gated trim/support paths. `$E715` proves the main signed-trim scale is approximately raw/256. |
+| Warmup / afterstart | `0x8408`, `0x841B`, `0x843D`, `0x8452`, `0x845B-0x84D2` | CTS-indexed warmup correction, initial afterstart value, state timers, targets/limits, and decay/blend behavior. |
+| Transient fuel | `0x84F6`, `0x8508`, `0x8511`, `0x8529`, `0x853B`, `0x8546`, `0x8558`, `0x8561`, `0x8579`, `0x858B`, `0x8596`, `0x859F`, `0x85AF` | CTS-, RPM-, and `$2042`-indexed transient scales/targets; `0x8596/0x85AF` feed additive fuel terms `$2055/$2057`. |
+| Fast closed-loop fuel correction | `0x84E3` | `$2040` lookup to fast correction `$2049`, then applied to `$00C1` in the final fuel stack. Closed-loop fuel effect is proven; physical lambda/O2 channel identity is not. |
+| High-load duration / fuel cut | `0x85BA`, `0x869A` | `0x85BA -> $2063` is doubled into final `$00C3`; `0x869A -> $2391` is a state countdown whose expiry can zero `$00C3`. |
+| Main / bypass spark | `0x8A69`, `0x8B41`, `0x8C19` | Bank A/default and bank B/alternate load/RPM spark plus an RPM-only bypass vector. Values use the strong `raw / 2` degree scale. High/low-octane and WOT roles remain physical hypotheses. |
+| Spark temperature corrections | `0x8C7C`, `0x8D15` | Signed likely-IAT/load and likely-CTS/load corrections added to spark accumulator `$2147`. |
+| Spark mode / transition | `0x8C31`, `0x8C49`, `0x8C61`, `0x87A6`, `0x87AB`, `0x8DAE`, `0x8DD9`, `0x8E04`, `0x8E0D`, `0x8E18` | RPM-only mode vectors plus transition, decay, and state-dependent spark terms. |
+| Ignition output / retard | `0x89C7`, `0x89DA`, `0x89F3`, `0x8A23`, `0x8A27`, `0x8A3A`, `0x8A4D`, `0x8A52`, `0x8A65`, `0x8A68` | Per-event phase, width/dwell-window, retard/gain, cap, activation, reload, and offset support. Physical dwell/time units remain unproven. |
+| Idle / actuator | `0x888E`, `0x8970`, `0x8636`, `0x863F`, `0x8648`, `0x8652`, `0x8671`, `0x8689` | Load/RPM idle target `$2484`, CTS cap `$2486`, and state target/threshold/limit vectors that shape `$202B`. |
+| Closed loop / adaptive | `0x9000`, `0x9011`, `0x9022`, `0x9033`, `0x9044`, `0x9068`, `0x9073`, `0x90D6`, `0x90EF`, `0x899A`, `0x8E36`, `0x8E3D`, `0x8E46`, `0x8E57`, `0x8E6F`, `0x8EC7`, `0x8F1C`, `0x8F71` | Base correction, delays/reloads, dynamic load correction, ramp target/temperature scale, entry gates/offsets, and adaptive dynamics/timer/hold terms. Learned cells remain in RAM. |
+| Fuel event scheduling | `0x87B1`, `0x877E`, `0x8787`, `0x8789`, `0x92FA`, `0x9303`, `0x84ED` | Event phase `$21C6`, width limit `$00BF`, OC3 guard, edge/deadline `$2086`, scaled scheduler output `$2388`, signed scheduler correction `$2048`, and CTS scheduler threshold. These are not main fuel quantity or proven injector deadtime tables. |
+| RPM limiter | `0x879E`, `0x87A0`, `0x87A2`, `0x87A4` | Primary and alternate set/clear period thresholds with hysteresis; smaller period means higher RPM. |
+
+### Static Confidence Boundary
+
+The most tuner-ready definitions are the main spark banks, signed fuel quantity
+trims, IAT/RPM fuel corrections, warmup/afterstart vectors, and limiter words.
+Scheduler, adaptive-state, ignition-output, transient-support, and raw factor
+tables have code-proven software roles but remain raw until arithmetic tracing
+or emulation establishes their physical units. Firmware vectors, checksum
+controls, stack constants, SPI pointer data, diagnostic event tables, and state
+descriptor records are inspection items and must not be tuned.
+
 ## DHC11 Verification Pass
 
 The generated DHC11 listing at `analysis/dhc11/M27C512_original_dhc11.asm`
@@ -975,7 +1064,7 @@ fuel-search priority is now expressed as confidence-tier working labels:
 | `0x83F0-0x8407` | `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0` | Code-referenced | Signed RPM-only bypass vector selected by `$E38B` in a special mode and stored to `$2084`; not a standalone VE table. |
 | `0x802E/0x80EB/0x81A8/0x80F1` | Retired signed/misaligned probes | Historical evidence only | Removed from the active XDF in v0.42 after exact `0x802B/0x8103` views superseded them. `0x80EB` is a signed boundary slice at `0x802B+0xC0`; do not tune these as VE or main fuel. |
 | `0x89ED-0x89F2` | `Per-event Correction Scalars 1x6 @ 0x89ED` | Code-referenced | Direct scalar/control bytes around the `0x2044` vector family. |
-| `0x84E3-0x84EB` | `Internal $2040 Fuel Pulse Correction Vector 1x9 @ 0x84E3` | Code-referenced | `0x2040`-indexed fuel correction; output `$2049` is applied to `$00C1`. `$200C` lambda/O2 identity remains provisional, so the active XDF uses neutral `$2040` fuel-pulse wording. |
+| `0x84E3-0x84EB` | `Fast Closed-Loop Fuel Correction vs $2040 1x9 @ 0x84E3` | Code-referenced | `$2040`-indexed fast fuel correction; output `$2049` is applied to `$00C1`. The software closed-loop role is strong, while `$200C` physical lambda/O2 channel identity and output units remain provisional. |
 | `0x84EC` | `Scheduler $00D3 Threshold Byte @ 0x84EC` | Code-referenced | Standalone threshold byte compared with `$00D3` at `0x7203` before the `0x84ED` scheduler threshold path. Not part of the `0x84E3` vector. |
 | `0x888E-0x8965` | `Idle Air / Idle Bypass Target 24x9 @ 0x888E` | Code-referenced | Load/RPM idle-air target candidate; output `$2484` combines with `0x8970` and shapes `$202B`. |
 | `0x8970-0x8980` | `CTS Idle Target / Cap Vector 1x17 @ 0x8970` | Candidate | Likely CTS-axis idle vector stored to `$2486`; exact actuator hardware unproven. |
@@ -3219,8 +3308,8 @@ New in `0.6`:
 - `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`, displayed as `raw / 2` degrees.
 - `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`, displayed as `raw / 2` degrees.
 - `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`, displayed as `raw / 2` degrees.
-- `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`, displayed as `15000000 / raw period`.
-- `Alternate RPM Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
+- `Primary RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`, displayed as `15000000 / raw period`.
+- `Alternate RPM Limiter Set/Clear Thresholds @ 0x87A2/0x87A4`, displayed as `15000000 / raw period`.
 - `TPS / Load-Delta Breakpoints 1x9 @ 0x9291`.
 - `AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF`.
 - `AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9`.
@@ -4061,11 +4150,11 @@ New checksum constants:
 - `Checksum Word @ 0x800C`
 - `Checksum Complement @ 0x800E`
 
-New MOD2-backed entries:
+Historical MOD2-backed discovery entries:
 
-- `MOD2 Changed 16-bit Scalar A @ 0x879E`
-- `MOD2 Changed 16-bit Scalar B @ 0x87A0`
-- `MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18`
+- `MOD2 Changed 16-bit Scalar A @ 0x879E`, retired from active XDF v0.54 after the primary limiter role was code-confirmed
+- `MOD2 Changed 16-bit Scalar B @ 0x87A0`, retired from active XDF v0.54 after the primary limiter role was code-confirmed
+- `MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18`, retired from active XDF v0.54 because it duplicates the final cell of bank B
 - `Code-Confirmed Signed Offset Byte @ 0x8A68`
 - historical `0x879C` comparison scalar block, retired from active XDF v0.42
 - historical raw `0x8A68` banked block view, retired from active XDF v0.42
@@ -4079,8 +4168,8 @@ After TunerPro visual review, additional split views were added:
 - `Signed Fuel Quantity Trim B 24x9 @ 0x8318`
 - `RPM-only Fuel Trim / Bypass Vector Candidate 1x24 @ 0x83F0`
 - legacy alignment probes around `0x802E`, `0x80EB`, `0x81A8`, and `0x80F1`
-- `Code-Confirmed Spark Bank High/Default 24x9 @ 0x8A69`
-- `Code-Confirmed Spark Bank Low/Alternate 24x9 @ 0x8B41`
+- `Main Spark Bank A / Default 24x9 @ 0x8A69`
+- `Main Spark Bank B / Alternate 24x9 @ 0x8B41`
 - `Code-Referenced Control Scalars 1x6 @ 0x89ED`
 - `Per-event Retard / Gain Candidate 1x19 @ 0x89F3`
 - `Code-Confirmed 1D Vector 1x19 @ 0x89C7`
@@ -4093,12 +4182,12 @@ After TunerPro visual review, additional split views were added:
 - `Code-Confirmed 2D Table 24x5 @ 0x85BA`
 - `Code-Confirmed 2D Table 5x5 @ 0x8A0A`
 - `Code-Confirmed RPM Axis 1x24 @ 0x929E`
-- `Likely Spark Advance High Octane / Default 24x9 @ 0x8A69`
-- `Likely Spark Advance Low Octane / Alternate 24x9 @ 0x8B41`
-- `Likely WOT Spark Advance Vector 1x24 @ 0x8C19`
-- `Likely RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
+- `Main Spark Bank A / Default 24x9 @ 0x8A69`
+- `Main Spark Bank B / Alternate 24x9 @ 0x8B41`
+- `RPM-only Bypass Spark Vector 1x24 @ 0x8C19`
+- `Primary RPM Limiter Set/Clear Thresholds @ 0x879E/0x87A0`
 - `Load / Air-Charge Model Factor 24x9 @ 0x9187`
-- `Alternate RPM Thresholds @ 0x87A2/0x87A4`
+- `Alternate RPM Limiter Set/Clear Thresholds @ 0x87A2/0x87A4`
 - `TPS / Load-Delta Breakpoints 1x9 @ 0x9291`
 - `AXIS_TEMP_B / Likely CTS ADC Breakpoints 1x9 @ 0x92CF`
 - `AXIS_TEMP_A / Likely IAT ADC Breakpoints 1x9 @ 0x92D9`

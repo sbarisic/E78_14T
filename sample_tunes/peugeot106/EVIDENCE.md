@@ -23,6 +23,49 @@ firmware-support constants for expected stack top `0x916A = 0x27FF` and
 checksum-service enable byte `0x916E = 0xFF`. It also records the corrected
 main-loop addresses `D2EE/D2F1/D2F4`, loop-back jump at `D6A9`, and incremental
 checksum routine range `0x5AD6-0x5B19`; calibration maps and scaling are unchanged.
+Version `0.54` removes obsolete MOD2 scalar/last-cell aliases and the five
+redundant percentage fuel-trim views. Signed raw fuel views remain authoritative,
+and multiplier views remain the primary tuning displays. It also adopts
+code-trace-based primary/alternate limiter, spark bank A/B, RPM-only bypass,
+and fast closed-loop fuel-correction names.
+
+## Reverse-Engineering Artifact Status
+
+The reverse-engineering snapshots are now organized as `reverse_eng/v1`,
+`reverse_eng/v2`, and `reverse_eng/v3`. v1 retains the original executable
+report, code ranges, vector CSV, call edges, and stock/MOD2 diff regions. v2 is
+superseded. v3 is the current annotation/symbol-database design.
+
+Locally verified v3 facts:
+
+- Its `13,755` raw address records are byte/mnemonic-identical to v1.
+- It preserves the same `680` direct-call edges and `21` vector words.
+- It contains `526` symbols and `361` routine entries.
+- Five ownership regression tests pass, all direct calls have an explicit
+  owner, and the previous 19 call-site misattributions are corrected.
+- Six discontiguous routine spans now expose exact decoded blocks, decoded
+  byte counts, and gap bytes rather than implying continuous executable code.
+- The newly separated entries at `0x6C6A`, `0x6CFB`, `0x74CA`, `0xD80B`, and
+  `0xE080` strengthen scheduler, period, and SCI-service tracing.
+
+The v3 resolved CSV regenerates byte-for-byte. The annotated ASM regenerates
+with identical text but platform-dependent LF/CRLF bytes, and the SQLite schema
+and ordered logical rows regenerate identically while the physical SQLite file
+hash differs. Therefore `verify_reproducibility.py` currently reports ASM and
+SQLite hash mismatches on Windows even though semantic content matches.
+The root `tools/test_iaw8p40_tools.py` vector-metadata test also still points
+to the pre-reorganization `reverse_eng/IAW8P40_peugeot106_vectors.csv` path;
+the authoritative v1 CSV now lives under `reverse_eng/v1`, so that integration
+test fails until its fixture path is updated.
+
+v3 is a core firmware symbol database, not a complete XDF inventory. Its 44 ROM
+symbols all have matching active-XDF bases, but many exact warmup, transient,
+idle, adaptive, and support views remain documented only in the XDF/`LOGIC.md`.
+It also omits confirmed checksum-service enable byte `0x916E`, which remains in
+v1 and active XDF v0.54. The active XDF uses the software-proven fast closed-loop
+fuel-correction role for `0x84E3`, but does not promote `$200C` to a physically
+confirmed O2/lambda channel because hardware proof is still absent.
+
 ## Evidence Status
 This table separates code-confirmed structures from MOD2/same-family-supported
 candidates and visual/public-index probes. The current corpus has six local
@@ -49,7 +92,7 @@ air-charge math, or injection scheduling.
 | `0x8787-0x8788` | word | OC3 Period-Fit Guard Word | Yes; used around `$706C-$7074` | No | Same-family comparison only | Raw 16-bit timer ticks | Fuel output timing guard | Do not convert to ms or crank degrees until E-clock/prescaler proof. |
 | `0x8789-0x879A` | `1x9 words` | Fuel Output Edge Offset / Deadline | Yes; `$B26E` path stores result to `$2086` | No | Same-family comparison only | Raw 16-bit timer-tick words indexed by `$2040 = max($00CC - 0x8000, 0) >> 4`; optional ms view assumes `2 us/tick`; `0x879B/0x879C` are separate data | Edge-offset/deadline-style support | Not fuel quantity or normal injector battery deadtime; raw ticks remain authoritative. |
 | `0x87B1-0x8888` | `24x9` | Injector/Event Phase Offset | Yes; output `$00BE -> $21C6` | No | Same-family comparison only | Raw; X `$2034`, Y `$2036`; stock table is all zero | Strong fuel event phase candidate | Changes affect event timing/phase, not fuel quantity; use carefully. |
-| `0x84E3-0x84EB` | `1x9` | Internal `$2040` Fuel Pulse Correction Vector | Yes; `$E83E-$E848` indexes `$2040` and stores `$2049` | TBD | Same-family comparison only | Raw; output `$2049` applies to `$00C1` | Strong fuel-pulse correction candidate | `$200C` lambda/O2 origin remains provisional; old oversized view was retired because `0x84EC/0x84ED` are separate labels. |
+| `0x84E3-0x84EB` | `1x9` | Fast Closed-Loop Fuel Correction vs `$2040` | Yes; `$E83E-$E848` indexes `$2040` and stores fast correction `$2049` | TBD | Same-family comparison only | Raw; output `$2049` applies to `$00C1` | Strong software closed-loop fuel correction | `$200C` physical lambda/O2 origin remains provisional; old oversized view was retired because `0x84EC/0x84ED` are separate labels. |
 | `0x84EC` | byte | Scheduler `$00D3` Threshold Byte | Yes; `$7201-$7206` compares `$00D3` with `L84EC` | No | Same-family comparison only | Raw threshold | Scheduler/state threshold | Kept separate from both `0x84E3` and `0x84ED`. |
 | RAM `$20B9` | runtime word | Adaptive Fuel Trim | Yes; applied around `$E748` | Not ROM data | Strategy evidence | Centred at `$8000`; high byte differs from `$80` when active | Strong adaptive trim candidate | Confirm lambda behavior from logs/scope. |
 | RAM `$0060/$0069` | learned RAM cells | Adaptive Trim Cell Tables | Yes; interpolated by `$C94B` | Not ROM data | Strategy evidence | Neutral `$80`; indexed by likely CTS axis family | Learned long-term trim cells | Confirm update behavior from logs. |
@@ -59,9 +102,9 @@ air-charge math, or injection scheduling.
 | `0x80EB-0x81A7` | `21x9` | Retired Signed Boundary Slice | No active XDF entry | Yes, overlaps corrected signed region | Same-offset comparison only | Signed 8-bit historical view; starts at `0x802B+0xC0` and crosses into `0x8103` | Retired/debug only | Removed from active XDF v0.42; do not tune as a standalone map. |
 | `0x81A8-0x81D4` | `5x9` | Retired Alignment Probe Tail | No active XDF entry | Yes, overlaps corrected signed region | Same-offset comparison only | Raw | Retired/debug only | Removed from active XDF v0.42. |
 | `0x80F1-0x81D1` | `25x9` | Retired Signed Alignment Probe | No active XDF entry | Yes, overlaps corrected signed region | Same-offset comparison only | Signed 8-bit historical view | Retired/debug only | Removed from active XDF v0.42. |
-| `0x8A69-0x8B40` | `24x9` | Likely Spark Advance High Octane / Default | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | Yes | Peug public file uses same offset but altered; RALLY13 shifted to `0x8A84` | Z `raw / 2` degrees; X rounded display-only `0-100 kPa` from runtime `0x2034` | High working label for Peugeot stock/MOD2 | Finish knock/fallback selector trace before removing likely qualifier; prove exact MAP ADC transfer. |
-| `0x8B41-0x8C18` | `24x9` | Likely Spark Advance Low Octane / Alternate | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | Yes | Peug public file uses same offset but altered; RALLY13 shifted to `0x8B5C` | Z `raw / 2` degrees; X rounded display-only `0-100 kPa` from runtime `0x2034` | High working label for Peugeot stock/MOD2 | Finish knock/fallback selector trace before removing likely qualifier; prove exact MAP ADC transfer. |
-| `0x8C19-0x8C30` | `1x24` | Likely WOT Spark Advance Vector | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | No | Peug public file unchanged at same offset; RALLY13 shifted to `0x8C34`; Xantia differs strongly | `raw / 2` degrees, RPM-only axis `0x2036` | Medium-high | Prove WOT/bypass condition and final spark scheduling path. |
+| `0x8A69-0x8B40` | `24x9` | Main Spark Bank A / Default | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | Yes | Peug public file uses same offset but altered; RALLY13 shifted to `0x8A84` | Z `raw / 2` degrees; X rounded display-only `0-100 kPa` from runtime `0x2034` | High structural/default-bank role | High-octane remains a physical hypothesis; prove exact MAP transfer. |
+| `0x8B41-0x8C18` | `24x9` | Main Spark Bank B / Alternate | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | Yes | Peug public file uses same offset but altered; RALLY13 shifted to `0x8B5C` | Z `raw / 2` degrees; X rounded display-only `0-100 kPa` from runtime `0x2034` | High structural/alternate-bank role | Low-octane remains a physical hypothesis; prove exact MAP transfer. |
+| `0x8C19-0x8C30` | `1x24` | RPM-only Bypass Spark Vector | Yes, Peugeot stock/MOD2; XDF `Ignition Main` category | No | Peug public file unchanged at same offset; RALLY13 shifted to `0x8C34`; Xantia differs strongly | `raw / 2` degrees, RPM-only axis `0x2036` | Medium-high bypass role | WOT remains a physical hypothesis; finish the bypass-condition trace. |
 | `0x9187-0x925E` | `24x9` | Load / Air-Charge Model Factor | Yes | Yes, `62 / 216` | Yes, but strategy differs | `raw / 230` hypothesis | Medium-high structural | Prove exact physical role: air density, VE, fuel, or load-model correction. |
 | `0x888E-0x8965` | `24x9` | Idle Air / Idle Bypass Target | Yes; XDF `Idle / Actuator` category | No | Same-family comparison only | Raw; X `$2034`, Y `$2036`, output `$2484` | Medium-high idle/actuator candidate | Trace `$1050.04` to idle actuator/driver hardware. |
 | `0x8970-0x8980` | `1x17` | CTS Idle Target / Cap Vector | Candidate; used with `$203E` in idle path | TBD | Same-family comparison only | Raw; output `$2486` | Medium likely CTS idle vector | Confirm CTS pin and actuator hardware. |
@@ -70,7 +113,7 @@ air-charge math, or injection scheduling.
 | `0x89C7/0x89DA/0x8A52` | `1x19` | Ignition Output / Per-event Retard Vectors | Yes; XDF ignition output category | `0x8A52` unchanged, `0x89C7/0x89DA` unchanged | Same offset not authoritative | Raw; `$2044` 400 rpm sites | Strong software ignition strategy role | Decode `$7Cxx-$7Fxx` event table and hardware coil output. |
 | `0x89F3-0x8A05` | `1x19` | Per-event Retard/Gain Candidate | Yes; XDF `Ignition Output / Retard` category | Yes, `16 / 19` | Same offset not authoritative | Raw; `$2044` 400 rpm sites | Medium-high structure | Prove whether it is knock/roughness/adaptive retard gain or broader per-event correction. |
 | `0x7CDA/0x7CEA` | selector data | Ignition Event Selector Tables | Yes; event builder data | No | Strategy specific | Count byte plus `[threshold,event,aux]` triples | Strong non-map data classification | Do not expose as tuning maps; continue decoding `$23xx` records. |
-| `0x879E/0x87A0` | `2x16-bit` | Likely RPM Limiter Set/Clear Thresholds | Code-referenced | Yes | No | `15000000 / period` local hypothesis | Medium | Verify limiter behavior in code or logs; public `21000000 / value` remains a lead only. |
+| `0x879E/0x87A0` | `2x16-bit` | Primary RPM Limiter Set/Clear Thresholds | Yes; `0x6F01-0x6FE2` directly compares engine period and controls limiter bit `$00A4.10` | Yes | No | `15000000 / period`, locally consistent with the code-confirmed RPM axis | High software role | Hardware/log validation remains useful; public `21000000 / value` remains an unadopted lead. |
 | `RAM 0x2034` | runtime `8.8` axis | MAP/load kPa estimate axis | Yes, runtime axis | Not directly a ROM table | Physical comparison only | XDF spark display rounded integer `0-100 kPa`; raw axis still `0-0x0800` style | Medium-high MAP/load | Prove exact ADC channel and transfer curve. |
 | `RAM 0x2036` | runtime `8.8` axis | RPM-normalized axis | Yes, runtime axis | Not directly a ROM table | Physical comparison only | Produced from `0x929E` period table | High | Confirm exact timer clock basis if live RPM logging becomes available. |
 | `0x929E-0x92CD` | `1x24` | Code-Confirmed RPM Axis | Yes; XDF `Axes / Sensor Conversions` category | No | Xantia comparable only as family pattern | `15000000 / raw period` | High | Confirm exact timer clock basis if live RPM logging becomes available. |
@@ -2794,7 +2837,7 @@ Signed IAT/RPM fuel correction axis note: `0x802B` and `0x8103` use the `0x92D9 
 Retired boundary-probe note: `0x80EB` is `0x802B + 0xC0`, starts at a non-row-aligned offset inside signed table A, and the old 21x9 view crosses into signed table B at `0x8103`. It has no Peugeot immediate word-reference hits and is historical evidence only, not an active XDF table.
 
 Fuel/charge path note: `0x9187 -> 0x00D0/0x00CE` remains the upstream load/air-charge model; `0x802B/0x8103 -> 0x204B/0x204E` supplies signed likely IAT/RPM corrections; `0x821C/0x8318` signed fuel quantity trims, guarded low-RPM `0x81F8/0x82F4` 4x9 trims, or `0x83F0` RPM-only trim feed `0x2084 -> 0x00C1` through `0xE715`; and `0x00C1 -> 0x2051/0x00C3 -> 0x00BC` is the current strongest software fuel pulse-width / event-width path. `0xE715` scale is roughly fuel += fuel * signed_trim / 256, so raw 64 is about +25%.
-Internal $2040 fuel-pulse note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` remains an important fuel correction path, with `$2040 = max($00CC - 0x8000, 0) >> 4`. DHC11 labels prove `0x84E3` is a separate 1x9 vector, `0x84EC` is a standalone threshold byte, and `0x84ED` begins the CTS scheduler threshold vector. The `0x200C` physical O2/lambda assignment still needs scope or harness proof, so the XDF now uses neutral `$2040` wording instead of a lambda-only name.
+Fast closed-loop fuel-correction note: `0x200C -> 0x5B1B -> 0x43DC -> 0x00CC -> 0x2040 -> 0x84E3 -> 0x2049 -> 0x00C1` is a code-traced fuel correction path, with `$2040 = max($00CC - 0x8000, 0) >> 4`. DHC11 labels prove `0x84E3` is a separate 1x9 vector, `0x84EC` is a standalone threshold byte, and `0x84ED` begins the CTS scheduler threshold vector. The software closed-loop role is strong, but the `0x200C` physical O2/lambda channel assignment still needs scope or harness proof.
 Closed-loop/adaptive note: `0x9000-0x912B` is now best grouped as lambda / closed-loop / adaptive calibration. `0x9000/0x9011/0x9022` are CTS-like base vectors, `0x9033/0x9044/0x90EF` are delay/timer vectors, `0x9068` is dynamic load-change correction, and `0x9073` is a ramp/target table compared with `0x243C`.
 Adaptive trim note: `0x20B9` is a slow closed-loop/adaptive fuel trim centred at `0x8000`. RAM cells `0x0060/0x0069` are learned adaptive trim cells interpolated by `0xC94B`; the `0x8E6F/0x8EC7/0x8F1C/0x8F71` 17x5 cluster feeds `0x24AB/0x24AF/0x24AC/0x24AD`, which are consumed by the `0xCC00-0xD0C6` adaptive state machine.
 Warmup/transient note: `0x2059` is the warmup/afterstart state, with `0x00C5/0x00C6` active correction terms. `0x8408-0x84D2` are CTS warmup/afterstart fuel support maps. DHC11 adds exact warmup/startup helpers `0x841B`, `0x843D`, `0x8452`, and `0x84ED`. `0x84F6`, `0x853B`, `0x8546`, `0x858B`, and `0x859F` are CTS `$203C` transient support vectors/word tables feeding `$2588`, `$206B`, `$2586`, `$2079`, and `$2054`; `0x8508`, `0x8529`, `0x8558`, and `0x8579` are `$2042` transient support vectors/word tables feeding `$206D`, `$206E/$2070`, `$207B`, and `$207E/$207C`; `0x8511` and `0x8561` are RPM transient gain vectors feeding `$206C/$207A`; `0x8596/0x85AF` feed additive transient fuel terms `0x2055/0x2057` via the `0xEB16` helper.

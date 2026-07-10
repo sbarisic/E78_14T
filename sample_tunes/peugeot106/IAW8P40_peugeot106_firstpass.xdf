@@ -2,9 +2,9 @@
 <XDFFORMAT version="1.50">
   <XDFHEADER>
     <flags>0x1</flags>
-  <fileversion>0.53</fileversion>
+  <fileversion>0.54</fileversion>
     <deftitle>Marelli IAW 8P.40 Peugeot 106 - Comparison Markup</deftitle>
-    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.53 adds all 21 code-confirmed ROM vector words plus exact firmware-support constants for the expected stack top at 0x916A and checksum-service enable byte at 0x916E. Calibration table definitions are unchanged.</description>
+    <description>Reverse-engineering XDF for Marelli IAW 8P.40 Peugeot 106. Version 0.54 removes obsolete MOD2 discovery aliases and redundant percent fuel-trim views, retains authoritative raw plus multiplier fuel views, and uses code-trace-based limiter, spark-bank, bypass-spark, and fast closed-loop fuel-correction names.</description>
     <author>OpenAI Codex</author>
     <baseoffset>0</baseoffset>
     <DEFAULTS datasizeinbits="8" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
@@ -285,51 +285,6 @@
     </MATH>
   </XDFCONSTANT>
 
-  <XDFCONSTANT uniqueid="0x112">
-    <title>MOD2 Changed 16-bit Scalar A @ 0x879E</title>
-    <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EB to 0x00FA. Code references were observed around 0x6F2A.</description>
-    <CATEGORYMEM index="0" category="7" />
-    <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" />
-    <units>raw</units>
-    <outputtype>3</outputtype>
-    <datatype>0</datatype>
-    <unittype>0</unittype>
-    <DALINK index="0" />
-    <MATH equation="X">
-      <VAR id="X" />
-    </MATH>
-  </XDFCONSTANT>
-
-  <XDFCONSTANT uniqueid="0x113">
-    <title>MOD2 Changed 16-bit Scalar B @ 0x87A0</title>
-    <description>Big-endian 16-bit scalar changed by MOD2 from 0x07EF to 0xFFFF. Code references were observed around 0x6F14.</description>
-    <CATEGORYMEM index="0" category="7" />
-    <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" />
-    <units>raw</units>
-    <outputtype>3</outputtype>
-    <datatype>0</datatype>
-    <unittype>0</unittype>
-    <DALINK index="0" />
-    <MATH equation="X">
-      <VAR id="X" />
-    </MATH>
-  </XDFCONSTANT>
-
-  <XDFCONSTANT uniqueid="0x114">
-    <title>MOD2 Changed Last Cell of 0x8B41 Bank @ 0x8C18</title>
-    <description>Single byte changed by MOD2 from 0x38 to 0x3C. Disassembly of the 0x48EE routine shows this is row 23 column 8 of the 24x9 bank at 0x8B41, not a separate adjacent vector.</description>
-    <CATEGORYMEM index="0" category="17" />
-    <EMBEDDEDDATA mmedaddress="0x8C18" mmedelementsizebits="8" />
-    <units>raw</units>
-    <outputtype>1</outputtype>
-    <datatype>0</datatype>
-    <unittype>0</unittype>
-    <DALINK index="0" />
-    <MATH equation="X">
-      <VAR id="X" />
-    </MATH>
-  </XDFCONSTANT>
-
   <XDFCONSTANT uniqueid="0x115">
     <title>Code-Confirmed Signed Offset Byte @ 0x8A68</title>
     <description>The routine at 0x48EE sign-extends this byte and adds it to the 0x8A69/0x8B41 interpolated result when flag A2 bit 0x02 is set. Stock and MOD2 both store 0x00 here.</description>
@@ -346,7 +301,7 @@
   </XDFCONSTANT>
 
   <XDFCONSTANT uniqueid="0x116">
-    <title>Likely RPM Limiter Set Threshold @ 0x879E</title>
+    <title>Primary RPM Limiter Set Threshold @ 0x879E</title>
     <description>Code at 0x6F28 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and sets RAM 0x00A4 bit 0x10 if the period is below the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EB is about 7400 RPM; MOD2 0x00FA is about 60000 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
     <CATEGORYMEM index="0" category="7" />
     <EMBEDDEDDATA mmedaddress="0x879E" mmedelementsizebits="16" />
@@ -359,7 +314,7 @@
   </XDFCONSTANT>
 
   <XDFCONSTANT uniqueid="0x117">
-    <title>Likely RPM Limiter Clear Threshold @ 0x87A0</title>
+    <title>Primary RPM Limiter Clear Threshold @ 0x87A0</title>
     <description>Code at 0x6F12 compares period-like RAM 0x00BA against this word when RAM 0x214F is zero and clears RAM 0x00A4 bit 0x10 when the period rises above the threshold. Displayed as RPM using the locally code/axis-supported 15000000 / period. Stock 0x07EF is about 7386 RPM; MOD2 0xFFFF is about 229 RPM. A public forum lead mentions 21000000 / value for an IAW8P40 limiter, but that formula is not adopted here because it does not match the local 0x929E axis math.</description>
     <CATEGORYMEM index="0" category="7" />
     <EMBEDDEDDATA mmedaddress="0x87A0" mmedelementsizebits="16" />
@@ -372,7 +327,7 @@
   </XDFCONSTANT>
 
   <XDFCONSTANT uniqueid="0x118">
-    <title>Alternate RPM Threshold Set @ 0x87A2</title>
+    <title>Alternate RPM Limiter Set Threshold @ 0x87A2</title>
     <description>Code at 0x6F24 uses this period threshold instead of 0x879E when RAM 0x214F is nonzero. Displayed as RPM using 15000000 / period. Stock 0x1770 is about 2500 RPM.</description>
     <CATEGORYMEM index="0" category="7" />
     <EMBEDDEDDATA mmedaddress="0x87A2" mmedelementsizebits="16" />
@@ -385,7 +340,7 @@
   </XDFCONSTANT>
 
   <XDFCONSTANT uniqueid="0x119">
-    <title>Alternate RPM Threshold Clear @ 0x87A4</title>
+    <title>Alternate RPM Limiter Clear Threshold @ 0x87A4</title>
     <description>Code at 0x6F0E uses this period threshold instead of 0x87A0 when RAM 0x214F is nonzero. Displayed as RPM using 15000000 / period. Stock 0x1979 is about 2300 RPM.</description>
     <CATEGORYMEM index="0" category="7" />
     <EMBEDDEDDATA mmedaddress="0x87A4" mmedelementsizebits="16" />
@@ -581,8 +536,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x228" flags="0x30">
-    <title>Main Spark High/Default 24x9 @ 0x8A69</title>
-    <description>Main/default spark bank selected by 0x20B1. X is 0x2034 load/MAP-like, Y is 0x2036 RPM. Displayed raw / 2 degrees; high/default naming likely.</description>
+    <title>Main Spark Bank A / Default 24x9 @ 0x8A69</title>
+    <description>Main/default spark bank selected by 0x20B1. X is 0x2034 load/MAP-like, Y is 0x2036 RPM. Displayed raw / 2 degrees. A high-octane role remains plausible but is not required by the code trace.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -590,8 +545,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x229" flags="0x30">
-    <title>Main Spark Low/Alternate 24x9 @ 0x8B41</title>
-    <description>Low/alternate spark bank selected by 0x20B1. X is 0x2034 load/MAP-like, Y is 0x2036 RPM. Displayed raw / 2 degrees; bank naming likely.</description>
+    <title>Main Spark Bank B / Alternate 24x9 @ 0x8B41</title>
+    <description>Alternate spark bank selected by 0x20B1. X is 0x2034 load/MAP-like, Y is 0x2036 RPM. Displayed raw / 2 degrees. A low-octane role remains plausible but is not required by the code trace.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -617,8 +572,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x22C" flags="0x30">
-    <title>WOT / RPM-only Spark Vector 1x24 @ 0x8C19</title>
-    <description>RPM-only spark vector loaded into the spark accumulator in bypass/special spark paths. Displayed raw / 2 degrees; WOT role likely.</description>
+    <title>RPM-only Bypass Spark Vector 1x24 @ 0x8C19</title>
+    <description>RPM-only spark vector loaded into the spark accumulator in bypass/special spark paths. Displayed raw / 2 degrees. A WOT role remains plausible but is not required by the code trace.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="deg" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -856,8 +811,8 @@
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x248" flags="0x30">
-    <title>Internal $2040 Fuel Pulse Correction Vector 1x9 @ 0x84E3</title>
-    <description>DHC11 label L84E3 is exactly 9 bytes. Routine 0xE83E-0xE848 indexes this vector with RAM $2040 and stores output $2049; the final fuel path applies $2049 to $00C1. Keep raw: $2040 source and physical units remain provisional. 0x84EC is a separate threshold byte and 0x84ED starts the CTS scheduler threshold vector.</description>
+    <title>Fast Closed-Loop Fuel Correction vs $2040 1x9 @ 0x84E3</title>
+    <description>DHC11 label L84E3 is exactly 9 bytes. Routine 0xE83E-0xE848 indexes this vector with shared scheduler axis $2040 and stores the fast fuel correction at $2049; the final fuel path applies $2049 to $00C1. Keep values raw: the physical O2/lambda channel identity and output units remain provisional. 0x84EC is a separate threshold byte and 0x84ED starts the CTS scheduler threshold vector.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><LABEL index="4" value="4" /><LABEL index="5" value="5" /><LABEL index="6" value="6" /><LABEL index="7" value="7" /><LABEL index="8" value="8" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="raw" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
@@ -1222,15 +1177,6 @@
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x821C" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x24E" flags="0x30">
-    <title>Fuel Trim A % 24x9 @ 0x821C</title>
-    <description>Reference percent view of signed fuel quantity trim A. The multiplier view is preferred for tuning. 64 raw equals +25.0%.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x821C" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
   <XDFTABLE uniqueid="0x24F" flags="0x30">
     <title>Low-RPM Fuel Multiplier A 4x9 @ 0x81F8</title>
     <description>Primary tuning view of guarded low-RPM/submode fuel trim A as a proportional fuel multiplier. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
@@ -1240,15 +1186,6 @@
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x81F8" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x250" flags="0x30">
-    <title>Low-RPM Fuel Trim A % 4x9 @ 0x81F8</title>
-    <description>Reference percent view of guarded low-RPM/submode fuel trim A. The multiplier view is preferred for tuning.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x81F8" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
   <XDFTABLE uniqueid="0x251" flags="0x30">
     <title>Fuel Multiplier B 24x9 @ 0x8318</title>
     <description>Primary tuning view of signed fuel quantity trim B as a proportional fuel multiplier, not a VE/base fuel table. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
@@ -1256,15 +1193,6 @@
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8318" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x252" flags="0x30">
-    <title>Fuel Trim B % 24x9 @ 0x8318</title>
-    <description>Reference percent view of signed fuel quantity trim B. The multiplier view is preferred for tuning. 64 raw equals +25.0%.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x8318" mmedelementsizebits="8" mmedrowcount="24" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x253" flags="0x30">
@@ -1285,15 +1213,6 @@
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x82F4" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
-  <XDFTABLE uniqueid="0x255" flags="0x30">
-    <title>Low-RPM Fuel Trim B % 4x9 @ 0x82F4</title>
-    <description>Reference percent view of guarded low-RPM/submode fuel trim B. The multiplier view is preferred for tuning.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>9</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="13" /><LABEL index="2" value="25" /><LABEL index="3" value="38" /><LABEL index="4" value="50" /><LABEL index="5" value="63" /><LABEL index="6" value="75" /><LABEL index="7" value="88" /><LABEL index="8" value="100" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>4</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="0" /><LABEL index="1" value="1" /><LABEL index="2" value="2" /><LABEL index="3" value="3" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x82F4" mmedelementsizebits="8" mmedrowcount="4" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
   <XDFTABLE uniqueid="0x256" flags="0x30">
     <title>RPM-only Fuel Multiplier 1x24 @ 0x83F0</title>
     <description>Primary tuning view of the RPM-only special/bypass fuel trim as a proportional fuel multiplier. Display = 1 + raw / 256; 64 raw = 1.250, 127 raw = 1.496, -4 raw = 0.984.</description>
@@ -1301,15 +1220,6 @@
     <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
     <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x83F0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>3</decimalpl><min>0.500000</min><max>1.500000</max><outputtype>1</outputtype><MATH equation="1 + X / 256"><VAR id="X" /></MATH></XDFAXIS>
-  </XDFTABLE>
-
-  <XDFTABLE uniqueid="0x257" flags="0x30">
-    <title>RPM-only Fuel Trim % 1x24 @ 0x83F0</title>
-    <description>Reference percent view of the RPM-only special/bypass fuel trim. The multiplier view is preferred for tuning.</description>
-    <CATEGORYMEM index="0" category="22" />
-    <XDFAXIS id="x" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="0" mmedminorstridebits="0" /><indexcount>24</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="550" /><LABEL index="1" value="750" /><LABEL index="2" value="850" /><LABEL index="3" value="950" /><LABEL index="4" value="1000" /><LABEL index="5" value="1200" /><LABEL index="6" value="1400" /><LABEL index="7" value="1600" /><LABEL index="8" value="1800" /><LABEL index="9" value="2000" /><LABEL index="10" value="2300" /><LABEL index="11" value="2600" /><LABEL index="12" value="2900" /><LABEL index="13" value="3200" /><LABEL index="14" value="3501" /><LABEL index="15" value="3800" /><LABEL index="16" value="4201" /><LABEL index="17" value="4500" /><LABEL index="18" value="5000" /><LABEL index="19" value="5501" /><LABEL index="20" value="6000" /><LABEL index="21" value="6502" /><LABEL index="22" value="7003" /><LABEL index="23" value="7500" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0"><EMBEDDEDDATA mmedelementsizebits="8" mmedmajorstridebits="-32" mmedminorstridebits="0" /><indexcount>1</indexcount><datatype>0</datatype><unittype>0</unittype><DALINK index="0" /><LABEL index="0" value="trim" /><MATH equation="X"><VAR id="X" /></MATH></XDFAXIS>
-    <XDFAXIS id="z"><EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x83F0" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" /><decimalpl>1</decimalpl><min>-50.000000</min><max>50.000000</max><outputtype>1</outputtype><MATH equation="X * 100 / 256"><VAR id="X" /></MATH></XDFAXIS>
   </XDFTABLE>
 
   <XDFTABLE uniqueid="0x258" flags="0x30">

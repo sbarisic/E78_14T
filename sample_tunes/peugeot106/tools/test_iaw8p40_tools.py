@@ -120,9 +120,49 @@ class ChecksumToolTests(unittest.TestCase):
 
 
 class XdfMetadataTests(unittest.TestCase):
+    def test_active_xdf_cleanup_and_names(self) -> None:
+        root = ET.parse(ROOT / "IAW8P40_peugeot106_firstpass.xdf").getroot()
+        nodes = root.findall("XDFCONSTANT") + root.findall("XDFTABLE")
+        by_id = {node.get("uniqueid"): node for node in nodes}
+
+        retired_ids = {"0x112", "0x113", "0x114", "0x24E", "0x250", "0x252", "0x255", "0x257"}
+        self.assertTrue(retired_ids.isdisjoint(by_id))
+
+        expected_titles = {
+            "0x116": "Primary RPM Limiter Set Threshold @ 0x879E",
+            "0x117": "Primary RPM Limiter Clear Threshold @ 0x87A0",
+            "0x118": "Alternate RPM Limiter Set Threshold @ 0x87A2",
+            "0x119": "Alternate RPM Limiter Clear Threshold @ 0x87A4",
+            "0x228": "Main Spark Bank A / Default 24x9 @ 0x8A69",
+            "0x229": "Main Spark Bank B / Alternate 24x9 @ 0x8B41",
+            "0x22C": "RPM-only Bypass Spark Vector 1x24 @ 0x8C19",
+            "0x248": "Fast Closed-Loop Fuel Correction vs $2040 1x9 @ 0x84E3",
+        }
+        for unique_id, expected_title in expected_titles.items():
+            with self.subTest(unique_id=unique_id):
+                self.assertEqual(by_id[unique_id].findtext("title"), expected_title)
+
+        expected_fuel_views = {
+            0x81F8: {"0x24C", "0x24F"},
+            0x821C: {"0x23F", "0x24D"},
+            0x82F4: {"0x253", "0x254"},
+            0x8318: {"0x240", "0x251"},
+            0x83F0: {"0x241", "0x256"},
+        }
+        tables_by_address: dict[int, set[str]] = {}
+        for table in root.findall("XDFTABLE"):
+            embedded = table.find("XDFAXIS[@id='z']/EMBEDDEDDATA")
+            if embedded is None or not embedded.get("mmedaddress"):
+                continue
+            address = int(embedded.get("mmedaddress"), 16)
+            tables_by_address.setdefault(address, set()).add(table.get("uniqueid"))
+        for address, expected_ids in expected_fuel_views.items():
+            with self.subTest(fuel_address=f"0x{address:04X}"):
+                self.assertEqual(tables_by_address[address], expected_ids)
+
     def test_vectors_and_firmware_support_constants(self) -> None:
         root = ET.parse(ROOT / "IAW8P40_peugeot106_firstpass.xdf").getroot()
-        self.assertEqual(root.findtext("XDFHEADER/fileversion"), "0.53")
+        self.assertEqual(root.findtext("XDFHEADER/fileversion"), "0.54")
 
         nodes = root.findall("XDFCONSTANT") + root.findall("XDFTABLE")
         unique_ids = [node.get("uniqueid") for node in nodes]
@@ -136,7 +176,7 @@ class XdfMetadataTests(unittest.TestCase):
             address = int(embedded.get("mmedaddress"), 16)
             constants.setdefault(address, []).append(constant)
 
-        with (ROOT / "reverse_eng/IAW8P40_peugeot106_vectors.csv").open(
+        with (ROOT / "reverse_eng/v1/IAW8P40_peugeot106_vectors.csv").open(
             newline="", encoding="utf-8-sig"
         ) as source:
             vectors = {
