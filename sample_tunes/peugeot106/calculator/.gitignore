@@ -1,0 +1,5 @@
+bin/
+obj/
+ecu-calculator-result*.json
+ecu-calculator-sweep.csv
+ecu-calculator-sweep.json

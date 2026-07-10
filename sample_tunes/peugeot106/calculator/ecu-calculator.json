@@ -1,0 +1,59 @@
+{
+  "baseBinPath": "../M27C512_original.BIN",
+  "comparisonBinPath": "../1_3L_8V_IAW8P40/1.3L_8V_IAW8P40_MOD2.bin",
+  "outputJsonPath": "ecu-calculator-result.json",
+  "inputs": {
+    "rpm": 4000,
+    "loadDeltaByte": 100,
+    "iatProcessedByte": 100,
+    "ctsProcessedByte": 100,
+
+    "operatingModeFlagsA9": 0,
+    "sparkModeFlagsA2": 0,
+    "bankSelector20B1": 255,
+    "lowRpmFuelTrimGuardsSatisfied": false,
+
+    "additionalSparkRaw": 0,
+    "clampSparkCommandTo0Through127": false,
+
+    "fuelMode": "apply-trim-only",
+    "baseFuelPulseRaw": 1000,
+
+    "adaptive2596": 0,
+    "signedFuelCorrection2050": 0,
+    "signed2610": 0,
+    "correction24D9": 0,
+    "ram0006": 0,
+    "adaptiveTrim20B9": 32768,
+    "warmupFuelCorrection2085": 0,
+    "afterstartCorrectionC5": 0,
+    "transientFuelAdd2055": 0,
+    "transientFuelAdd2057": 0,
+    "slowCorrection2590": 0,
+    "subtractiveFilter2584": 0,
+    "fuelMultiplier2053": 0,
+    "fastLambdaFuelCorrection2049": 0,
+
+    "applyStatelessHighLoadDurationSupport": false,
+    "stateFlagsA3": 0,
+    "fuelEventWidthLimitBF": 0
+  },
+  "assumptions": {
+    "rpmClockNumerator": 15000000,
+    "sparkDegreesPerRawCount": 0.5,
+    "timerTickMicroseconds": 2.0
+  },
+  "sweep": {
+    "enabled": false,
+    "rpmStart": 1500,
+    "rpmEnd": 5000,
+    "rpmStep": 250,
+    "pedalProxyStartPercent": 0,
+    "pedalProxyEndPercent": 100,
+    "pedalProxyStepPercent": 10,
+    "loadDeltaByteAt0Percent": 0,
+    "loadDeltaByteAt100Percent": 201,
+    "outputCsvPath": "ecu-calculator-sweep.csv",
+    "outputJsonPath": "ecu-calculator-sweep.json"
+  }
+}
