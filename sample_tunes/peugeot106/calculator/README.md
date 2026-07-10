@@ -106,22 +106,118 @@ The two signed IAT/RPM table outputs at `0x802B` and `0x8103` are still shown, b
 
 #### `from-intermediates`
 
-Executes the currently decoded static arithmetic from the `0xE927`, `0xE5E8`, and `0xE652` paths:
+Executes the currently decoded static arithmetic from the `0xE927`, `0xE5E8`, and `0xE652` paths. It does not start from `baseFuelPulseRaw`; that field is retained only for common result reporting. The calculated starting point is the decoded load/air-charge word `$00CE` plus the synthesized correction `$204B`.
+
+The central terms are:
+
+```text
+$204B = 2 * (sign($204A) + $2596 + sign($2050))
+       + optional sign($2610)
+       + $24D9
+
+$204E = max(0, sign($204D) + $0006 + ROM_WORD[$8028])
+
+$00C1 = max(0, $00CE + $204B)
+$00C1 = round($00C1 * $204E / 256)
+$00C1 = min($00C1, 3000)
+```
+
+`$204A` and `$204D` are the signed outputs from `0x802B` and `0x8103`. The optional `$2610` term is used only by the alternate bank path and is doubled when `A9.40` is set. Arithmetic wraps like the 68HC11 before the explicit clamps.
+
+The remaining firmware-order stages are:
 
 - signed IAT/RPM corrections;
-- `0x204B` correction sum;
-- `0x204E` Q8.8 blend;
-- 3000-count base cap;
-- signed quantity trim;
-- adaptive trim centered at `0x8000`;
-- warmup and afterstart factors;
-- transient additions/subtraction and 32000-count saturation;
-- engine-period limit;
-- `0x2053` multiplier;
-- fast lambda correction;
+- signed quantity trim `$2084`;
+- adaptive trim `$20B9`, centered at `0x8000`;
+- CTS warmup factor `$2085` and afterstart factor `$00C5`;
+- `$2055 + $2057 + $2590 - $2584`, with zero/32000 saturation;
+- engine-period `$00BA` duration limit;
+- multiplier `$2053`;
+- fast lambda correction `$2049` and a second period limit;
 - optional stateless `0x85BA` high-load duration support.
 
-The extra RAM terms are read from the config because their state machines are not yet reconstructed from physical inputs. This mode is deterministic and useful for sensitivity analysis, but it is not a complete ECU runtime emulator.
+The extra RAM terms are read from the config because their producer state machines are not yet executed by the calculator. Zero is neutral for the additive terms and most positive factors; `adaptiveTrim20B9: 32768` (`0x8000`) is the neutral adaptive value. Even with all manual terms neutral, the IAT/RPM tables and ROM word at `0x8028` remain active.
+
+This mode is deterministic and useful for sensitivity analysis or replaying a captured RAM snapshot, but it is not a complete ECU runtime emulator.
+
+### Inputs required for a complete dynamic fuel calculation
+
+A complete calculation has two different input boundaries.
+
+For **single-instant replay**, the calculator needs current sensor/axis values plus all live RAM terms consumed by the final fuel routines. For **dynamic simulation**, those RAM terms must instead be produced from an initialized ECU state and a time-ordered input stream. Independent sweep points cannot reproduce afterstart, transient, lambda, adaptive, or hysteresis behavior.
+
+#### External and per-step inputs
+
+| Input group | Required values | Purpose / boundary |
+| --- | --- | --- |
+| Time | elapsed ECU-loop ticks, timer/capture progression, and step duration | Drives counters, filters, slew rates, afterstart, transient decay, and output scheduling. |
+| Engine lifecycle | key-on/reset, cranking/running transition, engine-start elapsed time, stall/restart state | Selects initialization, cranking, afterstart, and normal-running paths. |
+| Speed | engine period `$00BA` or RPM, previous period, and period delta | Produces `$2036`, duration limits, RPM gates, and transient/multiplier conditions. |
+| Load/air path | current and previous raw load-model inputs, `$00C9/$0011` or the derived positive delta `$2017`, and load history | Produces `$00CE/$00D0/$2034` and load-rate terms. Exact physical pressure conversion remains provisional. |
+| Driver demand | current and previous TPS/pedal ADC or normalized values and their rate of change | Needed for a real pedal transient. The current sweep's pedal percentage is only a linear `loadDeltaByte` proxy. |
+| Temperature | raw/filtered ADC `$2008` and `$200A`, or replayed `$2038/$203A/$203C/$203E` axes | Drives IAT correction, CTS warmup, afterstart, transient scaling, and the state-12 helper. CTS/IAT assignment is strong but still hardware-provisional. |
+| Lambda/O2 | raw and filtered samples, filtered word `$00CC`, sensor-valid/heater state, and previous samples | Produces `$2040`, fast correction `$2049`, closed-loop control, and learned trim. Exact sensor transfer remains provisional. |
+| Electrical | battery/supply ADC and any confirmed injector-output voltage compensation input | Required before raw duration can be presented as a physical injector command. The compensation/dead-time path is not fully proven. |
+| Digital operating inputs | idle/WOT switches, start request, fuel-cut/limiter state, bank/mode selection, and relevant actuator/system flags | Selects alternate trims, bypass paths, closed-loop eligibility, transient gates, and special operating states. |
+
+#### Persistent ECU state
+
+| State group | Required state or representative RAM | Why it must persist between steps |
+| --- | --- | --- |
+| Mode flags | `$00A1`, `$00A2`, `$00A3`, `$00A9`, `$0090`, `$009E`, `$009F`, `$00B1`, `$00B3`, `$00D7`, `$202D`, `$20B1`, `$21A6` | These bits gate trim banks, transient logic, multiplier paths, high-load hysteresis, and operating-state-12 behavior. |
+| Correction synthesis | `$2596`, `$2050`, `$2610`, `$24D9`, `$0006` | These feed `$204B/$204E`; several are filtered or mode-dependent producers rather than direct calibration constants. |
+| Afterstart | `$2059`, `$2060`, `$2062`, `$00C5`, `$20F7`, associated flags and counters | Afterstart tables depend on temperature, start phase, counters, and decay history. |
+| Transient fuel | `$2054`, `$2055`, `$2057`, `$206B`, `$2079`, `$207A`, `$207B`, `$2080`, `$2082`, `$2582`, `$2584`, `$2586`, `$2588`, `$2590` | Acceleration/deceleration enrichment uses previous samples, filters, caps, accumulators, and decay. |
+| Closed-loop/adaptive | `$2040`, `$2049`, `$2090-$20A8`, `$20B9`, learned RAM cells `$0060/$0069`, integrators and timers | Lambda feedback and learned trim are history-dependent and cannot be inferred from one lambda sample. |
+| Multiplier path | `$2053`, `$25A1`, `$25A2`, `$20DE-$20E1`, `$00D0`, and their mode flags | `$2053` is synthesized from load and prior state; it is not a direct ROM table output. |
+| High-load final stage | `$00BF`, `$00A1.40`, `$2063`, `$00C1`, `$00C3` | The `0x85BA` addition uses a carried hysteresis bit and scheduler/event-width limits. |
+| Output scheduler | `$00BC`, `$00BE`, `$21C6`, timer captures/compare state, event phase and pending-output flags | Needed to turn the calculated duration into injector start/end events rather than only a fuel accumulator. |
+
+#### Current manual replay fields
+
+The current `from-intermediates` configuration exposes the principal final-stack RAM values directly:
+
+| Configuration field | Firmware value |
+| --- | --- |
+| `adaptive2596` | `$2596` correction term |
+| `signedFuelCorrection2050` | signed `$2050` |
+| `signed2610` | optional signed `$2610` |
+| `correction24D9` | `$24D9` correction |
+| `ram0006` | `$0006` blend term |
+| `adaptiveTrim20B9` | `$20B9` adaptive word, neutral at `0x8000` |
+| `warmupFuelCorrection2085` | `$2085` CTS warmup factor |
+| `afterstartCorrectionC5` | `$00C5` afterstart factor |
+| `transientFuelAdd2055`, `transientFuelAdd2057` | `$2055/$2057` transient additions |
+| `slowCorrection2590`, `subtractiveFilter2584` | `$2590/$2584` final-stack add/subtract terms |
+| `fuelMultiplier2053` | `$2053` synthesized multiplier |
+| `fastLambdaFuelCorrection2049` | `$2049` fast lambda correction |
+| `stateFlagsA3`, `fuelEventWidthLimitBF` | high-load stage gate inputs `$00A3/$00BF` |
+
+#### Terms that can be automated next
+
+Disassembly is already sufficient to remove several manual inputs once their required state is represented:
+
+- `$2085` can be looked up from CTS axis `$203E` through `0x8408`.
+- `$2050` can be selected from ROM scalar `0x81DB` and its mode flags.
+- `$2049` can be looked up through `0x84E3` when filtered `$00CC -> $2040` is supplied or simulated.
+- Operating state 12 can execute `0x96F3`: raw `$200A * ROM[0x96D0]`, followed by the firmware divide-by-two.
+- Afterstart and transient table outputs can be calculated when their counters, flags, previous samples, and accumulators are modeled.
+- `$2053` can be synthesized when `$25A1/$25A2`, `$20DE-$20E1`, `$00D0`, period, and gate flags are available.
+- The `0x85BA` final addition can be made stateful by carrying `$00A1.40` and the event-width limit between steps.
+
+A full simulator should therefore use a persistent `FuelRuntimeState`, accept a `FuelStepInput` for each elapsed time step, execute producer routines in firmware order, and then call the already implemented `0xE927 -> 0xE5E8 -> 0xE652` final stack. Every derived term should retain its ROM/RAM trace and confidence level.
+
+### Reference stock/MOD2 point
+
+The default 4000-RPM single-point run resolves load axis `7.719` and likely IAT/CTS temperature near `37.2 C` under the current NTC interpretation. At that point:
+
+- stock core spark is `75 raw = 37.5 degrees`;
+- MOD2 core spark is `79 raw = 39.5 degrees`, a `+2.0 degree` change;
+- MOD2 changes IAT/RPM correction A from `-70` to `-64` and B from `-22` to `-17`;
+- both images select quantity trim `+19 raw = +7.422%`;
+- `apply-trim-only` therefore produces the same `1074` ticks from a configured `1000`-tick starting pulse.
+
+Those IAT/RPM changes are reported but intentionally do not change final duration in `apply-trim-only`. The degree and millisecond displays remain subject to the spark-scale and timer-tick boundaries below.
 
 ## Important model boundaries
 
