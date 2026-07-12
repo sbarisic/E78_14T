@@ -93,8 +93,10 @@ Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
 - Stored/display values: native `mg/cyl`, approximately `275-725` stock
 - TunerPro math: `X`
 - Editing rule: enter the HP Tuners value in grams multiplied by `1000`; for example, enter `485` for `0.485 g`
-- Reason: TunerPro does not reliably invert conversion equations when writing 32-bit floating-point cells. The earlier `X / 1000` view could display correctly but write `0.485` directly into storage instead of `485`.
+- Reason: TunerPro's native 32-bit floating-point type does not support a conversion transformation for safe write-back. The earlier `X / 1000` view could display correctly but wrote `0.485` directly into storage instead of `485`. This matches the TunerPro author's documented limitation: <https://forum.tunerpro.net/viewtopic.php?t=4034> and the floating-point release note at <https://www.tunerpro.net/downloadApp.htm>.
 - Defensive display: zero decimal places and an editable range of `100-1000 mg/cyl`. A correctly loaded stock BIN must show values around `275-725`, never `0.275-0.725`.
+- This table cannot be a base-address-only clone of `TurbochargerKnockAirmassScav_04E350`. Max uses 88 consecutive 32-bit IEEE-754 floats (`352` bytes) at `0x04DD68`; Scav uses 88 consecutive 16-bit unsigned counts (`176` bytes) at `0x04E350` with `0.0000625 * X`. A full-bin search found the exact Max first-row sequence only at `0x04DD68` in float form and found no 16-bit scaled duplicate.
+- The 2026-07-12 modified BIN proves the distinction: all 88 Max cells stored at `0x04DD68` match the Scav engineering values within `0.0005`, but they are stored as float `0.275-0.900` instead of native float `275-900`. Therefore the apparent `0` and `1` values in the guarded editor are the corrupt floats rounded to zero decimal places, not a table-address or decimal-place error.
 - X axis address: `0x04DEC8`
 - X axis values: `-25, -20, -15, -13, -11, -9, -7, -5, -3, -1, 0`
 - Y axis address: `0x04DF3C`
