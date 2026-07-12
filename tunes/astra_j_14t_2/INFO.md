@@ -690,6 +690,44 @@ HPT HexView window name to Astra target:
 | OS12646746 packed reference | Cold Max/Min/threshold packed context | `0x077B02-0x077B47` | Exact packed relocation from source `0x078164-0x0781A9`, but not the editable degree-C float rows. |
 | OS12646746 packed reference | `E78_DesiredECT_OS_12646746.xdf` `KaTHMC_T_EngCool` block | `0x077B9E` | `-0x0662` from source `0x078200`; raw inspection only. |
 
+## Torque Limiter Search - 2026-07-09
+
+Source material used:
+
+- Damos CSV: `E:\Projects\E78_14T\sources\Uni78\DamosCSVParser\data\winols_astra.csv`
+- Corsa comparison CSV: `E:\Projects\E78_14T\tunes\Opel Corsa E 1.4 Turbo 2019\change_everything_bins\winols_desc.csv`
+- Target BIN: `E:\Projects\E78_14T\tunes\astra_j_14t_2\opel_astra_original.bin`
+- Current XDF: `E:\Projects\E78_14T\tunes\astra_j_14t_2\E78_Astra_047922_TableSearch.xdf`
+
+New active XDF candidate views:
+
+| XDF title | Source hint | Address | Shape / format | Axes | Confidence / notes |
+| --- | --- | ---: | --- | --- | --- |
+| `BrakeTorqueLimitMult_CandidateA_50268` | `KtBTRC_K_TorqLimit_ExtBrk_OBD` | `0x050268` | `3 x 9`, 32-bit big-endian float, `X` | static pedal `%`: `0,12.5,25,37.5,50,62.5,75,87.5,100`; static vehicle speed `kph`: `0,12.5,25` | Candidate only. Astra stock rows decode to `0.5000`, `0.4375`, and `0.3750`. |
+| `BrakeTorqueLimitMult_CandidateB_507F4` | same | `0x0507F4` | same | same | Candidate duplicate; byte-identical shape/value block to copy A. |
+| `BrakeTorqueLimitMult_CandidateC_510EC` | same | `0x0510EC` | same | same | Candidate duplicate; byte-identical shape/value block to copy A. |
+
+BTRC notes:
+
+- `KtBTRC_K_TorqLimit_ExtBrk_OBD` in the Damos CSV is source `0x0488CC`, `9 x 3`, `eFloatHiLo`, factor `1`. The source value list is `0.8/0.6/0.5/0.4/0.3` shaped and the axis lists are pedal `%` and vehicle speed `kph`.
+- Exact Damos byte-pattern matching did not find that source value list in the Astra target BIN. A shape search found three local 3x9 multiplier-looking float blocks at `0x050268`, `0x0507F4`, and `0x0510EC`.
+- The first candidate gives a plausible table-body delta from source: `0x0488CC -> 0x050268` (`+0x799C`), but nearby BTRC single-byte/scalar rows do not decode cleanly with that same delta. Treat the views as edit-fingerprint targets, not confirmed HPT equivalents.
+- `KtBTRC_M_BTM_Lim` at source `0x0488F0` is a `1 x 17` `eHiLo` table with factor `4`, described as the brake vacuum pressure indexed BTM limit. It overlaps the multiplier bytes in the Damos layout and still has no clean Astra target. Do not add it as an active editable table yet.
+
+TTQC / transmission torque limiter notes:
+
+- Damos rows checked:
+  - `KtTTQC_M_TransDfltTorqLmt`, source `0x07938E`, `1 x 9`, `eHiLo`, factor `0.25`, values all `400 Nm`. This is the best source-name match for HPT `Default Trans Limit`.
+  - `KtTTQC_M_TransTorqReqLimitGr1` through `Gr5`, sources `0x0794CA-0x07951A`, `1 x 9`, `eHiLo`, factor `0.25`, values all `200 Nm` for Gr1-Gr4 and `150 Nm` for Gr5.
+  - `KtTTQC_M_ClutchProtectLimits`, source `0x079542`, `5 x 9`, `eHiLo`, factor `0.25`, Damos values `400,400,350,325,250,150,100,100,70` repeated by pedal row.
+  - Manual gearbox torque limit rows `KtTTQC_M_ManlRvrsGearboxTorqLim` and `KtTTQC_M_Manl1st...6thGearboxTorqLim`, sources `0x0792DE-0x079356`, `1 x 9`, `eHiLo`, factor `0.125`.
+- Direct source addresses in the Astra BIN do not decode to the Damos values. Exact raw searches found many generic matches for all-`400` and all-`200` rows, so those are weak by themselves.
+- Notable raw hits kept for future fingerprinting:
+  - all-`400 Nm` row (`raw 0x0640`, factor `0.25`): many hits including `0x020286`, `0x0204EC`, `0x06FB86`, `0x06FD52`.
+  - all-`200 Nm` row (`raw 0x0320`, factor `0.25`): many hits including `0x024A16`, `0x04E968`, `0x057048`, `0x05705C`.
+  - all-`150 Nm` row (`raw 0x0258`, factor `0.25`): unique exact hit at `0x057022`, inside a count-prefixed 9-cell row cluster.
+- These TTQC candidates were not added to the active XDF because the all-constant value rows are too common and the surrounding local clusters do not yet prove the Damos symbol mapping. Use a changed-bin/HPT edit fingerprint before promoting `Default Trans Limit` or the per-gear transmission torque request limits.
+
 Search heuristics from the confirmed tables:
 
 - For BSTC knock/boost tables, try nearby source-to-target deltas around `+0x5A00` to `+0x6000`, then confirm by axes and storage type.
@@ -711,6 +749,36 @@ Name notes:
 - `[ECM] 33495` HPT display name is `Turbocharger Knock Airmass Scav` / short display `Knock Airmass Scav`. The WinOLS symbol `KtBSTC_m_MaxKnkSC` has a similar "Max allowed airmass with regards to knock" description, but its source axes do not cleanly match the confirmed `[ECM] 33495` target axes, so keep the exact source symbol unresolved for now.
 - `[ECM] 32923` HPT display name is `Max Engine Torque Limit`. The matching RAM/output name in the reference export is `VeECPR_M_EngMaxTorqLimit`, but the exact calibration-source `Kt*` symbol for the confirmed `0x0535A4` target table is still unresolved. Do not use `KtECPR_M_MaxBrkTorqLmt` as the source match; its reference values are a 1000 Nm limit table and do not match the HPT screenshot.
 
+## Traction Control Search - 2026-07-09
+
+Source material and search method:
+
+- Searched `E:\Projects\E78_14T\sources\Uni78\DamosCSVParser\data\winols_astra.csv` for `traction control`, `TCS`, `EBCM`, `ABS controller`, `wheel slip`, torque-reduction enable/inhibit wording, and the `TCSC`, `TCSI`, `DTMC`, and `ETQC` calibration families.
+- Used `E:\Projects\E78_14T\tunes\astra_j_14t\Astra J A14NET- ECU Orig.bin` as the byte-level Damos/reference BIN and aligned distinctive mixed float/word/byte calibration islands against `opel_astra_original.bin`. This was more reliable than applying one global source-address delta.
+- The ECM can suppress its engine-torque response to traction control, but the EBCM owns brake-based traction and stability intervention. Nothing found in this ECM BIN is proof of a complete ABS/EBCM traction-control disable.
+
+New active XDF controls under `Engine->Torque`:
+
+| XDF title | Damos symbol | Target address | Format / stock | Intended use and confidence |
+| --- | --- | ---: | --- | --- |
+| `TCS_MaxTorqueDecrement_051D90` | `KeDTMC_M_TCSMaxDecrTorq` | `0x051D90` | 32-bit big-endian float, `65535 Nm` | High-confidence direct ECM control. The symbol is the maximum torque decrement available to traction control; setting it to `0` is the strongest ECM-side disable candidate. Verify requested and delivered torque in logs. |
+| `TCS_TorqueReductionEnableECT_04B5B4` | `KfTCSC_T_TractionCoolEnbl` | `0x04B5B4` | signed 16-bit big-endian, `X / 128`, stock `-255 deg C` | High-confidence secondary inhibit. Torque reduction is allowed only above this threshold; a value near `+255 deg C` should keep the condition false at normal coolant temperatures. |
+| `TCS_MinEngineRunTime_04B5BC` | `KfTCSC_t_MinTC_EngRunTime` | `0x04B5BC` | unsigned 16-bit big-endian, `X * 0.00625 s`, stock `0 s` | High-confidence test/temporary inhibit. Maximum representable delay is only `409.59 s`, so this cannot provide a permanent disable by itself. |
+| `TCS_PresenceConfig_079BB8` | `KeTCSI_b_TCS_Present`, `KeTCSI_b_UseSerialData` | `0x079BB8` | two unsigned bytes, stock `[0, 1]` | Exact configuration pair. Stock uses EBCM serial data and ignores the false fallback. Setting `Use Serial Data` to `0` while leaving the fallback at `0` forces the ECM-side TCS-present result false; this may affect network diagnostics. |
+
+Mapping evidence:
+
+- The TCSC reference island at file offset `0x044920` aligns to the Astra target at `0x04B580`. It has a 36-byte exact prefix and additional exact anchors through the local calibration group. This pins the ECT gate at `0x04B5B4` and the run-time gate at `0x04B5BC` despite calibration-value changes between OS versions.
+- The TCSI core pattern in the reference BIN at `0x0773F2` maps exactly to target `0x07996A`; the associated configuration block at reference `0x07763E` maps with the same `+0x2578` shift to target `0x079BB6`. The two presence bytes therefore land at `0x079BB8-0x079BB9` and decode exactly as Damos describes.
+- The DTMC tail at reference `0x04A7C0` matches target `0x051DA0` byte-for-byte for the first 17 bytes. Following the documented DTMC scalar order backward pins `KeDTMC_M_TCSMaxDecrTorq` at target `0x051D90`; its target value is the expected large positive float limit.
+
+Relevant CSV entries not promoted as disable switches:
+
+- `KeBTRC_b_DisableBTM_ByTCS` does not disable traction control. It disables brake torque management after a driver-requested TCS disable has already been detected.
+- `KeTCSI_b_AllowWheelSlip` is only documented as `Wheel slip enable cal`, is stock `0`, and is not sufficiently explicit to use as the master switch.
+- `KtETQC_M_DsrdTorqMin` clips both ABS torque and TCM spark-torque requests. Raising it could suppress TCS reduction, but its broader shared behavior makes it a poor first choice.
+- `KfTCSC_Pct_TorqRdctThrsh` changes when torque reduction is considered active; it does not directly prevent the reduction request.
+
 ## XDF Maintenance Notes
 
 - Keep `TurbochargerKnockMaxAirmass_04DD68` as the main editable/display table for HP Tuners `[ECM] 33482`.
@@ -723,7 +791,9 @@ Name notes:
 - Keep `PeakEngineTorque_0534A4`, `MaxEngineTorqueLimit_0535A4`, and `OverboostTorqueLimit_053464` as the confirmed torque-table views for HP Tuners `[ECM] 32920`, `[ECM] 32923`, and `[ECM] 32924`; their Z ranges are `-8192 to 8192 Nm`.
 - Keep `TransOutputMax_021648`, `FrontAxleMax_021638`, `FrontAxleMax4WDLow_021630`, `FrontPropshaftMax_02163C`, `RearAxleMax_021640`, `RearAxleMax4WDLow_021634`, and `RearPropshaftMax_021644` as the high-confidence TSXC driveline torque limit scalars. Current Astra stock values are `100000/131072 Nm` depending on scalar and do not exactly match the HPT screenshot example.
 - Keep `BrakeTorqueLimit_MaxDriverIntended_047CE4` as the high-confidence `KeBRKC_M_MaxDrvIntBrkTorq` scalar (`6000 Nm`). Treat it as the best current brake torque limit scalar match, not as proof that the BTRC brake torque management limit table has been found.
-- Do not add `Default Trans Limit`, `Brake Torque Limit` BTRC table, or `Brake Torque Mult` until a changed-bin fingerprint or cleaner local match is available. The CSV BTRC entries `KtBTRC_K_TorqLimit_ExtBrk_OBD` (`0x0488CC`, `3 x 9` floats) and `KtBTRC_M_BTM_Lim` (`0x0488F0`, `1 x 17` eHiLo) overlap in source space; the latter appears to reinterpret the multiplier table bytes and produces nonsensical values. Candidate multiplier-looking target blocks were seen near `0x050268`, `0x068880`, and `0x06F220`, but they are not active in the XDF.
+- Keep the three `BrakeTorqueLimitMult_Candidate*` views active only as candidate/fingerprint views. They are plausible `KtBTRC_K_TorqLimit_ExtBrk_OBD`-style multiplier tables, but the active HPT copy is not proven yet.
+- Keep the four `TCS_*` entries under `Engine->Torque`. `TCS_MaxTorqueDecrement_051D90` is the preferred direct ECM-side disable candidate; the ECT and presence controls are independent confirmation/fallback paths, and the run-time control is temporary only. None of these disables EBCM brake intervention.
+- Do not add `Default Trans Limit`, the true BTRC `Brake Torque Limit` vacuum-indexed table, or TTQC per-gear request limits until a changed-bin fingerprint or cleaner local match is available. The CSV BTRC entry `KtBTRC_M_BTM_Lim` (`0x0488F0`, `1 x 17` eHiLo) overlaps the source multiplier layout and still has no trustworthy Astra target.
 - Keep the OS12646746-style THMC entries in `Engine->Thermal` as candidate/inspection views only: `KaTHMC_T_EngCool_Labels_Candidate_079C88`, `KaTHMC_T_EngCool_Candidate_079C50`, and `KaTHMC_T_EngCoolReq_Candidate_079C6C`. The scales decode as literal 32-bit big-endian floats, but the Astra WinOLS CSV does not contain those exact symbols and the `0x079C50` values are not credible as a confirmed Max/Min desired ECT table.
 - Keep the editable cold ECT entries in `Engine->Thermal`: `ColdMaxDesiredECT_079CB0`, `ColdMinDesiredECT_079CCC`, and `ColdDesiredECTThreshold_079D18`. These are normal 32-bit big-endian float rows in deg C and match the Damos/WinOLS value lists.
 - Keep `DesiredECT_TMSRequest_RawPairs_077B56` and `KaTHMC_T_EngCool_OS12646746_RawPairs_077B9E` as raw inspection views only. Do not reintroduce `ColdMaxDesiredECT_RawPairs_077B02` or `ColdMinDesiredECT_RawPairs_077B1E` as editable views; those windows showed one table plus the next adjacent table, which is why they looked wrong in TunerPro.
@@ -733,8 +803,10 @@ Name notes:
 - Keep the `PowerEnrichment*` entries around `0x062096-0x0625D8` active in the main XDF, with the caveat that `PowerEnrichmentMinRPM_062096` and `PowerEnrichmentEnableTorquePct_0620AE` do not match the screenshot values in this Astra BIN (`700 rpm` vs `8000 rpm`, and `0%` vs `97%`).
 - Keep `KnockEnrichment*` entries around `0x05FB44-0x05FC9C` active in the main XDF as the confirmed FEQR pre-ignition/knock-enrichment cluster. Do not claim a separate alcohol/E80 knock enrichment EQ table until a unique non-all-1.0 fingerprint is found.
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
+- HP Tuners tree triage from 2026-07-09: do not prioritize `Manual Trans Spark Smoothing (RDSC) Master Enable`, `Piston Slap Spark`, `PDA Spark`, EGR spark add/PDA/DOD tables, or `Minimum Spark Advance Double Pulse` for this XDF pass. User confirmed `SparkSmoothingRunFilterRefs_075C36` is functionally similar enough for the manual-trans spark smoothing/RDSC control, and Piston Slap, PDA, EGR, and Double Pulse tables are zeroed out in this calibration.
+- After that triage, the useful unresolved items from the compared HP Tuners tree are mainly `High Octane DP`, `High Octane DOD`, `Low Octane DOD`, `VCP Spark PDA`, `Trans Default Torque Limit`, the true BTRC `Brake Torque Limit` table, and confirmation of which `BrakeTorqueLimitMult_Candidate*` copy HPT edits, plus any collapsed `Fuel->Temperature Control` items that are not already represented by the CCTI/FEQR temperature-protection notes.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
-- Current active XDF uses the regenerated 49-table layout from `09_all_quarantined_groups_regenerated.xdf`: stable 28-table base plus turbo pressure-ratio/surge, PE EQ, PE enable/delay/ramp, and knock-enrichment entries. Fuel temperature-control definitions remain quarantined.
+- Current active XDF has 87 table entries as of 2026-07-09: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, and four TCS controls. Fuel temperature-control definitions remain quarantined unless separately noted.
 - Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
