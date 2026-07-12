@@ -82,6 +82,152 @@ XDF editing conventions:
 - Do not blindly copy reference XDF storage definitions. Verify the target bytes first.
 - Do not edit `opel_astra_original.bin` directly without checksum/CVN handling.
 
+## E78 Checksum And CVN Handling
+
+Sources used for this section:
+
+- `E:\Projects\E78_14T\sources\Uni78\DamosCSVParser\data\winols_astra.csv`: names the per-segment `Mod16_Checksum`, `CRC16_Checksum`, and `ChecksumBypass` bytes. It also documents a separate 32-bit torque-security calibration checksum and its diagnostics.
+- `E:\Projects\E78_14T\tunes\AcDelco E78 Full\e78_decode.txt`: explains the E78 segment descriptor layout and distinguishes each segment's full range, CVN/CRC coverage, and additive-sum coverage.
+- The Astra OS descriptor at `0x0CB05A-0x0CB108` in `opel_astra_original.bin`: authoritative segment ranges for this target OS. The reference CSV's Engine Calibration begins at `0x039100`, but this Astra OS begins it at `0x040000`.
+- Direct recomputation against all five stock Astra calibration segments. Both algorithms reproduce every stored stock value exactly.
+
+### Astra calibration segments
+
+| Segment | Covered range | Mod16 bytes | Checksum-bypass byte | CRC16 bytes |
+| --- | --- | --- | --- | --- |
+| Vehicle System | `0x020000-0x022FFF` | `0x020000-0x020001` | `0x02000D` | `0x020020-0x020021` |
+| Fuel System | `0x023000-0x027FFF` | `0x023000-0x023001` | `0x02300D` | `0x023020-0x023021` |
+| Vehicle Speed Sensor | `0x028000-0x028FFF` | `0x028000-0x028001` | `0x02800D` | `0x028020-0x028021` |
+| Engine Diagnostic | `0x029000-0x03FFFF` | `0x029000-0x029001` | `0x02900D` | `0x029020-0x029021` |
+| Engine Operation/Calibration | `0x040000-0x07FFFF` | `0x040000-0x040001` | `0x04000D` | `0x040020-0x040021` |
+
+The descriptor uses two coverage lists per segment:
+
+- Additive checksum coverage: `segment_base + 0x02` through the segment end. This excludes the two Mod16 storage bytes but includes the stored CRC16 bytes.
+- CRC/CVN coverage: `segment_base + 0x02` through `segment_base + 0x1F`, then `segment_base + 0x22` through the segment end. This excludes both the Mod16 and CRC16 storage bytes.
+
+### Proven algorithms
+
+Mod16 is a two's-complement additive checksum over big-endian 16-bit words:
+
+`stored_mod16 = -sum(BE16 words from base + 2 through segment end) mod 65536`
+
+Store the result as a big-endian 16-bit value at the segment base. Equivalently, the big-endian word sum over the complete segment, including the stored Mod16 word, must equal zero modulo `65536`.
+
+The second field is CRC-16/ARC over the CRC/CVN coverage ranges:
+
+- Width: `16`
+- Polynomial: `0x8005` normal, `0xA001` reflected
+- Initial value: `0x0000`
+- Input/output reflected: yes
+- Final XOR: `0x0000`
+- Stored byte order: little-endian
+
+For example, the Vehicle System calculation returns numeric CRC `0xA31F`, stored as bytes `1F A3` at `0x020020`. All five stock segments reproduce their stored Mod16 and CRC16 values exactly with these rules.
+
+Correction order matters because the Mod16 coverage includes the CRC16 storage bytes: calculate and write CRC16 first, then calculate and write Mod16. Recomputing Mod16 against the old CRC value produces the wrong final checksum.
+
+The E78 metadata calls the CRC coverage list `cvn`, and the CSV calls the stored field `CRC16_Checksum`. Treat it as the segment CRC used by the CVN/integrity machinery. Do not assume this single 16-bit field is itself the final 32-bit OBD Mode 09 CVN; the final reported CVN may combine or further process segment results.
+
+### What the CSV says
+
+For each of the five reference calibration segments, the CSV has two byte entries for `a_y_Mod16_Checksum`, two for `a_y_CRC16_Checksum`, and one `e_y_ChecksumBypass`. The comments identify the calibration family but do not document the checksum polynomial, coverage, byte order, or bypass enum semantics. Those details were recovered from the OS descriptor and verified against the BIN.
+
+The CSV also contains a separate torque-security checksum system:
+
+- `KeMEMD_g_TSC_Start`: placeholder marking the beginning of the protected area. The first checksum range starts immediately after this four-byte marker.
+- `KeMEMD_g_TSC_ChecksumItfEqT` and `KeMEMD_g_TSC_ChecksumItfEqF`: expected checksums and end markers for two configuration-dependent sections.
+- `KeMEMD_g_TSC_Checksum`: expected checksum and end marker for the Common section; its comment says a mismatch produces `CM_ROM_Err`.
+- `KeMEMD_Cnt_TSC_TestBlockSize`: number of 16-bit words processed on each diagnostic execution. The comment describes spreading a complete pass across repeated scheduler executions rather than blocking while the whole region is read.
+- `KeMEMD_Cnt_TSC_TestFail`: number of failures before reporting/logging DTC `P0601`.
+- `KeMEMD_b_TorqSecTestDiagEnbl`: enables fault logging for the torque-security checksum diagnostic.
+- `KeMEMD_b_TorqSecTestDisable`: disables execution of the diagnostic. This is an application-level runtime gate, not evidence that the flash loader will accept bad outer segment checksums.
+- Runtime state symbols `VeMEMD_g_TSC_RunningChksum`, `VeMEMD_g_TSC_StartAddr`, `VeMEMD_g_TSC_EndAddr`, `VeMEMD_d_TSC_BlkSize`, `VeMEMD_e_TSC_Section`, and `VaMEMD_b_TSC_SectionValid[...]` confirm an incremental, section-by-section diagnostic.
+
+### Torque-security checksum recovered - 2026-07-12
+
+The torque-security checksum is not CRC16 in this Astra binary, despite the stale/generic `CRC16 checksum diagnostic` wording on two CSV control calibrations. It is a 32-bit two's-complement additive checksum over big-endian 16-bit words:
+
+`stored_tsc = -sum(BE16 words in protected section) mod 2^32`
+
+The four-byte start marker and each four-byte checksum marker are excluded from their section's data sum. Store the result as one big-endian 32-bit value. This formula reproduces all three stock Astra markers exactly and also reproduces both populated markers in the older `Astra J A14NET- ECU Orig.bin` reference, so the result is not based on a single accidental match.
+
+Exact target layout in `opel_astra_original.bin`:
+
+| Section | Protected data | Expected-checksum marker | Stock checksum |
+| --- | --- | --- | ---: |
+| Interface True / mode-dependent section | `0x040034-0x043157` | `0x043158-0x04315B` | `0xF3C026EA` |
+| Interface False / AFM mode-dependent section | `0x04315C-0x0464EB` | `0x0464EC-0x0464EF` | `0xF3AF455A` |
+| Common | `0x0464F0-0x04BB77` | `0x04BB78-0x04BB7B` | `0xF03B6BBD` |
+
+The first marker follows the four-byte `KeMEMD_g_TSC_Start` placeholder at `0x040030-0x040033`. The mode labels above combine the checksum-symbol comments with the runtime `TSC_SectionValid` enum names; the exact vehicle configuration selecting each optional section has not been code-traced fully, but the boundaries and checksum math are confirmed.
+
+`opel_astra_mod1.bin` leaves the first two sections unchanged and valid. It changes `325` bytes in the Common section:
+
+- `108` changed bytes in `DriverDemand_A_046944`.
+- `108` changed bytes in `DriverDemand_B_046DC8`.
+- `108` changed bytes in `DriverDemand_C_04724C`.
+- `1` changed byte in `TCS_TorqueReductionEnableECT_04B5B4`.
+
+For the current `mod1`, the Common checksum must change from stock `0xF03B6BBD` to `0xF0396EC7`. Peak Engine Torque, Max Engine Torque Limit, and Overboost Torque Limit are outside the protected area; it is the Driver Demand and TCS changes above that invalidate TorqueSecurity.
+
+Checksum correction order for an edited Engine Operation segment is therefore:
+
+1. Recalculate each changed torque-security section and write its 32-bit marker.
+2. Recalculate and write the segment CRC16, because its coverage includes the torque-security markers.
+3. Recalculate and write segment Mod16, because its coverage includes the stored segment CRC16.
+
+For the present `mod1`, after writing Common TorqueSecurity `0xF0396EC7`, the final Engine Operation outer values become CRC bytes `71 FB` and Mod16 `0x9F8B`. The earlier `32 27` / `0xE267` figures were intermediate results calculated while the stale stock TorqueSecurity marker was still present and must not be used.
+
+Practical distinction: ordinary E78 segment checksum support does not guarantee TorqueSecurity support. One E78 flashing-tool manual explicitly describes calibration checksum recalculation as `except TorqSecurity`, which matches the separate mechanism found here: <https://chiptuningmarket.com/wp-content/uploads/2024/01/MD-Flasher-moduly-1.pdf>.
+
+Do not use the five `ChecksumBypass` bytes as a flashing shortcut. The stock Astra values are all `0x00`; the CSV does not explain the enum, and boot/programming validation may happen before application-level bypass logic executes.
+
+### Current mod1 checksum audit - 2026-07-12
+
+`E78_Astra_047922_TableSearch.xdf` contains no checksum plugin/definition, so saving a BIN through the current XDF does not repair these values. The current `opel_astra_mod1.bin` still contains the stock checksum bytes:
+
+| Segment | Changed bytes vs. stock | Stored Mod16 | Required Mod16 | Stored CRC16 bytes | Required CRC16 bytes |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Vehicle System | `9` | `0x3059` | `0x3CEC` | `1F A3` | `02 59` |
+| Fuel System | `0` | `0xE17E` | `0xE17E` | `06 03` | `06 03` |
+| Vehicle Speed Sensor | `0` | `0x8C80` | `0x8C80` | `F6 18` | `F6 18` |
+| Engine Diagnostic | `17` | `0x883F` | `0x1BBA` | `6F C0` | `56 BB` |
+| Engine Operation/Calibration | `743` | `0xB8F8` | `0x9F8B` | `AE 33` | `71 FB` |
+
+Therefore the current `opel_astra_mod1.bin` is not checksum-correct as a raw file. A flash tool that explicitly supports this E78 OS may recalculate checksums during programming, but that behavior must be verified for the exact tool. Do not assume TunerPro or a generic write operation handles it.
+
+### C# checksum utility
+
+`E:\Projects\E78_14T\tunes\astra_j_14t_2\E78Checksum.cs` is a standalone .NET 10 file-based C# utility for this exact Astra E78 layout. It handles all three TorqueSecurity markers and all five calibration-segment CRC16/Mod16 pairs in dependency order.
+
+Read-only verification, optionally validating and comparing against the known-good original:
+
+```powershell
+dotnet run --file .\E78Checksum.cs -- verify .\opel_astra_mod1.bin .\opel_astra_original.bin
+```
+
+Write a corrected copy while requiring the original reference to pass first:
+
+```powershell
+dotnet run --file .\E78Checksum.cs -- fix .\opel_astra_mod1.bin .\opel_astra_mod1_checksum_fixed.bin .\opel_astra_original.bin
+```
+
+Safety behavior:
+
+- `verify` never writes and returns exit code `0` for valid, `2` for invalid, and `1` for usage/read errors.
+- `fix` requires a separate output path by default and refuses to replace an existing file. `--overwrite` is required for replacement or an intentional in-place write.
+- The utility requires an exact `0x300000`-byte full BIN and rejects any supplied reference that does not pass every recovered Astra checksum.
+- Correction runs on an in-memory clone, writes TorqueSecurity first, segment CRC16 second, and segment Mod16 last, then performs a complete audit before writing through a temporary output file.
+
+Verification performed on 2026-07-12:
+
+- `opel_astra_original.bin` passed all three TorqueSecurity and all five segment checks.
+- Running `fix` on an original-BIN copy changed `0` bytes; the output SHA-256 was identical to the input.
+- A temporary corrected copy of current `opel_astra_mod1.bin` changed exactly `15` checksum bytes and then passed every check.
+- The corrected temporary `mod1` was `784` bytes different from stock: the original `769` tuning differences plus `15` checksum-byte differences.
+- Test outputs were removed; neither repository BIN was modified by the test.
+
 ## Current Confirmed Tables
 
 ### HP Tuners [ECM] 33482 - Turbocharger Knock Max Airmass
