@@ -512,7 +512,7 @@ Confirmed TunerPro entries added with the FEQR power-enrichment cluster:
 - `PowerEnrichmentEnableTorquePct_0620AE`: likely HP Tuners `[ECM] 12418 Power Enrichment Enable Torque %`, `1 x 17`, unsigned 16-bit big-endian, `X * 0.001525878906`, `%`. Target readback is all `0.0%`; the screenshot example shows all `97.0%`.
 - `PowerEnrichmentEnablePedalPct_0620D2`: `1 x 17`, unsigned 16-bit big-endian, `X * 0.001525878906`, `%`. Target readback is all `80.0%`.
 - `PowerEnrichmentDelayRPM_0620A0`: scalar, unsigned 16-bit big-endian, `X * 0.125`, `rpm`. Target readback is `6000 rpm`.
-- `PowerEnrichmentDelayTorquePct_0625D8`: scalar, 32-bit big-endian float, `%`. Target readback is `100.0%`.
+- `PowerEnrichmentDelayTorquePct_0625D8`: `KeFEQR_Pct_PE_DelayLoadThrsh`, scalar, 32-bit big-endian float, `%`. Source `0x05C3DC` relocates to target `0x0625D8` by `+0x61FC`; target readback is `100.0%`.
 - `PowerEnrichmentDelayStep_0620F8`: `17 x 17`, unsigned 16-bit big-endian, `X * 0.05`, seconds. Static axes are accelerator pedal `0.0..100.0%` by engine speed `0..6400 rpm`; target visible cells are `0.100`.
 - `PowerEnrichmentRampIn_0620A6`: scalar, unsigned 16-bit big-endian, `X * 0.000030517578`. Target readback is `0.1000`.
 - `PowerEnrichmentRampOut_0620A8`: scalar, unsigned 16-bit big-endian, `X * 0.000030517578`. Target readback is `0.0100`.
@@ -527,11 +527,21 @@ Source/reference names:
 - `KfFEQR_eqr_PE_RampIn`
 - `KfFEQR_eqr_PE_RampOut`
 
+Additional active PE calibrations mapped from the same `+0x61FC` FEQR block:
+
+- `KeFEQR_n_PE_EngSpdLoHys_062094`: PE enable RPM hysteresis, target `50 rpm`.
+- `KeFEQR_Pct_PE_ThrotLoHys_062098`: PE throttle/pedal hysteresis, target about `5%`.
+- `KeFEQR_Pct_PE_LoadLoHys_06209A`: PE load/torque hysteresis, target `0%`.
+- `KfFEQR_T_PE_DelayCoolLoThrsh_06209C` and `KfFEQR_T_PE_DelayCoolHiThrsh_06209E`: bypass PE delay below/above `-50 deg C` and `135 deg C`.
+- `KfFEQR_Pct_PE_DeltThrotRise_0620A2`: rising-throttle bypass threshold, target `0%`.
+- `KfFEQR_v_PE_DeltThrotVehSpdHi_0620A4`: vehicle-speed criterion paired with throttle delta, target `250 kph`.
+- `KwFEQR_t_PE_DelayMax_0620AA`: maximum PE condition delay, exposed as `X * 0.05 s`. Stock raw `0xFFFF` displays `3276.75 s` and may be a disabled/sentinel value; do not interpret it as a normal literal delay without code-flow confirmation.
+
 Evidence:
 
 - The main FEQR PE scalar/table run relocates from the Corsa reference by the same `+0x61FC` family delta used for `[ECM] 12400`.
 - The local dimension markers line up with the table starts: `0x0011` before the two `1 x 17` tables and `0x0011 0x0011` immediately before `PowerEnrichmentDelayStep_0620F8`.
-- The `PowerEnrichmentDelayTorquePct_0625D8` scalar is farther from the `0x0620xx` run, but decodes as a clean 32-bit float `100.0`, matching the green `Delay Torque %` screenshot value.
+- `KeFEQR_Pct_PE_DelayLoadThrsh` at source `0x05C3DC` relocates exactly to `PowerEnrichmentDelayTorquePct_0625D8` and decodes as a clean 32-bit float `100.0`, matching the green `Delay Torque %` screenshot value.
 
 ### Knock Enrichment / FEQR Pre-Ignition Protection
 
@@ -562,7 +572,7 @@ Evidence and caveats:
 
 ### Fuel Temperature Control / Protection
 
-Quarantined from the main XDF on 2026-07-08 because TunerPro crashed while loading the Fuel temperature-control table block. Addresses/scaling are retained here for re-adding in smaller batches.
+The older mixed CCTI temperature-control batch was quarantined on 2026-07-08 while isolating a TunerPro load crash. Proven FEQR hot-engine and piston-protection calibrations are now active under `Fuel->Protection`; the separate CCTI candidates below retain their original confidence notes.
 
 Confirmed or high-confidence TunerPro entries:
 
@@ -575,7 +585,7 @@ Confirmed or high-confidence TunerPro entries:
 - `PistonProtectDisableRPM_05FAF2`: FEQR component/piston protection disable RPM. Unsigned 16-bit big-endian, `X * 0.125`, rpm. Target readback is `3500`.
 - `PistonProtectMaxEnrichment_05FAAC`: FEQR piston protection enrichment row over static `0..8192 rpm` axis. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.000` across the row.
 - `HotEngineEnableECT_05FA46`: FEQR hot-engine enable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `255.99`, matching HPT display `256`.
-- `HotEngineDisableECT_05FA44`: FEQR hot-engine disable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `120`.
+- `KfFEQR_T_HotCoolantECT_Lo_05FA48`: FEQR hot-engine low/disable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `120`. Address `0x05FA44` is the final value of the preceding 17-cell axis, not this scalar.
 - `HotEngineMaxEnrich_05FA5A`: FEQR hot-engine maximum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.399`.
 - `TurboOvertempMaxEnrichment_04E960`: CCTI turbo overtemperature maximum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.420`.
 - `TurboOvertempMinEnrichment_04EA26`: CCTI turbo overtemperature minimum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.026`, matching HPT display `1.03`.
@@ -587,6 +597,46 @@ Evidence and caveats:
 - The CCTI turbo enrichment scalars match the screenshot values directly: `1.42` max enrichment and `1.03` min enrichment.
 - The HPT `[ECM] 12232` COT Max Enrichment screenshot is a `1 x 5` alcohol table with all cells around `1.37`; the contiguous repeated block at `0x0636CC` fits that display shape. The nearby CCTI scalar at `0x04E900` also decodes to `1.370`, so both are kept in the XDF until the exact HPT source symbol is nailed down.
 - `COT` enable and `Turbo Overtemp` enable dropdown enum/boolean targets were not added yet because the local raw words near the cluster do not uniquely identify the HPT switch without a changed-bin fingerprint.
+
+## Full FEQR Flash Mapping - 2026-07-12
+
+The complete FEQR inventory from `winols_astra.csv` is recorded in `feqr_mapping.csv`. The CSV contains `204` unique FEQR symbols: `94` flash calibrations and `110` `0x400...` RAM/runtime variables. Only flash calibrations are candidates for editable BIN/XDF entries.
+
+Disposition of the `94` flash calibrations:
+
+- `90` high-confidence Astra mappings: `19` were already represented in the XDF and `71` were added in this pass.
+- `3` are demonstrably absent from this target layout: `KtFEQR_eqr_PreIgnProtectE80` (`0x05995E`), `KtFEQR_Cnt_BlndOpenToClosedLoop` (`0x059A04`), and `KeFEQR_Cnt_BlendDriveability` (`0x059B9A`). The neighboring target blocks close the exact source-sized gaps where these would otherwise occur.
+- `1` remains unresolved and is not active: `KtFEQR_K_EquivRatioBlendFactor` (`0x05C800`). It has no unique target fingerprint or coherent local anchor.
+
+Confirmed source-to-target relocation blocks:
+
+| DAMOS source range | Astra rule | Functional block |
+| --- | ---: | --- |
+| `0x059330-0x059704` | `+0x631C` | clear flood, crank, green-engine enrichment |
+| `0x059706-0x0598B8` | `+0x6340` | hot-engine, piston, pre-ignition protection |
+| `0x059AB0-0x059B98` | `+0x61F4` | stoichiometry and general FEQR controls |
+| `0x059B9E-0x05BE97` | `+0x61F0` | AIR and open-loop fueling |
+| `0x05BE98-0x05C3DC` | `+0x61FC` | power enrichment |
+| `0x059A00-0x059A02` | explicit `0x05FC9A-0x05FC9C` | pre-ignition ramp-out/ramp-in scalars |
+
+Mapping method and confidence rules:
+
+1. Parse semicolon-delimited WinOLS rows by `IdName`, storage organization, signedness, dimensions, factor, units, source address, and reference values.
+2. Exclude RAM/runtime symbols and build ordered flash islands. Use already confirmed PE and pre-ignition tables as independent anchors.
+3. Search `opel_astra_original.bin` for exact or structurally distinctive raw fingerprints, then compare symbol order, dimensions, count markers, inter-table gaps, and decoded engineering values across the whole island.
+4. Promote a relocation only when multiple neighbors preserve source ordering and spacing or a unique raw fingerprint independently confirms the address. Constant/all-zero patterns alone are not sufficient.
+5. Preserve source storage, signedness, dimensions, factor, offset, and units in the XDF. Use static/index axes where target axis storage is not independently proven; this avoids creating plausible-looking but unsafe editable axis links.
+6. Record every source row and disposition in `feqr_mapping.csv`, including target preview/min/max, confidence evidence, XDF status, and title. Absent and unresolved rows remain documented but are not added as active tables.
+
+The active FEQR additions are split into functional folders: `Fuel->Cranking`, `Fuel->Open Loop`, `Fuel->Protection`, `Fuel->AIR`, `Fuel->General`, `Fuel->Power Enrich`, and `Fuel->Knock Enrichment`.
+
+TunerPro load test on 2026-07-12:
+
+- Loaded the expanded `E78_Astra_047922_TableSearch.xdf` with `opel_astra_original.bin` without a crash; all `19` categories appeared with the expected entry counts.
+- Opened `KfFEQR_Pct_ClearFloodEnter_05F64C` and confirmed `90.0%`.
+- Opened `KtFEQR_eqr_Crank_05F654` and confirmed the complete `17 x 17`, 16-bit table renders with numeric axes and decoded values.
+- Opened `KwFEQR_t_PE_DelayMax_0620AA` and confirmed raw `0xFFFF` renders as `3276.75 s` with the sentinel warning visible in the description.
+- A programmatic audit of all `90` active FEQR mappings found no storage width, signed/float flag, dimensions, or equation factor/offset mismatches against the DAMOS rows. XML parsing, unique-ID, category-membership, target-address uniqueness, and BIN-bound checks also passed.
 
 ## Spark Table Search - 2026-07-08
 
@@ -657,10 +707,10 @@ Reference/WinOLS source to Astra target:
 | FEQR power enrichment | `[ECM] 12418` Power Enrichment Enable Torque % | `KtFEQR_Pct_PE_LoadThrsh` `0x05BEB2` | `0x0620AE` | `+0x61FC` | Target values are all `0%`, unlike the `97%` screenshot example. |
 | FEQR power enrichment | Power Enrichment Enable Pedal | `KtFEQR_Pct_PE_ThrotThrshEngSpd` `0x05BED6` | `0x0620D2` | `+0x61FC` | Target values are all `80%`. |
 | FEQR power enrichment | Power Enrichment Delay Step | `KtFEQR_t_PE_DelayAdjust` `0x05BEFC` | `0x0620F8` | `+0x61FC` | `17 x 17`, pedal by RPM, values around `0.100`. |
-| FEQR power enrichment | Power Enrichment Delay Torque % | unresolved exact CSV symbol | `0x0625D8` | n/a | 32-bit big-endian float `100.0%`; found in the same local FEQR delay group. |
+| FEQR power enrichment | Power Enrichment Delay Torque % | `KeFEQR_Pct_PE_DelayLoadThrsh` `0x05C3DC` | `0x0625D8` | `+0x61FC` | 32-bit big-endian float `100.0%`. |
 | FEQR knock enrichment | Knock Enrichment scalars and EQ ratio | FEQR pre-ignition protection island | `0x05FB44-0x05FC9C` | n/a | Scalars match HPT pane; axes start at `0x05FB1E` and `0x05FB32` after count markers. |
 | CCTI temperature protection | Catalyst and turbo enrichment/threshold scalars | CCTI catalyst/turbo protection island | `0x04E8FA-0x04EA26` | n/a | COT scalar max/min, COT thresholds, turbo max/min enrichment, and likely turbo temp thresholds. |
-| FEQR temperature protection | Hot engine and piston/component protection | FEQR hot-engine/piston island | `0x05FA44-0x05FAF2` | n/a | Hot-engine ECT/enrichment and piston enable/disable RPM plus 0-8192 rpm enrichment row. |
+| FEQR temperature protection | Hot engine and piston/component protection | FEQR hot-engine/piston island | `0x05FA46-0x05FAF2` | n/a | Hot-engine scalars start at `0x05FA46`; `0x05FA44` is the final preceding axis breakpoint. |
 | COT max enrichment table | `[ECM] 12232` COT Max Enrichment | unresolved exact CSV symbol | `0x0636CC` | n/a | HPT-shaped `1 x 5` alcohol-composition row, all cells about `1.373`; nearby scalar at `0x04E900` is also retained. |
 
 HPT HexView window name to Astra target:
@@ -749,7 +799,7 @@ Search heuristics from the confirmed tables:
 - For FEQR Power Enrich EQ Ratio, both table bodies used a clean `+0x61FC`.
 - For FEQR Power Enrichment enable/delay/ramp tables, the nearby `0x0620xx` entries also use the `+0x61FC` family delta, but the Astra calibration values can differ heavily from the HPT screenshot example.
 - For Knock Enrichment / FEQR pre-ignition protection, confirm count markers before axes and table bodies. The real axes start after the `0x0009` count words, not on them.
-- For Fuel Temperature Control, search both the CCTI catalyst/turbo island near `0x04E8FA-0x04EA26` and the FEQR hot-engine/piston island near `0x05FA44-0x05FAF2`; they are different calibration families despite landing in the same HPT pane.
+- For Fuel Temperature Control, search both the CCTI catalyst/turbo island near `0x04E8FA-0x04EA26` and the FEQR hot-engine/piston island with scalars at `0x05FA46-0x05FAF2`; they are different calibration families despite landing in the same HPT pane. The preceding FEQR axis ends at `0x05FA44`.
 - HPT HexView windows are useful visual clues, but several do not map byte-for-byte to raw file addresses in this Astra BIN. Prefer source/fingerprint relocation plus table-shape validation over the HexView window delta alone.
 
 Name notes:
@@ -816,9 +866,9 @@ Relevant CSV entries not promoted as disable switches:
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
 - HP Tuners tree triage from 2026-07-09: do not prioritize `Manual Trans Spark Smoothing (RDSC) Master Enable`, `Piston Slap Spark`, `PDA Spark`, EGR spark add/PDA/DOD tables, or `Minimum Spark Advance Double Pulse` for this XDF pass. User confirmed `SparkSmoothingRunFilterRefs_075C36` is functionally similar enough for the manual-trans spark smoothing/RDSC control, and Piston Slap, PDA, EGR, and Double Pulse tables are zeroed out in this calibration.
 - After that triage, the useful unresolved items from the compared HP Tuners tree are mainly `High Octane DP`, `High Octane DOD`, `Low Octane DOD`, `VCP Spark PDA`, `Trans Default Torque Limit`, the true BTRC `Brake Torque Limit` table, and confirmation of which `BrakeTorqueLimitMult_Candidate*` copy HPT edits, plus any collapsed `Fuel->Temperature Control` items that are not already represented by the CCTI/FEQR temperature-protection notes.
-- Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
-- Current active XDF has 87 table entries as of 2026-07-12: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, four TCS controls, and the explicitly labeled decimal display-only companion for Turbocharger Knock Max Airmass. Fuel temperature-control definitions remain quarantined unless separately noted.
-- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
+- Proven FEQR temperature-protection entries are active under `Fuel->Protection`. The separate CCTI catalyst/turbo candidates remain subject to their individual confidence notes and prior load-test history.
+- Current active XDF has 158 table entries as of 2026-07-12: the prior 87-entry layout plus 71 newly proven FEQR flash calibrations.
+- Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, `Engine->Thermal`, `Fuel->Cranking`, `Fuel->Open Loop`, `Fuel->Protection`, `Fuel->AIR`, and `Fuel->General`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
 - Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:
