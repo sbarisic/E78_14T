@@ -842,6 +842,46 @@
       </MATH>
     </XDFAXIS>
   </XDFTABLE>
+  <XDFTABLE uniqueid="0x7211" flags="0x0">
+    <title>TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68</title>
+    <description>Decimal display-only companion for HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. Shows the native 32-bit float mg/cyl values as grams, for example 275 becomes 0.275. DO NOT EDIT OR APPLY TABLE FUNCTIONS IN THIS VIEW: TunerPro does not safely write transformed 32-bit floating-point values. Use TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68 for all edits and enter 485 there for 0.485 g.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DF3C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DD68" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g (display only)</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>4.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="0.001 * X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
   <XDFTABLE uniqueid="0x7212" flags="0x0">
     <title>TurbochargerKnockAirmassScav_Candidate_04E088</title>
     <description>Inspection view only. This 8x11 direct-float block near the confirmed table is not HP Tuners [ECM] 33495; the confirmed Knock Airmass Scav equivalent is the 16-bit scaled table at 0x04E350.</description>

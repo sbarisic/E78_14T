@@ -86,7 +86,10 @@ XDF editing conventions:
 
 ### HP Tuners [ECM] 33482 - Turbocharger Knock Max Airmass
 
-Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
+Confirmed TunerPro entries:
+
+- Editable native view: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
+- Decimal display-only view: `TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68`
 
 - Z table address: `0x04DD68`
 - Format: `8 x 11`, 32-bit big-endian float
@@ -95,6 +98,7 @@ Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
 - Editing rule: enter the HP Tuners value in grams multiplied by `1000`; for example, enter `485` for `0.485 g`
 - Reason: TunerPro's native 32-bit floating-point type does not support a conversion transformation for safe write-back. The earlier `X / 1000` view could display correctly but wrote `0.485` directly into storage instead of `485`. This matches the TunerPro author's documented limitation: <https://forum.tunerpro.net/viewtopic.php?t=4034> and the floating-point release note at <https://www.tunerpro.net/downloadApp.htm>.
 - Defensive display: zero decimal places and an editable range of `100-1000 mg/cyl`. A correctly loaded stock BIN must show values around `275-725`, never `0.275-0.725`.
+- Decimal display companion: `0.001 * X`, three decimal places, and units `g (display only)`. It shows stock values as approximately `0.275-0.725`, but must never be used to edit or apply table functions because TunerPro cannot safely write a transformed 32-bit float.
 - This table cannot be a base-address-only clone of `TurbochargerKnockAirmassScav_04E350`. Max uses 88 consecutive 32-bit IEEE-754 floats (`352` bytes) at `0x04DD68`; Scav uses 88 consecutive 16-bit unsigned counts (`176` bytes) at `0x04E350` with `0.0000625 * X`. A full-bin search found the exact Max first-row sequence only at `0x04DD68` in float form and found no 16-bit scaled duplicate.
 - The 2026-07-12 modified BIN proves the distinction: all 88 Max cells stored at `0x04DD68` match the Scav engineering values within `0.0005`, but they are stored as float `0.275-0.900` instead of native float `275-900`. Therefore the apparent `0` and `1` values in the guarded editor are the corrupt floats rounded to zero decimal places, not a table-address or decimal-place error.
 - X axis address: `0x04DEC8`
@@ -785,9 +789,11 @@ Relevant CSV entries not promoted as disable switches:
 
 ## XDF Maintenance Notes
 
-- Keep `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68` as the only active view for HP Tuners `[ECM] 33482`. It deliberately displays native `mg/cyl` values with `MATH X`, zero decimal places, and a `100-1000` range so 32-bit float edits write back correctly. Enter `485` for an HPT value of `0.485 g`.
-- Do not re-add the overlapping `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. It became an editing trap and was removed on 2026-07-12 after `opel_astra_mod1.bin` showed changed cells written 1000 times too small.
+- Keep `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68` as the only editable view for HP Tuners `[ECM] 33482`. It deliberately displays native `mg/cyl` values with `MATH X`, zero decimal places, and a `100-1000` range so 32-bit float edits write back correctly. Enter `485` for an HPT value of `0.485 g`.
+- Keep `TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68` only as a decimal presentation view. It overlaps the editable view by design and uses `0.001 * X` to show `0.275-0.725 g`; never edit or apply table functions in it.
+- Do not re-add the ambiguously named `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. Its purpose is now covered explicitly by the guarded editable view and the clearly labeled display-only view.
 - Second `opel_astra_mod1.bin` audit on 2026-07-12: SHA-256 `A232147FEC447278428C6E4F17EF35060ABC76BCAD100E76CD1B810982810D27`, `1054` bytes differ from stock, and all 88 cells at `0x04DD68` are stored as `0.275-0.900`. The screenshot values around `0.3` are those invalid native floats rounded to one decimal place, not a valid engineering-unit display. Do not use this BIN as the next edit base.
+- Third `opel_astra_mod1.bin` audit on 2026-07-12 after the user restored Max: SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`, `717` bytes differ from stock, and all 88 cells at `0x04DD68` are byte-for-byte identical to stock (`275-725` native floats). The Scav table at `0x04E350` remains modified in 83 of 88 cells and displays `0.275-0.900 g`. This is the current modified BIN state used to validate the paired Max edit/display XDF views.
 - Keep `TurbochargerKnockAirmassScav_04E350` as the main editable/display table for HP Tuners `[ECM] 33495`.
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
@@ -811,7 +817,7 @@ Relevant CSV entries not promoted as disable switches:
 - HP Tuners tree triage from 2026-07-09: do not prioritize `Manual Trans Spark Smoothing (RDSC) Master Enable`, `Piston Slap Spark`, `PDA Spark`, EGR spark add/PDA/DOD tables, or `Minimum Spark Advance Double Pulse` for this XDF pass. User confirmed `SparkSmoothingRunFilterRefs_075C36` is functionally similar enough for the manual-trans spark smoothing/RDSC control, and Piston Slap, PDA, EGR, and Double Pulse tables are zeroed out in this calibration.
 - After that triage, the useful unresolved items from the compared HP Tuners tree are mainly `High Octane DP`, `High Octane DOD`, `Low Octane DOD`, `VCP Spark PDA`, `Trans Default Torque Limit`, the true BTRC `Brake Torque Limit` table, and confirmation of which `BrakeTorqueLimitMult_Candidate*` copy HPT edits, plus any collapsed `Fuel->Temperature Control` items that are not already represented by the CCTI/FEQR temperature-protection notes.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
-- Current active XDF has 86 table entries as of 2026-07-12: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, and four TCS controls. The duplicate 32-bit float knock-airmass raw view was removed to prevent unsafe write scaling. Fuel temperature-control definitions remain quarantined unless separately noted.
+- Current active XDF has 87 table entries as of 2026-07-12: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, four TCS controls, and the explicitly labeled decimal display-only companion for Turbocharger Knock Max Airmass. Fuel temperature-control definitions remain quarantined unless separately noted.
 - Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
