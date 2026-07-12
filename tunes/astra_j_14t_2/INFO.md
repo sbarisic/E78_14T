@@ -82,23 +82,177 @@ XDF editing conventions:
 - Do not blindly copy reference XDF storage definitions. Verify the target bytes first.
 - Do not edit `opel_astra_original.bin` directly without checksum/CVN handling.
 
+## E78 Checksum And CVN Handling
+
+Sources used for this section:
+
+- `E:\Projects\E78_14T\sources\Uni78\DamosCSVParser\data\winols_astra.csv`: names the per-segment `Mod16_Checksum`, `CRC16_Checksum`, and `ChecksumBypass` bytes. It also documents a separate 32-bit torque-security calibration checksum and its diagnostics.
+- `E:\Projects\E78_14T\tunes\AcDelco E78 Full\e78_decode.txt`: explains the E78 segment descriptor layout and distinguishes each segment's full range, CVN/CRC coverage, and additive-sum coverage.
+- The Astra OS descriptor at `0x0CB05A-0x0CB108` in `opel_astra_original.bin`: authoritative segment ranges for this target OS. The reference CSV's Engine Calibration begins at `0x039100`, but this Astra OS begins it at `0x040000`.
+- Direct recomputation against all five stock Astra calibration segments. Both algorithms reproduce every stored stock value exactly.
+
+### Astra calibration segments
+
+| Segment | Covered range | Mod16 bytes | Checksum-bypass byte | CRC16 bytes |
+| --- | --- | --- | --- | --- |
+| Vehicle System | `0x020000-0x022FFF` | `0x020000-0x020001` | `0x02000D` | `0x020020-0x020021` |
+| Fuel System | `0x023000-0x027FFF` | `0x023000-0x023001` | `0x02300D` | `0x023020-0x023021` |
+| Vehicle Speed Sensor | `0x028000-0x028FFF` | `0x028000-0x028001` | `0x02800D` | `0x028020-0x028021` |
+| Engine Diagnostic | `0x029000-0x03FFFF` | `0x029000-0x029001` | `0x02900D` | `0x029020-0x029021` |
+| Engine Operation/Calibration | `0x040000-0x07FFFF` | `0x040000-0x040001` | `0x04000D` | `0x040020-0x040021` |
+
+The descriptor uses two coverage lists per segment:
+
+- Additive checksum coverage: `segment_base + 0x02` through the segment end. This excludes the two Mod16 storage bytes but includes the stored CRC16 bytes.
+- CRC/CVN coverage: `segment_base + 0x02` through `segment_base + 0x1F`, then `segment_base + 0x22` through the segment end. This excludes both the Mod16 and CRC16 storage bytes.
+
+### Proven algorithms
+
+Mod16 is a two's-complement additive checksum over big-endian 16-bit words:
+
+`stored_mod16 = -sum(BE16 words from base + 2 through segment end) mod 65536`
+
+Store the result as a big-endian 16-bit value at the segment base. Equivalently, the big-endian word sum over the complete segment, including the stored Mod16 word, must equal zero modulo `65536`.
+
+The second field is CRC-16/ARC over the CRC/CVN coverage ranges:
+
+- Width: `16`
+- Polynomial: `0x8005` normal, `0xA001` reflected
+- Initial value: `0x0000`
+- Input/output reflected: yes
+- Final XOR: `0x0000`
+- Stored byte order: little-endian
+
+For example, the Vehicle System calculation returns numeric CRC `0xA31F`, stored as bytes `1F A3` at `0x020020`. All five stock segments reproduce their stored Mod16 and CRC16 values exactly with these rules.
+
+Correction order matters because the Mod16 coverage includes the CRC16 storage bytes: calculate and write CRC16 first, then calculate and write Mod16. Recomputing Mod16 against the old CRC value produces the wrong final checksum.
+
+The E78 metadata calls the CRC coverage list `cvn`, and the CSV calls the stored field `CRC16_Checksum`. Treat it as the segment CRC used by the CVN/integrity machinery. Do not assume this single 16-bit field is itself the final 32-bit OBD Mode 09 CVN; the final reported CVN may combine or further process segment results.
+
+### What the CSV says
+
+For each of the five reference calibration segments, the CSV has two byte entries for `a_y_Mod16_Checksum`, two for `a_y_CRC16_Checksum`, and one `e_y_ChecksumBypass`. The comments identify the calibration family but do not document the checksum polynomial, coverage, byte order, or bypass enum semantics. Those details were recovered from the OS descriptor and verified against the BIN.
+
+The CSV also contains a separate torque-security checksum system:
+
+- `KeMEMD_g_TSC_Start`: placeholder marking the beginning of the protected area. The first checksum range starts immediately after this four-byte marker.
+- `KeMEMD_g_TSC_ChecksumItfEqT` and `KeMEMD_g_TSC_ChecksumItfEqF`: expected checksums and end markers for two configuration-dependent sections.
+- `KeMEMD_g_TSC_Checksum`: expected checksum and end marker for the Common section; its comment says a mismatch produces `CM_ROM_Err`.
+- `KeMEMD_Cnt_TSC_TestBlockSize`: number of 16-bit words processed on each diagnostic execution. The comment describes spreading a complete pass across repeated scheduler executions rather than blocking while the whole region is read.
+- `KeMEMD_Cnt_TSC_TestFail`: number of failures before reporting/logging DTC `P0601`.
+- `KeMEMD_b_TorqSecTestDiagEnbl`: enables fault logging for the torque-security checksum diagnostic.
+- `KeMEMD_b_TorqSecTestDisable`: disables execution of the diagnostic. This is an application-level runtime gate, not evidence that the flash loader will accept bad outer segment checksums.
+- Runtime state symbols `VeMEMD_g_TSC_RunningChksum`, `VeMEMD_g_TSC_StartAddr`, `VeMEMD_g_TSC_EndAddr`, `VeMEMD_d_TSC_BlkSize`, `VeMEMD_e_TSC_Section`, and `VaMEMD_b_TSC_SectionValid[...]` confirm an incremental, section-by-section diagnostic.
+
+### Torque-security checksum recovered - 2026-07-12
+
+The torque-security checksum is not CRC16 in this Astra binary, despite the stale/generic `CRC16 checksum diagnostic` wording on two CSV control calibrations. It is a 32-bit two's-complement additive checksum over big-endian 16-bit words:
+
+`stored_tsc = -sum(BE16 words in protected section) mod 2^32`
+
+The four-byte start marker and each four-byte checksum marker are excluded from their section's data sum. Store the result as one big-endian 32-bit value. This formula reproduces all three stock Astra markers exactly and also reproduces both populated markers in the older `Astra J A14NET- ECU Orig.bin` reference, so the result is not based on a single accidental match.
+
+Exact target layout in `opel_astra_original.bin`:
+
+| Section | Protected data | Expected-checksum marker | Stock checksum |
+| --- | --- | --- | ---: |
+| Interface True / mode-dependent section | `0x040034-0x043157` | `0x043158-0x04315B` | `0xF3C026EA` |
+| Interface False / AFM mode-dependent section | `0x04315C-0x0464EB` | `0x0464EC-0x0464EF` | `0xF3AF455A` |
+| Common | `0x0464F0-0x04BB77` | `0x04BB78-0x04BB7B` | `0xF03B6BBD` |
+
+The first marker follows the four-byte `KeMEMD_g_TSC_Start` placeholder at `0x040030-0x040033`. The mode labels above combine the checksum-symbol comments with the runtime `TSC_SectionValid` enum names; the exact vehicle configuration selecting each optional section has not been code-traced fully, but the boundaries and checksum math are confirmed.
+
+`opel_astra_mod1.bin` leaves the first two sections unchanged and valid. It changes `325` bytes in the Common section:
+
+- `108` changed bytes in `DriverDemand_A_046944`.
+- `108` changed bytes in `DriverDemand_B_046DC8`.
+- `108` changed bytes in `DriverDemand_C_04724C`.
+- `1` changed byte in `TCS_TorqueReductionEnableECT_04B5B4`.
+
+For the current `mod1`, the Common checksum must change from stock `0xF03B6BBD` to `0xF0396EC7`. Peak Engine Torque, Max Engine Torque Limit, and Overboost Torque Limit are outside the protected area; it is the Driver Demand and TCS changes above that invalidate TorqueSecurity.
+
+Checksum correction order for an edited Engine Operation segment is therefore:
+
+1. Recalculate each changed torque-security section and write its 32-bit marker.
+2. Recalculate and write the segment CRC16, because its coverage includes the torque-security markers.
+3. Recalculate and write segment Mod16, because its coverage includes the stored segment CRC16.
+
+For the present `mod1`, after writing Common TorqueSecurity `0xF0396EC7`, the final Engine Operation outer values become CRC bytes `71 FB` and Mod16 `0x9F8B`. The earlier `32 27` / `0xE267` figures were intermediate results calculated while the stale stock TorqueSecurity marker was still present and must not be used.
+
+Practical distinction: ordinary E78 segment checksum support does not guarantee TorqueSecurity support. One E78 flashing-tool manual explicitly describes calibration checksum recalculation as `except TorqSecurity`, which matches the separate mechanism found here: <https://chiptuningmarket.com/wp-content/uploads/2024/01/MD-Flasher-moduly-1.pdf>.
+
+Do not use the five `ChecksumBypass` bytes as a flashing shortcut. The stock Astra values are all `0x00`; the CSV does not explain the enum, and boot/programming validation may happen before application-level bypass logic executes.
+
+### Current mod1 checksum audit - 2026-07-12
+
+`E78_Astra_047922_TableSearch.xdf` contains no checksum plugin/definition, so saving a BIN through the current XDF does not repair these values. The current `opel_astra_mod1.bin` still contains the stock checksum bytes:
+
+| Segment | Changed bytes vs. stock | Stored Mod16 | Required Mod16 | Stored CRC16 bytes | Required CRC16 bytes |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Vehicle System | `9` | `0x3059` | `0x3CEC` | `1F A3` | `02 59` |
+| Fuel System | `0` | `0xE17E` | `0xE17E` | `06 03` | `06 03` |
+| Vehicle Speed Sensor | `0` | `0x8C80` | `0x8C80` | `F6 18` | `F6 18` |
+| Engine Diagnostic | `17` | `0x883F` | `0x1BBA` | `6F C0` | `56 BB` |
+| Engine Operation/Calibration | `743` | `0xB8F8` | `0x9F8B` | `AE 33` | `71 FB` |
+
+Therefore the current `opel_astra_mod1.bin` is not checksum-correct as a raw file. A flash tool that explicitly supports this E78 OS may recalculate checksums during programming, but that behavior must be verified for the exact tool. Do not assume TunerPro or a generic write operation handles it.
+
+### C# checksum utility
+
+`E:\Projects\E78_14T\tunes\astra_j_14t_2\E78Checksum.cs` is a standalone .NET 10 file-based C# utility for this exact Astra E78 layout. It handles all three TorqueSecurity markers and all five calibration-segment CRC16/Mod16 pairs in dependency order.
+
+Read-only verification, optionally validating and comparing against the known-good original:
+
+```powershell
+dotnet run --file .\E78Checksum.cs -- verify .\opel_astra_mod1.bin .\opel_astra_original.bin
+```
+
+Write a corrected copy while requiring the original reference to pass first:
+
+```powershell
+dotnet run --file .\E78Checksum.cs -- fix .\opel_astra_mod1.bin .\opel_astra_mod1_checksum_fixed.bin .\opel_astra_original.bin
+```
+
+Safety behavior:
+
+- `verify` never writes and returns exit code `0` for valid, `2` for invalid, and `1` for usage/read errors.
+- `fix` requires a separate output path by default and refuses to replace an existing file. `--overwrite` is required for replacement or an intentional in-place write.
+- The utility requires an exact `0x300000`-byte full BIN and rejects any supplied reference that does not pass every recovered Astra checksum.
+- Correction runs on an in-memory clone, writes TorqueSecurity first, segment CRC16 second, and segment Mod16 last, then performs a complete audit before writing through a temporary output file.
+
+Verification performed on 2026-07-12:
+
+- `opel_astra_original.bin` passed all three TorqueSecurity and all five segment checks.
+- Running `fix` on an original-BIN copy changed `0` bytes; the output SHA-256 was identical to the input.
+- A temporary corrected copy of current `opel_astra_mod1.bin` changed exactly `15` checksum bytes and then passed every check.
+- The corrected temporary `mod1` was `784` bytes different from stock: the original `769` tuning differences plus `15` checksum-byte differences.
+- Test outputs were removed; neither repository BIN was modified by the test.
+
 ## Current Confirmed Tables
 
 ### HP Tuners [ECM] 33482 - Turbocharger Knock Max Airmass
 
-Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_04DD68`
+Confirmed TunerPro entries:
+
+- Editable native view: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
+- Decimal display-only view: `TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68`
 
 - Z table address: `0x04DD68`
 - Format: `8 x 11`, 32-bit big-endian float
-- Stored values: grams * 1000
-- TunerPro math: `X / 1000`
-- Display units: `g`
+- Stored/display values: native `mg/cyl`, approximately `275-725` stock
+- TunerPro math: `X`
+- Editing rule: enter the HP Tuners value in grams multiplied by `1000`; for example, enter `485` for `0.485 g`
+- Reason: TunerPro's native 32-bit floating-point type does not support a conversion transformation for safe write-back. The earlier `X / 1000` view could display correctly but wrote `0.485` directly into storage instead of `485`. This matches the TunerPro author's documented limitation: <https://forum.tunerpro.net/viewtopic.php?t=4034> and the floating-point release note at <https://www.tunerpro.net/downloadApp.htm>.
+- Defensive display: zero decimal places and an editable range of `100-1000 mg/cyl`. A correctly loaded stock BIN must show values around `275-725`, never `0.275-0.725`.
+- Decimal display companion: `0.001 * X`, three decimal places, and units `g (display only)`. It shows stock values as approximately `0.275-0.725`, but must never be used to edit or apply table functions because TunerPro cannot safely write a transformed 32-bit float.
+- This table cannot be a base-address-only clone of `TurbochargerKnockAirmassScav_04E350`. Max uses 88 consecutive 32-bit IEEE-754 floats (`352` bytes) at `0x04DD68`; Scav uses 88 consecutive 16-bit unsigned counts (`176` bytes) at `0x04E350` with `0.0000625 * X`. A full-bin search found the exact Max first-row sequence only at `0x04DD68` in float form and found no 16-bit scaled duplicate.
+- The 2026-07-12 modified BIN proves the distinction: all 88 Max cells stored at `0x04DD68` match the Scav engineering values within `0.0005`, but they are stored as float `0.275-0.900` instead of native float `275-900`. Therefore the apparent `0` and `1` values in the guarded editor are the corrupt floats rounded to zero decimal places, not a table-address or decimal-place error.
 - X axis address: `0x04DEC8`
 - X axis values: `-25, -20, -15, -13, -11, -9, -7, -5, -3, -1, 0`
 - Y axis address: `0x04DF3C`
 - Y axis values: `1400, 1700, 2000, 2300, 3000, 4000, 5000, 6000`
 
-Displayed table values in this BIN:
+Equivalent HP Tuners values in grams for the stock BIN:
 
 ```text
 RPM \ deg   -25    -20    -15    -13    -11     -9     -7     -5     -3     -1      0
@@ -161,6 +315,67 @@ Evidence:
 - Your edited `[ECM] 33495` HexView screenshot shows a changed 16-bit byte-pair block in the second knock/scav neighborhood.
 - Reference `Astra J A14NET- ECU Orig.bin` has `KtBSTC_m_MaxKnk` as a 16-bit `0.0625 mg/count` table in this neighborhood.
 - In this OS, the coherent relocated block is at `0x04E350`, using the second spark-retard axis at `0x04E588` and the `1400..6000` RPM axis at `0x04E50C`.
+
+### Knock-airmass to total-airflow calculation - 2026-07-12
+
+For this `1364 cc`, four-cylinder, four-stroke engine, each cylinder has one intake event every two crankshaft revolutions. A table cell in `g/cyl` converts to ideal total engine airflow as:
+
+`MAF (g/s) = airmass (g/cyl) * 4 cylinders * RPM / 120 = airmass * RPM / 30`
+
+Displacement is not required for this mass-per-intake-event conversion. It gives a swept volume of `341 cc/cyl` and theoretical volume flow `1.364 * RPM / 120 L/s`, which can be used only for approximate charge-density/MAP context.
+
+Current BIN comparison:
+
+- `opel_astra_original.bin`: SHA-256 `2E562B30BB48A72205F9DD4756E152BC44EEF6B07D2F76F3FE25E222952824CD`.
+- `opel_astra_mod1.bin`: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26` after synchronizing both knock-airmass tables to the larger values.
+- Turbocharger Knock Max Airmass at `0x04DD68` now has `30/88` cells changed from stock and is engineering-value equivalent to the modified Scav table in all 88 cells. Max stores native 32-bit float `mg/cyl`; Scav stores 16-bit counts at `0.0625 mg/count`.
+- Knock Airmass Scav at `0x04E350` has `83/88` changed cells.
+- In `mod1`, all eight Scav rows from `-25` through `-7 deg` are exact copies of the stock Max Airmass table. The `-5`, `-3`, and `-1 deg` cells then form a linear ramp from the `-7 deg` value to a custom row endpoint, and the `0 deg` cell repeats that endpoint.
+- The custom `-1/0 deg` Scav endpoints by RPM are `0.625, 0.645, 0.750, 0.900, 0.900, 0.900, 0.800, 0.750 g/cyl` at `1400, 1700, 2000, 2300, 3000, 4000, 5000, 6000 rpm`.
+
+Least-retarded (`0 deg`) limits and calculated total airflow:
+
+| RPM | Stock Max g/cyl | Stock Max g/s | Stock Scav g/cyl | Stock Scav g/s | mod1 Scav g/cyl | mod1 Scav g/s | Scav delta g/s |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1400 | 0.625 | 29.17 | 0.615 | 28.70 | 0.625 | 29.17 | +0.47 |
+| 1700 | 0.645 | 36.55 | 0.665 | 37.68 | 0.645 | 36.55 | -1.13 |
+| 2000 | 0.720 | 48.00 | 0.695 | 46.33 | 0.750 | 50.00 | +3.67 |
+| 2300 | 0.725 | 55.58 | 0.715 | 54.82 | 0.900 | 69.00 | +14.18 |
+| 3000 | 0.725 | 72.50 | 0.725 | 72.50 | 0.900 | 90.00 | +17.50 |
+| 4000 | 0.725 | 96.67 | 0.725 | 96.67 | 0.900 | 120.00 | +23.33 |
+| 5000 | 0.725 | 120.83 | 0.720 | 120.00 | 0.800 | 133.33 | +13.33 |
+| 6000 | 0.640 | 128.00 | 0.645 | 129.00 | 0.750 | 150.00 | +21.00 |
+
+Approximate pressure context only: dividing by `0.341 L/cyl` gives charge density. At `25 deg C` and an assumed `100%` volumetric efficiency, `0.900 g/cyl` corresponds to about `226 kPa absolute`, while `0.750 g/cyl` corresponds to about `188 kPa absolute`. Real MAP differs with charge temperature, volumetric efficiency, valve timing, residual gas, and model conventions. These tables are knock-related airmass limits, not boost targets or proof of achieved airflow.
+
+### Stock versus mod1 power estimate - 2026-07-12
+
+Relevant `mod1` changes considered for this estimate:
+
+- Peak Engine Torque, Max Engine Torque Limit, and Overboost Torque Limit are raised to `340 Nm` from `3000 rpm` upward. These are ceilings/model limits, not a commanded or achievable torque curve.
+- Driver Demand A/B/C are unchanged through the `80%` pedal row; the `90%` row is increased about `10%` and the `100%` row about `20%`.
+- Max Boost Limit changes from `205-225 kPa` to `240 kPa` from `-30` through `45 deg C`, then `200 kPa` at `60 deg C`.
+- Turbo Overspeed Max Pressure Ratio changes from a falling `3.00-1.00` curve to `3.25` across all eight airflow breakpoints. Compressor Surge Limit is raised about `10%`.
+- Knock Airmass Scav is changed as documented above, and Turbocharger Knock Max Airmass is now synchronized to the same larger engineering values using its native 32-bit float `mg/cyl` storage.
+- High/Low Octane base spark, Flex Fuel/VCP/Humidity spark tables, PE EQ ratio, PE enable/delay/ramp tables, and Knock Enrichment fueling are byte-for-byte unchanged. Spark smoothing reference count changes from `20` to `5`, but this does not establish an advance increase.
+- P0068 airflow-correlation diagnostic thresholds, driveline torque scalars, TCS enable temperature, and cold ECT tables are changed but do not directly create engine power.
+
+The stock power estimate uses the most restrictive confirmed stock torque limit at each requested RPM and `hp = Nm * RPM / 7127`. It predicts approximately `85, 115, 147, 142 hp` at `3000, 4000, 5000, 6000 rpm`, which is internally consistent with the stock airflow ceilings.
+
+The raw `340 Nm` mod ceiling mathematically equals `143, 191, 239, 286 hp` at those RPMs, but the stock turbo/airflow model cannot support that curve. It must not be reported as expected output.
+
+For an airflow-supported estimate, use the modified least-retarded Scav limits and a gasoline conversion range of approximately `1.20-1.30 crank hp per g/s`. This range is consistent with the unchanged PE table, which is roughly `13.2 AFR` around `3000-4000 rpm`, `12.3` around `5000 rpm`, and `12.0` around `6000 rpm` at the middle temperature row.
+
+| RPM | Stock limiting torque | Stock estimate | mod1 Scav airflow | mod1 airflow-supported estimate | Approx. mod1 torque equivalent |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 3000 | 201 Nm | 85 hp | 90.0 g/s | 108-117 hp | 257-278 Nm |
+| 4000 | 205 Nm | 115 hp | 120.0 g/s | 144-156 hp | 257-278 Nm |
+| 5000 | 209 Nm | 147 hp | 133.3 g/s | 160-173 hp | 228-247 Nm |
+| 6000 | 169 Nm | 142 hp | 150.0 g/s | 180-195 hp | 214-232 Nm |
+
+Interpretation: `mod1` appears calibrated to permit roughly a `180-195 hp` airflow ceiling near `6000 rpm`, not `286 hp`. Both normal Max and Scav knock-airmass paths now contain the same larger engineering values, removing the previous stock-Max-versus-modified-Scav control-path discrepancy. This remains an upper calibration-supported estimate, not a dyno prediction; actual output depends on achieved boost/load, charge temperature, lambda, ignition timing, knock correction, and turbo efficiency.
+
+Post-synchronization rerun: the stock Max Engine Torque Limit curve peaks at approximately `146.6 hp` at `5000 rpm`. The synchronized mod tables permit `150 g/s` at `6000 rpm`, corresponding to `180-195 crank hp` with the `1.20-1.30 hp/(g/s)` assumption and a central estimate of `187.5 hp`. The raw `340 Nm` limit still calculates to `286.2 hp` at `6000 rpm`, but remains only a non-achievable calibration ceiling.
 
 ## HexView047922 Findings
 
@@ -504,7 +719,7 @@ Confirmed TunerPro entries added with the FEQR power-enrichment cluster:
 - `PowerEnrichmentEnableTorquePct_0620AE`: likely HP Tuners `[ECM] 12418 Power Enrichment Enable Torque %`, `1 x 17`, unsigned 16-bit big-endian, `X * 0.001525878906`, `%`. Target readback is all `0.0%`; the screenshot example shows all `97.0%`.
 - `PowerEnrichmentEnablePedalPct_0620D2`: `1 x 17`, unsigned 16-bit big-endian, `X * 0.001525878906`, `%`. Target readback is all `80.0%`.
 - `PowerEnrichmentDelayRPM_0620A0`: scalar, unsigned 16-bit big-endian, `X * 0.125`, `rpm`. Target readback is `6000 rpm`.
-- `PowerEnrichmentDelayTorquePct_0625D8`: scalar, 32-bit big-endian float, `%`. Target readback is `100.0%`.
+- `PowerEnrichmentDelayTorquePct_0625D8`: `KeFEQR_Pct_PE_DelayLoadThrsh`, scalar, 32-bit big-endian float, `%`. Source `0x05C3DC` relocates to target `0x0625D8` by `+0x61FC`; target readback is `100.0%`.
 - `PowerEnrichmentDelayStep_0620F8`: `17 x 17`, unsigned 16-bit big-endian, `X * 0.05`, seconds. Static axes are accelerator pedal `0.0..100.0%` by engine speed `0..6400 rpm`; target visible cells are `0.100`.
 - `PowerEnrichmentRampIn_0620A6`: scalar, unsigned 16-bit big-endian, `X * 0.000030517578`. Target readback is `0.1000`.
 - `PowerEnrichmentRampOut_0620A8`: scalar, unsigned 16-bit big-endian, `X * 0.000030517578`. Target readback is `0.0100`.
@@ -519,11 +734,21 @@ Source/reference names:
 - `KfFEQR_eqr_PE_RampIn`
 - `KfFEQR_eqr_PE_RampOut`
 
+Additional active PE calibrations mapped from the same `+0x61FC` FEQR block:
+
+- `KeFEQR_n_PE_EngSpdLoHys_062094`: PE enable RPM hysteresis, target `50 rpm`.
+- `KeFEQR_Pct_PE_ThrotLoHys_062098`: PE throttle/pedal hysteresis, target about `5%`.
+- `KeFEQR_Pct_PE_LoadLoHys_06209A`: PE load/torque hysteresis, target `0%`.
+- `KfFEQR_T_PE_DelayCoolLoThrsh_06209C` and `KfFEQR_T_PE_DelayCoolHiThrsh_06209E`: bypass PE delay below/above `-50 deg C` and `135 deg C`.
+- `KfFEQR_Pct_PE_DeltThrotRise_0620A2`: rising-throttle bypass threshold, target `0%`.
+- `KfFEQR_v_PE_DeltThrotVehSpdHi_0620A4`: vehicle-speed criterion paired with throttle delta, target `250 kph`.
+- `KwFEQR_t_PE_DelayMax_0620AA`: maximum PE condition delay, exposed as `X * 0.05 s`. Stock raw `0xFFFF` displays `3276.75 s` and may be a disabled/sentinel value; do not interpret it as a normal literal delay without code-flow confirmation.
+
 Evidence:
 
 - The main FEQR PE scalar/table run relocates from the Corsa reference by the same `+0x61FC` family delta used for `[ECM] 12400`.
 - The local dimension markers line up with the table starts: `0x0011` before the two `1 x 17` tables and `0x0011 0x0011` immediately before `PowerEnrichmentDelayStep_0620F8`.
-- The `PowerEnrichmentDelayTorquePct_0625D8` scalar is farther from the `0x0620xx` run, but decodes as a clean 32-bit float `100.0`, matching the green `Delay Torque %` screenshot value.
+- `KeFEQR_Pct_PE_DelayLoadThrsh` at source `0x05C3DC` relocates exactly to `PowerEnrichmentDelayTorquePct_0625D8` and decodes as a clean 32-bit float `100.0`, matching the green `Delay Torque %` screenshot value.
 
 ### Knock Enrichment / FEQR Pre-Ignition Protection
 
@@ -554,7 +779,7 @@ Evidence and caveats:
 
 ### Fuel Temperature Control / Protection
 
-Quarantined from the main XDF on 2026-07-08 because TunerPro crashed while loading the Fuel temperature-control table block. Addresses/scaling are retained here for re-adding in smaller batches.
+The older mixed CCTI temperature-control batch was quarantined on 2026-07-08 while isolating a TunerPro load crash. Proven FEQR hot-engine and piston-protection calibrations are now active under `Fuel->Protection`; the separate CCTI candidates below retain their original confidence notes.
 
 Confirmed or high-confidence TunerPro entries:
 
@@ -567,7 +792,7 @@ Confirmed or high-confidence TunerPro entries:
 - `PistonProtectDisableRPM_05FAF2`: FEQR component/piston protection disable RPM. Unsigned 16-bit big-endian, `X * 0.125`, rpm. Target readback is `3500`.
 - `PistonProtectMaxEnrichment_05FAAC`: FEQR piston protection enrichment row over static `0..8192 rpm` axis. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.000` across the row.
 - `HotEngineEnableECT_05FA46`: FEQR hot-engine enable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `255.99`, matching HPT display `256`.
-- `HotEngineDisableECT_05FA44`: FEQR hot-engine disable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `120`.
+- `KfFEQR_T_HotCoolantECT_Lo_05FA48`: FEQR hot-engine low/disable ECT. Signed 16-bit big-endian, `X / 128`, deg C. Target readback is `120`. Address `0x05FA44` is the final value of the preceding 17-cell axis, not this scalar.
 - `HotEngineMaxEnrich_05FA5A`: FEQR hot-engine maximum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.399`.
 - `TurboOvertempMaxEnrichment_04E960`: CCTI turbo overtemperature maximum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.420`.
 - `TurboOvertempMinEnrichment_04EA26`: CCTI turbo overtemperature minimum enrichment. Unsigned 16-bit big-endian, `X / 1024`, EQ Ratio. Target readback is `1.026`, matching HPT display `1.03`.
@@ -579,6 +804,58 @@ Evidence and caveats:
 - The CCTI turbo enrichment scalars match the screenshot values directly: `1.42` max enrichment and `1.03` min enrichment.
 - The HPT `[ECM] 12232` COT Max Enrichment screenshot is a `1 x 5` alcohol table with all cells around `1.37`; the contiguous repeated block at `0x0636CC` fits that display shape. The nearby CCTI scalar at `0x04E900` also decodes to `1.370`, so both are kept in the XDF until the exact HPT source symbol is nailed down.
 - `COT` enable and `Turbo Overtemp` enable dropdown enum/boolean targets were not added yet because the local raw words near the cluster do not uniquely identify the HPT switch without a changed-bin fingerprint.
+
+## Full FEQR Flash Mapping - 2026-07-12
+
+The complete FEQR inventory from `winols_astra.csv` is recorded in `feqr_mapping.csv`. The CSV contains `204` unique FEQR symbols: `94` flash calibrations and `110` `0x400...` RAM/runtime variables. Only flash calibrations are candidates for editable BIN/XDF entries.
+
+Disposition of the `94` flash calibrations:
+
+- `90` high-confidence Astra mappings: `19` were already represented in the XDF and `71` were added in this pass.
+- `3` are demonstrably absent from this target layout: `KtFEQR_eqr_PreIgnProtectE80` (`0x05995E`), `KtFEQR_Cnt_BlndOpenToClosedLoop` (`0x059A04`), and `KeFEQR_Cnt_BlendDriveability` (`0x059B9A`). The neighboring target blocks close the exact source-sized gaps where these would otherwise occur.
+- `1` remains unresolved and is not active: `KtFEQR_K_EquivRatioBlendFactor` (`0x05C800`). It has no unique target fingerprint or coherent local anchor.
+
+Confirmed source-to-target relocation blocks:
+
+| DAMOS source range | Astra rule | Functional block |
+| --- | ---: | --- |
+| `0x059330-0x059704` | `+0x631C` | clear flood, crank, green-engine enrichment |
+| `0x059706-0x0598B8` | `+0x6340` | hot-engine, piston, pre-ignition protection |
+| `0x059AB0-0x059B98` | `+0x61F4` | stoichiometry and general FEQR controls |
+| `0x059B9E-0x05BE97` | `+0x61F0` | AIR and open-loop fueling |
+| `0x05BE98-0x05C3DC` | `+0x61FC` | power enrichment |
+| `0x059A00-0x059A02` | explicit `0x05FC9A-0x05FC9C` | pre-ignition ramp-out/ramp-in scalars |
+
+Mapping method and confidence rules:
+
+1. Parse semicolon-delimited WinOLS rows by `IdName`, storage organization, signedness, dimensions, factor, units, source address, and reference values.
+2. Exclude RAM/runtime symbols and build ordered flash islands. Use already confirmed PE and pre-ignition tables as independent anchors.
+3. Search `opel_astra_original.bin` for exact or structurally distinctive raw fingerprints, then compare symbol order, dimensions, count markers, inter-table gaps, and decoded engineering values across the whole island.
+4. Promote a relocation only when multiple neighbors preserve source ordering and spacing or a unique raw fingerprint independently confirms the address. Constant/all-zero patterns alone are not sufficient.
+5. Preserve source storage, signedness, dimensions, factor, offset, and units in the XDF. Use static/index axes where target axis storage is not independently proven; this avoids creating plausible-looking but unsafe editable axis links.
+6. Record every source row and disposition in `feqr_mapping.csv`, including target preview/min/max, confidence evidence, XDF status, and title. Absent and unresolved rows remain documented but are not added as active tables.
+
+The active FEQR additions are split into functional folders: `Fuel->Cranking`, `Fuel->Open Loop`, `Fuel->Protection`, `Fuel->AIR`, `Fuel->General`, `Fuel->Power Enrich`, and `Fuel->Knock Enrichment`.
+
+TunerPro load test on 2026-07-12:
+
+- Loaded the expanded `E78_Astra_047922_TableSearch.xdf` with `opel_astra_original.bin` without a crash; all `19` categories appeared with the expected entry counts.
+- Opened `KfFEQR_Pct_ClearFloodEnter_05F64C` and confirmed `90.0%`.
+- Opened `KtFEQR_eqr_Crank_05F654` and confirmed the complete `17 x 17`, 16-bit table renders with numeric axes and decoded values.
+- Opened `KwFEQR_t_PE_DelayMax_0620AA` and confirmed raw `0xFFFF` renders as `3276.75 s` with the sentinel warning visible in the description.
+- A programmatic audit of all `90` active FEQR mappings found no storage width, signed/float flag, dimensions, or equation factor/offset mismatches against the DAMOS rows. XML parsing, unique-ID, category-membership, target-address uniqueness, and BIN-bound checks also passed.
+
+### DAMOS-derived XDF descriptions - 2026-07-12
+
+All XDF entries with a unique, proven `winols_astra.csv` symbol match now include structured functional and technical descriptions:
+
+- `131` of the `158` XDF entries are enriched: `90` resolve through `feqr_mapping.csv`, and `41` resolve through the exact DAMOS symbol already present in their local description.
+- Each enriched description contains the cleaned CSV calibration purpose, X/Y axis notes when present, dimensions, storage organization, signedness, engineering conversion, units, source symbol/address, and the complete pre-existing Astra mapping/local notes.
+- Existing warnings and confidence language are preserved verbatim after the `Astra mapping/local notes:` label. This includes candidate status, static-axis caveats, raw/display guidance, and the `KwFEQR_t_PE_DelayMax` `0xFFFF` sentinel warning.
+- The remaining `27` entries have no unique CSV symbol match and are intentionally unchanged rather than receiving a guessed description.
+- CSV HTML/line-break boilerplate is normalized, but source technical wording is not substantively rewritten.
+- The repeatable updater is `_quarantine/analysis/enrich_xdf_descriptions.py`. `build_feqr_xdf.py` uses the same formatter so future generated FEQR entries receive equivalent descriptions automatically.
+- Validation compares the enriched XDF with its committed predecessor after blanking description text. The non-description XML is identical, proving that IDs, categories, addresses, dimensions, axes, equations, and storage flags were not changed by this pass.
 
 ## Spark Table Search - 2026-07-08
 
@@ -649,10 +926,10 @@ Reference/WinOLS source to Astra target:
 | FEQR power enrichment | `[ECM] 12418` Power Enrichment Enable Torque % | `KtFEQR_Pct_PE_LoadThrsh` `0x05BEB2` | `0x0620AE` | `+0x61FC` | Target values are all `0%`, unlike the `97%` screenshot example. |
 | FEQR power enrichment | Power Enrichment Enable Pedal | `KtFEQR_Pct_PE_ThrotThrshEngSpd` `0x05BED6` | `0x0620D2` | `+0x61FC` | Target values are all `80%`. |
 | FEQR power enrichment | Power Enrichment Delay Step | `KtFEQR_t_PE_DelayAdjust` `0x05BEFC` | `0x0620F8` | `+0x61FC` | `17 x 17`, pedal by RPM, values around `0.100`. |
-| FEQR power enrichment | Power Enrichment Delay Torque % | unresolved exact CSV symbol | `0x0625D8` | n/a | 32-bit big-endian float `100.0%`; found in the same local FEQR delay group. |
+| FEQR power enrichment | Power Enrichment Delay Torque % | `KeFEQR_Pct_PE_DelayLoadThrsh` `0x05C3DC` | `0x0625D8` | `+0x61FC` | 32-bit big-endian float `100.0%`. |
 | FEQR knock enrichment | Knock Enrichment scalars and EQ ratio | FEQR pre-ignition protection island | `0x05FB44-0x05FC9C` | n/a | Scalars match HPT pane; axes start at `0x05FB1E` and `0x05FB32` after count markers. |
 | CCTI temperature protection | Catalyst and turbo enrichment/threshold scalars | CCTI catalyst/turbo protection island | `0x04E8FA-0x04EA26` | n/a | COT scalar max/min, COT thresholds, turbo max/min enrichment, and likely turbo temp thresholds. |
-| FEQR temperature protection | Hot engine and piston/component protection | FEQR hot-engine/piston island | `0x05FA44-0x05FAF2` | n/a | Hot-engine ECT/enrichment and piston enable/disable RPM plus 0-8192 rpm enrichment row. |
+| FEQR temperature protection | Hot engine and piston/component protection | FEQR hot-engine/piston island | `0x05FA46-0x05FAF2` | n/a | Hot-engine scalars start at `0x05FA46`; `0x05FA44` is the final preceding axis breakpoint. |
 | COT max enrichment table | `[ECM] 12232` COT Max Enrichment | unresolved exact CSV symbol | `0x0636CC` | n/a | HPT-shaped `1 x 5` alcohol-composition row, all cells about `1.373`; nearby scalar at `0x04E900` is also retained. |
 
 HPT HexView window name to Astra target:
@@ -741,7 +1018,7 @@ Search heuristics from the confirmed tables:
 - For FEQR Power Enrich EQ Ratio, both table bodies used a clean `+0x61FC`.
 - For FEQR Power Enrichment enable/delay/ramp tables, the nearby `0x0620xx` entries also use the `+0x61FC` family delta, but the Astra calibration values can differ heavily from the HPT screenshot example.
 - For Knock Enrichment / FEQR pre-ignition protection, confirm count markers before axes and table bodies. The real axes start after the `0x0009` count words, not on them.
-- For Fuel Temperature Control, search both the CCTI catalyst/turbo island near `0x04E8FA-0x04EA26` and the FEQR hot-engine/piston island near `0x05FA44-0x05FAF2`; they are different calibration families despite landing in the same HPT pane.
+- For Fuel Temperature Control, search both the CCTI catalyst/turbo island near `0x04E8FA-0x04EA26` and the FEQR hot-engine/piston island with scalars at `0x05FA46-0x05FAF2`; they are different calibration families despite landing in the same HPT pane. The preceding FEQR axis ends at `0x05FA44`.
 - HPT HexView windows are useful visual clues, but several do not map byte-for-byte to raw file addresses in this Astra BIN. Prefer source/fingerprint relocation plus table-shape validation over the HexView window delta alone.
 
 Name notes:
@@ -781,8 +1058,12 @@ Relevant CSV entries not promoted as disable switches:
 
 ## XDF Maintenance Notes
 
-- Keep `TurbochargerKnockMaxAirmass_04DD68` as the main editable/display table for HP Tuners `[ECM] 33482`.
-- Keep `TurbochargerKnockMaxAirmass_04DD68_RawStored` as a raw verification view; it should show approximately `275-725`.
+- Keep `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68` as the only editable view for HP Tuners `[ECM] 33482`. It deliberately displays native `mg/cyl` values with `MATH X`, zero decimal places, and a `100-1000` range so 32-bit float edits write back correctly. Enter `485` for an HPT value of `0.485 g`.
+- Keep `TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68` only as a decimal presentation view. It overlaps the editable view by design and uses `0.001 * X` to show `0.275-0.725 g`; never edit or apply table functions in it.
+- Do not re-add the ambiguously named `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. Its purpose is now covered explicitly by the guarded editable view and the clearly labeled display-only view.
+- Second `opel_astra_mod1.bin` audit on 2026-07-12: SHA-256 `A232147FEC447278428C6E4F17EF35060ABC76BCAD100E76CD1B810982810D27`, `1054` bytes differ from stock, and all 88 cells at `0x04DD68` are stored as `0.275-0.900`. The screenshot values around `0.3` are those invalid native floats rounded to one decimal place, not a valid engineering-unit display. Do not use this BIN as the next edit base.
+- Third `opel_astra_mod1.bin` audit on 2026-07-12 after the user restored Max: SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`, `717` bytes differ from stock, and all 88 cells at `0x04DD68` are byte-for-byte identical to stock (`275-725` native floats). The Scav table at `0x04E350` remains modified in 83 of 88 cells and displays `0.275-0.900 g`. This was the state before synchronizing both tables to the larger values.
+- Fourth `opel_astra_mod1.bin` audit on 2026-07-12 after knock-airmass synchronization: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26`, `769` bytes differ from stock. The existing Scav table was left byte-for-byte unchanged. Its 88 values were converted from raw counts to `mg/cyl` and written to Max as native 32-bit big-endian floats; `30/88` Max cells and `52` bytes changed. Both tables now decode identically over `0.275-0.900 g/cyl`. The pre-sync BIN is preserved at `_quarantine/bin_backups/opel_astra_mod1_before_knock_airmass_sync_20260712.bin` with SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`.
 - Keep `TurbochargerKnockAirmassScav_04E350` as the main editable/display table for HP Tuners `[ECM] 33495`.
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
@@ -805,9 +1086,9 @@ Relevant CSV entries not promoted as disable switches:
 - For knock enrichment graph axes, keep the XDF axes at `0x05FB1E` and `0x05FB32`; the preceding `0x05FB1C` and `0x05FB30` words are axis count markers.
 - HP Tuners tree triage from 2026-07-09: do not prioritize `Manual Trans Spark Smoothing (RDSC) Master Enable`, `Piston Slap Spark`, `PDA Spark`, EGR spark add/PDA/DOD tables, or `Minimum Spark Advance Double Pulse` for this XDF pass. User confirmed `SparkSmoothingRunFilterRefs_075C36` is functionally similar enough for the manual-trans spark smoothing/RDSC control, and Piston Slap, PDA, EGR, and Double Pulse tables are zeroed out in this calibration.
 - After that triage, the useful unresolved items from the compared HP Tuners tree are mainly `High Octane DP`, `High Octane DOD`, `Low Octane DOD`, `VCP Spark PDA`, `Trans Default Torque Limit`, the true BTRC `Brake Torque Limit` table, and confirmation of which `BrakeTorqueLimitMult_Candidate*` copy HPT edits, plus any collapsed `Fuel->Temperature Control` items that are not already represented by the CCTI/FEQR temperature-protection notes.
-- Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
-- Current active XDF has 87 table entries as of 2026-07-09: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, and four TCS controls. Fuel temperature-control definitions remain quarantined unless separately noted.
-- Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
+- Proven FEQR temperature-protection entries are active under `Fuel->Protection`. The separate CCTI catalyst/turbo candidates remain subject to their individual confidence notes and prior load-test history.
+- Current active XDF has 158 table entries as of 2026-07-12: the prior 87-entry layout plus 71 newly proven FEQR flash calibrations.
+- Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, `Engine->Thermal`, `Fuel->Cranking`, `Fuel->Open Loop`, `Fuel->Protection`, `Fuel->AIR`, and `Fuel->General`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
 - Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:

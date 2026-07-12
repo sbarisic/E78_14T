@@ -1,0 +1,4171 @@
+<!-- Generated 2026-07-06 for opel_astra_original.bin table search around HexView047922 +0x04A0 -->
+<XDFFORMAT version="1.80">
+  <XDFHEADER>
+    <flags>0x1</flags>
+    <description>Focused E78 table-search views around HexView047922. Screenshot +0x04A0 maps to raw file address 0x047DC2. Target bin contains aligned 32-bit float vectors at +0x486 and a 2x8 float table at +0x4EA. Full-bin 8x11 similarity scan for HP Tuners [ECM] 33482 confirms TurbochargerKnockMaxAirmass at 0x04DD68; [ECM] 33495 Knock Airmass Scav is confirmed at 0x04E350; [ECM] 33460 Max Boost Limit is confirmed at 0x04DFB4. Torque tables [ECM] 32920/32923/32924 are confirmed in the 0x053464-0x053664 ECPR cluster. Driver Demand A/B/C are confirmed as the DTRC PedProgReq cluster at 0x046944/0x046DC8/0x04724C. HP Tuners [ECM] 14044/14045 TPS delta limit tables are confirmed in the relocated 0x07A59E-0x07A5D8 cluster.</description>
+    <BASEOFFSET offset="0" subtract="0" />
+    <DEFAULTS datasizeinbits="16" sigdigits="2" outputtype="1" signed="0" lsbfirst="0" float="0" />
+    <REGION type="0xFFFFFFFF" startaddress="0x0" size="0x300000" regioncolor="0x0" regionflags="0x0" name="Binary File" desc="This region describes the bin file edited by this XDF" />
+    <CATEGORY index="0x0" name="Search->Raw Views" />
+    <CATEGORY index="0x1" name="Airflow->Turbocharger" />
+    <CATEGORY index="0x2" name="Engine->Torque" />
+    <CATEGORY index="0x3" name="Engine->Driver Demand" />
+    <CATEGORY index="0x4" name="Airflow->P0068 Correlation" />
+    <CATEGORY index="0x5" name="Fuel->Power Enrich" />
+    <CATEGORY index="0x6" name="Fuel->Knock Enrichment" />
+    <CATEGORY index="0x7" name="Spark->Base" />
+    <CATEGORY index="0x8" name="Spark->Fuel" />
+    <CATEGORY index="0x9" name="Spark->VCT" />
+    <CATEGORY index="0xA" name="Spark->Humidity" />
+    <CATEGORY index="0xB" name="Spark->Minimum Spark" />
+    <CATEGORY index="0xC" name="Spark->General" />
+    <CATEGORY index="0xD" name="Engine->Thermal" />
+  </XDFHEADER>
+  <XDFTABLE uniqueid="0x7200" flags="0x30">
+    <title>HexView047922</title>
+    <description>Raw 8-bit view of 0x047922-0x048121. Axes are byte offsets from 0x047922.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x01" />
+      <LABEL index="2" value="+0x02" />
+      <LABEL index="3" value="+0x03" />
+      <LABEL index="4" value="+0x04" />
+      <LABEL index="5" value="+0x05" />
+      <LABEL index="6" value="+0x06" />
+      <LABEL index="7" value="+0x07" />
+      <LABEL index="8" value="+0x08" />
+      <LABEL index="9" value="+0x09" />
+      <LABEL index="10" value="+0x0A" />
+      <LABEL index="11" value="+0x0B" />
+      <LABEL index="12" value="+0x0C" />
+      <LABEL index="13" value="+0x0D" />
+      <LABEL index="14" value="+0x0E" />
+      <LABEL index="15" value="+0x0F" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>128</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x0000" />
+      <LABEL index="1" value="+0x0010" />
+      <LABEL index="2" value="+0x0020" />
+      <LABEL index="3" value="+0x0030" />
+      <LABEL index="4" value="+0x0040" />
+      <LABEL index="5" value="+0x0050" />
+      <LABEL index="6" value="+0x0060" />
+      <LABEL index="7" value="+0x0070" />
+      <LABEL index="8" value="+0x0080" />
+      <LABEL index="9" value="+0x0090" />
+      <LABEL index="10" value="+0x00A0" />
+      <LABEL index="11" value="+0x00B0" />
+      <LABEL index="12" value="+0x00C0" />
+      <LABEL index="13" value="+0x00D0" />
+      <LABEL index="14" value="+0x00E0" />
+      <LABEL index="15" value="+0x00F0" />
+      <LABEL index="16" value="+0x0100" />
+      <LABEL index="17" value="+0x0110" />
+      <LABEL index="18" value="+0x0120" />
+      <LABEL index="19" value="+0x0130" />
+      <LABEL index="20" value="+0x0140" />
+      <LABEL index="21" value="+0x0150" />
+      <LABEL index="22" value="+0x0160" />
+      <LABEL index="23" value="+0x0170" />
+      <LABEL index="24" value="+0x0180" />
+      <LABEL index="25" value="+0x0190" />
+      <LABEL index="26" value="+0x01A0" />
+      <LABEL index="27" value="+0x01B0" />
+      <LABEL index="28" value="+0x01C0" />
+      <LABEL index="29" value="+0x01D0" />
+      <LABEL index="30" value="+0x01E0" />
+      <LABEL index="31" value="+0x01F0" />
+      <LABEL index="32" value="+0x0200" />
+      <LABEL index="33" value="+0x0210" />
+      <LABEL index="34" value="+0x0220" />
+      <LABEL index="35" value="+0x0230" />
+      <LABEL index="36" value="+0x0240" />
+      <LABEL index="37" value="+0x0250" />
+      <LABEL index="38" value="+0x0260" />
+      <LABEL index="39" value="+0x0270" />
+      <LABEL index="40" value="+0x0280" />
+      <LABEL index="41" value="+0x0290" />
+      <LABEL index="42" value="+0x02A0" />
+      <LABEL index="43" value="+0x02B0" />
+      <LABEL index="44" value="+0x02C0" />
+      <LABEL index="45" value="+0x02D0" />
+      <LABEL index="46" value="+0x02E0" />
+      <LABEL index="47" value="+0x02F0" />
+      <LABEL index="48" value="+0x0300" />
+      <LABEL index="49" value="+0x0310" />
+      <LABEL index="50" value="+0x0320" />
+      <LABEL index="51" value="+0x0330" />
+      <LABEL index="52" value="+0x0340" />
+      <LABEL index="53" value="+0x0350" />
+      <LABEL index="54" value="+0x0360" />
+      <LABEL index="55" value="+0x0370" />
+      <LABEL index="56" value="+0x0380" />
+      <LABEL index="57" value="+0x0390" />
+      <LABEL index="58" value="+0x03A0" />
+      <LABEL index="59" value="+0x03B0" />
+      <LABEL index="60" value="+0x03C0" />
+      <LABEL index="61" value="+0x03D0" />
+      <LABEL index="62" value="+0x03E0" />
+      <LABEL index="63" value="+0x03F0" />
+      <LABEL index="64" value="+0x0400" />
+      <LABEL index="65" value="+0x0410" />
+      <LABEL index="66" value="+0x0420" />
+      <LABEL index="67" value="+0x0430" />
+      <LABEL index="68" value="+0x0440" />
+      <LABEL index="69" value="+0x0450" />
+      <LABEL index="70" value="+0x0460" />
+      <LABEL index="71" value="+0x0470" />
+      <LABEL index="72" value="+0x0480" />
+      <LABEL index="73" value="+0x0490" />
+      <LABEL index="74" value="+0x04A0" />
+      <LABEL index="75" value="+0x04B0" />
+      <LABEL index="76" value="+0x04C0" />
+      <LABEL index="77" value="+0x04D0" />
+      <LABEL index="78" value="+0x04E0" />
+      <LABEL index="79" value="+0x04F0" />
+      <LABEL index="80" value="+0x0500" />
+      <LABEL index="81" value="+0x0510" />
+      <LABEL index="82" value="+0x0520" />
+      <LABEL index="83" value="+0x0530" />
+      <LABEL index="84" value="+0x0540" />
+      <LABEL index="85" value="+0x0550" />
+      <LABEL index="86" value="+0x0560" />
+      <LABEL index="87" value="+0x0570" />
+      <LABEL index="88" value="+0x0580" />
+      <LABEL index="89" value="+0x0590" />
+      <LABEL index="90" value="+0x05A0" />
+      <LABEL index="91" value="+0x05B0" />
+      <LABEL index="92" value="+0x05C0" />
+      <LABEL index="93" value="+0x05D0" />
+      <LABEL index="94" value="+0x05E0" />
+      <LABEL index="95" value="+0x05F0" />
+      <LABEL index="96" value="+0x0600" />
+      <LABEL index="97" value="+0x0610" />
+      <LABEL index="98" value="+0x0620" />
+      <LABEL index="99" value="+0x0630" />
+      <LABEL index="100" value="+0x0640" />
+      <LABEL index="101" value="+0x0650" />
+      <LABEL index="102" value="+0x0660" />
+      <LABEL index="103" value="+0x0670" />
+      <LABEL index="104" value="+0x0680" />
+      <LABEL index="105" value="+0x0690" />
+      <LABEL index="106" value="+0x06A0" />
+      <LABEL index="107" value="+0x06B0" />
+      <LABEL index="108" value="+0x06C0" />
+      <LABEL index="109" value="+0x06D0" />
+      <LABEL index="110" value="+0x06E0" />
+      <LABEL index="111" value="+0x06F0" />
+      <LABEL index="112" value="+0x0700" />
+      <LABEL index="113" value="+0x0710" />
+      <LABEL index="114" value="+0x0720" />
+      <LABEL index="115" value="+0x0730" />
+      <LABEL index="116" value="+0x0740" />
+      <LABEL index="117" value="+0x0750" />
+      <LABEL index="118" value="+0x0760" />
+      <LABEL index="119" value="+0x0770" />
+      <LABEL index="120" value="+0x0780" />
+      <LABEL index="121" value="+0x0790" />
+      <LABEL index="122" value="+0x07A0" />
+      <LABEL index="123" value="+0x07B0" />
+      <LABEL index="124" value="+0x07C0" />
+      <LABEL index="125" value="+0x07D0" />
+      <LABEL index="126" value="+0x07E0" />
+      <LABEL index="127" value="+0x07F0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x47922" mmedelementsizebits="8" mmedrowcount="128" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>2</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7201" flags="0x30">
+    <title>Candidate047DC2_8bit_14x16</title>
+    <description>Exact screenshot offset +0x04A0 from HexView047922. This is a raw byte view at 0x047DC2, not float-aligned.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x01" />
+      <LABEL index="2" value="+0x02" />
+      <LABEL index="3" value="+0x03" />
+      <LABEL index="4" value="+0x04" />
+      <LABEL index="5" value="+0x05" />
+      <LABEL index="6" value="+0x06" />
+      <LABEL index="7" value="+0x07" />
+      <LABEL index="8" value="+0x08" />
+      <LABEL index="9" value="+0x09" />
+      <LABEL index="10" value="+0x0A" />
+      <LABEL index="11" value="+0x0B" />
+      <LABEL index="12" value="+0x0C" />
+      <LABEL index="13" value="+0x0D" />
+      <LABEL index="14" value="+0x0E" />
+      <LABEL index="15" value="+0x0F" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>14</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x0000" />
+      <LABEL index="1" value="+0x0010" />
+      <LABEL index="2" value="+0x0020" />
+      <LABEL index="3" value="+0x0030" />
+      <LABEL index="4" value="+0x0040" />
+      <LABEL index="5" value="+0x0050" />
+      <LABEL index="6" value="+0x0060" />
+      <LABEL index="7" value="+0x0070" />
+      <LABEL index="8" value="+0x0080" />
+      <LABEL index="9" value="+0x0090" />
+      <LABEL index="10" value="+0x00A0" />
+      <LABEL index="11" value="+0x00B0" />
+      <LABEL index="12" value="+0x00C0" />
+      <LABEL index="13" value="+0x00D0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x47DC2" mmedelementsizebits="8" mmedrowcount="14" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>2</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7202" flags="0x0">
+    <title>FloatVector047C24_16</title>
+    <description>Float vector at HexView047922 +0x0302.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47C24" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7203" flags="0x0">
+    <title>FloatVector047C64_15</title>
+    <description>Float vector at HexView047922 +0x0342.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>15</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47C64" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="15" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7204" flags="0x0">
+    <title>FloatVector047CA0_9</title>
+    <description>Float vector at HexView047922 +0x037E.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47CA0" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7205" flags="0x0">
+    <title>FloatVector047CC4_9</title>
+    <description>Float vector at HexView047922 +0x03A2.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>9</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47CC4" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7206" flags="0x0">
+    <title>FloatVector047CE8_26</title>
+    <description>Float vector at HexView047922 +0x03C6.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>26</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <LABEL index="16" value="+0x40" />
+      <LABEL index="17" value="+0x44" />
+      <LABEL index="18" value="+0x48" />
+      <LABEL index="19" value="+0x4C" />
+      <LABEL index="20" value="+0x50" />
+      <LABEL index="21" value="+0x54" />
+      <LABEL index="22" value="+0x58" />
+      <LABEL index="23" value="+0x5C" />
+      <LABEL index="24" value="+0x60" />
+      <LABEL index="25" value="+0x64" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47CE8" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="26" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7207" flags="0x0">
+    <title>FloatVector047D50_5</title>
+    <description>Float vector at HexView047922 +0x042E.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>5</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D50" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7208" flags="0x0">
+    <title>FloatVector047D64_17</title>
+    <description>Float vector at HexView047922 +0x0442.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <LABEL index="16" value="+0x40" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D64" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7209" flags="0x0">
+    <title>FloatVector047DA8_17_NearPlus04A0</title>
+    <description>Float vector at HexView047922 +0x0486; this crosses the requested +0x04A0 area.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>17</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <LABEL index="16" value="+0x40" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47DA8" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x720A" flags="0x0">
+    <title>FloatVector047DEC_8_RPMAxis</title>
+    <description>8-value float axis immediately before candidate table at 0x047E0C.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47DEC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x720B" flags="0x0">
+    <title>FloatVector047E0C_16_TableFlat</title>
+    <description>Flat 16-float view at HexView047922 +0x04EA. Same data as FloatTable047E0C_2x8_Candidate.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47E0C" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x720C" flags="0x0">
+    <title>FloatTable047E0C_2x8_Candidate</title>
+    <description>Closest coherent float table after the requested +0x04A0 area. X axis reads 0x047DEC: 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47DEC" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>6</datatype>
+      <unittype>4</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>2</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="1" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47E0C" mmedelementsizebits="32" mmedrowcount="2" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>6</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <!-- Knock airmass search results added 2026-07-06 -->
+  <XDFTABLE uniqueid="0x7210" flags="0x0">
+    <title>TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68</title>
+    <description>Confirmed HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. EDIT IN NATIVE MG/CYL: enter 485 here for an HP Tuners value of 0.485 g. Never enter 0.485. The 100-1000 range and zero displayed decimal places are intentional guards against writing gram values directly into the native 32-bit float storage. X axis at 0x04DEC8 is spark retard and Y axis at 0x04DF3C is RPM.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DF3C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DD68" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>mg/cyl; HPT g x1000</units>
+      <decimalpl>0</decimalpl>
+      <min>100.000000</min>
+      <max>1000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7211" flags="0x0">
+    <title>TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68</title>
+    <description>Decimal display-only companion for HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. Shows the native 32-bit float mg/cyl values as grams, for example 275 becomes 0.275. DO NOT EDIT OR APPLY TABLE FUNCTIONS IN THIS VIEW: TunerPro does not safely write transformed 32-bit floating-point values. Use TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68 for all edits and enter 485 there for 0.485 g.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DF3C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DD68" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g (display only)</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>4.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="0.001 * X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7212" flags="0x0">
+    <title>TurbochargerKnockAirmassScav_Candidate_04E088</title>
+    <description>Inspection view only. This 8x11 direct-float block near the confirmed table is not HP Tuners [ECM] 33495; the confirmed Knock Airmass Scav equivalent is the 16-bit scaled table at 0x04E350.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DF3C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E088" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g?</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>4.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7214" flags="0x0">
+    <title>TurbochargerKnockAirmassScav_04E350</title>
+    <description>Confirmed HP Tuners [ECM] 33495 Knock Airmass Scav. 8x11 16-bit big-endian table; values are stored as raw counts with 0.0625 mg/count. X axis at 0x04E588 is spark retard, Y axis at 0x04E50C is RPM. The raw changed-byte fingerprint lines up with the edited HexView047922 screenshot.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E588" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E50C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x4E350" mmedelementsizebits="16" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>4.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="0.0000625 * X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7215" flags="0x0">
+    <title>TurbochargerKnockAirmassScav_04E350_RawStored</title>
+    <description>Raw stored-value view for confirmed HP Tuners [ECM] 33495 at 0x04E350. Values should show approximately 4320-11600 before conversion to grams.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E588" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>11</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E50C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <indexcount>8</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x4E350" mmedelementsizebits="16" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>stored</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>65535.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7216" flags="0x0">
+    <title>MaxBoostLimit_04DFB4</title>
+    <description>Confirmed HP Tuners [ECM] 33460 Max Boost Limit. 1x7 32-bit big-endian float table in kPa with editor range 0-512 kPa. X axis at 0x04E4F0 is manifold temperature in deg C.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E4F0" mmedelementsizebits="32" mmedcolcount="7" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>15</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Boost Limit" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DFB4" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>kPa</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>512.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7217" flags="0x0">
+    <title>PeakEngineTorque_0534A4</title>
+    <description>Confirmed HP Tuners [ECM] 32920 Peak Engine Torque. 4x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM; Y axis at 0x053B10 is alcohol composition percent. Editor range -8192 to 8192 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>16</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53B10" mmedelementsizebits="32" mmedcolcount="4" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>4</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x534A4" mmedelementsizebits="32" mmedrowcount="4" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>1</decimalpl>
+      <min>-8192.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7218" flags="0x0">
+    <title>MaxEngineTorqueLimit_0535A4</title>
+    <description>Confirmed HP Tuners [ECM] 32923 Max Engine Torque Limit. 4x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM; Y axis at 0x053B10 is alcohol composition percent. Editor range -8192 to 8192 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>16</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53B10" mmedelementsizebits="32" mmedcolcount="4" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>4</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x535A4" mmedelementsizebits="32" mmedrowcount="4" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>1</decimalpl>
+      <min>-8192.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7219" flags="0x0">
+    <title>OverboostTorqueLimit_053464</title>
+    <description>Confirmed HP Tuners [ECM] 32924 Overboost Torque Limit. 1x16 32-bit big-endian float table in Nm. X axis at 0x053AD0 is RPM. Editor range -8192 to 8192 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53AD0" mmedelementsizebits="32" mmedcolcount="16" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>16</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Torque" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x53464" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>1</decimalpl>
+      <min>-8192.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721A" flags="0x0">
+    <title>DriverDemand_A_046944</title>
+    <description>Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>RPM/VSS</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47C1C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x46944" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>2</decimalpl>
+      <min>-100.000000</min>
+      <max>160.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721B" flags="0x0">
+    <title>DriverDemand_B_046DC8</title>
+    <description>Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>RPM/VSS</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47C1C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x46DC8" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>2</decimalpl>
+      <min>-100.000000</min>
+      <max>160.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721C" flags="0x0">
+    <title>DriverDemand_C_04724C</title>
+    <description>Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <CATEGORYMEM index="0" category="4" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>RPM/VSS</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="400" />
+      <LABEL index="1" value="800" />
+      <LABEL index="2" value="1200" />
+      <LABEL index="3" value="1600" />
+      <LABEL index="4" value="2000" />
+      <LABEL index="5" value="2400" />
+      <LABEL index="6" value="2800" />
+      <LABEL index="7" value="3200" />
+      <LABEL index="8" value="3600" />
+      <LABEL index="9" value="4000" />
+      <LABEL index="10" value="4400" />
+      <LABEL index="11" value="4800" />
+      <LABEL index="12" value="5200" />
+      <LABEL index="13" value="5600" />
+      <LABEL index="14" value="6000" />
+      <LABEL index="15" value="6400" />
+      <LABEL index="16" value="6800" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47C1C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="3" />
+      <LABEL index="2" value="5" />
+      <LABEL index="3" value="10" />
+      <LABEL index="4" value="15" />
+      <LABEL index="5" value="20" />
+      <LABEL index="6" value="25" />
+      <LABEL index="7" value="30" />
+      <LABEL index="8" value="35" />
+      <LABEL index="9" value="40" />
+      <LABEL index="10" value="45" />
+      <LABEL index="11" value="50" />
+      <LABEL index="12" value="60" />
+      <LABEL index="13" value="70" />
+      <LABEL index="14" value="80" />
+      <LABEL index="15" value="90" />
+      <LABEL index="16" value="100" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4724C" mmedelementsizebits="32" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>2</decimalpl>
+      <min>-100.000000</min>
+      <max>160.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7278" flags="0x0">
+    <title>AirflowCorrelationEnableRPM_07A570</title>
+    <description>HP Tuners Airflow Correlation P0068 Enable RPM. WinOLS/Damos symbol KeTPSD_n_AirflowActMin, Min RPM to enable the airflow actuation diagnostic. Astra target uses the same local TPSD cluster shift as the delta tables: source 0x078AC0 -> target 0x07A570. 32-bit big-endian float; this BIN decodes to 800 rpm.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable RPM" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x7A570" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7279" flags="0x0">
+    <title>MaxAirflowVsIGNV_07A586</title>
+    <description>HP Tuners Airflow Correlation P0068 Max Airflow vs. IGNV. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsVoltage, maximum MAF vs. system/ignition voltage used to check voltage-based MAF limiting. Source 0x078AD6 -> target 0x07A586. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>V</units>
+      <indexcount>9</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="6" />
+      <LABEL index="1" value="7" />
+      <LABEL index="2" value="8" />
+      <LABEL index="3" value="9" />
+      <LABEL index="4" value="10" />
+      <LABEL index="5" value="11" />
+      <LABEL index="6" value="12" />
+      <LABEL index="7" value="13" />
+      <LABEL index="8" value="14" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Max Airflow" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A586" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>512.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727A" flags="0x0">
+    <title>MaxAirflowVsRPM_07A59C</title>
+    <description>HP Tuners Airflow Correlation P0068 Max Airflow vs. RPM. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsRPM, maximum MAF vs. engine speed. Source 0x078AEC -> target 0x07A59C. 1x9 unsigned 16-bit big-endian, scaled X / 128. This view intentionally starts two bytes before the Airflow Delta table and overlaps its first eight cells, matching the Damos layout.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>9</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="600" />
+      <LABEL index="1" value="1400" />
+      <LABEL index="2" value="2200" />
+      <LABEL index="3" value="3000" />
+      <LABEL index="4" value="3800" />
+      <LABEL index="5" value="4600" />
+      <LABEL index="6" value="5400" />
+      <LABEL index="7" value="6200" />
+      <LABEL index="8" value="7000" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Max Airflow" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A59C" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>512.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721D" flags="0x0">
+    <title>MaximumAirflowDeltaVsTPS_07A59E</title>
+    <description>Confirmed HP Tuners Airflow Correlation P0068 Airflow Delta / [ECM] 14044 Maximum Airflow Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_dm_MAF_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07BFEE maps by table-to-table offset -0x1A50 to this Astra table at 0x07A59E; Damos source 0x078AEE maps by local TPSD shift +0x1AB0. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.0" />
+      <LABEL index="1" value="6.0" />
+      <LABEL index="2" value="12.0" />
+      <LABEL index="3" value="15.0" />
+      <LABEL index="4" value="20.0" />
+      <LABEL index="5" value="25.0" />
+      <LABEL index="6" value="30.0" />
+      <LABEL index="7" value="40.0" />
+      <LABEL index="8" value="60.0" />
+      <MATH equation="X / 655.35">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Airflow Max Delta" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x7A59E" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>512.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721E" flags="0x0">
+    <title>MaximumMAPDeltaVsTPS_07A5B2</title>
+    <description>Confirmed HP Tuners Airflow Correlation P0068 MAP Delta / [ECM] 14045 Maximum MAP Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_p_MAP_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07C002 maps by table-to-table offset -0x1A50 to this Astra table at 0x07A5B2; Damos source 0x078B02 maps by local TPSD shift +0x1AB0. 1x9 signed 16-bit big-endian, scaled X / 128.</description>
+    <CATEGORYMEM index="0" category="5" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1.0" />
+      <LABEL index="1" value="6.0" />
+      <LABEL index="2" value="12.0" />
+      <LABEL index="3" value="15.0" />
+      <LABEL index="4" value="20.0" />
+      <LABEL index="5" value="25.0" />
+      <LABEL index="6" value="30.0" />
+      <LABEL index="7" value="40.0" />
+      <LABEL index="8" value="60.0" />
+      <MATH equation="X / 655.35">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="MAP Max Delta" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x7A5B2" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>kPa</units>
+      <decimalpl>2</decimalpl>
+      <min>-256.000000</min>
+      <max>256.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 128">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7240" flags="0x0">
+    <title>TurboOverspeedMaxPressureRatio_04D9BC</title>
+    <description>Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DC44" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <indexcount>8</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Pressure Ratio" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4D9BC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="8" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Pressure Ratio</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7241" flags="0x0">
+    <title>CompressorSurgeLimit_029858</title>
+    <description>Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
+    <CATEGORYMEM index="0" category="2" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29870" mmedelementsizebits="32" mmedcolcount="6" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>g/s</units>
+      <indexcount>6</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Surge Limit" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29858" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="6" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Pressure Ratio</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x721F" flags="0x0">
+    <title>PowerEnrichEQRatio_06233E</title>
+    <description>Confirmed HP Tuners [ECM] 12400 Power Enrich EQ Ratio equivalent. FEQR KtFEQR_eqr_PE_RPM, 5x33 unsigned 16-bit big-endian table. Stored values are EQ ratio * 1024, with editor range 0 to 64. X axis is the generated CM_T_RPMa engine-speed axis; Y axis is manifold temperature. The companion E80 table follows at 0x06248C.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="256" />
+      <LABEL index="2" value="512" />
+      <LABEL index="3" value="768" />
+      <LABEL index="4" value="1024" />
+      <LABEL index="5" value="1280" />
+      <LABEL index="6" value="1536" />
+      <LABEL index="7" value="1792" />
+      <LABEL index="8" value="2048" />
+      <LABEL index="9" value="2304" />
+      <LABEL index="10" value="2560" />
+      <LABEL index="11" value="2816" />
+      <LABEL index="12" value="3072" />
+      <LABEL index="13" value="3328" />
+      <LABEL index="14" value="3584" />
+      <LABEL index="15" value="3840" />
+      <LABEL index="16" value="4096" />
+      <LABEL index="17" value="4352" />
+      <LABEL index="18" value="4608" />
+      <LABEL index="19" value="4864" />
+      <LABEL index="20" value="5120" />
+      <LABEL index="21" value="5376" />
+      <LABEL index="22" value="5632" />
+      <LABEL index="23" value="5888" />
+      <LABEL index="24" value="6144" />
+      <LABEL index="25" value="6400" />
+      <LABEL index="26" value="6656" />
+      <LABEL index="27" value="6912" />
+      <LABEL index="28" value="7168" />
+      <LABEL index="29" value="7424" />
+      <LABEL index="30" value="7680" />
+      <LABEL index="31" value="7936" />
+      <LABEL index="32" value="8192" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <indexcount>5</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="8" />
+      <LABEL index="1" value="20" />
+      <LABEL index="2" value="32" />
+      <LABEL index="3" value="44" />
+      <LABEL index="4" value="56" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x6233E" mmedelementsizebits="16" mmedrowcount="5" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 1024">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7220" flags="0x0">
+    <title>PowerEnrichEQRatioE80_06248C</title>
+    <description>Companion FEQR KtFEQR_eqr_PE_RPM_E80 table for HP Tuners [ECM] 12400 Power Enrich EQ Ratio family. 5x33 unsigned 16-bit big-endian table, stored as EQ ratio * 1024. This target BIN has the same values as PowerEnrichEQRatio_06233E.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="256" />
+      <LABEL index="2" value="512" />
+      <LABEL index="3" value="768" />
+      <LABEL index="4" value="1024" />
+      <LABEL index="5" value="1280" />
+      <LABEL index="6" value="1536" />
+      <LABEL index="7" value="1792" />
+      <LABEL index="8" value="2048" />
+      <LABEL index="9" value="2304" />
+      <LABEL index="10" value="2560" />
+      <LABEL index="11" value="2816" />
+      <LABEL index="12" value="3072" />
+      <LABEL index="13" value="3328" />
+      <LABEL index="14" value="3584" />
+      <LABEL index="15" value="3840" />
+      <LABEL index="16" value="4096" />
+      <LABEL index="17" value="4352" />
+      <LABEL index="18" value="4608" />
+      <LABEL index="19" value="4864" />
+      <LABEL index="20" value="5120" />
+      <LABEL index="21" value="5376" />
+      <LABEL index="22" value="5632" />
+      <LABEL index="23" value="5888" />
+      <LABEL index="24" value="6144" />
+      <LABEL index="25" value="6400" />
+      <LABEL index="26" value="6656" />
+      <LABEL index="27" value="6912" />
+      <LABEL index="28" value="7168" />
+      <LABEL index="29" value="7424" />
+      <LABEL index="30" value="7680" />
+      <LABEL index="31" value="7936" />
+      <LABEL index="32" value="8192" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <indexcount>5</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="8" />
+      <LABEL index="1" value="20" />
+      <LABEL index="2" value="32" />
+      <LABEL index="3" value="44" />
+      <LABEL index="4" value="56" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x6248C" mmedelementsizebits="16" mmedrowcount="5" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 1024">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7221" flags="0x0">
+    <title>PowerEnrichmentMinRPM_062096</title>
+    <description>FEQR PE minimum enable RPM scalar near the confirmed HP Tuners [ECM] 12400 EQ-ratio cluster. Source/reference KeFEQR_n_PE_EngSpdThrsh plus local FEQR relocation. This Astra BIN decodes to 700 rpm; the screenshot example shows 8000 rpm.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Min RPM" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x62096" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7222" flags="0x0">
+    <title>PowerEnrichmentEnableTorquePct_0620AE</title>
+    <description>Likely HP Tuners [ECM] 12418 Power Enrichment Enable Torque %. FEQR KtFEQR_Pct_PE_LoadThrsh, 1x17 unsigned 16-bit big-endian table, stored as percent / 0.001525878906. The Astra target values currently decode as all 0%, while the screenshot example shows 97%.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="512" />
+      <LABEL index="2" value="1024" />
+      <LABEL index="3" value="1536" />
+      <LABEL index="4" value="2048" />
+      <LABEL index="5" value="2560" />
+      <LABEL index="6" value="3072" />
+      <LABEL index="7" value="3584" />
+      <LABEL index="8" value="4096" />
+      <LABEL index="9" value="4608" />
+      <LABEL index="10" value="5120" />
+      <LABEL index="11" value="5632" />
+      <LABEL index="12" value="6144" />
+      <LABEL index="13" value="6656" />
+      <LABEL index="14" value="7170" />
+      <LABEL index="15" value="7684" />
+      <LABEL index="16" value="8192" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>1</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable Torque %" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620AE" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>%</units>
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>100.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.001525878906">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7223" flags="0x0">
+    <title>PowerEnrichmentEnablePedalPct_0620D2</title>
+    <description>Power Enrichment Enable Pedal threshold vs engine speed. FEQR KtFEQR_Pct_PE_ThrotThrshEngSpd, 1x17 unsigned 16-bit big-endian table. This Astra BIN decodes as 80% across the row.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="512" />
+      <LABEL index="2" value="1024" />
+      <LABEL index="3" value="1536" />
+      <LABEL index="4" value="2048" />
+      <LABEL index="5" value="2560" />
+      <LABEL index="6" value="3072" />
+      <LABEL index="7" value="3584" />
+      <LABEL index="8" value="4096" />
+      <LABEL index="9" value="4608" />
+      <LABEL index="10" value="5120" />
+      <LABEL index="11" value="5632" />
+      <LABEL index="12" value="6144" />
+      <LABEL index="13" value="6656" />
+      <LABEL index="14" value="7170" />
+      <LABEL index="15" value="7684" />
+      <LABEL index="16" value="8192" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>1</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable Pedal %" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620D2" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>%</units>
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>100.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.001525878906">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7224" flags="0x0">
+    <title>PowerEnrichmentDelayRPM_0620A0</title>
+    <description>Power Enrichment Delay RPM high threshold. FEQR KfFEQR_n_PE_DelayRPM_HiThrsh; this Astra BIN decodes to 6000 rpm.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Delay RPM" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620A0" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7225" flags="0x0">
+    <title>PowerEnrichmentDelayTorquePct_0625D8</title>
+    <description>Power Enrichment delay torque-percent scalar located from the local FEQR delay group. 32-bit big-endian float; this Astra BIN decodes to 100%.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Delay Torque %" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x625D8" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>%</units>
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7226" flags="0x0">
+    <title>PowerEnrichmentDelayStep_0620F8</title>
+    <description>Power Enrichment delay step/adjust table from FEQR KtFEQR_t_PE_DelayAdjust. 17x17 unsigned 16-bit big-endian table, stored as time / 0.05; screenshot-visible values around 0.100 match raw value 2.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>17</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="6.2" />
+      <LABEL index="2" value="12.5" />
+      <LABEL index="3" value="18.8" />
+      <LABEL index="4" value="25" />
+      <LABEL index="5" value="31.2" />
+      <LABEL index="6" value="37.5" />
+      <LABEL index="7" value="43.8" />
+      <LABEL index="8" value="50" />
+      <LABEL index="9" value="56.2" />
+      <LABEL index="10" value="62.5" />
+      <LABEL index="11" value="68.8" />
+      <LABEL index="12" value="75" />
+      <LABEL index="13" value="81.2" />
+      <LABEL index="14" value="87.5" />
+      <LABEL index="15" value="93.8" />
+      <LABEL index="16" value="100" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="400" />
+      <LABEL index="2" value="800" />
+      <LABEL index="3" value="1200" />
+      <LABEL index="4" value="1600" />
+      <LABEL index="5" value="2000" />
+      <LABEL index="6" value="2400" />
+      <LABEL index="7" value="2800" />
+      <LABEL index="8" value="3200" />
+      <LABEL index="9" value="3600" />
+      <LABEL index="10" value="4000" />
+      <LABEL index="11" value="4400" />
+      <LABEL index="12" value="4800" />
+      <LABEL index="13" value="5200" />
+      <LABEL index="14" value="5600" />
+      <LABEL index="15" value="6000" />
+      <LABEL index="16" value="6400" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620F8" mmedelementsizebits="16" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>s</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.05">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7227" flags="0x0">
+    <title>PowerEnrichmentRampIn_0620A6</title>
+    <description>Power Enrichment ramp-in scalar. FEQR KfFEQR_eqr_PE_RampIn; this Astra BIN decodes to approximately 0.1000.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Ramp In" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620A6" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7230" flags="0x0">
+    <title>PowerEnrichmentRampOut_0620A8</title>
+    <description>Power Enrichment ramp-out companion scalar. FEQR KfFEQR_eqr_PE_RampOut; this Astra BIN decodes to approximately 0.0100.</description>
+    <CATEGORYMEM index="0" category="6" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Ramp Out" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x620A8" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7228" flags="0x0">
+    <title>KnockEnrichmentAirmassHyst_05FB44</title>
+    <description>Knock Enrichment / FEQR pre-ignition protection airmass hysteresis. Stored as 0.125 mg/count; displayed in grams. This Astra BIN decodes to 0.030 g.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Airmass Hyst" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FB44" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>g</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7229" flags="0x0">
+    <title>KnockEnrichmentEnableRPM_05FB46</title>
+    <description>Knock Enrichment enable RPM threshold. FEQR pre-ignition protection scalar; this Astra BIN decodes to 3200 rpm.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable RPM" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FB46" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722A" flags="0x0">
+    <title>KnockEnrichmentRPMHyst_05FB48</title>
+    <description>Knock Enrichment RPM hysteresis. FEQR pre-ignition protection scalar; this Astra BIN decodes to 200 rpm.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="RPM Hyst" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FB48" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>8192.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722B" flags="0x0">
+    <title>KnockEnrichmentEnableECT_05FB4A</title>
+    <description>Knock Enrichment enable coolant-temperature threshold. Signed 16-bit big-endian with 1/128 deg C scaling; this Astra BIN decodes to 60 deg C.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable ECT" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x5FB4A" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-256.000000</min>
+      <max>256.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722C" flags="0x0">
+    <title>KnockEnrichmentDelayStep_05FB50</title>
+    <description>Knock Enrichment / FEQR pre-ignition protection delay-step table. Two 0x0009 dimension words precede the table at 0x05FB4C/0x05FB4E; data starts at 0x05FB50.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>9</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1600" />
+      <LABEL index="1" value="1700" />
+      <LABEL index="2" value="1800" />
+      <LABEL index="3" value="1950" />
+      <LABEL index="4" value="2050" />
+      <LABEL index="5" value="2200" />
+      <LABEL index="6" value="2400" />
+      <LABEL index="7" value="2600" />
+      <LABEL index="8" value="3000" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x5FB32" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>g</units>
+      <indexcount>9</indexcount>
+      <decimalpl>3</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.47" />
+      <LABEL index="1" value="0.5" />
+      <LABEL index="2" value="0.53" />
+      <LABEL index="3" value="0.56" />
+      <LABEL index="4" value="0.59" />
+      <LABEL index="5" value="0.62" />
+      <LABEL index="6" value="0.65" />
+      <LABEL index="7" value="0.68" />
+      <LABEL index="8" value="0.71" />
+      <MATH equation="X * 0.000125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FB50" mmedelementsizebits="16" mmedrowcount="9" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.05">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722D" flags="0x0">
+    <title>KnockEnrichmentEnableDelay_05FBF2</title>
+    <description>Knock Enrichment enable delay scalar. FEQR pre-ignition protection delay maximum; this Astra BIN decodes to 60.0 in the HPT display units.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Enable Delay" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FBF2" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>ms</units>
+      <decimalpl>1</decimalpl>
+      <min>0.000000</min>
+      <max>10000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.05">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722E" flags="0x0">
+    <title>KnockEnrichmentEQRatio_05FBF8</title>
+    <description>Knock Enrichment / FEQR pre-ignition protection EQ-ratio table. Two 0x0009 dimension words precede the table at 0x05FBF4/0x05FBF6; data starts at 0x05FBF8. The separate alcohol/E80 equivalent has not been uniquely isolated yet in this Astra BIN.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>9</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1600" />
+      <LABEL index="1" value="1700" />
+      <LABEL index="2" value="1800" />
+      <LABEL index="3" value="1950" />
+      <LABEL index="4" value="2050" />
+      <LABEL index="5" value="2200" />
+      <LABEL index="6" value="2400" />
+      <LABEL index="7" value="2600" />
+      <LABEL index="8" value="3000" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x5FB32" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>g</units>
+      <indexcount>9</indexcount>
+      <decimalpl>3</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0.47" />
+      <LABEL index="1" value="0.5" />
+      <LABEL index="2" value="0.53" />
+      <LABEL index="3" value="0.56" />
+      <LABEL index="4" value="0.59" />
+      <LABEL index="5" value="0.62" />
+      <LABEL index="6" value="0.65" />
+      <LABEL index="7" value="0.68" />
+      <LABEL index="8" value="0.71" />
+      <MATH equation="X * 0.000125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FBF8" mmedelementsizebits="16" mmedrowcount="9" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>3</decimalpl>
+      <min>0.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X / 1024">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x722F" flags="0x0">
+    <title>KnockEnrichmentRampIn_05FC9C</title>
+    <description>Knock Enrichment ramp-in scalar. FEQR pre-ignition protection ramp-in; this Astra BIN decodes to approximately 0.0060.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Ramp In" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FC9C" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7231" flags="0x0">
+    <title>KnockEnrichmentRampOut_05FC9A</title>
+    <description>Knock Enrichment ramp-out scalar. FEQR pre-ignition protection ramp-out; this Astra BIN decodes to approximately 0.0300.</description>
+    <CATEGORYMEM index="0" category="7" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Ramp Out" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x5FC9A" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>10.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000030517578">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7213" flags="0x0">
+    <title>ScavSparkAxisCluster04E588_FloatView</title>
+    <description>Float inspection view around the second exact spark-retard axis at 0x04E588. Related RPM axes are present at 0x04E50C/0x04E52C for 1400-6000 and at 0x04E62C for 1300-6000; this cluster did not produce another HPT33482-like 8x11 airmass table.</description>
+    <CATEGORYMEM index="0" category="1" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x00" />
+      <LABEL index="1" value="+0x04" />
+      <LABEL index="2" value="+0x08" />
+      <LABEL index="3" value="+0x0C" />
+      <LABEL index="4" value="+0x10" />
+      <LABEL index="5" value="+0x14" />
+      <LABEL index="6" value="+0x18" />
+      <LABEL index="7" value="+0x1C" />
+      <LABEL index="8" value="+0x20" />
+      <LABEL index="9" value="+0x24" />
+      <LABEL index="10" value="+0x28" />
+      <LABEL index="11" value="+0x2C" />
+      <LABEL index="12" value="+0x30" />
+      <LABEL index="13" value="+0x34" />
+      <LABEL index="14" value="+0x38" />
+      <LABEL index="15" value="+0x3C" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>16</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="+0x000" />
+      <LABEL index="1" value="+0x040" />
+      <LABEL index="2" value="+0x080" />
+      <LABEL index="3" value="+0x0C0" />
+      <LABEL index="4" value="+0x100" />
+      <LABEL index="5" value="+0x140" />
+      <LABEL index="6" value="+0x180" />
+      <LABEL index="7" value="+0x1C0" />
+      <LABEL index="8" value="+0x200" />
+      <LABEL index="9" value="+0x240" />
+      <LABEL index="10" value="+0x280" />
+      <LABEL index="11" value="+0x2C0" />
+      <LABEL index="12" value="+0x300" />
+      <LABEL index="13" value="+0x340" />
+      <LABEL index="14" value="+0x380" />
+      <LABEL index="15" value="+0x3C0" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4E588" mmedelementsizebits="32" mmedrowcount="16" mmedcolcount="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <decimalpl>3</decimalpl>
+      <min>-100000.000000</min>
+      <max>100000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7250" flags="0x0">
+    <title>SparkHighOctaneBase_07394D</title>
+    <description>High-confidence HP Tuners High Octane base spark equivalent. WinOLS KtSPRK_phi_BaseHiOctane relocates to 0x07394D in this Astra BIN. 33x33 signed byte table, 0.5 deg/count, using RPM33 axis at 0x073900 and air-per-cylinder axis at 0x077360.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x7394D" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7251" flags="0x0">
+    <title>SparkLowOctaneBase_073FC5</title>
+    <description>High-confidence HP Tuners Low Octane base spark equivalent. WinOLS KtSPRK_phi_BaseLowOctane relocates to 0x073FC5. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes.</description>
+    <CATEGORYMEM index="0" category="8" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x73FC5" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7252" flags="0x0">
+    <title>SparkSmoothingRunFilterRefs_075C36</title>
+    <description>Closest local equivalent for Spark Smoothing. WinOLS KeSPRK_Cnt_RunSprkFilterRefs, desired number of lores events to filter spark. Scalar unsigned 16-bit big-endian count; this Astra BIN decodes to 20.</description>
+    <CATEGORYMEM index="0" category="13" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Run Filter Refs" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x75C36" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>count</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>65535.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7253" flags="0x0">
+    <title>SparkFlexFuel_075D6F</title>
+    <description>Likely HP Tuners Flex Fuel spark correction. WinOLS KtSPRK_phi_FFS relocates to 0x075D6F. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes. Stock Astra target is zero-filled.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x75D6F" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7254" flags="0x0">
+    <title>SparkFlexFuelEqRatio_075C3F</title>
+    <description>Likely HP Tuners Flex Fuel Mult / EQ-ratio related spark correction. WinOLS KtSPRK_phi_FFS_EqRatio1 relocates to 0x075C3F. 17x17 signed byte table, 0.5 deg/count, RPM by EQ Ratio. Stock Astra target is zero-filled.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="800" />
+      <LABEL index="1" value="1200" />
+      <LABEL index="2" value="1600" />
+      <LABEL index="3" value="2000" />
+      <LABEL index="4" value="2400" />
+      <LABEL index="5" value="2800" />
+      <LABEL index="6" value="3200" />
+      <LABEL index="7" value="3600" />
+      <LABEL index="8" value="4000" />
+      <LABEL index="9" value="4400" />
+      <LABEL index="10" value="4800" />
+      <LABEL index="11" value="5200" />
+      <LABEL index="12" value="5600" />
+      <LABEL index="13" value="6000" />
+      <LABEL index="14" value="6400" />
+      <LABEL index="15" value="6800" />
+      <LABEL index="16" value="7200" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x7727A" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>EQ Ratio</units>
+      <indexcount>17</indexcount>
+      <decimalpl>3</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.0009765625">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x75C3F" mmedelementsizebits="8" mmedrowcount="17" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7255" flags="0x0">
+    <title>SparkVCPSpark_07463D</title>
+    <description>High-confidence HP Tuners VCP Spark equivalent. WinOLS KtSPRK_phi_Phaser relocates to 0x07463D. 33x17 signed byte table, 0.5 deg/count, RPM17 by air-per-cylinder.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x7463D" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7256" flags="0x0">
+    <title>SparkHumidityBaseMax_Candidate_076843</title>
+    <description>Candidate HP Tuners Humidity Base / humidity max spark table from WinOLS KtSPRK_phi_HumidityMax. Structural relocation from the local SPRK humidity/minimum-spark cluster gives 0x076843, 33x33 signed byte, 0.5 deg/count. This one is not confirmed: decoded values are implausibly wide, so verify against an HPT edit fingerprint before trusting it.</description>
+    <CATEGORYMEM index="0" category="11" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>33</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x76843" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="33" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7257" flags="0x0">
+    <title>SparkVCPHumidityAdderDry_Candidate_076C87</title>
+    <description>Candidate HP Tuners VCP Humidity Adder Dry. Mapped from WinOLS KtSPRK_phi_PhaserHumidMin using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x76C87" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7258" flags="0x0">
+    <title>SparkVCPHumidityAdderWet_Candidate_076EBB</title>
+    <description>Candidate HP Tuners VCP Humidity Adder Wet. Mapped from WinOLS KtSPRK_phi_PhaserHumidMax using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
+    <CATEGORYMEM index="0" category="10" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x76EBB" mmedelementsizebits="8" mmedrowcount="33" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>1</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.5">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7259" flags="0x0">
+    <title>MinimumSparkBase_07895E</title>
+    <description>High-confidence HP Tuners Minimum Spark Base equivalent. WinOLS KtSPRK_phi_MinSpkAdvLimitSht relocates to 0x07895E. 33x17 signed 16-bit big-endian table, 1/128 deg/count, RPM17 by air-per-cylinder.</description>
+    <CATEGORYMEM index="0" category="12" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x7895E" mmedelementsizebits="16" mmedrowcount="33" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>2</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x725A" flags="0x0">
+    <title>MinimumSparkLongTerm_Candidate_078E2A</title>
+    <description>Candidate HP Tuners Minimum Spark Long Term equivalent. The direct expected KtSPRK_phi_MinSpkAdvLimitLng address at 0x078DC4 decodes into mixed data; 0x078E2A is the clean local 33x17 signed 16-bit table in the same cluster and is all -15 deg in this Astra BIN. Treat as candidate until HPT edit fingerprint confirms it.</description>
+    <CATEGORYMEM index="0" category="12" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>rpm</units>
+      <indexcount>17</indexcount>
+      <decimalpl>0</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedaddress="0x77360" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
+      <units>mg/cyl</units>
+      <indexcount>33</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X * 0.125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x78E2A" mmedelementsizebits="16" mmedrowcount="33" mmedcolcount="17" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg</units>
+      <decimalpl>2</decimalpl>
+      <min>-64.000000</min>
+      <max>64.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x725B" flags="0x0">
+    <title>SparkFlexFuelBlendFactor_075D62</title>
+    <description>Flex-fuel blend factor companion from WinOLS KtSPRK_Scl_FFS_BlendFactor. 1x5 unsigned 16-bit big-endian ratio row at 0x075D62, scaled by 1/65536. Included as a nearby Flex Fuel spark support table; stock Astra target is zero-filled.</description>
+    <CATEGORYMEM index="0" category="9" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>% alcohol</units>
+      <indexcount>5</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="25" />
+      <LABEL index="2" value="50" />
+      <LABEL index="3" value="75" />
+      <LABEL index="4" value="100" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Blend Factor" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x75D62" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="5" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>ratio</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>1.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.000015258789">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7260" flags="0x0">
+    <title>TransOutputMax_021648</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Trans Output Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_TransOutputTorqLimit. This Astra BIN decodes to 100000 Nm, while the provided HPT screenshot shows 131072 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Trans Output Max" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21648" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7261" flags="0x0">
+    <title>FrontAxleMax_021638</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontAxleTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Front Axle Max" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21638" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7262" flags="0x0">
+    <title>FrontAxleMax4WDLow_021630</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoFrontAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Front Axle Max 4WD Low" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21630" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7263" flags="0x0">
+    <title>FrontPropshaftMax_02163C</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Front Propshaft Max" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x2163C" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7264" flags="0x0">
+    <title>RearAxleMax_021640</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearAxleTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 2000 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Rear Axle Max" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21640" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7265" flags="0x0">
+    <title>RearAxleMax4WDLow_021634</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoRearAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Rear Axle Max 4WD Low" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21634" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7266" flags="0x0">
+    <title>RearPropshaftMax_021644</title>
+    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 500 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Rear Propshaft Max" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x21644" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>131072.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7267" flags="0x0">
+    <title>BrakeTorqueLimit_MaxDriverIntended_047CE4</title>
+    <description>High-confidence BRKC scalar from KeBRKC_M_MaxDrvIntBrkTorq, used to scale Driver Intended Total Brake Torque. This is the best current match for the brake torque limit scalar found near the DTRC driver-demand axis island; it decodes to 6000 Nm.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Brake Torque Limit" />
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47CE4" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>10000.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X">
+        <VAR id="X" />
+      </MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727B" flags="0x0">
+    <title>BrakeTorqueLimitMult_CandidateA_50268</title>
+    <description>Candidate BTRC brake torque limit multiplier copy A. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <LABEL index="3" value="37.5" />
+      <LABEL index="4" value="50" />
+      <LABEL index="5" value="62.5" />
+      <LABEL index="6" value="75" />
+      <LABEL index="7" value="87.5" />
+      <LABEL index="8" value="100" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>kph</units>
+      <indexcount>3</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x50268" mmedelementsizebits="32" mmedrowcount="3" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>mult</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>1.500000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727C" flags="0x0">
+    <title>BrakeTorqueLimitMult_CandidateB_507F4</title>
+    <description>Candidate BTRC brake torque limit multiplier copy B. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <LABEL index="3" value="37.5" />
+      <LABEL index="4" value="50" />
+      <LABEL index="5" value="62.5" />
+      <LABEL index="6" value="75" />
+      <LABEL index="7" value="87.5" />
+      <LABEL index="8" value="100" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>kph</units>
+      <indexcount>3</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x507F4" mmedelementsizebits="32" mmedrowcount="3" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>mult</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>1.500000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727D" flags="0x0">
+    <title>BrakeTorqueLimitMult_CandidateC_510EC</title>
+    <description>Candidate BTRC brake torque limit multiplier copy C. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>%</units>
+      <indexcount>9</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <LABEL index="3" value="37.5" />
+      <LABEL index="4" value="50" />
+      <LABEL index="5" value="62.5" />
+      <LABEL index="6" value="75" />
+      <LABEL index="7" value="87.5" />
+      <LABEL index="8" value="100" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>kph</units>
+      <indexcount>3</indexcount>
+      <decimalpl>1</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="0" />
+      <LABEL index="1" value="12.5" />
+      <LABEL index="2" value="25" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x510EC" mmedelementsizebits="32" mmedrowcount="3" mmedcolcount="9" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>mult</units>
+      <decimalpl>4</decimalpl>
+      <min>0.000000</min>
+      <max>1.500000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727E" flags="0x0">
+    <title>TCS_MaxTorqueDecrement_051D90</title>
+    <description>High-confidence DTMC scalar for KeDTMC_M_TCSMaxDecrTorq, the maximum torque decrement available to traction control. The Astra stock value is approximately 65535 Nm. Setting this to 0 is the most direct ECM-side method found to prevent a positive TCS engine-torque decrement; verify behavior in logs before relying on it. This does not disable brake intervention performed inside the EBCM.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Max Torque Decrement" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x51D90" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>Nm</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>65535.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x727F" flags="0x0">
+    <title>TCS_TorqueReductionEnableECT_04B5B4</title>
+    <description>High-confidence TCSC coolant gate from KfTCSC_T_TractionCoolEnbl. Traction-control torque reduction is allowed only above this coolant temperature. Stock is -255 deg C, effectively always enabled. Setting this near +255 deg C should inhibit ECM TCS torque reduction during normal operation. This does not disable EBCM brake-based traction or stability intervention.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Torque Reduction Enable ECT" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x01" mmedaddress="0x4B5B4" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-256.000000</min>
+      <max>255.992188</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.0078125"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7280" flags="0x0">
+    <title>TCS_MinEngineRunTime_04B5BC</title>
+    <description>High-confidence TCSC run-time gate from KfTCSC_t_MinTC_EngRunTime. TCS torque reduction is not permitted until this much engine run time has elapsed. Stock is 0 s in this Astra. The 16-bit format limits the maximum delay to about 409.59 s, so this is a temporary inhibit and diagnostic control, not a permanent disable.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Value" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Minimum Engine Run Time" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x4B5BC" mmedelementsizebits="16" mmedrowcount="1" mmedcolcount="1" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>s</units>
+      <decimalpl>2</decimalpl>
+      <min>0.000000</min>
+      <max>409.593750</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X * 0.00625"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7281" flags="0x0">
+    <title>TCS_PresenceConfig_079BB8</title>
+    <description>Exact TCSI configuration pair: KeTCSI_b_TCS_Present followed by KeTCSI_b_UseSerialData. Stock values are 0 and 1, so the ECM uses serial data from the EBCM and ignores the false fallback. Changing Use Serial Data to 0 while leaving TCS Present Fallback at 0 forces the ECM-side TCS-present result false. This may affect network diagnostics and still does not disable brake intervention inside the EBCM.</description>
+    <CATEGORYMEM index="0" category="3" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <units>bool</units>
+      <indexcount>2</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="TCS Present Fallback" />
+      <LABEL index="1" value="Use Serial Data" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Config" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x79BB8" mmedelementsizebits="8" mmedrowcount="1" mmedcolcount="2" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>bool</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>1.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7270" flags="0x0">
+    <title>DesiredECT_TMSRequest_RawPairs_077B56</title>
+    <description>Thermal-controller Desired ECT request candidate from KaTHMC_T_TMS_EngCoolReq[x]. Exact OS12646746 reference block at 0x0781B8 relocates to this Astra BIN at 0x077B56. Storage is exposed as two 16-bit raw words per logical value because the reference XDF/WinOLS entry consumes 32 bits per cell, but the bytes are 00xx word pairs rather than normal IEEE floats.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>2</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Word A" />
+      <LABEL index="1" value="Word B" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x77B56" mmedelementsizebits="16" mmedrowcount="2" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>raw</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7271" flags="0x0">
+    <title>ColdMaxDesiredECT_079CB0</title>
+    <description>Cold Max Desired ECT from KaTHMC_T_EngCoolLoAmbMaxLim[x]. The packed OS12646746 block at 0x078164 relocates to 0x077B02, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CB0.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Deg C" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79CB0" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7272" flags="0x0">
+    <title>ColdMinDesiredECT_079CCC</title>
+    <description>Cold Min Desired ECT from KaTHMC_T_EngCoolLoLim[x]. The packed OS12646746 block at 0x078180 relocates to 0x077B1E, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CCC.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Deg C" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79CCC" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7273" flags="0x0">
+    <title>ColdDesiredECTThreshold_079D18</title>
+    <description>Cold Desired ECT threshold/hysteresis row from KaTHMC_T_EngCoolTrshLo[x]. The packed OS12646746 block at 0x07819C relocates to 0x077B3A, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079D18.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Deg C" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79D18" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7274" flags="0x0">
+    <title>KaTHMC_T_EngCool_OS12646746_RawPairs_077B9E</title>
+    <description>Direct relocation of E78_DesiredECT_OS_12646746.xdf table KaTHMC_T_EngCool from 0x078200 to 0x077B9E. The source XDF labels this as a 2x7 Max/Min ECT table with 32-bit float storage, but the actual bin bytes are packed 00xx word pairs, so this view exposes the full 56-byte source table as four 16-bit raw rows.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>4</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Max Word A" />
+      <LABEL index="1" value="Max Word B" />
+      <LABEL index="2" value="Min Word A" />
+      <LABEL index="3" value="Min Word B" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedaddress="0x77B9E" mmedelementsizebits="16" mmedrowcount="4" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>raw</units>
+      <decimalpl>0</decimalpl>
+      <min>0.000000</min>
+      <max>255.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7275" flags="0x0">
+    <title>KaTHMC_T_EngCool_Labels_Candidate_079C88</title>
+    <description>Candidate 32-bit big-endian float row inferred from the OS12646746 KaTHMC_T_EngCool_Labels reference. The exact KaTHMC_T_EngCool_Labels symbol is not present in the Astra WinOLS CSV, so keep this as inspection context rather than a confirmed editable axis.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>7</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Deg C" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79C88" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>200.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7276" flags="0x0">
+    <title>KaTHMC_T_EngCool_Candidate_079C50</title>
+    <description>Candidate 32-bit big-endian float view inferred from the OS12646746 KaTHMC_T_EngCool 2x7 reference. The standalone KaTHMC_T_EngCool symbol is not present in the Astra WinOLS CSV, and these values look implausible as Max/Min desired ECT, so do not treat this as a confirmed editable table.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79C88" mmedelementsizebits="32" mmedcolcount="7" mmedmajorstridebits="32" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <indexcount>7</indexcount>
+      <decimalpl>1</decimalpl>
+      <embedinfo type="1" />
+      <datatype>6</datatype>
+      <unittype>15</unittype>
+      <DALINK index="0" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>2</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Row 1" />
+      <LABEL index="1" value="Row 2" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79C50" mmedelementsizebits="32" mmedrowcount="2" mmedcolcount="7" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>250.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+  <XDFTABLE uniqueid="0x7277" flags="0x0">
+    <title>KaTHMC_T_EngCoolReq_Candidate_079C6C</title>
+    <description>Candidate 32-bit big-endian float view inferred from the OS12646746 KaTHMC_T_EngCoolReq 1x24 reference. The Astra WinOLS CSV does not contain KaTHMC_T_EngCoolReq; the closest real 24-cell symbol is KaTHMC_T_TMS_EngCoolReq[x] at source 0x0781B8. Keep this view as unconfirmed inspection context.</description>
+    <CATEGORYMEM index="0" category="14" />
+    <XDFAXIS id="x" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>24</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="1" />
+      <LABEL index="1" value="2" />
+      <LABEL index="2" value="3" />
+      <LABEL index="3" value="4" />
+      <LABEL index="4" value="5" />
+      <LABEL index="5" value="6" />
+      <LABEL index="6" value="7" />
+      <LABEL index="7" value="8" />
+      <LABEL index="8" value="9" />
+      <LABEL index="9" value="10" />
+      <LABEL index="10" value="11" />
+      <LABEL index="11" value="12" />
+      <LABEL index="12" value="13" />
+      <LABEL index="13" value="14" />
+      <LABEL index="14" value="15" />
+      <LABEL index="15" value="16" />
+      <LABEL index="16" value="17" />
+      <LABEL index="17" value="18" />
+      <LABEL index="18" value="19" />
+      <LABEL index="19" value="20" />
+      <LABEL index="20" value="21" />
+      <LABEL index="21" value="22" />
+      <LABEL index="22" value="23" />
+      <LABEL index="23" value="24" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="y" uniqueid="0x0">
+      <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
+      <indexcount>1</indexcount>
+      <decimalpl>0</decimalpl>
+      <datatype>0</datatype>
+      <unittype>0</unittype>
+      <DALINK index="0" />
+      <LABEL index="0" value="Temp" />
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+    <XDFAXIS id="z">
+      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x79C6C" mmedelementsizebits="32" mmedrowcount="1" mmedcolcount="24" mmedmajorstridebits="0" mmedminorstridebits="0" />
+      <units>deg C</units>
+      <decimalpl>1</decimalpl>
+      <min>-200.000000</min>
+      <max>250.000000</max>
+      <outputtype>1</outputtype>
+      <MATH equation="X"><VAR id="X" /></MATH>
+    </XDFAXIS>
+  </XDFTABLE>
+</XDFFORMAT>
