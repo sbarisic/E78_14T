@@ -803,8 +803,8 @@
   </XDFTABLE>
   <!-- Knock airmass search results added 2026-07-06 -->
   <XDFTABLE uniqueid="0x7210" flags="0x0">
-    <title>TurbochargerKnockMaxAirmass_04DD68</title>
-    <description>Confirmed HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. 8x11 32-bit big-endian float table; values are stored as g * 1000. X axis at 0x04DEC8 is spark retard, Y axis at 0x04DF3C is RPM. Best full-bin match to the HPT screenshot; nearby matches are only byte-shifted views of this same table.</description>
+    <title>TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68</title>
+    <description>Confirmed HP Tuners [ECM] 33482 Turbocharger Knock Max Airmass. EDIT IN NATIVE MG/CYL: enter 485 here for an HP Tuners value of 0.485 g. Never enter 0.485. The 100-1000 range and zero displayed decimal places are intentional guards against writing gram values directly into the native 32-bit float storage. X axis at 0x04DEC8 is spark retard and Y axis at 0x04DF3C is RPM.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -832,49 +832,9 @@
     </XDFAXIS>
     <XDFAXIS id="z">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DD68" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>g</units>
-      <decimalpl>3</decimalpl>
-      <min>0.000000</min>
-      <max>4.000000</max>
-      <outputtype>1</outputtype>
-      <MATH equation="X / 1000">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-  </XDFTABLE>
-  <XDFTABLE uniqueid="0x7211" flags="0x0">
-    <title>TurbochargerKnockMaxAirmass_04DD68_RawStored</title>
-    <description>Raw stored-value view for confirmed HP Tuners [ECM] 33482 at 0x04DD68. This should show approximately 275-725 before conversion to grams.</description>
-    <CATEGORYMEM index="0" category="2" />
-    <XDFAXIS id="x" uniqueid="0x0">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DEC8" mmedelementsizebits="32" mmedcolcount="11" mmedmajorstridebits="32" mmedminorstridebits="0" />
-      <indexcount>11</indexcount>
+      <units>mg/cyl; HPT g x1000</units>
       <decimalpl>0</decimalpl>
-      <embedinfo type="1" />
-      <datatype>6</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="y" uniqueid="0x0">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DF3C" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
-      <indexcount>8</indexcount>
-      <decimalpl>0</decimalpl>
-      <embedinfo type="1" />
-      <datatype>6</datatype>
-      <unittype>0</unittype>
-      <DALINK index="0" />
-      <MATH equation="X">
-        <VAR id="X" />
-      </MATH>
-    </XDFAXIS>
-    <XDFAXIS id="z">
-      <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DD68" mmedelementsizebits="32" mmedrowcount="8" mmedcolcount="11" mmedmajorstridebits="0" mmedminorstridebits="0" />
-      <units>stored</units>
-      <decimalpl>0</decimalpl>
-      <min>0.000000</min>
+      <min>100.000000</min>
       <max>1000.000000</max>
       <outputtype>1</outputtype>
       <MATH equation="X">

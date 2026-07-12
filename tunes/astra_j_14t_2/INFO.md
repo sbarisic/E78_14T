@@ -86,19 +86,21 @@ XDF editing conventions:
 
 ### HP Tuners [ECM] 33482 - Turbocharger Knock Max Airmass
 
-Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_04DD68`
+Confirmed TunerPro entry: `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68`
 
 - Z table address: `0x04DD68`
 - Format: `8 x 11`, 32-bit big-endian float
-- Stored values: grams * 1000
-- TunerPro math: `X / 1000`
-- Display units: `g`
+- Stored/display values: native `mg/cyl`, approximately `275-725` stock
+- TunerPro math: `X`
+- Editing rule: enter the HP Tuners value in grams multiplied by `1000`; for example, enter `485` for `0.485 g`
+- Reason: TunerPro does not reliably invert conversion equations when writing 32-bit floating-point cells. The earlier `X / 1000` view could display correctly but write `0.485` directly into storage instead of `485`.
+- Defensive display: zero decimal places and an editable range of `100-1000 mg/cyl`. A correctly loaded stock BIN must show values around `275-725`, never `0.275-0.725`.
 - X axis address: `0x04DEC8`
 - X axis values: `-25, -20, -15, -13, -11, -9, -7, -5, -3, -1, 0`
 - Y axis address: `0x04DF3C`
 - Y axis values: `1400, 1700, 2000, 2300, 3000, 4000, 5000, 6000`
 
-Displayed table values in this BIN:
+Equivalent HP Tuners values in grams for the stock BIN:
 
 ```text
 RPM \ deg   -25    -20    -15    -13    -11     -9     -7     -5     -3     -1      0
@@ -781,8 +783,9 @@ Relevant CSV entries not promoted as disable switches:
 
 ## XDF Maintenance Notes
 
-- Keep `TurbochargerKnockMaxAirmass_04DD68` as the main editable/display table for HP Tuners `[ECM] 33482`.
-- Keep `TurbochargerKnockMaxAirmass_04DD68_RawStored` as a raw verification view; it should show approximately `275-725`.
+- Keep `TurbochargerKnockMaxAirmass_EDIT_MG_X1000_04DD68` as the only active view for HP Tuners `[ECM] 33482`. It deliberately displays native `mg/cyl` values with `MATH X`, zero decimal places, and a `100-1000` range so 32-bit float edits write back correctly. Enter `485` for an HPT value of `0.485 g`.
+- Do not re-add the overlapping `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. It became an editing trap and was removed on 2026-07-12 after `opel_astra_mod1.bin` showed changed cells written 1000 times too small.
+- Second `opel_astra_mod1.bin` audit on 2026-07-12: SHA-256 `A232147FEC447278428C6E4F17EF35060ABC76BCAD100E76CD1B810982810D27`, `1054` bytes differ from stock, and all 88 cells at `0x04DD68` are stored as `0.275-0.900`. The screenshot values around `0.3` are those invalid native floats rounded to one decimal place, not a valid engineering-unit display. Do not use this BIN as the next edit base.
 - Keep `TurbochargerKnockAirmassScav_04E350` as the main editable/display table for HP Tuners `[ECM] 33495`.
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
@@ -806,7 +809,7 @@ Relevant CSV entries not promoted as disable switches:
 - HP Tuners tree triage from 2026-07-09: do not prioritize `Manual Trans Spark Smoothing (RDSC) Master Enable`, `Piston Slap Spark`, `PDA Spark`, EGR spark add/PDA/DOD tables, or `Minimum Spark Advance Double Pulse` for this XDF pass. User confirmed `SparkSmoothingRunFilterRefs_075C36` is functionally similar enough for the manual-trans spark smoothing/RDSC control, and Piston Slap, PDA, EGR, and Double Pulse tables are zeroed out in this calibration.
 - After that triage, the useful unresolved items from the compared HP Tuners tree are mainly `High Octane DP`, `High Octane DOD`, `Low Octane DOD`, `VCP Spark PDA`, `Trans Default Torque Limit`, the true BTRC `Brake Torque Limit` table, and confirmation of which `BrakeTorqueLimitMult_Candidate*` copy HPT edits, plus any collapsed `Fuel->Temperature Control` items that are not already represented by the CCTI/FEQR temperature-protection notes.
 - Fuel temperature-control entries are currently not active in the main XDF; re-add them in smaller batches and load-test TunerPro after each batch.
-- Current active XDF has 87 table entries as of 2026-07-09: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, and four TCS controls. Fuel temperature-control definitions remain quarantined unless separately noted.
+- Current active XDF has 86 table entries as of 2026-07-12: the regenerated load-tested base plus turbo pressure-ratio/surge, PE/knock-enrichment groups, spark groups, thermal candidates, TSXC/BRKC torque scalars, the three BTRC multiplier candidate views, and four TCS controls. The duplicate 32-bit float knock-airmass raw view was removed to prevent unsafe write scaling. Fuel temperature-control definitions remain quarantined unless separately noted.
 - Categories were re-added to the main XDF on 2026-07-08 after the regenerated 49-table layout load-tested successfully. Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, and `Engine->Thermal`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
 - A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
