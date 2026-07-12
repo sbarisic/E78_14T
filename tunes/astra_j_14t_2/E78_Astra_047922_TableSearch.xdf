@@ -1171,7 +1171,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721A" flags="0x0">
     <title>DriverDemand_A_046944</title>
-    <description>Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <description>Purpose: 2-axis table of power request as a function of pedal position and vehicle speed for Pedal Progression (Map) A Axes: X - Scalable axis table of either engine RPM for engine torque based applications or signed vehicle speed for axle torque based applications Y - Scalable axis table of Percent VTS Pedal Progression breakpoints used to index into Pedal Request Maps A, B, and C (manual transmissions only) Format: 17x17; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtDTRC_P_M_PedProgReqA at 0x03FAE8 in winols_astra.csv. Astra mapping/local notes: Confirmed HP Tuners [ECM] 33050 Driver Demand - A equivalent. DTRC KtDTRC_P_M_PedProgReqA, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -1247,7 +1247,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721B" flags="0x0">
     <title>DriverDemand_B_046DC8</title>
-    <description>Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <description>Purpose: 2-axis table of power request as a function of pedal position and vehicle speed for Pedal Progression (Map) B Axes: X - Scalable axis table of either engine RPM for engine torque based applications or signed vehicle speed for axle torque based applications Y - Scalable axis table of Percent VTS Pedal Progression breakpoints used to index into Pedal Request Maps A, B, and C (manual transmissions only) Format: 17x17; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtDTRC_P_M_PedProgReqB at 0x03FF6C in winols_astra.csv. Astra mapping/local notes: Confirmed Driver Demand - B equivalent. DTRC KtDTRC_P_M_PedProgReqB, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -1323,7 +1323,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721C" flags="0x0">
     <title>DriverDemand_C_04724C</title>
-    <description>Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
+    <description>Purpose: 2-axis table of power request as a function of pedal position and vehicle speed for Pedal Progression (Map) C Axes: X - Scalable axis table of either engine RPM for engine torque based applications or signed vehicle speed for axle torque based applications Y - Scalable axis table of Percent VTS Pedal Progression breakpoints used to index into Pedal Request Maps A, B, and C (manual transmissions only) Format: 17x17; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtDTRC_P_M_PedProgReqC at 0x0403F0 in winols_astra.csv. Astra mapping/local notes: Confirmed Driver Demand - C equivalent. DTRC KtDTRC_P_M_PedProgReqC, 17x17 32-bit big-endian float table. X axis at 0x047D0C is RPM/VSS-like in this target BIN; Y axis at 0x047C1C is accelerator pedal position percent. HPT nominal edit range is -500000 to 500000; this XDF uses -100 to 160 Nm for TunerPro graph readability.</description>
     <CATEGORYMEM index="0" category="4" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x47D0C" mmedelementsizebits="32" mmedcolcount="17" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -1399,7 +1399,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7278" flags="0x0">
     <title>AirflowCorrelationEnableRPM_07A570</title>
-    <description>HP Tuners Airflow Correlation P0068 Enable RPM. WinOLS/Damos symbol KeTPSD_n_AirflowActMin, Min RPM to enable the airflow actuation diagnostic. Astra target uses the same local TPSD cluster shift as the delta tables: source 0x078AC0 -> target 0x07A570. 32-bit big-endian float; this BIN decodes to 800 rpm.</description>
+    <description>Purpose: Min RPM to enable the airflow actuation diagnostic Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTPSD_n_AirflowActMin at 0x078AC0 in winols_astra.csv. Astra mapping/local notes: HP Tuners Airflow Correlation P0068 Enable RPM. WinOLS/Damos symbol KeTPSD_n_AirflowActMin, Min RPM to enable the airflow actuation diagnostic. Astra target uses the same local TPSD cluster shift as the delta tables: source 0x078AC0 -&gt; target 0x07A570. 32-bit big-endian float; this BIN decodes to 800 rpm.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1439,7 +1439,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7279" flags="0x0">
     <title>MaxAirflowVsIGNV_07A586</title>
-    <description>HP Tuners Airflow Correlation P0068 Max Airflow vs. IGNV. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsVoltage, maximum MAF vs. system/ignition voltage used to check voltage-based MAF limiting. Source 0x078AD6 -> target 0x07A586. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
+    <description>Purpose: Table of maximum MAF values vs. system voltage. The output of the air meter is clamped to lower values as system voltage drops off. Used to compare with engine speed max MAF, KtTPSD_dm_MaxMAF_VsRPM, to check if the MAF could possibly be limited. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units unitless. Source: KtTPSD_dm_MaxMAF_VsVoltage at 0x078AD6 in winols_astra.csv. Astra mapping/local notes: HP Tuners Airflow Correlation P0068 Max Airflow vs. IGNV. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsVoltage, maximum MAF vs. system/ignition voltage used to check voltage-based MAF limiting. Source 0x078AD6 -&gt; target 0x07A586. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1487,7 +1487,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727A" flags="0x0">
     <title>MaxAirflowVsRPM_07A59C</title>
-    <description>HP Tuners Airflow Correlation P0068 Max Airflow vs. RPM. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsRPM, maximum MAF vs. engine speed. Source 0x078AEC -> target 0x07A59C. 1x9 unsigned 16-bit big-endian, scaled X / 128. This view intentionally starts two bytes before the Airflow Delta table and overlaps its first eight cells, matching the Damos layout.</description>
+    <description>Purpose: Table of maximum MAF values vs. engine speed. This is the maximum MAF the engine can see under all ambient conditions. Used to compare with voltage table, KtTPSD_dm_MaxMAF_VsVoltage, to check for voltage based MAF limiting. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units unitless. Source: KtTPSD_dm_MaxMAF_VsRPM at 0x078AEC in winols_astra.csv. Astra mapping/local notes: HP Tuners Airflow Correlation P0068 Max Airflow vs. RPM. WinOLS/Damos symbol KtTPSD_dm_MaxMAF_VsRPM, maximum MAF vs. engine speed. Source 0x078AEC -&gt; target 0x07A59C. 1x9 unsigned 16-bit big-endian, scaled X / 128. This view intentionally starts two bytes before the Airflow Delta table and overlaps its first eight cells, matching the Damos layout.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1535,7 +1535,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721D" flags="0x0">
     <title>MaximumAirflowDeltaVsTPS_07A59E</title>
-    <description>Confirmed HP Tuners Airflow Correlation P0068 Airflow Delta / [ECM] 14044 Maximum Airflow Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_dm_MAF_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07BFEE maps by table-to-table offset -0x1A50 to this Astra table at 0x07A59E; Damos source 0x078AEE maps by local TPSD shift +0x1AB0. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
+    <description>Purpose: Table of delta MAF values as a function of desired throttle position. The output of this table provides a delta MAF that if the measured minus the estimated MAP exceeds, is considered a fail. It is intended to be calibrated with smaller deltas at lower throttle position. Axes: X - Table of breakpoints for KtTPSD_dm_MAF_DesThrDelt and KtTPSD_p_MAP_DesThrDelt tables. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units g/s. Source: KtTPSD_dm_MAF_DesThrDelt at 0x078AEE in winols_astra.csv. Astra mapping/local notes: Confirmed HP Tuners Airflow Correlation P0068 Airflow Delta / [ECM] 14044 Maximum Airflow Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_dm_MAF_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07BFEE maps by table-to-table offset -0x1A50 to this Astra table at 0x07A59E; Damos source 0x078AEE maps by local TPSD shift +0x1AB0. 1x9 unsigned 16-bit big-endian, scaled X / 128.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -1584,7 +1584,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721E" flags="0x0">
     <title>MaximumMAPDeltaVsTPS_07A5B2</title>
-    <description>Confirmed HP Tuners Airflow Correlation P0068 MAP Delta / [ECM] 14045 Maximum MAP Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_p_MAP_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07C002 maps by table-to-table offset -0x1A50 to this Astra table at 0x07A5B2; Damos source 0x078B02 maps by local TPSD shift +0x1AB0. 1x9 signed 16-bit big-endian, scaled X / 128.</description>
+    <description>Purpose: Table of delta MAP values as a function of desired throttle position. The output of this table provides a delta MAP that if the measured minus the estimated MAP exceeds, is considered a fail. It is intended to be calibrated with smaller deltas at part throttle. Axes: X - Table of breakpoints for KtTPSD_dm_MAF_DesThrDelt and KtTPSD_p_MAP_DesThrDelt tables. Format: 1x9; 16-bit big-endian signed integer; Y = X * 0.0078125; units kPa. Source: KtTPSD_p_MAP_DesThrDelt at 0x078B02 in winols_astra.csv. Astra mapping/local notes: Confirmed HP Tuners Airflow Correlation P0068 MAP Delta / [ECM] 14045 Maximum MAP Delta vs. TPS equivalent. WinOLS/Damos symbol KtTPSD_p_MAP_DesThrDelt. Source Corsa/HP Tuners fingerprint at 0x07C002 maps by table-to-table offset -0x1A50 to this Astra table at 0x07A5B2; Damos source 0x078B02 maps by local TPSD shift +0x1AB0. 1x9 signed 16-bit big-endian, scaled X / 128.</description>
     <CATEGORYMEM index="0" category="5" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x7A5C6" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -1633,7 +1633,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7240" flags="0x0">
     <title>TurboOverspeedMaxPressureRatio_04D9BC</title>
-    <description>Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
+    <description>Purpose: Maximum compressor pressure ratio to avoid turbo overspeed or surge. A table in function of corrected massflow. Cal hint: Derived from the speed lines or surge line in the compressor map and adjusted in altitude test when observing measured turbo speed. Axes: X - Flow axis for the compressor map. Expressed in corrected massflow. Cal hint: Derived from the compressor map from the supplier. Format: 1x8; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KaBSTC_r_CompPressRatioMaxSpd at 0x047984 in winols_astra.csv. Astra mapping/local notes: Likely HP Tuners [ECM] 33491 Turbo Overspeed Max Pressure Ratio equivalent. BSTC KaBSTC_r_CompPressRatioMaxSpd family, 1x8 32-bit big-endian float pressure-ratio row with corrected mass airflow axis at 0x04DC44. Target axis matches the HPT screenshot; this Astra original row decodes as 3.00, 2.85, 2.675, 2.475, 2.275, 1.975, 1.575, 1.00, so the middle cells are higher than the provided HPT screenshot values.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x4DC44" mmedelementsizebits="32" mmedcolcount="8" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -1673,7 +1673,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7241" flags="0x0">
     <title>CompressorSurgeLimit_029858</title>
-    <description>Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
+    <description>Purpose: Turbo compressor bypass valve diagnosis surge area limit. Axes: X - Engine airflow axis for turbo compressor bypass valve diagnosis surge area limit. Format: 1x6; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtBSTD_r_SurgeLim at 0x029D0C in winols_astra.csv. Astra mapping/local notes: Confirmed HP Tuners [ECM] 33435 Compressor Surge Limit equivalent. BSTD KtBSTD_r_SurgeLim, 1x6 32-bit big-endian float pressure-ratio row with mass airflow axis at 0x029870. Exact match to screenshot values 1.12, 1.23, 1.60, 1.85, 2.46, 3.20 and axis 16, 18, 36, 41, 77, 103 g/s.</description>
     <CATEGORYMEM index="0" category="2" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedtypeflags="0x10000" mmedaddress="0x29870" mmedelementsizebits="32" mmedcolcount="6" mmedmajorstridebits="32" mmedminorstridebits="0" />
@@ -1713,7 +1713,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x721F" flags="0x0">
     <title>PowerEnrichEQRatio_06233E</title>
-    <description>Confirmed HP Tuners [ECM] 12400 Power Enrich EQ Ratio equivalent. FEQR KtFEQR_eqr_PE_RPM, 5x33 unsigned 16-bit big-endian table. Stored values are EQ ratio * 1024, with editor range 0 to 64. X axis is the generated CM_T_RPMa engine-speed axis; Y axis is manifold temperature. The companion E80 table follows at 0x06248C.</description>
+    <description>Purpose: The base equivalence ratio for power enrichment mode. Axes: Y - This table provides the manifold temperature axis breakpoints for KtFEQR_eqr_PE_RPM and KtFEQR_eqr_PE_RPM_E80. Format: 5x33; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PE_RPM at 0x05C142 in winols_astra.csv. Astra mapping/local notes: Confirmed HP Tuners [ECM] 12400 Power Enrich EQ Ratio equivalent. FEQR KtFEQR_eqr_PE_RPM, 5x33 unsigned 16-bit big-endian table. Stored values are EQ ratio * 1024, with editor range 0 to 64. X axis is the generated CM_T_RPMa engine-speed axis; Y axis is manifold temperature. The companion E80 table follows at 0x06248C.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1791,7 +1791,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7220" flags="0x0">
     <title>PowerEnrichEQRatioE80_06248C</title>
-    <description>Companion FEQR KtFEQR_eqr_PE_RPM_E80 table for HP Tuners [ECM] 12400 Power Enrich EQ Ratio family. 5x33 unsigned 16-bit big-endian table, stored as EQ ratio * 1024. This target BIN has the same values as PowerEnrichEQRatio_06233E.</description>
+    <description>Purpose: The base equivalence ratio for power enrichment mode when operating with 80 percent ethanol fuel. Axes: Y - This table provides the manifold temperature axis breakpoints for KtFEQR_eqr_PE_RPM and KtFEQR_eqr_PE_RPM_E80. Format: 5x33; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PE_RPM_E80 at 0x05C290 in winols_astra.csv. Astra mapping/local notes: Companion FEQR KtFEQR_eqr_PE_RPM_E80 table for HP Tuners [ECM] 12400 Power Enrich EQ Ratio family. 5x33 unsigned 16-bit big-endian table, stored as EQ ratio * 1024. This target BIN has the same values as PowerEnrichEQRatio_06233E.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1869,7 +1869,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7221" flags="0x0">
     <title>PowerEnrichmentMinRPM_062096</title>
-    <description>FEQR PE minimum enable RPM scalar near the confirmed HP Tuners [ECM] 12400 EQ-ratio cluster. Source/reference KeFEQR_n_PE_EngSpdThrsh plus local FEQR relocation. This Astra BIN decodes to 700 rpm; the screenshot example shows 8000 rpm.</description>
+    <description>Purpose: Engine speed threshold above which power enrichment can be enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_PE_EngSpdThrsh at 0x05BE9A in winols_astra.csv. Astra mapping/local notes: FEQR PE minimum enable RPM scalar near the confirmed HP Tuners [ECM] 12400 EQ-ratio cluster. Source/reference KeFEQR_n_PE_EngSpdThrsh plus local FEQR relocation. This Astra BIN decodes to 700 rpm; the screenshot example shows 8000 rpm.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1909,7 +1909,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7222" flags="0x0">
     <title>PowerEnrichmentEnableTorquePct_0620AE</title>
-    <description>Likely HP Tuners [ECM] 12418 Power Enrichment Enable Torque %. FEQR KtFEQR_Pct_PE_LoadThrsh, 1x17 unsigned 16-bit big-endian table, stored as percent / 0.001525878906. The Astra target values currently decode as all 0%, while the screenshot example shows 97%.</description>
+    <description>Purpose: Percent maximum torque threshold above which power enrichment will be enabled. Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.001525878906; units %. Source: KtFEQR_Pct_PE_LoadThrsh at 0x05BEB2 in winols_astra.csv. Astra mapping/local notes: Likely HP Tuners [ECM] 12418 Power Enrichment Enable Torque %. FEQR KtFEQR_Pct_PE_LoadThrsh, 1x17 unsigned 16-bit big-endian table, stored as percent / 0.001525878906. The Astra target values currently decode as all 0%, while the screenshot example shows 97%.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -1967,7 +1967,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7223" flags="0x0">
     <title>PowerEnrichmentEnablePedalPct_0620D2</title>
-    <description>Power Enrichment Enable Pedal threshold vs engine speed. FEQR KtFEQR_Pct_PE_ThrotThrshEngSpd, 1x17 unsigned 16-bit big-endian table. This Astra BIN decodes as 80% across the row.</description>
+    <description>Purpose: Engine speed contribution to throttle area threshold, above which power enrichment can be established. Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.001525878906; units %. Source: KtFEQR_Pct_PE_ThrotThrshEngSpd at 0x05BED6 in winols_astra.csv. Astra mapping/local notes: Power Enrichment Enable Pedal threshold vs engine speed. FEQR KtFEQR_Pct_PE_ThrotThrshEngSpd, 1x17 unsigned 16-bit big-endian table. This Astra BIN decodes as 80% across the row.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2025,7 +2025,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7224" flags="0x0">
     <title>PowerEnrichmentDelayRPM_0620A0</title>
-    <description>Power Enrichment Delay RPM high threshold. FEQR KfFEQR_n_PE_DelayRPM_HiThrsh; this Astra BIN decodes to 6000 rpm.</description>
+    <description>Purpose: PE delay will be bypassed when engine speed is above this threshold. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KfFEQR_n_PE_DelayRPM_HiThrsh at 0x05BEA4 in winols_astra.csv. Astra mapping/local notes: Power Enrichment Delay RPM high threshold. FEQR KfFEQR_n_PE_DelayRPM_HiThrsh; this Astra BIN decodes to 6000 rpm.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2065,7 +2065,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7225" flags="0x0">
     <title>PowerEnrichmentDelayTorquePct_0625D8</title>
-    <description>Power Enrichment delay predicted-torque/load threshold. DAMOS KeFEQR_Pct_PE_DelayLoadThrsh; source 0x05C3DC -&gt; Astra 0x0625D8 by the confirmed +0x61FC FEQR PE relocation. 32-bit big-endian float; this Astra BIN decodes to 100%.</description>
+    <description>Purpose: The maximum predicted torque level above which the PE delay conditions will be bypassed. Valid Range: 0-100% Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeFEQR_Pct_PE_DelayLoadThrsh at 0x05C3DC in winols_astra.csv. Astra mapping/local notes: Power Enrichment delay predicted-torque/load threshold. DAMOS KeFEQR_Pct_PE_DelayLoadThrsh; source 0x05C3DC -&gt; Astra 0x0625D8 by the confirmed +0x61FC FEQR PE relocation. 32-bit big-endian float; this Astra BIN decodes to 100%.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2105,7 +2105,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7226" flags="0x0">
     <title>PowerEnrichmentDelayStep_0620F8</title>
-    <description>Power Enrichment delay step/adjust table from FEQR KtFEQR_t_PE_DelayAdjust. 17x17 unsigned 16-bit big-endian table, stored as time / 0.05; screenshot-visible values around 0.100 match raw value 2.</description>
+    <description>Purpose: Amount the PE Delay counter will be decremented when PE conditions are met. Format: 17x17; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KtFEQR_t_PE_DelayAdjust at 0x05BEFC in winols_astra.csv. Astra mapping/local notes: Power Enrichment delay step/adjust table from FEQR KtFEQR_t_PE_DelayAdjust. 17x17 unsigned 16-bit big-endian table, stored as time / 0.05; screenshot-visible values around 0.100 match raw value 2.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2179,7 +2179,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7227" flags="0x0">
     <title>PowerEnrichmentRampIn_0620A6</title>
-    <description>Power Enrichment ramp-in scalar. FEQR KfFEQR_eqr_PE_RampIn; this Astra BIN decodes to approximately 0.1000.</description>
+    <description>Purpose: Step change to power enrichment equivalance ratio as the equivalance ratio is ramped UP. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KfFEQR_eqr_PE_RampIn at 0x05BEAA in winols_astra.csv. Astra mapping/local notes: Power Enrichment ramp-in scalar. FEQR KfFEQR_eqr_PE_RampIn; this Astra BIN decodes to approximately 0.1000.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2219,7 +2219,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7230" flags="0x0">
     <title>PowerEnrichmentRampOut_0620A8</title>
-    <description>Power Enrichment ramp-out companion scalar. FEQR KfFEQR_eqr_PE_RampOut; this Astra BIN decodes to approximately 0.0100.</description>
+    <description>Purpose: Step change to power enrichment equivalance ratio as the equivalance ratio is ramped DOWN. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KfFEQR_eqr_PE_RampOut at 0x05BEAC in winols_astra.csv. Astra mapping/local notes: Power Enrichment ramp-out companion scalar. FEQR KfFEQR_eqr_PE_RampOut; this Astra BIN decodes to approximately 0.0100.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2259,7 +2259,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7228" flags="0x0">
     <title>KnockEnrichmentAirmassHyst_05FB44</title>
-    <description>Knock Enrichment / FEQR pre-ignition protection airmass hysteresis. Stored as 0.125 mg/count; displayed in grams. This Astra BIN decodes to 0.030 g.</description>
+    <description>Purpose: Mass of air per cylinder which is subtracted from KtFEQR_m_APC_PreIgnProtectHigh to determine the pre ignition protection air per cylinder low threshold VeFEQR_m_APC_PreIgnProtectLow. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units mg. Source: KeFEQR_m_APC_PreIgnProtectHyst at 0x059804 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment / FEQR pre-ignition protection airmass hysteresis. Stored as 0.125 mg/count; displayed in grams. This Astra BIN decodes to 0.030 g.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2299,7 +2299,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7229" flags="0x0">
     <title>KnockEnrichmentEnableRPM_05FB46</title>
-    <description>Knock Enrichment enable RPM threshold. FEQR pre-ignition protection scalar; this Astra BIN decodes to 3200 rpm.</description>
+    <description>Purpose: Engine speed threshold below which pre ignition protection will be enabled if it is currently disabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_EngSpdPreIgnEnable at 0x059806 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment enable RPM threshold. FEQR pre-ignition protection scalar; this Astra BIN decodes to 3200 rpm.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2339,7 +2339,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722A" flags="0x0">
     <title>KnockEnrichmentRPMHyst_05FB48</title>
-    <description>Knock Enrichment RPM hysteresis. FEQR pre-ignition protection scalar; this Astra BIN decodes to 200 rpm.</description>
+    <description>Purpose: Engine speed hysterisis which is added to KeFEQR_n_EngSpdPreIgnEnable to determine the engine speed threshold below which pre ignition protection will be disabled if it is currently enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_EngSpdPreIgnHyst at 0x059808 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment RPM hysteresis. FEQR pre-ignition protection scalar; this Astra BIN decodes to 200 rpm.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2379,7 +2379,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722B" flags="0x0">
     <title>KnockEnrichmentEnableECT_05FB4A</title>
-    <description>Knock Enrichment enable coolant-temperature threshold. Signed 16-bit big-endian with 1/128 deg C scaling; this Astra BIN decodes to 60 deg C.</description>
+    <description>Purpose: Engine coolant temperature threshold above which pre ignition protection can be enabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KeFEQR_T_EngCoolPreIgnProtect at 0x05980A in winols_astra.csv. Astra mapping/local notes: Knock Enrichment enable coolant-temperature threshold. Signed 16-bit big-endian with 1/128 deg C scaling; this Astra BIN decodes to 60 deg C.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2419,7 +2419,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722C" flags="0x0">
     <title>KnockEnrichmentDelayStep_05FB50</title>
-    <description>Knock Enrichment / FEQR pre-ignition protection delay-step table. Two 0x0009 dimension words precede the table at 0x05FB4C/0x05FB4E; data starts at 0x05FB50.</description>
+    <description>Purpose: Time increment that is subtracted from VeFEQR_t_PreIgnProtectDelay each execution cycle when the pre ignition protection enable conditions are met. Axes: X - Defines the breakpoints of the engine speed axis for KtFEQR_m_APC_PreIgnProtectHigh, KtFEQR_t_PreIgnProtectDlyAdj and KtFEQR_eqr_PreIgnProtect. Y - Defines the breakpoints of the air per cylinder axis for KtFEQR_m_APC_PreIgnProtectHigh, KtFEQR_t_PreIgnProtectDlyAdj and KtFEQR_eqr_PreIgnProtect. Format: 9x9; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KtFEQR_t_PreIgnProtectDlyAdj at 0x059810 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment / FEQR pre-ignition protection delay-step table. Two 0x0009 dimension words precede the table at 0x05FB4C/0x05FB4E; data starts at 0x05FB50.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2479,7 +2479,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722D" flags="0x0">
     <title>KnockEnrichmentEnableDelay_05FBF2</title>
-    <description>Knock Enrichment enable delay scalar. FEQR pre-ignition protection delay maximum; this Astra BIN decodes to 60.0 in the HPT display units.</description>
+    <description>Purpose: Threshold which determines the maximum delay time required for the pre ignition protection conditions to be met before pre ignition protection is enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KeFEQR_t_PreIgnProtectDelayMax at 0x0598B2 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment enable delay scalar. FEQR pre-ignition protection delay maximum; this Astra BIN decodes to 60.0 in the HPT display units.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2519,7 +2519,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722E" flags="0x0">
     <title>KnockEnrichmentEQRatio_05FBF8</title>
-    <description>Knock Enrichment / FEQR pre-ignition protection EQ-ratio table. Two 0x0009 dimension words precede the table at 0x05FBF4/0x05FBF6; data starts at 0x05FBF8. The separate alcohol/E80 equivalent has not been uniquely isolated yet in this Astra BIN.</description>
+    <description>Purpose: Desired equivalence ratio for E0 when pre ignition protection mode is active. Axes: X - Defines the breakpoints of the engine speed axis for KtFEQR_m_APC_PreIgnProtectHigh, KtFEQR_t_PreIgnProtectDlyAdj and KtFEQR_eqr_PreIgnProtect. Y - Defines the breakpoints of the air per cylinder axis for KtFEQR_m_APC_PreIgnProtectHigh, KtFEQR_t_PreIgnProtectDlyAdj and KtFEQR_eqr_PreIgnProtect. Format: 9x9; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PreIgnProtect at 0x0598B8 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment / FEQR pre-ignition protection EQ-ratio table. Two 0x0009 dimension words precede the table at 0x05FBF4/0x05FBF6; data starts at 0x05FBF8. The separate alcohol/E80 equivalent has not been uniquely isolated yet in this Astra BIN.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x5FB1E" mmedelementsizebits="16" mmedcolcount="9" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2579,7 +2579,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x722F" flags="0x0">
     <title>KnockEnrichmentRampIn_05FC9C</title>
-    <description>Knock Enrichment ramp-in scalar. FEQR pre-ignition protection ramp-in; this Astra BIN decodes to approximately 0.0060.</description>
+    <description>Purpose: Determines the rate at which the pre ignition equivalence ratio is ramped in when pre ignition protection becomes active. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KeFEQR_eqr_PreIgnRampIn at 0x059A02 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment ramp-in scalar. FEQR pre-ignition protection ramp-in; this Astra BIN decodes to approximately 0.0060.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2619,7 +2619,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7231" flags="0x0">
     <title>KnockEnrichmentRampOut_05FC9A</title>
-    <description>Knock Enrichment ramp-out scalar. FEQR pre-ignition protection ramp-out; this Astra BIN decodes to approximately 0.0300.</description>
+    <description>Purpose: Determines the rate at which the pre ignition equivalence ratio is ramped out when pre ignition protection becomes inactive. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KeFEQR_eqr_PreIgnRampOut at 0x059A00 in winols_astra.csv. Astra mapping/local notes: Knock Enrichment ramp-out scalar. FEQR pre-ignition protection ramp-out; this Astra BIN decodes to approximately 0.0300.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2728,7 +2728,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7250" flags="0x0">
     <title>SparkHighOctaneBase_07394D</title>
-    <description>High-confidence HP Tuners High Octane base spark equivalent. WinOLS KtSPRK_phi_BaseHiOctane relocates to 0x07394D in this Astra BIN. 33x33 signed byte table, 0.5 deg/count, using RPM33 axis at 0x073900 and air-per-cylinder axis at 0x077360.</description>
+    <description>Purpose: Base Maximum Brake Torque spark advance table which most likely is calibrated to be knock limited. Axes: X - Calibratable table axis used when rescaling engine speed. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x33; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_BaseHiOctane at 0x0700E1 in winols_astra.csv. Astra mapping/local notes: High-confidence HP Tuners High Octane base spark equivalent. WinOLS KtSPRK_phi_BaseHiOctane relocates to 0x07394D in this Astra BIN. 33x33 signed byte table, 0.5 deg/count, using RPM33 axis at 0x073900 and air-per-cylinder axis at 0x077360.</description>
     <CATEGORYMEM index="0" category="8" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2770,7 +2770,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7251" flags="0x0">
     <title>SparkLowOctaneBase_073FC5</title>
-    <description>High-confidence HP Tuners Low Octane base spark equivalent. WinOLS KtSPRK_phi_BaseLowOctane relocates to 0x073FC5. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes.</description>
+    <description>Purpose: Low octane base spark table as af(RPM,Gramair/cyl). Table values are byte sized with a range of -64 to 63.5 deg,res 0.5deg Axes: X - Calibratable table axis used when rescaling engine speed. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x33; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_BaseLowOctane at 0x070759 in winols_astra.csv. Astra mapping/local notes: High-confidence HP Tuners Low Octane base spark equivalent. WinOLS KtSPRK_phi_BaseLowOctane relocates to 0x073FC5. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes.</description>
     <CATEGORYMEM index="0" category="8" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2812,7 +2812,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7252" flags="0x0">
     <title>SparkSmoothingRunFilterRefs_075C36</title>
-    <description>Closest local equivalent for Spark Smoothing. WinOLS KeSPRK_Cnt_RunSprkFilterRefs, desired number of lores events to filter spark. Scalar unsigned 16-bit big-endian count; this Astra BIN decodes to 20.</description>
+    <description>Purpose: Desired number of lores events to filter spark Format: 1x1; 16-bit big-endian unsigned integer; Y = X; units count. Source: KeSPRK_Cnt_RunSprkFilterRefs at 0x0723CA in winols_astra.csv. Astra mapping/local notes: Closest local equivalent for Spark Smoothing. WinOLS KeSPRK_Cnt_RunSprkFilterRefs, desired number of lores events to filter spark. Scalar unsigned 16-bit big-endian count; this Astra BIN decodes to 20.</description>
     <CATEGORYMEM index="0" category="13" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2852,7 +2852,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7253" flags="0x0">
     <title>SparkFlexFuel_075D6F</title>
-    <description>Likely HP Tuners Flex Fuel spark correction. WinOLS KtSPRK_phi_FFS relocates to 0x075D6F. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes. Stock Astra target is zero-filled.</description>
+    <description>Purpose: Flex fuel base spark table to support up to 85% ethanol as a f(RPM,Load).byte sized values with a range of -64 to 63.5deg, res 0.5deg Axes: X - Calibratable table axis used when rescaling engine speed. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x33; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_FFS at 0x072503 in winols_astra.csv. Astra mapping/local notes: Likely HP Tuners Flex Fuel spark correction. WinOLS KtSPRK_phi_FFS relocates to 0x075D6F. 33x33 signed byte table, 0.5 deg/count, shared RPM33 and air-per-cylinder axes. Stock Astra target is zero-filled.</description>
     <CATEGORYMEM index="0" category="9" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2894,7 +2894,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7254" flags="0x0">
     <title>SparkFlexFuelEqRatio_075C3F</title>
-    <description>Likely HP Tuners Flex Fuel Mult / EQ-ratio related spark correction. WinOLS KtSPRK_phi_FFS_EqRatio1 relocates to 0x075C3F. 17x17 signed byte table, 0.5 deg/count, RPM by EQ Ratio. Stock Astra target is zero-filled.</description>
+    <description>Purpose: Flex fuel ratio spark to support up to 85% ethanol as a f(RPM,EqRatio). Table values are byte sized with a range of -64 - 63.5 deg and a res of 0.5 deg. EqRatio has a scaleable axis called KnSPRK_eqr_EqRatioBkpts. Axes: Y - Calibratable table axis used when rescaling equivalence ratio. 17 breakpoints. Format: 17x17; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_FFS_EqRatio1 at 0x0723D3 in winols_astra.csv. Astra mapping/local notes: Likely HP Tuners Flex Fuel Mult / EQ-ratio related spark correction. WinOLS KtSPRK_phi_FFS_EqRatio1 relocates to 0x075C3F. 17x17 signed byte table, 0.5 deg/count, RPM by EQ Ratio. Stock Astra target is zero-filled.</description>
     <CATEGORYMEM index="0" category="9" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -2952,7 +2952,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7255" flags="0x0">
     <title>SparkVCPSpark_07463D</title>
-    <description>High-confidence HP Tuners VCP Spark equivalent. WinOLS KtSPRK_phi_Phaser relocates to 0x07463D. 33x17 signed byte table, 0.5 deg/count, RPM17 by air-per-cylinder.</description>
+    <description>Purpose: Cam phaser spark table Axes: Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x17; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_Phaser at 0x070DD1 in winols_astra.csv. Astra mapping/local notes: High-confidence HP Tuners VCP Spark equivalent. WinOLS KtSPRK_phi_Phaser relocates to 0x07463D. 33x17 signed byte table, 0.5 deg/count, RPM17 by air-per-cylinder.</description>
     <CATEGORYMEM index="0" category="10" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -2994,7 +2994,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7256" flags="0x0">
     <title>SparkHumidityBaseMax_Candidate_076843</title>
-    <description>Candidate HP Tuners Humidity Base / humidity max spark table from WinOLS KtSPRK_phi_HumidityMax. Structural relocation from the local SPRK humidity/minimum-spark cluster gives 0x076843, 33x33 signed byte, 0.5 deg/count. This one is not confirmed: decoded values are implausibly wide, so verify against an HPT edit fingerprint before trusting it.</description>
+    <description>Purpose: Maximum humidity for a given engine rpm and air per cyl. Scalable axis via KnSPKR_n_Engine and KnSPKR_m_AirPerCylSpark. Axes: X - Calibratable table axis used when rescaling engine speed. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x33; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_HumidityMax at 0x073A77 in winols_astra.csv. Astra mapping/local notes: Candidate HP Tuners Humidity Base / humidity max spark table from WinOLS KtSPRK_phi_HumidityMax. Structural relocation from the local SPRK humidity/minimum-spark cluster gives 0x076843, 33x33 signed byte, 0.5 deg/count. This one is not confirmed: decoded values are implausibly wide, so verify against an HPT edit fingerprint before trusting it.</description>
     <CATEGORYMEM index="0" category="11" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x73900" mmedelementsizebits="16" mmedcolcount="33" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -3036,7 +3036,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7257" flags="0x0">
     <title>SparkVCPHumidityAdderDry_Candidate_076C87</title>
-    <description>Candidate HP Tuners VCP Humidity Adder Dry. Mapped from WinOLS KtSPRK_phi_PhaserHumidMin using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
+    <description>Purpose: Minimum phaser humidity for a given engine rpm and air per cyl. Scalable axis via KnSPRK_n_Engine17 and KnSPKR_m_AirPerCylSpark. Axes: X - Calibratable table axis used when rescaling engine speed. 17 breakpoints. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x17; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_PhaserHumidMin at 0x073EBB in winols_astra.csv. Astra mapping/local notes: Candidate HP Tuners VCP Humidity Adder Dry. Mapped from WinOLS KtSPRK_phi_PhaserHumidMin using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
     <CATEGORYMEM index="0" category="10" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -3078,7 +3078,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7258" flags="0x0">
     <title>SparkVCPHumidityAdderWet_Candidate_076EBB</title>
-    <description>Candidate HP Tuners VCP Humidity Adder Wet. Mapped from WinOLS KtSPRK_phi_PhaserHumidMax using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
+    <description>Purpose: Maximum phaser humidity for a given engine rpm and air per cyl. Scalable axis via KnSPRK_n_Engine17 and KnSPKR_m_AirPerCylSpark. Axes: X - Calibratable table axis used when rescaling engine speed. 17 breakpoints. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x17; 8-bit signed integer; Y = X * 0.5; units deg. Source: KtSPRK_phi_PhaserHumidMax at 0x0740EF in winols_astra.csv. Astra mapping/local notes: Candidate HP Tuners VCP Humidity Adder Wet. Mapped from WinOLS KtSPRK_phi_PhaserHumidMax using the same local SPRK humidity/minimum-spark cluster relocation. 33x17 signed byte table, 0.5 deg/count. Stock Astra target is zero-filled; verify with HPT before using as confirmed.</description>
     <CATEGORYMEM index="0" category="10" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -3120,7 +3120,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7259" flags="0x0">
     <title>MinimumSparkBase_07895E</title>
-    <description>High-confidence HP Tuners Minimum Spark Base equivalent. WinOLS KtSPRK_phi_MinSpkAdvLimitSht relocates to 0x07895E. 33x17 signed 16-bit big-endian table, 1/128 deg/count, RPM17 by air-per-cylinder.</description>
+    <description>Purpose: Minimum spark limit short. Axes: X - Calibratable table axis used when rescaling engine speed. 17 breakpoints. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x17; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg. Source: KtSPRK_phi_MinSpkAdvLimitSht at 0x075B92 in winols_astra.csv. Astra mapping/local notes: High-confidence HP Tuners Minimum Spark Base equivalent. WinOLS KtSPRK_phi_MinSpkAdvLimitSht relocates to 0x07895E. 33x17 signed 16-bit big-endian table, 1/128 deg/count, RPM17 by air-per-cylinder.</description>
     <CATEGORYMEM index="0" category="12" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -3162,7 +3162,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x725A" flags="0x0">
     <title>MinimumSparkLongTerm_Candidate_078E2A</title>
-    <description>Candidate HP Tuners Minimum Spark Long Term equivalent. The direct expected KtSPRK_phi_MinSpkAdvLimitLng address at 0x078DC4 decodes into mixed data; 0x078E2A is the clean local 33x17 signed 16-bit table in the same cluster and is all -15 deg in this Astra BIN. Treat as candidate until HPT edit fingerprint confirms it.</description>
+    <description>Purpose: Minimum spark limit long. Axes: X - Calibratable table axis used when rescaling engine speed. 17 breakpoints. Y - Scalable axis with MAFR_m_AirPerCylSpark input. Min. range 80 to 1360 mg Format: 33x17; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg. Source: KtSPRK_phi_MinSpkAdvLimitLng at 0x075FF8 in winols_astra.csv. Astra mapping/local notes: Candidate HP Tuners Minimum Spark Long Term equivalent. The direct expected KtSPRK_phi_MinSpkAdvLimitLng address at 0x078DC4 decodes into mixed data; 0x078E2A is the clean local 33x17 signed 16-bit table in the same cluster and is all -15 deg in this Astra BIN. Treat as candidate until HPT edit fingerprint confirms it.</description>
     <CATEGORYMEM index="0" category="12" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedaddress="0x784AC" mmedelementsizebits="16" mmedcolcount="17" mmedmajorstridebits="16" mmedminorstridebits="0" />
@@ -3204,7 +3204,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x725B" flags="0x0">
     <title>SparkFlexFuelBlendFactor_075D62</title>
-    <description>Flex-fuel blend factor companion from WinOLS KtSPRK_Scl_FFS_BlendFactor. 1x5 unsigned 16-bit big-endian ratio row at 0x075D62, scaled by 1/65536. Included as a nearby Flex Fuel spark support table; stock Astra target is zero-filled.</description>
+    <description>Purpose: Spark flex fuel blend Factor based on the actual ethanol fuel composition Axes: X - Non linearly scaled breakpoints for determining axis consumed by other rings as well as E85R. Input object into this lookup is NeE85G_Pct_FFS_CompAtEng. Format: 1x5; 16-bit big-endian unsigned integer; Y = X * 0.000015258789; units ratio. Source: KtSPRK_Scl_FFS_BlendFactor at 0x0724F6 in winols_astra.csv. Astra mapping/local notes: Flex-fuel blend factor companion from WinOLS KtSPRK_Scl_FFS_BlendFactor. 1x5 unsigned 16-bit big-endian ratio row at 0x075D62, scaled by 1/65536. Included as a nearby Flex Fuel spark support table; stock Astra target is zero-filled.</description>
     <CATEGORYMEM index="0" category="9" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3249,7 +3249,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7260" flags="0x0">
     <title>TransOutputMax_021648</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Trans Output Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_TransOutputTorqLimit. This Astra BIN decodes to 100000 Nm, while the provided HPT screenshot shows 131072 Nm.</description>
+    <description>Purpose: Maximum torque that can be present at the trans output shaft before damage may occur Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_TransOutputTorqLimit at 0x021D28 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Trans Output Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_TransOutputTorqLimit. This Astra BIN decodes to 100000 Nm, while the provided HPT screenshot shows 131072 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3289,7 +3289,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7261" flags="0x0">
     <title>FrontAxleMax_021638</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontAxleTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
+    <description>Purpose: Maximum torque that can be present at the front axle before damage may occur Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_FrontAxleTorqLimit at 0x021D18 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontAxleTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3329,7 +3329,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7262" flags="0x0">
     <title>FrontAxleMax4WDLow_021630</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoFrontAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
+    <description>Purpose: Front axle torque limit which is used in 4 wheel low mode instead of the normal limit KeTSXC_M_FrontAxleTorqLimit Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_4LoFrontAxleTorqLimit at 0x021D10 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoFrontAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3369,7 +3369,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7263" flags="0x0">
     <title>FrontPropshaftMax_02163C</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
+    <description>Purpose: Maximum torque that can be present at the front driveshaft before damage may occur Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_FrontDrvShftTorqLimit at 0x021D1C in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Front Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_FrontDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3409,7 +3409,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7264" flags="0x0">
     <title>RearAxleMax_021640</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearAxleTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 2000 Nm.</description>
+    <description>Purpose: Maximum torque that can be present at the rear axle before damage may occur Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_RearAxleTorqLimit at 0x021D20 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearAxleTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 2000 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3449,7 +3449,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7265" flags="0x0">
     <title>RearAxleMax4WDLow_021634</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoRearAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
+    <description>Purpose: Rear axle torque limit which is used in 4 wheel low mode instead of the normal limit KeTSXC_M_FrontAxleTorqLimit Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_4LoRearAxleTorqLimit at 0x021D14 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Axle Max 4WD Low. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_4LoRearAxleTorqLimit. This Astra BIN decodes to 131072 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3489,7 +3489,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7266" flags="0x0">
     <title>RearPropshaftMax_021644</title>
-    <description>High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 500 Nm.</description>
+    <description>Purpose: Maximum torque that can be present at the rear driveshaft before damage may occur Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KeTSXC_M_RearDrvShftTorqLimit at 0x021D24 in winols_astra.csv. Astra mapping/local notes: High-confidence TSXC drivetrain torque scalar, equivalent to HP Tuners Rear Propshaft Max. Target address found from the local TSXC driveline-limit island; source hint KeTSXC_M_RearDrvShftTorqLimit. This Astra BIN decodes to 100000 Nm; the provided HPT screenshot shows 500 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3529,7 +3529,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7267" flags="0x0">
     <title>BrakeTorqueLimit_MaxDriverIntended_047CE4</title>
-    <description>High-confidence BRKC scalar from KeBRKC_M_MaxDrvIntBrkTorq, used to scale Driver Intended Total Brake Torque. This is the best current match for the brake torque limit scalar found near the DTRC driver-demand axis island; it decodes to 6000 Nm.</description>
+    <description>Purpose: Scaler calibration used to scale torque value receied in serial data signal Driver Intended Total Brake Torque Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units Nm. Source: KeBRKC_M_MaxDrvIntBrkTorq at 0x03F620 in winols_astra.csv. Astra mapping/local notes: High-confidence BRKC scalar from KeBRKC_M_MaxDrvIntBrkTorq, used to scale Driver Intended Total Brake Torque. This is the best current match for the brake torque limit scalar found near the DTRC driver-demand axis island; it decodes to 6000 Nm.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3569,7 +3569,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727B" flags="0x0">
     <title>BrakeTorqueLimitMult_CandidateA_50268</title>
-    <description>Candidate BTRC brake torque limit multiplier copy A. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <description>Purpose: Scalar used to lower the brake torque limit as a function of accelerator pedal travel and vehicle speed. This feature is only activated when an OBD compliant Extended Brake Signal is present. Format: 3x9; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtBTRC_K_TorqLimit_ExtBrk_OBD at 0x0488CC in winols_astra.csv. Astra mapping/local notes: Candidate BTRC brake torque limit multiplier copy A. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3615,7 +3615,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727C" flags="0x0">
     <title>BrakeTorqueLimitMult_CandidateB_507F4</title>
-    <description>Candidate BTRC brake torque limit multiplier copy B. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <description>Purpose: Scalar used to lower the brake torque limit as a function of accelerator pedal travel and vehicle speed. This feature is only activated when an OBD compliant Extended Brake Signal is present. Format: 3x9; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtBTRC_K_TorqLimit_ExtBrk_OBD at 0x0488CC in winols_astra.csv. Astra mapping/local notes: Candidate BTRC brake torque limit multiplier copy B. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3661,7 +3661,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727D" flags="0x0">
     <title>BrakeTorqueLimitMult_CandidateC_510EC</title>
-    <description>Candidate BTRC brake torque limit multiplier copy C. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
+    <description>Purpose: Scalar used to lower the brake torque limit as a function of accelerator pedal travel and vehicle speed. This feature is only activated when an OBD compliant Extended Brake Signal is present. Format: 3x9; 32-bit big-endian IEEE-754 float; Y = X; units unitless. Source: KtBTRC_K_TorqLimit_ExtBrk_OBD at 0x0488CC in winols_astra.csv. Astra mapping/local notes: Candidate BTRC brake torque limit multiplier copy C. Damos source hint KtBTRC_K_TorqLimit_ExtBrk_OBD is a 3x9 float table indexed by accelerator pedal percent and vehicle speed; Astra has three identical local 3x9 multiplier-shaped copies with stock rows 0.5000, 0.4375, and 0.3750. Use HPT edit fingerprints to determine which copy is active.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3707,7 +3707,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727E" flags="0x0">
     <title>TCS_MaxTorqueDecrement_051D90</title>
-    <description>High-confidence DTMC scalar for KeDTMC_M_TCSMaxDecrTorq, the maximum torque decrement available to traction control. The Astra stock value is approximately 65535 Nm. Setting this to 0 is the most direct ECM-side method found to prevent a positive TCS engine-torque decrement; verify behavior in logs before relying on it. This does not disable brake intervention performed inside the EBCM.</description>
+    <description>Purpose: The max torque decrement for the traction control. Format: 1x1; 32-bit big-endian IEEE-754 float; Y = X; units Nm. Source: KeDTMC_M_TCSMaxDecrTorq at 0x04A75C in winols_astra.csv. Astra mapping/local notes: High-confidence DTMC scalar for KeDTMC_M_TCSMaxDecrTorq, the maximum torque decrement available to traction control. The Astra stock value is approximately 65535 Nm. Setting this to 0 is the most direct ECM-side method found to prevent a positive TCS engine-torque decrement; verify behavior in logs before relying on it. This does not disable brake intervention performed inside the EBCM.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3741,7 +3741,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x727F" flags="0x0">
     <title>TCS_TorqueReductionEnableECT_04B5B4</title>
-    <description>High-confidence TCSC coolant gate from KfTCSC_T_TractionCoolEnbl. Traction-control torque reduction is allowed only above this coolant temperature. Stock is -255 deg C, effectively always enabled. Setting this near +255 deg C should inhibit ECM TCS torque reduction during normal operation. This does not disable EBCM brake-based traction or stability intervention.</description>
+    <description>Purpose: Coolant temperature above which torque reduction for traction control will be allowed Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfTCSC_T_TractionCoolEnbl at 0x044944 in winols_astra.csv. Astra mapping/local notes: High-confidence TCSC coolant gate from KfTCSC_T_TractionCoolEnbl. Traction-control torque reduction is allowed only above this coolant temperature. Stock is -255 deg C, effectively always enabled. Setting this near +255 deg C should inhibit ECM TCS torque reduction during normal operation. This does not disable EBCM brake-based traction or stability intervention.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3775,7 +3775,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7280" flags="0x0">
     <title>TCS_MinEngineRunTime_04B5BC</title>
-    <description>High-confidence TCSC run-time gate from KfTCSC_t_MinTC_EngRunTime. TCS torque reduction is not permitted until this much engine run time has elapsed. Stock is 0 s in this Astra. The 16-bit format limits the maximum delay to about 409.59 s, so this is a temporary inhibit and diagnostic control, not a permanent disable.</description>
+    <description>Purpose: Minumum engine run time that must elapse before Traction Control Torque Reduction algorithms can be permitted to operate Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.00625; units s. Source: KfTCSC_t_MinTC_EngRunTime at 0x04494C in winols_astra.csv. Astra mapping/local notes: High-confidence TCSC run-time gate from KfTCSC_t_MinTC_EngRunTime. TCS torque reduction is not permitted until this much engine run time has elapsed. Stock is 0 s in this Astra. The 16-bit format limits the maximum delay to about 409.59 s, so this is a temporary inhibit and diagnostic control, not a permanent disable.</description>
     <CATEGORYMEM index="0" category="3" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3845,7 +3845,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7270" flags="0x0">
     <title>DesiredECT_TMSRequest_RawPairs_077B56</title>
-    <description>Thermal-controller Desired ECT request candidate from KaTHMC_T_TMS_EngCoolReq[x]. Exact OS12646746 reference block at 0x0781B8 relocates to this Astra BIN at 0x077B56. Storage is exposed as two 16-bit raw words per logical value because the reference XDF/WinOLS entry consumes 32 bits per cell, but the bytes are 00xx word pairs rather than normal IEEE floats.</description>
+    <description>Purpose: TBD - Description will be added for final release Format: 1x24; 32-bit big-endian IEEE-754 float; Y = X; units deg C. Source: KaTHMC_T_TMS_EngCoolReq[x] at 0x0781B8 in winols_astra.csv. Astra mapping/local notes: Thermal-controller Desired ECT request candidate from KaTHMC_T_TMS_EngCoolReq[x]. Exact OS12646746 reference block at 0x0781B8 relocates to this Astra BIN at 0x077B56. Storage is exposed as two 16-bit raw words per logical value because the reference XDF/WinOLS entry consumes 32 bits per cell, but the bytes are 00xx word pairs rather than normal IEEE floats.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3879,7 +3879,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7271" flags="0x0">
     <title>ColdMaxDesiredECT_079CB0</title>
-    <description>Cold Max Desired ECT from KaTHMC_T_EngCoolLoAmbMaxLim[x]. The packed OS12646746 block at 0x078164 relocates to 0x077B02, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CB0.</description>
+    <description>Purpose: Low limitation:;Array for coolant temperature max limit selection during cold ambient conditions. Format: 1x7; 32-bit big-endian IEEE-754 float; Y = X; units deg C. Source: KaTHMC_T_EngCoolLoAmbMaxLim[x] at 0x078164 in winols_astra.csv. Astra mapping/local notes: Cold Max Desired ECT from KaTHMC_T_EngCoolLoAmbMaxLim[x]. The packed OS12646746 block at 0x078164 relocates to 0x077B02, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CB0.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3919,7 +3919,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7272" flags="0x0">
     <title>ColdMinDesiredECT_079CCC</title>
-    <description>Cold Min Desired ECT from KaTHMC_T_EngCoolLoLim[x]. The packed OS12646746 block at 0x078180 relocates to 0x077B1E, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CCC.</description>
+    <description>Purpose: Low limitation:;Array for coolant temperature min limit selection during cold ambient conditions. Format: 1x7; 32-bit big-endian IEEE-754 float; Y = X; units deg C. Source: KaTHMC_T_EngCoolLoLim[x] at 0x078180 in winols_astra.csv. Astra mapping/local notes: Cold Min Desired ECT from KaTHMC_T_EngCoolLoLim[x]. The packed OS12646746 block at 0x078180 relocates to 0x077B1E, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079CCC.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -3959,7 +3959,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7273" flags="0x0">
     <title>ColdDesiredECTThreshold_079D18</title>
-    <description>Cold Desired ECT threshold/hysteresis row from KaTHMC_T_EngCoolTrshLo[x]. The packed OS12646746 block at 0x07819C relocates to 0x077B3A, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079D18.</description>
+    <description>Purpose: Array of temperature hysteresis pairs for determination of cold ambient detection enumerator in desired coolant temperature Low Limitation function. Format: 1x7; 32-bit big-endian IEEE-754 float; Y = X; units deg C. Source: KaTHMC_T_EngCoolTrshLo[x] at 0x07819C in winols_astra.csv. Astra mapping/local notes: Cold Desired ECT threshold/hysteresis row from KaTHMC_T_EngCoolTrshLo[x]. The packed OS12646746 block at 0x07819C relocates to 0x077B3A, but the editable Astra engineering-value row is the matching 32-bit big-endian float block at 0x079D18.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -4118,7 +4118,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7277" flags="0x0">
     <title>KaTHMC_T_EngCoolReq_Candidate_079C6C</title>
-    <description>Candidate 32-bit big-endian float view inferred from the OS12646746 KaTHMC_T_EngCoolReq 1x24 reference. The Astra WinOLS CSV does not contain KaTHMC_T_EngCoolReq; the closest real 24-cell symbol is KaTHMC_T_TMS_EngCoolReq[x] at source 0x0781B8. Keep this view as unconfirmed inspection context.</description>
+    <description>Purpose: TBD - Description will be added for final release Format: 1x24; 32-bit big-endian IEEE-754 float; Y = X; units deg C. Source: KaTHMC_T_TMS_EngCoolReq[x] at 0x0781B8 in winols_astra.csv. Astra mapping/local notes: Candidate 32-bit big-endian float view inferred from the OS12646746 KaTHMC_T_EngCoolReq 1x24 reference. The Astra WinOLS CSV does not contain KaTHMC_T_EngCoolReq; the closest real 24-cell symbol is KaTHMC_T_TMS_EngCoolReq[x] at source 0x0781B8. Keep this view as unconfirmed inspection context.</description>
     <CATEGORYMEM index="0" category="14" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="-32" mmedminorstridebits="0" />
@@ -4176,7 +4176,7 @@
   <!-- Expanded FEQR mappings added 2026-07-12 -->
   <XDFTABLE uniqueid="0x7282" flags="0x0">
     <title>KfFEQR_Pct_ClearFloodEnter_05F64C</title>
-    <description>DAMOS KfFEQR_Pct_ClearFloodEnter; source 0x059330 -&gt; Astra 0x05F64C. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Accelerator pedal position above which clear flood mode will be enabled when cranking. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.003051757812; units %. Source: KfFEQR_Pct_ClearFloodEnter at 0x059330 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Pct_ClearFloodEnter; source 0x059330 -&gt; Astra 0x05F64C. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4216,7 +4216,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7283" flags="0x0">
     <title>KfFEQR_Pct_ClearFloodExit_05F64E</title>
-    <description>DAMOS KfFEQR_Pct_ClearFloodExit; source 0x059332 -&gt; Astra 0x05F64E. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Accelerator pedal position below which clear flood mode will be disabled when cranking Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.003051757812; units %. Source: KfFEQR_Pct_ClearFloodExit at 0x059332 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Pct_ClearFloodExit; source 0x059332 -&gt; Astra 0x05F64E. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4256,7 +4256,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7284" flags="0x0">
     <title>KtFEQR_eqr_Crank_05F654</title>
-    <description>DAMOS KtFEQR_eqr_Crank; source 0x059338 -&gt; Astra 0x05F654. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The E0 equivalence ratio to be used during crank. Axes: X - Defines the breakpoints of the soak time axis for calibrations which use a scalable axis. Calibrated values in SECONDS (one second resolution). Y - Calibratable table axis, whichdefines the breakpoints of the coolant axis for theKtFEQR_eqr_Crank calibration. Format: 17x17; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_Crank at 0x059338 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_Crank; source 0x059338 -&gt; Astra 0x05F654. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4330,7 +4330,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7285" flags="0x0">
     <title>KtFEQR_eqr_CrankE100_05F89A</title>
-    <description>DAMOS KtFEQR_eqr_CrankE100; source 0x05957E -&gt; Astra 0x05F89A. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The E100 equivalence ratio to be used during crank. Axes: X - Defines the breakpoints of the soak time axis for KtFEQR_eqr_CrankE100. Calibrated values in SECONDS (one second resolution). Y - Calibratable table axis, whichdefines the breakpoints of the coolant axis for theKtFEQR_eqr_Crank calibration. Format: 17x9; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_CrankE100 at 0x05957E in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_CrankE100; source 0x05957E -&gt; Astra 0x05F89A. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4396,7 +4396,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7286" flags="0x0">
     <title>KtFEQR_K_CrankEqRatioBlendFctr_05FA06</title>
-    <description>DAMOS KtFEQR_K_CrankEqRatioBlendFctr; source 0x0596EA -&gt; Astra 0x05FA06. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Fraction of the difference between the E100 and E0 crank equivalence ratios that is added to KtFEQR_eqr_Crank to determine the final crank equivalence ratio. This calibration is a function of the fuel ethanol percent. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KtFEQR_K_CrankEqRatioBlendFctr at 0x0596EA in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_CrankEqRatioBlendFctr; source 0x0596EA -&gt; Astra 0x05FA06. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4445,7 +4445,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7287" flags="0x0">
     <title>KeFEQR_Cf_CrankGreenEngEnrich_05FA18</title>
-    <description>DAMOS KeFEQR_Cf_CrankGreenEngEnrich; source 0x0596FC -&gt; Astra 0x05FA18. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Calibration which is used to enrich the crank equivalence ratio when green engine enrichment is active. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000122070312; units unitless. Source: KeFEQR_Cf_CrankGreenEngEnrich at 0x0596FC in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Cf_CrankGreenEngEnrich; source 0x0596FC -&gt; Astra 0x05FA18. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4485,7 +4485,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7288" flags="0x0">
     <title>KeFEQR_t_GreenEngEnrichTime_05FA1A</title>
-    <description>DAMOS KeFEQR_t_GreenEngEnrichTime; source 0x0596FE -&gt; Astra 0x05FA1A. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The cumulative amount of engine run time below which the green engine enrichment mode will be enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KeFEQR_t_GreenEngEnrichTime at 0x0596FE in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_t_GreenEngEnrichTime; source 0x0596FE -&gt; Astra 0x05FA1A. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4525,7 +4525,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7289" flags="0x0">
     <title>KeFEQR_T_GreenEngCoolMax_05FA1C</title>
-    <description>DAMOS KeFEQR_T_GreenEngCoolMax; source 0x059700 -&gt; Astra 0x05FA1C. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The maximum powerup coolant temperature below which the green engine enrichment mode will be enabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KeFEQR_T_GreenEngCoolMax at 0x059700 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_T_GreenEngCoolMax; source 0x059700 -&gt; Astra 0x05FA1C. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4565,7 +4565,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728A" flags="0x0">
     <title>KeFEQR_T_GreenEngCoolMin_05FA1E</title>
-    <description>DAMOS KeFEQR_T_GreenEngCoolMin; source 0x059702 -&gt; Astra 0x05FA1E. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The minimum powerup coolant temperature above which the green engine enrichment mode will be enabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KeFEQR_T_GreenEngCoolMin at 0x059702 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_T_GreenEngCoolMin; source 0x059702 -&gt; Astra 0x05FA1E. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4605,7 +4605,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728B" flags="0x0">
     <title>KeFEQR_b_GreenEngModeEnbl_05FA20</title>
-    <description>DAMOS KeFEQR_b_GreenEngModeEnbl; source 0x059704 -&gt; Astra 0x05FA20. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Used to enable/disable green engine enrichment mode. Format: 1x1; 8-bit unsigned integer; Y = X; units unitless. Source: KeFEQR_b_GreenEngModeEnbl at 0x059704 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_b_GreenEngModeEnbl; source 0x059704 -&gt; Astra 0x05FA20. High-confidence crank/green block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="15" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4645,7 +4645,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728C" flags="0x0">
     <title>KfFEQR_T_HotCoolantECT_Hi_05FA46</title>
-    <description>DAMOS KfFEQR_T_HotCoolantECT_Hi; source 0x059706 -&gt; Astra 0x05FA46. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Coolant temperature threshold above which the hot coolant enrichment mode can be enabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_HotCoolantECT_Hi at 0x059706 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_HotCoolantECT_Hi; source 0x059706 -&gt; Astra 0x05FA46. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4685,7 +4685,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728D" flags="0x0">
     <title>KfFEQR_T_HotCoolantECT_Lo_05FA48</title>
-    <description>DAMOS KfFEQR_T_HotCoolantECT_Lo; source 0x059708 -&gt; Astra 0x05FA48. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Coolant temperature threshold below which the hot coolant enrichment mode is disabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_HotCoolantECT_Lo at 0x059708 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_HotCoolantECT_Lo; source 0x059708 -&gt; Astra 0x05FA48. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4725,7 +4725,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728E" flags="0x0">
     <title>KfFEQR_Pct_HotCoolantThrotHi_05FA4A</title>
-    <description>DAMOS KfFEQR_Pct_HotCoolantThrotHi; source 0x05970A -&gt; Astra 0x05FA4A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Throttle area threshold above which the hot coolant enrichment mode can be enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.003051757812; units %. Source: KfFEQR_Pct_HotCoolantThrotHi at 0x05970A in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Pct_HotCoolantThrotHi; source 0x05970A -&gt; Astra 0x05FA4A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4765,7 +4765,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x728F" flags="0x0">
     <title>KfFEQR_Pct_HotCoolantThrotLo_05FA4C</title>
-    <description>DAMOS KfFEQR_Pct_HotCoolantThrotLo; source 0x05970C -&gt; Astra 0x05FA4C. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Throttle area threshold below which the hot coolant enrichment mode is disabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.003051757812; units %. Source: KfFEQR_Pct_HotCoolantThrotLo at 0x05970C in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Pct_HotCoolantThrotLo; source 0x05970C -&gt; Astra 0x05FA4C. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4805,7 +4805,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7290" flags="0x0">
     <title>KfFEQR_p_HotCoolantMAP_Hi_05FA4E</title>
-    <description>DAMOS KfFEQR_p_HotCoolantMAP_Hi; source 0x05970E -&gt; Astra 0x05FA4E. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Manifold pressure threshold above which the hot coolant enrichment mode can be enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.03125; units kPa. Source: KfFEQR_p_HotCoolantMAP_Hi at 0x05970E in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_p_HotCoolantMAP_Hi; source 0x05970E -&gt; Astra 0x05FA4E. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4845,7 +4845,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7291" flags="0x0">
     <title>KfFEQR_p_HotCoolantMAP_Lo_05FA50</title>
-    <description>DAMOS KfFEQR_p_HotCoolantMAP_Lo; source 0x059710 -&gt; Astra 0x05FA50. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Manifold pressure threshold below which the hot coolant enrichment mode is disabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.03125; units kPa. Source: KfFEQR_p_HotCoolantMAP_Lo at 0x059710 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_p_HotCoolantMAP_Lo; source 0x059710 -&gt; Astra 0x05FA50. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4885,7 +4885,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7292" flags="0x0">
     <title>KfFEQR_v_HotCoolantVSS_Hi_05FA52</title>
-    <description>DAMOS KfFEQR_v_HotCoolantVSS_Hi; source 0x059712 -&gt; Astra 0x05FA52. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Vehicle speed threshold above which the hot coolant enrichment mode can be enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units kph. Source: KfFEQR_v_HotCoolantVSS_Hi at 0x059712 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_v_HotCoolantVSS_Hi; source 0x059712 -&gt; Astra 0x05FA52. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4925,7 +4925,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7293" flags="0x0">
     <title>KfFEQR_v_HotCoolantVSS_Lo_05FA54</title>
-    <description>DAMOS KfFEQR_v_HotCoolantVSS_Lo; source 0x059714 -&gt; Astra 0x05FA54. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Vehicle speed threshold below which the hot coolant enrichment mode is disabled Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units kph. Source: KfFEQR_v_HotCoolantVSS_Lo at 0x059714 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_v_HotCoolantVSS_Lo; source 0x059714 -&gt; Astra 0x05FA54. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -4965,7 +4965,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7294" flags="0x0">
     <title>KfFEQR_T_HotCoolantOfst_05FA56</title>
-    <description>DAMOS KfFEQR_T_HotCoolantOfst; source 0x059716 -&gt; Astra 0x05FA56. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Coolant temperature threshold above which fuel enrichment begins when in hot coolant mode. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_HotCoolantOfst at 0x059716 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_HotCoolantOfst; source 0x059716 -&gt; Astra 0x05FA56. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5005,7 +5005,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7295" flags="0x0">
     <title>KfFEQR_Cf_HotCoolantSclr_05FA58</title>
-    <description>DAMOS KfFEQR_Cf_HotCoolantSclr; source 0x059718 -&gt; Astra 0x05FA58. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Multiplier applied to delta coolant temperature, used to calculate hot coolant enrichment equivalence ratio. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000015258789; units ratio. Source: KfFEQR_Cf_HotCoolantSclr at 0x059718 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Cf_HotCoolantSclr; source 0x059718 -&gt; Astra 0x05FA58. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5045,7 +5045,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7296" flags="0x0">
     <title>KfFEQR_eqr_HotCoolantMax_05FA5A</title>
-    <description>DAMOS KfFEQR_eqr_HotCoolantMax; source 0x05971A -&gt; Astra 0x05FA5A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Maximum equivalence ratio to be applied during hot coolant mode operation. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KfFEQR_eqr_HotCoolantMax at 0x05971A in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_eqr_HotCoolantMax; source 0x05971A -&gt; Astra 0x05FA5A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5085,7 +5085,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7297" flags="0x0">
     <title>KfFEQR_T_EngCoolPistonProtect_05FA5C</title>
-    <description>DAMOS KfFEQR_T_EngCoolPistonProtect; source 0x05971C -&gt; Astra 0x05FA5C. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Coolant temperature threshold above which piston protection can be enabled. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_EngCoolPistonProtect at 0x05971C in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_EngCoolPistonProtect; source 0x05971C -&gt; Astra 0x05FA5C. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5125,7 +5125,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7298" flags="0x0">
     <title>KwFEQR_t_HotCoolant_05FA5E</title>
-    <description>DAMOS KwFEQR_t_HotCoolant; source 0x05971E -&gt; Astra 0x05FA5E. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Amount of time that hot enrichment mode criteria must be met before the mode becomes active. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KwFEQR_t_HotCoolant at 0x05971E in winols_astra.csv. Astra mapping/local notes: DAMOS KwFEQR_t_HotCoolant; source 0x05971E -&gt; Astra 0x05FA5E. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5165,7 +5165,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x7299" flags="0x0">
     <title>KwFEQR_t_PistonProtect_05FA60</title>
-    <description>DAMOS KwFEQR_t_PistonProtect; source 0x059720 -&gt; Astra 0x05FA60. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Amount of time that piston protection mode criteria must be met before the mode becomes active. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KwFEQR_t_PistonProtect at 0x059720 in winols_astra.csv. Astra mapping/local notes: DAMOS KwFEQR_t_PistonProtect; source 0x059720 -&gt; Astra 0x05FA60. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5205,7 +5205,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729A" flags="0x0">
     <title>KtFEQR_eqr_PistonProtectIn_05FA64</title>
-    <description>DAMOS KtFEQR_eqr_PistonProtectIn; source 0x059724 -&gt; Astra 0x05FA64. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Piston protection equivalence ratio is incremented toward KtFEQR_eqr_PistonProtect by this amount, every 50ms, when piston protection becomes active. Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PistonProtectIn at 0x059724 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_PistonProtectIn; source 0x059724 -&gt; Astra 0x05FA64. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5262,7 +5262,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729B" flags="0x0">
     <title>KtFEQR_eqr_PistonProtectOut_05FA88</title>
-    <description>DAMOS KtFEQR_eqr_PistonProtectOut; source 0x059748 -&gt; Astra 0x05FA88. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Piston protection equivalence ratio is decremented toward stoichiometric by this amount, every 50ms, when piston protection is NOT active. Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PistonProtectOut at 0x059748 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_PistonProtectOut; source 0x059748 -&gt; Astra 0x05FA88. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5319,7 +5319,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729C" flags="0x0">
     <title>KtFEQR_eqr_PistonProtect_05FAAC</title>
-    <description>DAMOS KtFEQR_eqr_PistonProtect; source 0x05976C -&gt; Astra 0x05FAAC. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Maximum equivalence ratio to be used during piston protection. Format: 1x33; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_PistonProtect at 0x05976C in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_PistonProtect; source 0x05976C -&gt; Astra 0x05FAAC. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5392,7 +5392,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729D" flags="0x0">
     <title>KeFEQR_m_APC_PistonProtectHyst_05FAEE</title>
-    <description>DAMOS KeFEQR_m_APC_PistonProtectHyst; source 0x0597AE -&gt; Astra 0x05FAEE. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Mass of air per cylinder which is subtracted from KtFEQR_m_APC_PistonProtectHigh to determine the piston protection air per cylinder low threshold VeFEQR_m_APC_PistonProtectLow. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units mg. Source: KeFEQR_m_APC_PistonProtectHyst at 0x0597AE in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_m_APC_PistonProtectHyst; source 0x0597AE -&gt; Astra 0x05FAEE. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5432,7 +5432,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729E" flags="0x0">
     <title>KeFEQR_n_PistonProtectHigh_05FAF0</title>
-    <description>DAMOS KeFEQR_n_PistonProtectHigh; source 0x0597B0 -&gt; Astra 0x05FAF0. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Engine speed threshold above which piston protection will be enabled if it is currently disabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_PistonProtectHigh at 0x0597B0 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_n_PistonProtectHigh; source 0x0597B0 -&gt; Astra 0x05FAF0. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5472,7 +5472,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x729F" flags="0x0">
     <title>KeFEQR_n_PistonProtectLow_05FAF2</title>
-    <description>DAMOS KeFEQR_n_PistonProtectLow; source 0x0597B2 -&gt; Astra 0x05FAF2. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Engine speed threshold below which piston protection will be disabled if it is currently enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_PistonProtectLow at 0x0597B2 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_n_PistonProtectLow; source 0x0597B2 -&gt; Astra 0x05FAF2. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5512,7 +5512,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A0" flags="0x0">
     <title>KtFEQR_m_APC_PistonProtectHigh_05FAF6</title>
-    <description>DAMOS KtFEQR_m_APC_PistonProtectHigh; source 0x0597B6 -&gt; Astra 0x05FAF6. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Mass of air per cylinder threshold above which piston protection will be enabled if it is currently disabled. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.125; units mg. Source: KtFEQR_m_APC_PistonProtectHigh at 0x0597B6 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_m_APC_PistonProtectHigh; source 0x0597B6 -&gt; Astra 0x05FAF6. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5561,7 +5561,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A1" flags="0x0">
     <title>KtFEQR_m_APC_PreIgnProtectHigh_05FB0A</title>
-    <description>DAMOS KtFEQR_m_APC_PreIgnProtectHigh; source 0x0597CA -&gt; Astra 0x05FB0A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Air per cylinder threshold above which pre ignition protection will be enabled if currently disabled. Axes: X - Defines the breakpoints of the engine speed axis for KtFEQR_m_APC_PreIgnProtectHigh, KtFEQR_t_PreIgnProtectDlyAdj and KtFEQR_eqr_PreIgnProtect. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.125; units mg. Source: KtFEQR_m_APC_PreIgnProtectHigh at 0x0597CA in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_m_APC_PreIgnProtectHigh; source 0x0597CA -&gt; Astra 0x05FB0A. High-confidence hot/piston/pre-ignition block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="7" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5610,7 +5610,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A2" flags="0x0">
     <title>KtFEQR_afr_StoichAirFuelRatio_05FCA4</title>
-    <description>DAMOS KtFEQR_afr_StoichAirFuelRatio; source 0x059AB0 -&gt; Astra 0x05FCA4. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Defines the mass ratio of fuel to air for stoichiometry. A/F ratio = KtFEQR_afr_StoichAirFuelRatio/Equivalence_Ratio. Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.00048828125; units ratio. Source: KtFEQR_afr_StoichAirFuelRatio at 0x059AB0 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_afr_StoichAirFuelRatio; source 0x059AB0 -&gt; Astra 0x05FCA4. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5667,7 +5667,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A3" flags="0x0">
     <title>KeFEQR_eqr_TorqueEnleanMin_05FCC6</title>
-    <description>DAMOS KeFEQR_eqr_TorqueEnleanMin; source 0x059AD2 -&gt; Astra 0x05FCC6. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Minimum equivalence ratio to be applied during torque control enleanment operation. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KeFEQR_eqr_TorqueEnleanMin at 0x059AD2 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_eqr_TorqueEnleanMin; source 0x059AD2 -&gt; Astra 0x05FCC6. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5707,7 +5707,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A4" flags="0x0">
     <title>KfFEQR_eqr_MaxCL_Allowed_05FCC8</title>
-    <description>DAMOS KfFEQR_eqr_MaxCL_Allowed; source 0x059AD4 -&gt; Astra 0x05FCC8. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Maximum allowed equivalence ratio to be applied during Closed Loop state (rich clamp). Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KfFEQR_eqr_MaxCL_Allowed at 0x059AD4 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_eqr_MaxCL_Allowed; source 0x059AD4 -&gt; Astra 0x05FCC8. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5747,7 +5747,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A5" flags="0x0">
     <title>KtFEQR_eqr_CoolLossProtect_05FCCC</title>
-    <description>DAMOS KtFEQR_eqr_CoolLossProtect; source 0x059AD8 -&gt; Astra 0x05FCCC. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Equivalence ratio used when engine metal overtemperature protection (EMOP) is active Format: 1x33; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_CoolLossProtect at 0x059AD8 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_CoolLossProtect; source 0x059AD8 -&gt; Astra 0x05FCCC. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5820,7 +5820,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A6" flags="0x0">
     <title>KaFEQR_eqr_Misfire_x_05FD0E</title>
-    <description>DAMOS KaFEQR_eqr_Misfire[x]; source 0x059B1A -&gt; Astra 0x05FD0E. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Equivalence ratio to be delivered when the misfire algorithm is requesting catalyst protection, based on whether or not all cylinders are being fueled. Valid range: 0 - 32. Format: 1x4; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KaFEQR_eqr_Misfire[x] at 0x059B1A in winols_astra.csv. Astra mapping/local notes: DAMOS KaFEQR_eqr_Misfire[x]; source 0x059B1A -&gt; Astra 0x05FD0E. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="17" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5863,7 +5863,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A7" flags="0x0">
     <title>KeFEQR_eqr_ETC_PowerManagement_05FD16</title>
-    <description>DAMOS KeFEQR_eqr_ETC_PowerManagement; source 0x059B22 -&gt; Astra 0x05FD16. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Equivalnce ratio used when ETC power management default throttle authority is active and the engine is warmed up. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KeFEQR_eqr_ETC_PowerManagement at 0x059B22 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_eqr_ETC_PowerManagement; source 0x059B22 -&gt; Astra 0x05FD16. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5903,7 +5903,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A8" flags="0x0">
     <title>KaFEQR_K_MSFR_EQR_Arbitration_x_y_05FD18</title>
-    <description>DAMOS KaFEQR_K_MSFR_EQR_Arbitration[x][y]; source 0x059B24 -&gt; Astra 0x05FD18. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Calibration which allows certain equivalence ratios to be ignored when misfire is requesting converter protection. A value of TRUE indicates that the equivalence ratio should be used in the arbitration. Format: 7x2; 16-bit big-endian unsigned integer; Y = X; units count. Source: KaFEQR_K_MSFR_EQR_Arbitration[x][y] at 0x059B24 in winols_astra.csv. Astra mapping/local notes: DAMOS KaFEQR_K_MSFR_EQR_Arbitration[x][y]; source 0x059B24 -&gt; Astra 0x05FD18. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -5950,7 +5950,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72A9" flags="0x0">
     <title>KtFEQR_eqr_TorqueEnleanment_05FD36</title>
-    <description>DAMOS KtFEQR_eqr_TorqueEnleanment; source 0x059B42 -&gt; Astra 0x05FD36. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Equivalence ratio enleanment applied when torque subsystem is requesting that cylinders be disabled. Format: 1x33; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_TorqueEnleanment at 0x059B42 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_TorqueEnleanment; source 0x059B42 -&gt; Astra 0x05FD36. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6023,7 +6023,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AA" flags="0x0">
     <title>KeFEQR_K_MSFR_EQR_BlendFact_05FD78</title>
-    <description>DAMOS KeFEQR_K_MSFR_EQR_BlendFact; source 0x059B84 -&gt; Astra 0x05FD78. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Blend factor used during EQR blending when misfire is active and all cylinders are enabled. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KeFEQR_K_MSFR_EQR_BlendFact at 0x059B84 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_K_MSFR_EQR_BlendFact; source 0x059B84 -&gt; Astra 0x05FD78. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6063,7 +6063,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AB" flags="0x0">
     <title>KaFEQR_b_Enlean_OBD_Compliant_x_05FD7C</title>
-    <description>DAMOS KaFEQR_b_Enlean_OBD_Compliant[x]; source 0x059B88 -&gt; Astra 0x05FD7C. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: If this is TRUE, the Immediate Axle Source is considered OBD compliant for this given application. Format: 1x9; 8-bit unsigned integer; Y = X; units unitless. Source: KaFEQR_b_Enlean_OBD_Compliant[x] at 0x059B88 in winols_astra.csv. Astra mapping/local notes: DAMOS KaFEQR_b_Enlean_OBD_Compliant[x]; source 0x059B88 -&gt; Astra 0x05FD7C. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6111,7 +6111,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AC" flags="0x0">
     <title>KeFEQR_afr_StoichAltFuel_05FD86</title>
-    <description>DAMOS KeFEQR_afr_StoichAltFuel; source 0x059B92 -&gt; Astra 0x05FD86. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Defines the mass ratio of fuel to air for stoichiometry when the alternative fuel source is active for bi-fuel capable vehicles. For LPG fuel, Butane stoich A/F = 15.45, and Propane stoich A/F = 15.6. A/F ratio = KeFEQR_afr_StoichAltFuel/Equivalence_Ratio. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.00048828125; units ratio. Source: KeFEQR_afr_StoichAltFuel at 0x059B92 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_afr_StoichAltFuel; source 0x059B92 -&gt; Astra 0x05FD86. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6151,7 +6151,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AD" flags="0x0">
     <title>KeFEQR_Cnt_BlendAF_ClosedLoop_05FD88</title>
-    <description>DAMOS KeFEQR_Cnt_BlendAF_ClosedLoop; source 0x059B94 -&gt; Astra 0x05FD88. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Number of CAM events in which to blend the equivalence ratio, when transitioning to the Airfuel Closed Loop state. Format: 1x1; 16-bit big-endian unsigned integer; Y = X; units count. Source: KeFEQR_Cnt_BlendAF_ClosedLoop at 0x059B94 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Cnt_BlendAF_ClosedLoop; source 0x059B94 -&gt; Astra 0x05FD88. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6191,7 +6191,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AE" flags="0x0">
     <title>KeFEQR_Cnt_BlendAIR_EnrichDrive_05FD8A</title>
-    <description>DAMOS KeFEQR_Cnt_BlendAIR_EnrichDrive; source 0x059B96 -&gt; Astra 0x05FD8A. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Number of CAM events in which to blend the equivalence ratio, when transitioning to the AIR enrichment Drive state. Format: 1x1; 16-bit big-endian unsigned integer; Y = X; units count. Source: KeFEQR_Cnt_BlendAIR_EnrichDrive at 0x059B96 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Cnt_BlendAIR_EnrichDrive; source 0x059B96 -&gt; Astra 0x05FD8A. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6231,7 +6231,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72AF" flags="0x0">
     <title>KeFEQR_Cnt_BlendAIR_EnrichPN_05FD8C</title>
-    <description>DAMOS KeFEQR_Cnt_BlendAIR_EnrichPN; source 0x059B98 -&gt; Astra 0x05FD8C. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Number of CAM events in which to blend the equivalence ratio, when transitioning to the AIR enrichment Park/Neutral state. Format: 1x1; 16-bit big-endian unsigned integer; Y = X; units count. Source: KeFEQR_Cnt_BlendAIR_EnrichPN at 0x059B98 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Cnt_BlendAIR_EnrichPN; source 0x059B98 -&gt; Astra 0x05FD8C. High-confidence stoich/general block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6271,7 +6271,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B0" flags="0x0">
     <title>KtFEQR_K_AIR_PumpEfficiency_05FD8E</title>
-    <description>DAMOS KtFEQR_K_AIR_PumpEfficiency; source 0x059B9E -&gt; Astra 0x05FD8E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Modifier to KtFEQR_K_AIR gain, applied when AIR pump is requesting fuel enrichment. Format: 1x9; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KtFEQR_K_AIR_PumpEfficiency at 0x059B9E in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_AIR_PumpEfficiency; source 0x059B9E -&gt; Astra 0x05FD8E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6320,7 +6320,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B1" flags="0x0">
     <title>KtFEQR_eqr_OpenLoopIVT_Min_05FDA2</title>
-    <description>DAMOS KtFEQR_eqr_OpenLoopIVT_Min; source 0x059BB2 -&gt; Astra 0x05FDA2. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Minimum open loop equivalence ratio used when the IVT is used for the open loop lookup (based on coolant temp). Format: 1x17; 16-bit big-endian unsigned integer; Y = X * 0.0009765625; units ratio. Source: KtFEQR_eqr_OpenLoopIVT_Min at 0x059BB2 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_OpenLoopIVT_Min; source 0x059BB2 -&gt; Astra 0x05FDA2. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6377,7 +6377,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B2" flags="0x0">
     <title>KtFEQR_K_CL_Airfuel_05FDC6</title>
-    <description>DAMOS KtFEQR_K_CL_Airfuel; source 0x059BD6 -&gt; Astra 0x05FDC6. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Table, based on Intake Valve Temp, whose output is used to determine the closed loop airfuel gain for Airfuel Closed Loop control. Format: 1x33; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KtFEQR_K_CL_Airfuel at 0x059BD6 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_CL_Airfuel; source 0x059BD6 -&gt; Astra 0x05FDC6. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="19" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6450,7 +6450,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B3" flags="0x0">
     <title>KtFEQR_K_OL_Flow_05FE08</title>
-    <description>DAMOS KtFEQR_K_OL_Flow; source 0x059C18 -&gt; Astra 0x05FE08. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: The equivalence ratio gain used when open loop operation is in effect. This gain allows adjustment based on MAP and RPM. Axes: Y - This table provides the manifold pressure axis breakpoints for the base Open Loop table KtFEQR_K_OL_Flow. Format: 33x17; 8-bit unsigned integer; Y = X * 0.0078125; units unitless. Source: KtFEQR_K_OL_Flow at 0x059C18 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_OL_Flow; source 0x059C18 -&gt; Astra 0x05FE08. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6540,7 +6540,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B4" flags="0x0">
     <title>KtFEQR_K_AIR_060039</title>
-    <description>DAMOS KtFEQR_K_AIR; source 0x059E49 -&gt; Astra 0x060039. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Base open equivalence ratio gain applied when AIR pump is requesting fuel enrichment. Format: 33x17; 8-bit unsigned integer; Y = X * 0.0078125; units unitless. Source: KtFEQR_K_AIR at 0x059E49 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_AIR; source 0x059E49 -&gt; Astra 0x060039. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6630,7 +6630,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B5" flags="0x0">
     <title>KtFEQR_K_AIR_AirflowMult_06026E</title>
-    <description>DAMOS KtFEQR_K_AIR_AirflowMult; source 0x05A07E -&gt; Astra 0x06026E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Equivalence ratio gain applied when the AIR pump is requesting fuel enrichment. The gain is a function of engine airflow and IVT. Format: 33x17; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KtFEQR_K_AIR_AirflowMult at 0x05A07E in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_AIR_AirflowMult; source 0x05A07E -&gt; Astra 0x06026E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6720,7 +6720,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B6" flags="0x0">
     <title>KtFEQR_K_FITT_Enrichment_0606D4</title>
-    <description>DAMOS KtFEQR_K_FITT_Enrichment; source 0x05A4E4 -&gt; Astra 0x0606D4. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Open loop equivalence ratio enrichment as a function of injector temperature and engine run time. Format: 33x9; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KtFEQR_K_FITT_Enrichment at 0x05A4E4 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_FITT_Enrichment; source 0x05A4E4 -&gt; Astra 0x0606D4. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6802,7 +6802,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B7" flags="0x0">
     <title>KtFEQR_eqr_IVT_OL_SinglePN_E0_060948</title>
-    <description>DAMOS KtFEQR_eqr_IVT_OL_SinglePN_E0; source 0x05A758 -&gt; Astra 0x060948. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Base open loop equivalence ratio applied when in Park/Neutral or when single pulse mode is active for SIDI applications. This table represents the desired burned equivalence ratio observed in the exhaust. Axes: X - This table provides the intake valve temperature axis breakpoints for the base open loop fuel EQR tables. Y - This table provides the coolant temperature axis breakpoints for the base open loop fuel EQR tables. Format: 17x33; 16-bit big-endian unsigned integer; Y = X * 0.000244140625; units unitless. Source: KtFEQR_eqr_IVT_OL_SinglePN_E0 at 0x05A758 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_IVT_OL_SinglePN_E0; source 0x05A758 -&gt; Astra 0x060948. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6892,7 +6892,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B8" flags="0x0">
     <title>KtFEQR_eqr_IVT_OL_DualDrive_E0_060DAA</title>
-    <description>DAMOS KtFEQR_eqr_IVT_OL_DualDrive_E0; source 0x05ABBA -&gt; Astra 0x060DAA. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Base open loop equivalence ratio applied when in drive or when dual pulse mode is active for SIDI applications. This table represents the desired burned equivalence ratio observed in the exhaust. Axes: X - This table provides the intake valve temperature axis breakpoints for the base open loop fuel EQR tables. Y - This table provides the coolant temperature axis breakpoints for the base open loop fuel EQR tables. Format: 17x33; 16-bit big-endian unsigned integer; Y = X * 0.000244140625; units unitless. Source: KtFEQR_eqr_IVT_OL_DualDrive_E0 at 0x05ABBA in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_IVT_OL_DualDrive_E0; source 0x05ABBA -&gt; Astra 0x060DAA. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -6982,7 +6982,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72B9" flags="0x0">
     <title>KtFEQR_Cf_OL_GreenEngEnrichment_06120E</title>
-    <description>DAMOS KtFEQR_Cf_OL_GreenEngEnrichment; source 0x05B01E -&gt; Astra 0x06120E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Multiplier with 0 - 2 range used in Green Engine Open Loop Condition for fuel enrichment. Format: 1x33; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KtFEQR_Cf_OL_GreenEngEnrichment at 0x05B01E in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_Cf_OL_GreenEngEnrichment; source 0x05B01E -&gt; Astra 0x06120E. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7055,7 +7055,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BA" flags="0x0">
     <title>KaFEQR_K_AIR_CylEnrich_x_061250</title>
-    <description>DAMOS KaFEQR_K_AIR_CylEnrich[x]; source 0x05B060 -&gt; Astra 0x061250. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Multiplier which is used to enrich or enlean the base fuel mass for each cylinder during AIR operation. Format: 1x8; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units ratio. Source: KaFEQR_K_AIR_CylEnrich[x] at 0x05B060 in winols_astra.csv. Astra mapping/local notes: DAMOS KaFEQR_K_AIR_CylEnrich[x]; source 0x05B060 -&gt; Astra 0x061250. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7102,7 +7102,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BB" flags="0x0">
     <title>KtFEQR_K_AIR_Enrich_061264</title>
-    <description>DAMOS KtFEQR_K_AIR_Enrich; source 0x05B074 -&gt; Astra 0x061264. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: AIR enrichment factor which is applied to the corrected fuel mass when AIR is active. Format: 33x17; 16-bit big-endian unsigned integer; Y = X * 0.000061035156; units unitless. Source: KtFEQR_K_AIR_Enrich at 0x05B074 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_AIR_Enrich; source 0x05B074 -&gt; Astra 0x061264. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7191,7 +7191,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BC" flags="0x0">
     <title>KeFEQR_K_AIR_Minimum_0616C6</title>
-    <description>DAMOS KeFEQR_K_AIR_Minimum; source 0x05B4D6 -&gt; Astra 0x0616C6. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Minimum value allowed for the base AIR enrichment multiplier (i.e. KtFEQR_K_AIR * KtFEQR_K_AIR_AirflowMult * KtFEQR_K_AIR_PumpEfficiency). Used to prevent unwanted enleanment for some operating regions. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.000030517578; units unitless. Source: KeFEQR_K_AIR_Minimum at 0x05B4D6 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_K_AIR_Minimum; source 0x05B4D6 -&gt; Astra 0x0616C6. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="18" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7231,7 +7231,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BD" flags="0x0">
     <title>KtFEQR_eqr_IVT_OL_SinglePN_E100_06174C</title>
-    <description>DAMOS KtFEQR_eqr_IVT_OL_SinglePN_E100; source 0x05B55C -&gt; Astra 0x06174C. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Base open loop E100 equivalence ratio applied when in Park/Neutral or when single pulse mode is active for SIDI applications. This table represents the desired burned equivalence ratio observed in the exhaust. Axes: X - This table provides the intake valve temperature axis breakpoints for the base open loop fuel EQR tables. Y - This table provides the coolant temperature axis breakpoints for the base open loop fuel EQR tables. Format: 17x33; 16-bit big-endian unsigned integer; Y = X * 0.000244140625; units unitless. Source: KtFEQR_eqr_IVT_OL_SinglePN_E100 at 0x05B55C in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_IVT_OL_SinglePN_E100; source 0x05B55C -&gt; Astra 0x06174C. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7321,7 +7321,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BE" flags="0x0">
     <title>KtFEQR_eqr_IVT_OL_DualDriveE100_061BAE</title>
-    <description>DAMOS KtFEQR_eqr_IVT_OL_DualDriveE100; source 0x05B9BE -&gt; Astra 0x061BAE. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Base open loop E100 equivalence ratio applied when in drive or when dual pulse mode is active for SIDI applications. This table represents the desired burned equivalence ratio observed in the exhaust. Axes: X - This table provides the intake valve temperature axis breakpoints for the base open loop fuel EQR tables. Y - This table provides the coolant temperature axis breakpoints for the base open loop fuel EQR tables. Format: 17x33; 16-bit big-endian unsigned integer; Y = X * 0.000244140625; units unitless. Source: KtFEQR_eqr_IVT_OL_DualDriveE100 at 0x05B9BE in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_eqr_IVT_OL_DualDriveE100; source 0x05B9BE -&gt; Astra 0x061BAE. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7411,7 +7411,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72BF" flags="0x0">
     <title>KeFEQR_t_EngRunEnblMaxAPC_062034</title>
-    <description>DAMOS KeFEQR_t_EngRunEnblMaxAPC; source 0x05BE44 -&gt; Astra 0x062034. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Engine run time above which the maximum APC value will be calculated for torque limiting when operating on high ethanol at colder coolant temperatures. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.00625; units s. Source: KeFEQR_t_EngRunEnblMaxAPC at 0x05BE44 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_t_EngRunEnblMaxAPC; source 0x05BE44 -&gt; Astra 0x062034. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7451,7 +7451,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C0" flags="0x0">
     <title>KtFEQR_K_LimFactForMaxAPC_062036</title>
-    <description>DAMOS KtFEQR_K_LimFactForMaxAPC; source 0x05BE46 -&gt; Astra 0x062036. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: This table represents the maximum APC factor that should be used to limit the maximum APC during high ethanol and cold coolant temperature operation. This calibratin is a function of percent ethanol and coolant temperature. Axes: X - This table provides the ethanol axis breakpoints for KtFEQR_K_LimFactForMaxAPC. Y - This table provides the coolant axis breakpoints for KtFEQR_K_LimFactForMaxAPC. Format: 9x9; 8-bit unsigned integer; Y = X * 0.0078125; units unitless. Source: KtFEQR_K_LimFactForMaxAPC at 0x05BE46 in winols_astra.csv. Astra mapping/local notes: DAMOS KtFEQR_K_LimFactForMaxAPC; source 0x05BE46 -&gt; Astra 0x062036. High-confidence AIR/open-loop block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="16" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7509,7 +7509,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C1" flags="0x0">
     <title>KeFEQR_n_PE_EngSpdLoHys_062094</title>
-    <description>DAMOS KeFEQR_n_PE_EngSpdLoHys; source 0x05BE98 -&gt; Astra 0x062094. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Hysteresis applied to engine speed threshold used to enable or disable power enrichment. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.125; units rpm. Source: KeFEQR_n_PE_EngSpdLoHys at 0x05BE98 in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_n_PE_EngSpdLoHys; source 0x05BE98 -&gt; Astra 0x062094. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7549,7 +7549,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C2" flags="0x0">
     <title>KeFEQR_Pct_PE_ThrotLoHys_062098</title>
-    <description>DAMOS KeFEQR_Pct_PE_ThrotLoHys; source 0x05BE9C -&gt; Astra 0x062098. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: Hysteresis to the base throttle threshold to prevent noise from turning power enrichment on and off. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.001525878906; units %. Source: KeFEQR_Pct_PE_ThrotLoHys at 0x05BE9C in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Pct_PE_ThrotLoHys; source 0x05BE9C -&gt; Astra 0x062098. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7589,7 +7589,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C3" flags="0x0">
     <title>KeFEQR_Pct_PE_LoadLoHys_06209A</title>
-    <description>DAMOS KeFEQR_Pct_PE_LoadLoHys; source 0x05BE9E -&gt; Astra 0x06209A. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: value subtracted from KtFEQR_Pct_PE_LoadThrsh when power enrichment is active. Used to determine the base load threshold when power enrichment is active. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.001525878906; units %. Source: KeFEQR_Pct_PE_LoadLoHys at 0x05BE9E in winols_astra.csv. Astra mapping/local notes: DAMOS KeFEQR_Pct_PE_LoadLoHys; source 0x05BE9E -&gt; Astra 0x06209A. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7629,7 +7629,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C4" flags="0x0">
     <title>KfFEQR_T_PE_DelayCoolLoThrsh_06209C</title>
-    <description>DAMOS KfFEQR_T_PE_DelayCoolLoThrsh; source 0x05BEA0 -&gt; Astra 0x06209C. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: PE delay will be bypassed when coolant temperature is below this calibration. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_PE_DelayCoolLoThrsh at 0x05BEA0 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_PE_DelayCoolLoThrsh; source 0x05BEA0 -&gt; Astra 0x06209C. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7669,7 +7669,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C5" flags="0x0">
     <title>KfFEQR_T_PE_DelayCoolHiThrsh_06209E</title>
-    <description>DAMOS KfFEQR_T_PE_DelayCoolHiThrsh; source 0x05BEA2 -&gt; Astra 0x06209E. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: PE delay will be bypassed when coolant temperature is above this calibration. Format: 1x1; 16-bit big-endian signed integer; Y = X * 0.0078125; units deg C. Source: KfFEQR_T_PE_DelayCoolHiThrsh at 0x05BEA2 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_T_PE_DelayCoolHiThrsh; source 0x05BEA2 -&gt; Astra 0x06209E. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7709,7 +7709,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C6" flags="0x0">
     <title>KfFEQR_Pct_PE_DeltThrotRise_0620A2</title>
-    <description>DAMOS KfFEQR_Pct_PE_DeltThrotRise; source 0x05BEA6 -&gt; Astra 0x0620A2. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: When throttle delta is &gt; = this threshold, PE delay will be bypassed in conjunction with a vehicle speed criteria. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.001525878906; units %. Source: KfFEQR_Pct_PE_DeltThrotRise at 0x05BEA6 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_Pct_PE_DeltThrotRise; source 0x05BEA6 -&gt; Astra 0x0620A2. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7749,7 +7749,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C7" flags="0x0">
     <title>KfFEQR_v_PE_DeltThrotVehSpdHi_0620A4</title>
-    <description>DAMOS KfFEQR_v_PE_DeltThrotVehSpdHi; source 0x05BEA8 -&gt; Astra 0x0620A4. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
+    <description>Purpose: A vehicle speed criteria is used with throttle delta criteria to bypass PE delay when vehicle speed is &lt; this calibration. Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.0078125; units kph. Source: KfFEQR_v_PE_DeltThrotVehSpdHi at 0x05BEA8 in winols_astra.csv. Astra mapping/local notes: DAMOS KfFEQR_v_PE_DeltThrotVehSpdHi; source 0x05BEA8 -&gt; Astra 0x0620A4. High-confidence power-enrichment block. Static/index axes are used unless separately proven.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />
@@ -7789,7 +7789,7 @@
   </XDFTABLE>
   <XDFTABLE uniqueid="0x72C8" flags="0x0">
     <title>KwFEQR_t_PE_DelayMax_0620AA</title>
-    <description>DAMOS KwFEQR_t_PE_DelayMax; source 0x05BEAE -&gt; Astra 0x0620AA. High-confidence power-enrichment block. Static/index axes are used unless separately proven. Stock raw FFFF displays 3276.75 s and may be a disabled/sentinel value.</description>
+    <description>Purpose: Power enrichment conditions must exist for this time before power enrichment is enabled Format: 1x1; 16-bit big-endian unsigned integer; Y = X * 0.05; units s. Source: KwFEQR_t_PE_DelayMax at 0x05BEAE in winols_astra.csv. Astra mapping/local notes: DAMOS KwFEQR_t_PE_DelayMax; source 0x05BEAE -&gt; Astra 0x0620AA. High-confidence power-enrichment block. Static/index axes are used unless separately proven. Stock raw FFFF displays 3276.75 s and may be a disabled/sentinel value.</description>
     <CATEGORYMEM index="0" category="6" />
     <XDFAXIS id="x" uniqueid="0x0">
       <EMBEDDEDDATA mmedelementsizebits="16" mmedmajorstridebits="0" mmedminorstridebits="0" />

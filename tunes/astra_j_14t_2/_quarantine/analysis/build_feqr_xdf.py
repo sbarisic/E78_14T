@@ -6,6 +6,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from xml.sax.saxutils import escape
 
+from enrich_xdf_descriptions import build_description
+
 
 ROOT = Path(r"E:\Projects\E78_14T")
 BASE = ROOT / "tunes/astra_j_14t_2"
@@ -235,12 +237,13 @@ def make_table(row: dict[str, str], target: int, unique_id: int, category: str, 
     elif row["bSigned"] == "1":
         type_flags = ' mmedtypeflags="0x01"'
     source = parse_address(row["Fieldvalues.StartAddr.Cpu"])
-    description = (
+    local_notes = (
         f"DAMOS {name}; source 0x{source:06X} -> Astra 0x{target:06X}. "
         f"High-confidence {evidence}. Static/index axes are used unless separately proven."
     )
     if name == "KwFEQR_t_PE_DelayMax":
-        description += " Stock raw FFFF displays 3276.75 s and may be a disabled/sentinel value."
+        local_notes += " Stock raw FFFF displays 3276.75 s and may be a disabled/sentinel value."
+    description = build_description(row, local_notes)
     membership = CATEGORIES[category][1]
     lines = [
         f'  <XDFTABLE uniqueid="0x{unique_id:X}" flags="0x0">',

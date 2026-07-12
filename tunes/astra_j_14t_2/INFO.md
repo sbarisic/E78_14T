@@ -170,6 +170,67 @@ Evidence:
 - Reference `Astra J A14NET- ECU Orig.bin` has `KtBSTC_m_MaxKnk` as a 16-bit `0.0625 mg/count` table in this neighborhood.
 - In this OS, the coherent relocated block is at `0x04E350`, using the second spark-retard axis at `0x04E588` and the `1400..6000` RPM axis at `0x04E50C`.
 
+### Knock-airmass to total-airflow calculation - 2026-07-12
+
+For this `1364 cc`, four-cylinder, four-stroke engine, each cylinder has one intake event every two crankshaft revolutions. A table cell in `g/cyl` converts to ideal total engine airflow as:
+
+`MAF (g/s) = airmass (g/cyl) * 4 cylinders * RPM / 120 = airmass * RPM / 30`
+
+Displacement is not required for this mass-per-intake-event conversion. It gives a swept volume of `341 cc/cyl` and theoretical volume flow `1.364 * RPM / 120 L/s`, which can be used only for approximate charge-density/MAP context.
+
+Current BIN comparison:
+
+- `opel_astra_original.bin`: SHA-256 `2E562B30BB48A72205F9DD4756E152BC44EEF6B07D2F76F3FE25E222952824CD`.
+- `opel_astra_mod1.bin`: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26` after synchronizing both knock-airmass tables to the larger values.
+- Turbocharger Knock Max Airmass at `0x04DD68` now has `30/88` cells changed from stock and is engineering-value equivalent to the modified Scav table in all 88 cells. Max stores native 32-bit float `mg/cyl`; Scav stores 16-bit counts at `0.0625 mg/count`.
+- Knock Airmass Scav at `0x04E350` has `83/88` changed cells.
+- In `mod1`, all eight Scav rows from `-25` through `-7 deg` are exact copies of the stock Max Airmass table. The `-5`, `-3`, and `-1 deg` cells then form a linear ramp from the `-7 deg` value to a custom row endpoint, and the `0 deg` cell repeats that endpoint.
+- The custom `-1/0 deg` Scav endpoints by RPM are `0.625, 0.645, 0.750, 0.900, 0.900, 0.900, 0.800, 0.750 g/cyl` at `1400, 1700, 2000, 2300, 3000, 4000, 5000, 6000 rpm`.
+
+Least-retarded (`0 deg`) limits and calculated total airflow:
+
+| RPM | Stock Max g/cyl | Stock Max g/s | Stock Scav g/cyl | Stock Scav g/s | mod1 Scav g/cyl | mod1 Scav g/s | Scav delta g/s |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1400 | 0.625 | 29.17 | 0.615 | 28.70 | 0.625 | 29.17 | +0.47 |
+| 1700 | 0.645 | 36.55 | 0.665 | 37.68 | 0.645 | 36.55 | -1.13 |
+| 2000 | 0.720 | 48.00 | 0.695 | 46.33 | 0.750 | 50.00 | +3.67 |
+| 2300 | 0.725 | 55.58 | 0.715 | 54.82 | 0.900 | 69.00 | +14.18 |
+| 3000 | 0.725 | 72.50 | 0.725 | 72.50 | 0.900 | 90.00 | +17.50 |
+| 4000 | 0.725 | 96.67 | 0.725 | 96.67 | 0.900 | 120.00 | +23.33 |
+| 5000 | 0.725 | 120.83 | 0.720 | 120.00 | 0.800 | 133.33 | +13.33 |
+| 6000 | 0.640 | 128.00 | 0.645 | 129.00 | 0.750 | 150.00 | +21.00 |
+
+Approximate pressure context only: dividing by `0.341 L/cyl` gives charge density. At `25 deg C` and an assumed `100%` volumetric efficiency, `0.900 g/cyl` corresponds to about `226 kPa absolute`, while `0.750 g/cyl` corresponds to about `188 kPa absolute`. Real MAP differs with charge temperature, volumetric efficiency, valve timing, residual gas, and model conventions. These tables are knock-related airmass limits, not boost targets or proof of achieved airflow.
+
+### Stock versus mod1 power estimate - 2026-07-12
+
+Relevant `mod1` changes considered for this estimate:
+
+- Peak Engine Torque, Max Engine Torque Limit, and Overboost Torque Limit are raised to `340 Nm` from `3000 rpm` upward. These are ceilings/model limits, not a commanded or achievable torque curve.
+- Driver Demand A/B/C are unchanged through the `80%` pedal row; the `90%` row is increased about `10%` and the `100%` row about `20%`.
+- Max Boost Limit changes from `205-225 kPa` to `240 kPa` from `-30` through `45 deg C`, then `200 kPa` at `60 deg C`.
+- Turbo Overspeed Max Pressure Ratio changes from a falling `3.00-1.00` curve to `3.25` across all eight airflow breakpoints. Compressor Surge Limit is raised about `10%`.
+- Knock Airmass Scav is changed as documented above, and Turbocharger Knock Max Airmass is now synchronized to the same larger engineering values using its native 32-bit float `mg/cyl` storage.
+- High/Low Octane base spark, Flex Fuel/VCP/Humidity spark tables, PE EQ ratio, PE enable/delay/ramp tables, and Knock Enrichment fueling are byte-for-byte unchanged. Spark smoothing reference count changes from `20` to `5`, but this does not establish an advance increase.
+- P0068 airflow-correlation diagnostic thresholds, driveline torque scalars, TCS enable temperature, and cold ECT tables are changed but do not directly create engine power.
+
+The stock power estimate uses the most restrictive confirmed stock torque limit at each requested RPM and `hp = Nm * RPM / 7127`. It predicts approximately `85, 115, 147, 142 hp` at `3000, 4000, 5000, 6000 rpm`, which is internally consistent with the stock airflow ceilings.
+
+The raw `340 Nm` mod ceiling mathematically equals `143, 191, 239, 286 hp` at those RPMs, but the stock turbo/airflow model cannot support that curve. It must not be reported as expected output.
+
+For an airflow-supported estimate, use the modified least-retarded Scav limits and a gasoline conversion range of approximately `1.20-1.30 crank hp per g/s`. This range is consistent with the unchanged PE table, which is roughly `13.2 AFR` around `3000-4000 rpm`, `12.3` around `5000 rpm`, and `12.0` around `6000 rpm` at the middle temperature row.
+
+| RPM | Stock limiting torque | Stock estimate | mod1 Scav airflow | mod1 airflow-supported estimate | Approx. mod1 torque equivalent |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 3000 | 201 Nm | 85 hp | 90.0 g/s | 108-117 hp | 257-278 Nm |
+| 4000 | 205 Nm | 115 hp | 120.0 g/s | 144-156 hp | 257-278 Nm |
+| 5000 | 209 Nm | 147 hp | 133.3 g/s | 160-173 hp | 228-247 Nm |
+| 6000 | 169 Nm | 142 hp | 150.0 g/s | 180-195 hp | 214-232 Nm |
+
+Interpretation: `mod1` appears calibrated to permit roughly a `180-195 hp` airflow ceiling near `6000 rpm`, not `286 hp`. Both normal Max and Scav knock-airmass paths now contain the same larger engineering values, removing the previous stock-Max-versus-modified-Scav control-path discrepancy. This remains an upper calibration-supported estimate, not a dyno prediction; actual output depends on achieved boost/load, charge temperature, lambda, ignition timing, knock correction, and turbo efficiency.
+
+Post-synchronization rerun: the stock Max Engine Torque Limit curve peaks at approximately `146.6 hp` at `5000 rpm`. The synchronized mod tables permit `150 g/s` at `6000 rpm`, corresponding to `180-195 crank hp` with the `1.20-1.30 hp/(g/s)` assumption and a central estimate of `187.5 hp`. The raw `340 Nm` limit still calculates to `286.2 hp` at `6000 rpm`, but remains only a non-achievable calibration ceiling.
+
 ## HexView047922 Findings
 
 `HexView047922` starts at raw file address `0x047922`.
@@ -638,6 +699,18 @@ TunerPro load test on 2026-07-12:
 - Opened `KwFEQR_t_PE_DelayMax_0620AA` and confirmed raw `0xFFFF` renders as `3276.75 s` with the sentinel warning visible in the description.
 - A programmatic audit of all `90` active FEQR mappings found no storage width, signed/float flag, dimensions, or equation factor/offset mismatches against the DAMOS rows. XML parsing, unique-ID, category-membership, target-address uniqueness, and BIN-bound checks also passed.
 
+### DAMOS-derived XDF descriptions - 2026-07-12
+
+All XDF entries with a unique, proven `winols_astra.csv` symbol match now include structured functional and technical descriptions:
+
+- `131` of the `158` XDF entries are enriched: `90` resolve through `feqr_mapping.csv`, and `41` resolve through the exact DAMOS symbol already present in their local description.
+- Each enriched description contains the cleaned CSV calibration purpose, X/Y axis notes when present, dimensions, storage organization, signedness, engineering conversion, units, source symbol/address, and the complete pre-existing Astra mapping/local notes.
+- Existing warnings and confidence language are preserved verbatim after the `Astra mapping/local notes:` label. This includes candidate status, static-axis caveats, raw/display guidance, and the `KwFEQR_t_PE_DelayMax` `0xFFFF` sentinel warning.
+- The remaining `27` entries have no unique CSV symbol match and are intentionally unchanged rather than receiving a guessed description.
+- CSV HTML/line-break boilerplate is normalized, but source technical wording is not substantively rewritten.
+- The repeatable updater is `_quarantine/analysis/enrich_xdf_descriptions.py`. `build_feqr_xdf.py` uses the same formatter so future generated FEQR entries receive equivalent descriptions automatically.
+- Validation compares the enriched XDF with its committed predecessor after blanking description text. The non-description XML is identical, proving that IDs, categories, addresses, dimensions, axes, equations, and storage flags were not changed by this pass.
+
 ## Spark Table Search - 2026-07-08
 
 Spark entries were added to `E78_Astra_047922_TableSearch.xdf` under new `Spark->...` categories. Category declarations continue the stable TunerPro convention: declarations are zero-based and `CATEGORYMEM` references are one-based.
@@ -843,7 +916,8 @@ Relevant CSV entries not promoted as disable switches:
 - Keep `TurbochargerKnockMaxAirmass_DISPLAY_G_DO_NOT_EDIT_04DD68` only as a decimal presentation view. It overlaps the editable view by design and uses `0.001 * X` to show `0.275-0.725 g`; never edit or apply table functions in it.
 - Do not re-add the ambiguously named `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. Its purpose is now covered explicitly by the guarded editable view and the clearly labeled display-only view.
 - Second `opel_astra_mod1.bin` audit on 2026-07-12: SHA-256 `A232147FEC447278428C6E4F17EF35060ABC76BCAD100E76CD1B810982810D27`, `1054` bytes differ from stock, and all 88 cells at `0x04DD68` are stored as `0.275-0.900`. The screenshot values around `0.3` are those invalid native floats rounded to one decimal place, not a valid engineering-unit display. Do not use this BIN as the next edit base.
-- Third `opel_astra_mod1.bin` audit on 2026-07-12 after the user restored Max: SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`, `717` bytes differ from stock, and all 88 cells at `0x04DD68` are byte-for-byte identical to stock (`275-725` native floats). The Scav table at `0x04E350` remains modified in 83 of 88 cells and displays `0.275-0.900 g`. This is the current modified BIN state used to validate the paired Max edit/display XDF views.
+- Third `opel_astra_mod1.bin` audit on 2026-07-12 after the user restored Max: SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`, `717` bytes differ from stock, and all 88 cells at `0x04DD68` are byte-for-byte identical to stock (`275-725` native floats). The Scav table at `0x04E350` remains modified in 83 of 88 cells and displays `0.275-0.900 g`. This was the state before synchronizing both tables to the larger values.
+- Fourth `opel_astra_mod1.bin` audit on 2026-07-12 after knock-airmass synchronization: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26`, `769` bytes differ from stock. The existing Scav table was left byte-for-byte unchanged. Its 88 values were converted from raw counts to `mg/cyl` and written to Max as native 32-bit big-endian floats; `30/88` Max cells and `52` bytes changed. Both tables now decode identically over `0.275-0.900 g/cyl`. The pre-sync BIN is preserved at `_quarantine/bin_backups/opel_astra_mod1_before_knock_airmass_sync_20260712.bin` with SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`.
 - Keep `TurbochargerKnockAirmassScav_04E350` as the main editable/display table for HP Tuners `[ECM] 33495`.
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
