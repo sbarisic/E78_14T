@@ -1335,6 +1335,19 @@ Interpretation:
 - The alternate `0x87A2` / `0x87A4` pair is about `2500 RPM` / `2300 RPM` and is selected when `0x214F` is nonzero.
 - MOD2 changes the primary pair to about `60000 RPM` and `229 RPM`, which looks like an attempt to disable or greatly move the limiter behavior.
 
+Vehicle observations from 2026-07-25:
+
+- The untouched MOD2 image started the engine for only about half a second.
+  Restoring the stock primary pair `07 EB 07 EF` and repairing the checksum
+  allowed the engine to start and continue running.
+- A temporary primary pair of `07 83 07 87`, approximately 7800.3 RPM set and
+  7784.1 RPM clear, was checksum-valid but reportedly produced a roughly
+  one-second check-engine-lamp event during normal-RPM driving. Because no DTC
+  or live `$00A4.10`/`$0099.04` state was captured, this does not establish
+  whether the lamp was caused by limiter state, the incremental integrity
+  service, or another transient diagnostic.
+- The current `ecu2_modded.bin` is back on the stock primary limiter pair.
+
 ### RPM-Only Bypass Vector `0x8C19`
 
 Confirmed:
@@ -1855,6 +1868,17 @@ sum_without_checksum_pair = sum(bytes 0x4000-0xFFFF excluding 0x800C-0x800F)
 checksum_complement = (sum_without_checksum_pair + 0x01FE) & 0xFFFF
 checksum_word       = (~checksum_complement) & 0xFFFF
 ```
+
+Current derived-image validation:
+
+- `ecu2_modded.bin` uses checksum word `0x4875` and complement `0xB78A`.
+- The pair sums to `0xFFFF`, and the measured byte sum over
+  `0x4000-0xFFFF` is `0xB78A`.
+- SHA-256:
+  `7361E4D171152D0415312FF62167B255102F703441B4D940E4CCCED4EF806003`.
+- The temporary 7800 RPM-limiter image also had a valid checksum
+  (`0x4945/0xB6BA`), so its reported transient check-engine lamp was not
+  caused by leaving the four checksum bytes unrepaired.
 
 ## Free ROM Space / Custom Logic
 
