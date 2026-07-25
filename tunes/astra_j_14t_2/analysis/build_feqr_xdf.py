@@ -1,6 +1,5 @@
 import csv
 import re
-import shutil
 import struct
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -15,7 +14,6 @@ CSV_PATH = ROOT / "sources/Uni78/DamosCSVParser/data/winols_astra.csv"
 BIN_PATH = BASE / "opel_astra_original.bin"
 XDF_PATH = BASE / "E78_Astra_047922_TableSearch.xdf"
 LEDGER_PATH = BASE / "feqr_mapping.csv"
-BACKUP_PATH = BASE / "_quarantine/load_tests/28_before_full_feqr_expansion_20260712.xdf"
 
 CATEGORIES = {
     "Fuel->Power Enrich": (0x5, 6),
@@ -362,10 +360,6 @@ def main() -> None:
                 "notes": "Static/index axes where target axis storage is not independently proven.",
             }
         )
-
-    BACKUP_PATH.parent.mkdir(parents=True, exist_ok=True)
-    if not BACKUP_PATH.exists():
-        shutil.copy2(XDF_PATH, BACKUP_PATH)
 
     category_lines = []
     for name, (index, _) in CATEGORIES.items():

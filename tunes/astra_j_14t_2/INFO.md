@@ -25,7 +25,7 @@ Primary working files:
 - Working XDF: `E:\Projects\E78_14T\tunes\astra_j_14t_2\E78_Astra_047922_TableSearch.xdf`
 - Knowledge log: `E:\Projects\E78_14T\tunes\astra_j_14t_2\INFO.md`
 - Raw VCM Editor numeric view: `E:\Projects\E78_14T\xdf\E78_HexView.xdf`
-- Load-test/quarantine XDFs: `E:\Projects\E78_14T\tunes\astra_j_14t_2\_quarantine\load_tests`
+- Repeatable FEQR analysis helpers: `E:\Projects\E78_14T\tunes\astra_j_14t_2\analysis`
 
 Important source/reference files:
 
@@ -854,7 +854,7 @@ All XDF entries with a unique, proven `winols_astra.csv` symbol match now includ
 - Existing warnings and confidence language are preserved verbatim after the `Astra mapping/local notes:` label. This includes candidate status, static-axis caveats, raw/display guidance, and the `KwFEQR_t_PE_DelayMax` `0xFFFF` sentinel warning.
 - The remaining `27` entries have no unique CSV symbol match and are intentionally unchanged rather than receiving a guessed description.
 - CSV HTML/line-break boilerplate is normalized, but source technical wording is not substantively rewritten.
-- The repeatable updater is `_quarantine/analysis/enrich_xdf_descriptions.py`. `build_feqr_xdf.py` uses the same formatter so future generated FEQR entries receive equivalent descriptions automatically.
+- The repeatable updater is `analysis/enrich_xdf_descriptions.py`. `build_feqr_xdf.py` uses the same formatter so future generated FEQR entries receive equivalent descriptions automatically.
 - Validation compares the enriched XDF with its committed predecessor after blanking description text. The non-description XML is identical, proving that IDs, categories, addresses, dimensions, axes, equations, and storage flags were not changed by this pass.
 
 ## Spark Table Search - 2026-07-08
@@ -1063,11 +1063,11 @@ Relevant CSV entries not promoted as disable switches:
 - Do not re-add the ambiguously named `TurbochargerKnockMaxAirmass_04DD68_RawStored` view. Its purpose is now covered explicitly by the guarded editable view and the clearly labeled display-only view.
 - Second `opel_astra_mod1.bin` audit on 2026-07-12: SHA-256 `A232147FEC447278428C6E4F17EF35060ABC76BCAD100E76CD1B810982810D27`, `1054` bytes differ from stock, and all 88 cells at `0x04DD68` are stored as `0.275-0.900`. The screenshot values around `0.3` are those invalid native floats rounded to one decimal place, not a valid engineering-unit display. Do not use this BIN as the next edit base.
 - Third `opel_astra_mod1.bin` audit on 2026-07-12 after the user restored Max: SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`, `717` bytes differ from stock, and all 88 cells at `0x04DD68` are byte-for-byte identical to stock (`275-725` native floats). The Scav table at `0x04E350` remains modified in 83 of 88 cells and displays `0.275-0.900 g`. This was the state before synchronizing both tables to the larger values.
-- Fourth `opel_astra_mod1.bin` audit on 2026-07-12 after knock-airmass synchronization: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26`, `769` bytes differ from stock. The existing Scav table was left byte-for-byte unchanged. Its 88 values were converted from raw counts to `mg/cyl` and written to Max as native 32-bit big-endian floats; `30/88` Max cells and `52` bytes changed. Both tables now decode identically over `0.275-0.900 g/cyl`. The pre-sync BIN is preserved at `_quarantine/bin_backups/opel_astra_mod1_before_knock_airmass_sync_20260712.bin` with SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`.
+- Fourth `opel_astra_mod1.bin` audit on 2026-07-12 after knock-airmass synchronization: SHA-256 `F1C6BA04B0C0D912A8C66179F07F5D668B337DE0566CBDC14BF571EC35923E26`, `769` bytes differ from stock. The existing Scav table was left byte-for-byte unchanged. Its 88 values were converted from raw counts to `mg/cyl` and written to Max as native 32-bit big-endian floats; `30/88` Max cells and `52` bytes changed. Both tables now decode identically over `0.275-0.900 g/cyl`. The pre-sync BIN remains recoverable from Git history and has SHA-256 `8226503D5416A4731762E60D364F6852D33B13C54FCE181A44C2E530A151B0B3`.
 - Keep `TurbochargerKnockAirmassScav_04E350` as the main editable/display table for HP Tuners `[ECM] 33495`.
 - Keep `TurbochargerKnockAirmassScav_04E350_RawStored` as a raw verification view; it should show approximately `4320-11600`.
 - Keep `MaxBoostLimit_04DFB4` as the main editable/display table for HP Tuners `[ECM] 33460`; its Z range is `0-512 kPa`.
-- Keep `TurboOverspeedMaxPressureRatio_04D9BC` and `CompressorSurgeLimit_029858` active in the main XDF. They load successfully in the regenerated `09_all_quarantined_groups_regenerated.xdf` layout, with turbo pressure-ratio/surge entries inserted before the PE and knock-enrichment blocks.
+- Keep `TurboOverspeedMaxPressureRatio_04D9BC` and `CompressorSurgeLimit_029858` active in the main XDF. They passed the 2026-07-08 isolated and combined TunerPro load tests, with turbo pressure-ratio/surge entries inserted before the PE and knock-enrichment blocks.
 - Treat `CompressorSurgeLimit_029858` as confirmed exact. Treat `TurboOverspeedMaxPressureRatio_04D9BC` as high confidence because its axis matches exactly, but the stock Astra original row is higher in the middle cells than the provided HPT screenshot.
 - Keep `PeakEngineTorque_0534A4`, `MaxEngineTorqueLimit_0535A4`, and `OverboostTorqueLimit_053464` as the confirmed torque-table views for HP Tuners `[ECM] 32920`, `[ECM] 32923`, and `[ECM] 32924`; their Z ranges are `-8192 to 8192 Nm`.
 - Keep `TransOutputMax_021648`, `FrontAxleMax_021638`, `FrontAxleMax4WDLow_021630`, `FrontPropshaftMax_02163C`, `RearAxleMax_021640`, `RearAxleMax4WDLow_021634`, and `RearPropshaftMax_021644` as the high-confidence TSXC driveline torque limit scalars. Current Astra stock values are `100000/131072 Nm` depending on scalar and do not exactly match the HPT screenshot example.
@@ -1090,22 +1090,8 @@ Relevant CSV entries not promoted as disable switches:
 - Current active XDF has 158 table entries as of 2026-07-12: the prior 87-entry layout plus 71 newly proven FEQR flash calibrations.
 - Current categories are `Search->Raw Views`, `Airflow->Turbocharger`, `Engine->Torque`, `Engine->Driver Demand`, `Airflow->P0068 Correlation`, `Fuel->Power Enrich`, `Fuel->Knock Enrichment`, `Spark->Base`, `Spark->Fuel`, `Spark->VCT`, `Spark->Humidity`, `Spark->Minimum Spark`, `Spark->General`, `Engine->Thermal`, `Fuel->Cranking`, `Fuel->Open Loop`, `Fuel->Protection`, `Fuel->AIR`, and `Fuel->General`.
 - TunerPro category convention used here: `<CATEGORY index="0x0">` is referenced by `<CATEGORYMEM category="1">`, so declarations are zero-based and memberships are one-based.
-- A known-good no-category backup of the same 49-table layout is preserved at `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf`; the categorized copy is also preserved at `_quarantine/load_tests/13_main_49_with_categories.xdf`.
-- Load-test variants created under `_quarantine/load_tests/` on 2026-07-08:
-  - `01_turbo_pressure_ratio_only.xdf`: base XDF plus `TurboOverspeedMaxPressureRatio_04D9BC` and `CompressorSurgeLimit_029858` only.
-  - `02_power_enrich_eq_only.xdf`: base XDF plus `PowerEnrichEQRatio_06233E` and `PowerEnrichEQRatioE80_06248C` only.
-  - `03_power_enrich_enable_delay_only.xdf`: base XDF plus the eight `PowerEnrichment*` scalar/table entries only.
-  - `04_knock_enrichment_only.xdf`: base XDF plus the nine `KnockEnrichment*` entries only.
-  - `05_power_enrich_all.xdf`: base XDF plus both PE EQ tables and all PE enable/delay/ramp entries.
-  - `06_turbo_plus_power_enrich_all.xdf`: base XDF plus turbo pressure-ratio/surge and all PE entries.
-- Suggested test order: confirm the main XDF loads, then try load-test files `01` through `04`. If all individual groups load, try `05`, then `06`, then the full crash candidate `_quarantine/E78_Astra_047922_TableSearch_recent_crash_candidate_20260708.xdf`.
-- User confirmed load-test files `01` through `06` all load in TunerPro. Second-stage interaction variants created:
-  - `07_turbo_plus_knock_enrichment.xdf`: base XDF plus turbo pressure-ratio/surge and knock-enrichment entries.
-  - `08_power_enrich_plus_knock_enrichment.xdf`: base XDF plus all PE entries and knock-enrichment entries.
-  - `09_all_quarantined_groups_regenerated.xdf`: base XDF plus turbo, PE, and knock-enrichment groups regenerated from the quarantine blocks.
-  - `10_full_crash_candidate_direct_copy.xdf`: direct copy of the full 49-table crash candidate, for checking whether regeneration/order changed behavior.
-- User confirmed `07`, `08`, and regenerated full variant `09` load, while direct copy `10` crashes. The main XDF was promoted from `09` on 2026-07-08. The crash appears tied to the old direct candidate's metadata/order/line-ending state, not the table definitions themselves.
-- If the categorized main XDF crashes in TunerPro, compare against `_quarantine/load_tests/12_main_49_no_categories_loaded_backup.xdf` first before changing table definitions.
+- The 2026-07-08 TunerPro load-test matrix established that the turbo, power-enrichment, and knock-enrichment groups load both independently and in the regenerated combined layout. The direct-copy candidate crashed, while the regenerated equivalent loaded, tying the failure to the old candidate's metadata/order/line-ending state rather than its table definitions.
+- The promoted main XDF and Git history now supersede the temporary load-test matrix, crash candidate, staged XDF snapshots, and pre-sync BIN copy. Those redundant quarantine artifacts were removed; use Git history to recover an earlier state if regression analysis is needed.
 - Treat `COTMaxEnrichment_0636CC` as the HPT-shaped `[ECM] 12232` view and `COTMaxEnrichmentScalar_04E900` as the local CCTI scalar reference until a changed-bin fingerprint proves which one HPT edits.
 - Embedded float axes in the confirmed knock-airmass views use XDF `datatype` `6` plus `<embedinfo type="1" />`; leaving either out can make TunerPro display zeroed axis labels.
 - Do not patch `opel_astra_original.bin` directly without checksum/CVN handling.
