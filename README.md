@@ -3,6 +3,14 @@
 Delphi E78 ECU and GM/Chevrolet/Opel 1.4T engine A14NET LUJ LUV information
 Original injectors: 0280158205
 
+## Mechanical reference diagrams
+
+- [GM 1.4 LUV engine components (64-page PDF)](https://www.crateenginedepot.com/pdfs/1.4CruzeTurbo.pdf) — Exploded mechanical assembly drawings and numbered parts lists, based on the 2013 Chevrolet Cruze.
+- [GM 1.4 LUJ engine mechanical workshop manual](https://lemon-manuals.la/Chevrolet/2012/Cruze%20LTZ/Repair%20and%20Diagnosis/Engine%20Mechanical/Engine%20Mechanical%20-%201.4L%20%28LUJ%29/) — Under **Component Locator → Disassembled Views**, find the cylinder head, block, timing chain, front cover and oil pump assemblies. Includes separate naturally aspirated LDD and turbo LUH/LUJ block drawings.
+- [LUJ lubrication-system diagram and description](https://lemon.dogeware.me/Chevrolet/2012/Cruze%20Eco%2C%20Standard%20Trans/Repair%20and%20Diagnosis%20%28Single%20Page%29/Engine%20Mechanical/Engine%20Mechanical%20-%201.4L%20%28LUJ%29/Description%20and%20Operation/Lubrication%20Description/General%20Lubrication%20Description/) — Oil routing through the pump, cooler, filter, bearings, cam phasers and timing-chain tensioner.
+
+These references cover the LUJ/LUV family; confirm the engine code and application before using specifications or assuming parts interchangeability. Later GM 1.4 engines can have different mechanical designs. For comparison, [GM bulletin 16-NA-053, pages 4–5](https://static.oemdtc.com/TSB/SB-10108622-9340.pdf) describes the LE2's aluminium block, bedplate and cylinder head with integrated exhaust manifold.
+
 # BOSCH 0 280 158 117
 Note - none of these are confirmed as of yet
 

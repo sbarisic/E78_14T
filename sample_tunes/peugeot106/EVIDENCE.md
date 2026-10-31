@@ -125,6 +125,35 @@ air-charge math, or injection scheduling.
 | `0x55A0-0x55B1` | `1x18` | Diagnostic Event-Code Table | Yes, diagnostic queue | No | Not a tune map | Raw | High diagnostic | Decode external event meanings from callers and service protocol. |
 | `0x9131-0x9169` | `19x3` | State Descriptor Triples | Yes, descriptor subsystem | No | Not a tune map | Raw | High diagnostic/state | Decode descriptor fields and event/state semantics. |
 
+## 2026-07-25 Hardware and Road-Test Evidence
+
+These observations were reported from the Peugeot 106 test vehicle. They are
+useful hardware evidence, but runs without captured DTCs, live RAM flags, or
+knock instrumentation do not prove a unique software cause.
+
+- `ecu2_ori.BIN`, `M27C512_original.BIN`, and the `Stok` image were confirmed
+  byte-identical.
+- The untouched MOD2 image had a valid `0x47BE/0xB841` checksum pair but ran for
+  only about half a second after startup. Restoring the primary limiter words
+  from MOD2's `00 FA FF FF` to stock `07 EB 07 EF`, then repairing the
+  checksum, produced an image that started and continued running normally.
+  This is direct vehicle evidence that the abnormal MOD2 primary limiter pair
+  can affect startup state.
+- With the later WOT spark-vector and Bank A edits, reported WOT AFR remained
+  approximately `12.0-12.2`. Representative verified fixed-third-gear pulls
+  were `11.12 s` stock versus `10.67 s` modified from 50-110 km/h and
+  `12.02 s` stock versus `11.68 s` modified from 50-115 km/h. Multiple passes
+  were described as fairly close, so the measured difference is not isolated
+  proof of a timing-derived gain.
+- A temporary `07 83/07 87` primary limiter pair, approximately
+  7800.3/7784.1 RPM, was tested with a valid `0x4945/0xB6BA` checksum. The
+  check-engine lamp reportedly illuminated for about one second and cleared
+  while driving in the normal RPM range. No DTC or live limiter/checksum flag
+  was captured, so attribution remains open.
+- The current `ecu2_modded.bin` restores the stock `07 EB/07 EF` primary
+  limiter pair. Its checksum is valid at `0x4875/0xB78A`, and its SHA-256 is
+  `7361E4D171152D0415312FF62167B255102F703441B4D940E4CCCED4EF806003`.
+
 ## NTC ADC Breakpoint Verification
 
 The two temperature-axis candidates are not stored as resistance values. They
