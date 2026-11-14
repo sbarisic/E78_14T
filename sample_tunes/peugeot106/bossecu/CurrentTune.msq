@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 16:09:03 CET 2026"/>
+<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 16:34:53 CET 2026"/>
 <versionInfo fileFormat="5.0" firmwareInfo="rusEFI+v20260409%401431655765" nPages="2" signature="rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -8,7 +8,7 @@
 <pcVariable name="pwmAxisLabels">"Zero"</pcVariable>
 <pcVariable name="veAxisLabels">"load"</pcVariable>
 <pcVariable name="targetAfrAxisLabels">"load"</pcVariable>
-<pcVariable digits="0" name="tuneCrcPcVariable">30721.0</pcVariable>
+<pcVariable digits="0" name="tuneCrcPcVariable">4780.0</pcVariable>
 <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
@@ -381,8 +381,8 @@
 <constant name="useSpiImu">"true"</constant>
 <constant name="enableStagedInjection">"false"</constant>
 <constant name="useIdleAdvanceWhileCoasting">"false"</constant>
-<constant digits="0" name="tpsMin" units="ADC">112.0</constant>
-<constant digits="0" name="tpsMax" units="ADC">925.0</constant>
+<constant digits="0" name="tpsMin" units="ADC">156.0</constant>
+<constant digits="0" name="tpsMax" units="ADC">975.0</constant>
 <constant name="enableConstantBoostDcIfBelowMargin">"false"</constant>
 <constant name="enableDfcoExitEnrichment">"false"</constant>
 <constant name="useBoostPidTables">"false"</constant>
