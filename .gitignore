@@ -348,3 +348,6 @@ MigrationBackup/
 .ionide/
 
 tunes/Opel Corsa E 1.4 Turbo 2019/test.ols
+
+# Local temporary analysis files
+/tmp/
