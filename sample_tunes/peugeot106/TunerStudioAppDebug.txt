@@ -514,3 +514,652 @@ Please check your Communications Settings.
 11/14/26 4:09:04 PM :Debug: ############################################# Save Project Backup ##########################################
 11/14/26 4:09:04 PM :Info: Finalizing Sensors
 Saved user properties successfully
+Starting on SBARISIC_LAPTOP
+TunerStudio 3.3.01 started on Sat Nov 14 16:33:24 CET 2026
+JRE 1.8.0_382, Windows 11 10.0, x86
+java.library.path=./lib
+TunerStudioMS.jar
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:Windows, ClassName:'com.sun.java.swing.plaf.windows.WindowsLookAndFeel'
+Look:Windows Classic, ClassName:'com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+11/14/26 4:33:24 PM :Debug: no update:defaultFont
+11/14/26 4:33:24 PM :Info: Initializing File Dialogs.
+11/14/26 4:33:24 PM :Debug: hid: 494.4761
+11/14/26 4:33:25 PM :Info: Loading Language Content.
+11/14/26 4:33:27 PM :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+11/14/26 4:33:27 PM :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+11/14/26 4:33:27 PM :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+11/14/26 4:33:27 PM :Info: Initializing Help.
+11/14/26 4:33:27 PM :Info: Initializing Edition Features.
+11/14/26 4:33:27 PM :Info: Initializing App Events.
+11/14/26 4:33:27 PM :Debug: App Name:TunerStudio, appEdition:MS Lite!
+11/14/26 4:33:27 PM :Debug: Dummy Function Factory Created.
+11/14/26 4:33:27 PM :Info: Initializing User Interface
+arg found 0:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+11/14/26 4:33:29 PM :Info: Loading Font list.
+11/14/26 4:33:29 PM :Debug: Time to retreive font name list: 11 ms.
+11/14/26 4:33:29 PM :Info: 
+11/14/26 4:33:29 PM :Info: Initializing UI Components.
+11/14/26 4:33:29 PM :Info: Ready
+11/14/26 4:33:30 PM :Debug: Running speed test
+11/14/26 4:33:31 PM :Info: IniUpdate: No updates available.
+11/14/26 4:33:31 PM :Info: IncUpdate: No updates available.
+11/14/26 4:33:31 PM :Debug: Processor Score:1085002
+11/14/26 4:33:43 PM :Debug: Directory Changed:
+	Old:C:\Users\Sasa Barisic\Documents
+	New:C:\Projects\E78_14T\sample_tunes\peugeot106
+11/14/26 4:33:51 PM :Debug: File Changed:
+	Old:null
+	New:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu
+11/14/26 4:33:51 PM :Info: Opening Project ...
+11/14/26 4:33:51 PM :Debug: Opening project: C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu
+11/14/26 4:33:51 PM :Debug: Reading translation file as plain text
+11/14/26 4:33:51 PM :Info: Supported iniSpecVersion=3.79
+11/14/26 4:33:51 PM :Debug: Filtered ConfigurationOptionGroup in 30ms.
+11/14/26 4:33:51 PM :Info: Supported iniSpecVersion=3.79
+11/14/26 4:33:51 PM :Info: Read file canPcVariables.ini: 2.4806ms
+11/14/26 4:33:51 PM :Info: Filtered ini: 0.0465ms
+11/14/26 4:33:51 PM :Info: No iniVersion defined
+11/14/26 4:33:51 PM :Info: Loading Trigger Wheels
+11/14/26 4:33:51 PM :Info: Loaded All known ini sections
+11/14/26 4:33:51 PM :Info: Parsed and validated ini "canPcVariables.ini" in : 14ms.
+11/14/26 4:33:51 PM :Info: Read file mainController.ini: 19.3125ms
+11/14/26 4:33:51 PM :Info: Filtered ini: 50.9496ms
+11/14/26 4:33:51 PM :Info: No iniVersion defined
+11/14/26 4:33:51 PM :Debug: ini signature: rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881
+11/14/26 4:33:51 PM :Info: Set Write Blocks on = true
+11/14/26 4:33:51 PM :Info: Loading Trigger Wheels
+11/14/26 4:33:51 PM :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+11/14/26 4:33:51 PM :Info: Loaded All known ini sections
+11/14/26 4:33:51 PM :Info: Parsed and validated ini "mainController.ini" in : 410ms.
+11/14/26 4:33:51 PM :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+11/14/26 4:33:51 PM :Info: Time to load primary config: 485.0797ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+11/14/26 4:33:51 PM :Debug: set baud to 115200
+11/14/26 4:33:51 PM :Info: Setting connection to: RS232: Port:COM6, Baud:115200
+11/14/26 4:33:51 PM :Debug: Adding Configuration: bossecu
+11/14/26 4:33:51 PM :Info: Setting Active: TriggeredPage 1 Refresh:  triggerPageRefreshFlag , expression:  triggerPageRefreshFlag 
+11/14/26 4:33:51 PM :Debug: Activating Event Trigger: TriggeredPage 1 Refresh:  triggerPageRefreshFlag 
+11/14/26 4:33:51 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Triggered. expression:  triggerPageRefreshFlag 
+11/14/26 4:33:51 PM :Debug: TriggeredPage 1 Refresh:  triggerPageRefreshFlag : Trigger Expression:  triggerPageRefreshFlag  = NaN
+11/14/26 4:33:52 PM :Debug: Fill Constants: 576
+11/14/26 4:33:53 PM :Info: Tune opened, 3652 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 3652 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+11/14/26 4:33:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:33:53 PM :Debug: Flush lasted: 83ms.
+11/14/26 4:33:53 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:33:53 PM :Debug: Flush lasted: 76ms.
+11/14/26 4:33:53 PM :Debug: Skip Burn, last write page: -2
+11/14/26 4:33:53 PM :Info: !!! Loaded config in 2707
+11/14/26 4:33:53 PM :Info: !!! Activated Project 2800
+11/14/26 4:33:53 PM :Info: Opening Gauge Cluster..
+11/14/26 4:33:54 PM :Debug: High Speed Paint: true
+11/14/26 4:33:54 PM :Info: 
+11/14/26 4:33:54 PM :Info: Com Thread created: COMM Thread77722.28634008931
+11/14/26 4:33:54 PM :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+11/14/26 4:33:54 PM :Debug: !!! Opened Dash 2855
+11/14/26 4:33:54 PM :Info: Comm Manager for bossecu Started, thread ID: COMM Thread77722.28634008931
+11/14/26 4:33:54 PM :Info: Connecting to controller on: RS232: Port:COM6, Baud:115200
+11/14/26 4:33:54 PM :Info: bossecu Ready
+11/14/26 4:33:54 PM :Debug: Tuning View Files loaded in 44.3401ms.
+11/14/26 4:33:54 PM :Info: Comm Read Thread Change! Old Thread:null, new Thread:COMM Thread77722.28634008931
+11/14/26 4:33:54 PM :Info: Tune opened, 0 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 0 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+11/14/26 4:33:54 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:33:54 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:33:54 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:33:54 PM :Debug: Flush lasted: 77ms.
+11/14/26 4:33:54 PM :Debug: Skip Burn, last write page: -2
+11/14/26 4:33:54 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x6D x61 x73 x74 x65 x72 x2E x32 x30       rusEFI.master.20
+x32 x36 x2E x30 x34 x2E x30 x39 x2E x62 x6F x73 x73 x45 x43 x55       26.04.09.bossECU
+x5F x42 x72 x61 x69 x6E x46 x34 x32 x37 x5F x32 x32 x78 x32 x32       _BrainF427_22x22
+x2E x33 x39 x32 x38 x35 x31 x37 x38 x38 x31 x00                       .3928517881.
+11/14/26 4:33:54 PM :Info: Communicating with sig:rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881, rusEFI v20260409@1431655765
+11/14/26 4:33:54 PM :Debug: CRC matches for page 1:x71 x02 x06 x26                                                       q..&
+11/14/26 4:33:54 PM :Info: CrC matched skipped controller read on page:1
+11/14/26 4:33:54 PM :Debug: CRC matches for page 2:xDD xD5 x7C x8E                                                       ..|.
+11/14/26 4:33:54 PM :Info: CrC matched skipped controller read on page:2
+11/14/26 4:33:54 PM :Debug: Read All Data
+11/14/26 4:33:54 PM :Debug: isBlank Time: 0 ms.
+11/14/26 4:33:54 PM :Debug: Reset Ex: !( triggerPageRefreshFlag ) = true
+11/14/26 4:33:54 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Reset. expression: !( triggerPageRefreshFlag )
+11/14/26 4:33:54 PM :Debug: DiffTime: 21 ms.
+11/14/26 4:33:54 PM :Info: No Persistor set, not activating persisted triggers.
+11/14/26 4:34:25 PM :Info: dirtyData.size(): 1
+11/14/26 4:34:25 PM :Info: dirtyData.size(): 0
+11/14/26 4:34:25 PM :Debug: Flush lasted: 26ms.
+11/14/26 4:34:25 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:34:25 PM :Info: Queueing burn to page:1
+11/14/26 4:34:25 PM :Debug: Burn time:7ms.
+11/14/26 4:34:25 PM :Debug: burned page 1
+11/14/26 4:34:25 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:34:25 PM :Debug: CRC matches for page 1:x74 x94 x12 xAC                                                       t...
+11/14/26 4:34:26 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:34:26 PM :Info: Time to save msq: 73.9985
+11/14/26 4:34:26 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:34:44 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:34:44 PM :Info: Time to save msq: 43.0303
+11/14/26 4:34:44 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:34:44 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:34:44 PM :Info: Time to save msq: 37.6325
+11/14/26 4:34:44 PM :Info: bossecu Tune Saved!
+11/14/26 4:34:44 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:34:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:34:53 PM :Info: Time to save msq: 27.4549
+11/14/26 4:34:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:34:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:34:53 PM :Info: Time to save msq: 34.7933
+11/14/26 4:34:53 PM :Info: bossecu Tune Saved!
+11/14/26 4:34:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:36:32 PM :Debug: EventTrigger Stop Data log Triggered. expression: 0
+11/14/26 4:36:32 PM :Debug: Starting Log for 1 Configs.
+11/14/26 4:36:32 PM :Debug: Time to subscribe all data log channels: 2.2069
+11/14/26 4:36:32 PM :Debug: String too large for buffer! Will truncate. buffer size: 10, string len: 19, string val: % (don't belive me)
+11/14/26 4:36:32 PM :Debug: Queue full, blocking to shrink.
+[Duplicate entry] received 15 times: Debug: Queue full, blocking to shrink.
+11/14/26 4:36:33 PM :Debug: MLG header created
+11/14/26 4:36:33 PM :Info: Started Data Log to file: C:\Projects\E78_14T\sample_tunes\peugeot106\boss_logs\log6.mlg
+11/14/26 4:36:33 PM :Info: Channels active on main config bossecu: 1951
+11/14/26 4:36:33 PM :Info: Capturing DataLog
+11/14/26 4:37:24 PM :Info: Initiating read page 1 : 376:7772
+11/14/26 4:37:24 PM :Debug: CRC matches for page 1:x74 x94 x12 xAC                                                       t...
+11/14/26 4:37:24 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:37:31 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:37:31 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:37:31 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:37:31 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:37:31 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:37:38 PM :Info: Initiating read page 1 : 67:6441
+11/14/26 4:37:38 PM :Debug: CRC matches for page 1:x74 x94 x12 xAC                                                       t...
+11/14/26 4:37:38 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:37:40 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:37:40 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:37:40 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:37:40 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:37:40 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:37:47 PM :Info: Initiating read page 1 : 9545:16
+11/14/26 4:37:47 PM :Debug: CRC matches for page 1:x74 x94 x12 xAC                                                       t...
+11/14/26 4:37:47 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:37:52 PM :Warning: Data Log write time seems to be taking an unusually long amount of time.
+11/14/26 4:37:52 PM :Debug: Time to write Data Log Record: 107.034ms. Time to notify Listeners: 0.018ms. Prework time:0.0031
+11/14/26 4:37:55 PM :Debug: Clearing selection. Vertical: true
+11/14/26 4:38:16 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:38:16 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:38:16 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:38:16 PM :Info: Queueing burn to page:1
+11/14/26 4:38:16 PM :Debug: Burn time:9ms.
+11/14/26 4:38:16 PM :Debug: burned page 1
+11/14/26 4:38:16 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:38:16 PM :Debug: CRC matches for page 1:x3D xAA x66 x6D                                                       =.fm
+11/14/26 4:38:17 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:38:17 PM :Debug: Flush lasted: 72ms.
+11/14/26 4:38:17 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:38:17 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:38:17 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:38:18 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:38:18 PM :Info: Time to save msq: 51.6749
+11/14/26 4:38:18 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:38:20 PM :Info: Initiating read page 1 : 67:33113
+11/14/26 4:38:21 PM :Debug: CRC matches for page 1:x3D xAA x66 x6D                                                       =.fm
+11/14/26 4:38:21 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:38:43 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:38:43 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:38:43 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:38:43 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:38:43 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:38:54 PM :Info: Initiating read page 1 : 67:6441
+11/14/26 4:38:54 PM :Debug: CRC matches for page 1:x3D xAA x66 x6D                                                       =.fm
+11/14/26 4:38:54 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:39:02 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:39:02 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:39:02 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:39:02 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:39:02 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:39:53 PM :Debug: Deactivated fast paint Main Dashboard
+11/14/26 4:40:22 PM :Info: Initiating read page 1 : 7352:24
+11/14/26 4:40:22 PM :Debug: CRC matches for page 1:x3D xAA x66 x6D                                                       =.fm
+11/14/26 4:40:22 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:40:25 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:40:25 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:40:25 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:40:25 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:40:25 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:41:06 PM :Info: Initiating read page 1 : 67:33113
+11/14/26 4:41:06 PM :Debug: CRC matches for page 1:x3D xAA x66 x6D                                                       =.fm
+11/14/26 4:41:06 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:41:42 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:41:42 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:41:42 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:41:42 PM :Info: Queueing burn to page:1
+11/14/26 4:41:42 PM :Debug: Burn time:10ms.
+11/14/26 4:41:42 PM :Debug: burned page 1
+11/14/26 4:41:42 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:41:42 PM :Debug: CRC matches for page 1:x92 x5D x2A x9D                                                       .]*.
+11/14/26 4:41:43 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:41:43 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:41:43 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:41:43 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:41:43 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:41:43 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:41:43 PM :Info: Time to save msq: 55.4808
+11/14/26 4:41:43 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:41:45 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:41:45 PM :Info: Time to save msq: 26.2089
+11/14/26 4:41:45 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:41:45 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:41:45 PM :Info: Time to save msq: 88.8844
+11/14/26 4:41:45 PM :Info: bossecu Tune Saved!
+11/14/26 4:41:45 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:43:56 PM :Info: Data log stopped
+11/14/26 4:43:56 PM :Info: FileOutputStream Closed.
+11/14/26 4:44:08 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Triggered. expression:  triggerPageRefreshFlag 
+11/14/26 4:44:08 PM :Debug: TriggeredPage 1 Refresh:  triggerPageRefreshFlag : Trigger Expression:  triggerPageRefreshFlag  = 1.0
+11/14/26 4:44:08 PM :Info: CRC Mismatch, will need to refresh page from controller 
+11/14/26 4:44:08 PM :Info:    CRC from controller page 1:x60 xB6 x01 x0F                                                       `...
+11/14/26 4:44:08 PM :Info:    Local Data CRC for page 1: x92 x5D x2A x9D                                                       .]*.
+11/14/26 4:44:11 PM :Info: Checksum of data read: x60 xB6 x01 x0F                                                       `...
+11/14/26 4:44:11 PM :Debug: Reset Ex: !( triggerPageRefreshFlag ) = true
+11/14/26 4:44:11 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Reset. expression: !( triggerPageRefreshFlag )
+11/14/26 4:44:30 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:44:30 PM :Info: Time to save msq: 34.1479
+11/14/26 4:44:30 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:44:30 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:44:30 PM :Info: Time to save msq: 16.9017
+11/14/26 4:44:30 PM :Info: bossecu Tune Saved!
+11/14/26 4:44:30 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:44:32 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:44:32 PM :Info: Time to save msq: 20.935
+11/14/26 4:44:32 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:44:32 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:44:32 PM :Info: Time to save msq: 22.6292
+11/14/26 4:44:32 PM :Info: bossecu Tune Saved!
+11/14/26 4:44:32 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:44:37 PM :Info: Re-establishing connection to: RS232: Port:COM6, Baud:115200
+11/14/26 4:44:37 PM :Debug: can not close Port: jssc.SerialPort@c7d7fe, message: Port name - COM6; Method name - setEventsMask(); Exception type - Can't set mask.
+11/14/26 4:44:37 PM :Warning: Failed to re-establish connection to: RS232: Port:COM6, Baud:115200
+11/14/26 4:44:37 PM :Info: Connection Check failed, forcing offline.
+11/14/26 4:44:39 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:44:42 PM :Info: Going offline before all changes were permanently saved to the Controller.
+11/14/26 4:44:42 PM :Debug: Went offline
+11/14/26 4:44:42 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:44:44 PM :Info: Going offline before all changes were permanently saved to the Controller.
+11/14/26 4:44:44 PM :Info: Went offline 2
+11/14/26 4:44:44 PM :Debug: Port not valid: Unable to open port: COM6
+Please check your Communications Settings. 
+11/14/26 4:46:53 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x6D x61 x73 x74 x65 x72 x2E x32 x30       rusEFI.master.20
+x32 x36 x2E x30 x34 x2E x30 x39 x2E x62 x6F x73 x73 x45 x43 x55       26.04.09.bossECU
+x5F x42 x72 x61 x69 x6E x46 x34 x32 x37 x5F x32 x32 x78 x32 x32       _BrainF427_22x22
+x2E x33 x39 x32 x38 x35 x31 x37 x38 x38 x31 x00                       .3928517881.
+11/14/26 4:46:53 PM :Info: Communicating with sig:rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881, rusEFI v20260409@1431655765
+11/14/26 4:46:53 PM :Info: CRC Mismatch, will need to refresh page from controller 
+11/14/26 4:46:53 PM :Info:    CRC from controller page 1:xC2 xB6 x2F x5B                                                       ../[
+11/14/26 4:46:53 PM :Info:    Local Data CRC for page 1: x60 xB6 x01 x0F                                                       `...
+11/14/26 4:46:55 PM :Debug: Read page time: 1766ms.
+11/14/26 4:46:55 PM :Info: Checksum page 1 data read: xC2 xB6 x2F x5B                                                       ../[
+11/14/26 4:46:55 PM :Info: CRC Mismatch, will need to refresh page from controller 
+11/14/26 4:46:55 PM :Info:    CRC from controller page 2:xBC x60 x36 xCD                                                       .`6.
+11/14/26 4:46:55 PM :Info:    Local Data CRC for page 2: xDD xD5 x7C x8E                                                       ..|.
+11/14/26 4:46:55 PM :Debug: Activate Page, burn page 1 new active page=2
+11/14/26 4:46:55 PM :Debug: Burn time:7ms.
+11/14/26 4:46:55 PM :Debug: burned page 1
+11/14/26 4:46:55 PM :Debug: CRC matches for page 1:xC2 xB6 x2F x5B                                                       ../[
+11/14/26 4:46:56 PM :Debug: Read page time: 1020ms.
+11/14/26 4:46:56 PM :Info: Checksum page 2 data read: xBC x60 x36 xCD                                                       .`6.
+11/14/26 4:46:56 PM :Debug: Read All Data
+11/14/26 4:46:56 PM :Debug: isBlank Time: 0 ms.
+11/14/26 4:46:56 PM :Debug: DiffTime: 16 ms.
+11/14/26 4:46:56 PM :Debug: Time to get Panels = 0ms.
+11/14/26 4:47:07 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:47:07 PM :Info: Time to save msq: 18.6847
+11/14/26 4:47:07 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+java.util.ConcurrentModificationException
+	at java.util.HashMap$HashIterator.nextNode(HashMap.java:1469)
+	at java.util.HashMap$KeyIterator.next(HashMap.java:1493)
+	at G.cw.a(Unknown Source)
+	at G.cw.run(Unknown Source)
+11/14/26 4:47:07 PM :Debug: In Protected DirtyData. page: 0, start: 10, end: 2
+11/14/26 4:47:07 PM :Debug: Writing to protected region: 10:2
+11/14/26 4:47:07 PM :Info: cylinderBore changed and requires a PowerCycle
+11/14/26 4:47:07 PM :Info: idle_solenoidFrequency changed and requires a PowerCycle
+11/14/26 4:47:07 PM :Info: tunerStudioSerialSpeed changed and requires a PowerCycle
+11/14/26 4:47:07 PM :Info: dirtyData.size(): 90
+11/14/26 4:47:07 PM :Info: dirtyData.size(): 0
+11/14/26 4:47:07 PM :Debug: Flush lasted: 23ms.
+11/14/26 4:47:07 PM :Debug: Burn Page anonymous: 2
+11/14/26 4:47:07 PM :Info: Queueing burn to page:2
+11/14/26 4:47:07 PM :Info: Sending, 2493 bytes.
+11/14/26 4:47:07 PM :Info: Loaded Restore point C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+	Sending, 2493 bytes.
+11/14/26 4:47:07 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:47:07 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:47:07 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:47:07 PM :Info: skip burn to page:2, lastWritePage = -2
+11/14/26 4:47:07 PM :Debug: Activate Page, burn page 1 new active page=2
+11/14/26 4:47:07 PM :Debug: Burn time:12ms.
+11/14/26 4:47:07 PM :Debug: burned page 1
+11/14/26 4:47:07 PM :Debug: CRC matches for page 1:x60 xB6 x01 x0F                                                       `...
+11/14/26 4:47:08 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:47:08 PM :Debug: Burn time:8ms.
+11/14/26 4:47:08 PM :Debug: burned page 2
+11/14/26 4:47:08 PM :Debug: No Remaining Queue Write instructions
+[Duplicate entry] received 3 times: Debug: No Remaining Queue Write instructions
+11/14/26 4:47:08 PM :Debug: CRC matches for page 2:xDD xD5 x7C x8E                                                       ..|.
+11/14/26 4:47:08 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 2
+11/14/26 4:47:08 PM :Debug: CRC matches for page 1:x60 xB6 x01 x0F                                                       `...
+11/14/26 4:47:08 PM :Info: CrC matched skipped controller read on page:1
+11/14/26 4:47:08 PM :Debug: CRC matches for page 2:xDD xD5 x7C x8E                                                       ..|.
+11/14/26 4:47:08 PM :Info: CrC matched skipped controller read on page:2
+11/14/26 4:47:08 PM :Debug: Read All Data
+11/14/26 4:47:08 PM :Debug: isBlank Time: 0 ms.
+11/14/26 4:47:08 PM :Debug: DiffTime: 9 ms.
+11/14/26 4:47:10 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:47:10 PM :Info: Time to save msq: 15.0047
+11/14/26 4:47:10 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:47:14 PM :Info: Tune opened, 0 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 0 bytes updated. File:C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+11/14/26 4:47:14 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:47:14 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:47:14 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:47:14 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:47:14 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:47:14 PM :Info: skip burn to page:2, lastWritePage = -2
+11/14/26 4:47:14 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 2
+11/14/26 4:48:16 PM :Info: Re-establishing connection to: RS232: Port:COM6, Baud:115200
+11/14/26 4:48:16 PM :Debug: can not close Port: jssc.SerialPort@1fd5d8b, message: Port name - COM6; Method name - setEventsMask(); Exception type - Can't set mask.
+11/14/26 4:48:16 PM :Warning: Failed to re-establish connection to: RS232: Port:COM6, Baud:115200
+11/14/26 4:48:16 PM :Info: Connection Check failed, forcing offline.
+11/14/26 4:48:18 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:48:18 PM :Debug: Went offline
+11/14/26 4:48:18 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:48:18 PM :Info: Went offline 2
+11/14/26 4:48:19 PM :Info: Sig Bytes:x72 x75 x73 x45 x46 x49 x20 x6D x61 x73 x74 x65 x72 x2E x32 x30       rusEFI.master.20
+x32 x36 x2E x30 x34 x2E x30 x39 x2E x62 x6F x73 x73 x45 x43 x55       26.04.09.bossECU
+x5F x42 x72 x61 x69 x6E x46 x34 x32 x37 x5F x32 x32 x78 x32 x32       _BrainF427_22x22
+x2E x33 x39 x32 x38 x35 x31 x37 x38 x38 x31 x00                       .3928517881.
+11/14/26 4:48:19 PM :Info: Communicating with sig:rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881, rusEFI v20260409@1431655765
+11/14/26 4:48:41 PM :Debug: Time to load ini list: 94ms.
+11/14/26 4:48:41 PM :Info: Supported iniSpecVersion=3.79
+[Duplicate entry] received 2 times: Info: Supported iniSpecVersion=3.79
+11/14/26 4:48:41 PM :Debug: Filtered ConfigurationOptionGroup in 14ms.
+11/14/26 4:48:59 PM :Debug: EventTrigger Stop Data log Triggered. expression: 0
+11/14/26 4:48:59 PM :Debug: Starting Log for 1 Configs.
+11/14/26 4:48:59 PM :Debug: Time to subscribe all data log channels: 1.001
+11/14/26 4:48:59 PM :Debug: String too large for buffer! Will truncate. buffer size: 10, string len: 19, string val: % (don't belive me)
+11/14/26 4:48:59 PM :Debug: Queue full, blocking to shrink.
+[Duplicate entry] received 15 times: Debug: Queue full, blocking to shrink.
+11/14/26 4:49:01 PM :Debug: MLG header created
+11/14/26 4:49:01 PM :Info: Started Data Log to file: C:\Projects\E78_14T\sample_tunes\peugeot106\boss_logs\log7.mlg
+11/14/26 4:49:01 PM :Info: Channels active on main config bossecu: 1951
+11/14/26 4:49:01 PM :Info: Capturing DataLog
+11/14/26 4:49:51 PM :Info: Initiating read page 1 : 6232:21701
+11/14/26 4:49:51 PM :Debug: CRC matches for page 1:x60 xB6 x01 x0F                                                       `...
+11/14/26 4:49:51 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:49:56 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:49:56 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:49:56 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:49:56 PM :Info: Queueing burn to page:1
+11/14/26 4:49:56 PM :Debug: Burn time:9ms.
+11/14/26 4:49:56 PM :Debug: burned page 1
+11/14/26 4:49:56 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:49:56 PM :Debug: CRC matches for page 1:xC2 x13 x7E xCD                                                       ..~.
+11/14/26 4:49:58 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:49:58 PM :Info: Time to save msq: 47.8153
+11/14/26 4:49:58 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:49:59 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:49:59 PM :Debug: Flush lasted: 77ms.
+11/14/26 4:49:59 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:49:59 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:49:59 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:50:06 PM :Info: Initiating read page 1 : 6344:28234
+11/14/26 4:50:06 PM :Debug: CRC matches for page 1:xC2 x13 x7E xCD                                                       ..~.
+11/14/26 4:50:06 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:50:08 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:50:08 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:50:08 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:50:08 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:50:08 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:50:15 PM :Info: Initiating read page 1 : 564:13976
+11/14/26 4:50:15 PM :Debug: CRC matches for page 1:xC2 x13 x7E xCD                                                       ..~.
+11/14/26 4:50:15 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:50:46 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:50:46 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:50:46 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:50:46 PM :Info: Queueing burn to page:1
+11/14/26 4:50:46 PM :Debug: Burn time:8ms.
+11/14/26 4:50:46 PM :Debug: burned page 1
+11/14/26 4:50:46 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:50:46 PM :Debug: CRC matches for page 1:x47 x2C x0A x9B                                                       G,..
+11/14/26 4:50:47 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:50:47 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:50:47 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:50:47 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:50:47 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:50:47 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:50:47 PM :Info: Time to save msq: 21.5403
+11/14/26 4:50:47 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:50:51 PM :Info: Initiating read page 1 : 67:33113
+11/14/26 4:50:51 PM :Debug: CRC matches for page 1:x47 x2C x0A x9B                                                       G,..
+11/14/26 4:50:51 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:51:02 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:51:02 PM :Debug: Flush lasted: 85ms.
+11/14/26 4:51:02 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:51:02 PM :Info: Queueing burn to page:1
+11/14/26 4:51:02 PM :Debug: Burn time:7ms.
+11/14/26 4:51:02 PM :Debug: burned page 1
+11/14/26 4:51:02 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:51:02 PM :Debug: CRC matches for page 1:x38 x13 xD5 xD5                                                       8...
+11/14/26 4:51:03 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:51:03 PM :Info: Time to save msq: 41.252
+11/14/26 4:51:03 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:51:43 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:51:43 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:51:43 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:51:43 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:51:43 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:51:45 PM :Info: Data log stopped
+11/14/26 4:51:45 PM :Info: FileOutputStream Closed.
+11/14/26 4:52:18 PM :Info: Initiating read page 1 : 564:13976
+11/14/26 4:52:18 PM :Debug: CRC matches for page 1:x38 x13 xD5 xD5                                                       8...
+11/14/26 4:52:18 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:52:35 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:52:35 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:52:35 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:52:35 PM :Info: Queueing burn to page:1
+11/14/26 4:52:35 PM :Debug: Burn time:8ms.
+11/14/26 4:52:35 PM :Debug: burned page 1
+11/14/26 4:52:35 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:52:35 PM :Debug: CRC matches for page 1:xBD x2C xA1 x83                                                       .,..
+11/14/26 4:52:36 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:52:36 PM :Debug: Flush lasted: 77ms.
+11/14/26 4:52:36 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:52:36 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:52:36 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:52:37 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:52:37 PM :Info: Time to save msq: 18.5939
+11/14/26 4:52:37 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:52:49 PM :Info: Initiating read page 1 : 67:33113
+11/14/26 4:52:49 PM :Debug: CRC matches for page 1:xBD x2C xA1 x83                                                       .,..
+11/14/26 4:52:49 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:53:25 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:53:25 PM :Debug: Flush lasted: 77ms.
+11/14/26 4:53:25 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:53:25 PM :Info: Queueing burn to page:1
+11/14/26 4:53:25 PM :Debug: Burn time:8ms.
+11/14/26 4:53:25 PM :Debug: burned page 1
+11/14/26 4:53:25 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:53:25 PM :Debug: CRC matches for page 1:x22 xE4 x7C x20                                                       ".|.
+11/14/26 4:53:27 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:53:27 PM :Info: Time to save msq: 31.5935
+11/14/26 4:53:27 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:53:39 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:53:39 PM :Debug: Flush lasted: 70ms.
+11/14/26 4:53:39 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:53:39 PM :Info: Queueing burn to page:1
+11/14/26 4:53:39 PM :Debug: Burn time:10ms.
+11/14/26 4:53:39 PM :Debug: burned page 1
+11/14/26 4:53:39 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:53:39 PM :Debug: CRC matches for page 1:x35 xF3 x22 xAC                                                       5.".
+11/14/26 4:53:40 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:53:40 PM :Info: Time to save msq: 19.7171
+11/14/26 4:53:40 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:53:52 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:53:52 PM :Debug: Flush lasted: 79ms.
+11/14/26 4:53:52 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:53:52 PM :Info: Queueing burn to page:1
+11/14/26 4:53:52 PM :Debug: Burn time:10ms.
+11/14/26 4:53:52 PM :Debug: burned page 1
+11/14/26 4:53:52 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:53:52 PM :Debug: CRC matches for page 1:x4A x14 x9B x81                                                       J...
+11/14/26 4:53:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:53:53 PM :Info: Time to save msq: 19.096
+11/14/26 4:53:53 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:54:03 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:54:03 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:54:03 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:54:03 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:54:03 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:54:09 PM :Debug: EventTrigger Stop Data log Triggered. expression: 0
+11/14/26 4:54:09 PM :Debug: Starting Log for 1 Configs.
+11/14/26 4:54:09 PM :Debug: Time to subscribe all data log channels: 2.7497
+11/14/26 4:54:09 PM :Debug: String too large for buffer! Will truncate. buffer size: 10, string len: 19, string val: % (don't belive me)
+11/14/26 4:54:09 PM :Debug: Queue full, blocking to shrink.
+[Duplicate entry] received 10 times: Debug: Queue full, blocking to shrink.
+11/14/26 4:54:10 PM :Debug: MLG header created
+11/14/26 4:54:10 PM :Info: Started Data Log to file: C:\Projects\E78_14T\sample_tunes\peugeot106\boss_logs\log8.mlg
+11/14/26 4:54:10 PM :Info: Channels active on main config bossecu: 1951
+11/14/26 4:54:10 PM :Info: Capturing DataLog
+11/14/26 4:54:27 PM :Info: Data log stopped
+11/14/26 4:54:27 PM :Info: FileOutputStream Closed.
+11/14/26 4:54:44 PM :Info: Initiating read page 1 : 564:13976
+11/14/26 4:54:44 PM :Debug: CRC matches for page 1:x4A x14 x9B x81                                                       J...
+11/14/26 4:54:44 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:54:46 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:54:46 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:54:46 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:54:46 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:54:46 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:54:58 PM :Debug: EventTrigger Stop Data log Triggered. expression: 0
+11/14/26 4:54:58 PM :Debug: Starting Log for 1 Configs.
+11/14/26 4:54:58 PM :Debug: Time to subscribe all data log channels: 0.3774
+11/14/26 4:54:58 PM :Debug: String too large for buffer! Will truncate. buffer size: 10, string len: 19, string val: % (don't belive me)
+11/14/26 4:54:58 PM :Debug: Queue full, blocking to shrink.
+[Duplicate entry] received 10 times: Debug: Queue full, blocking to shrink.
+11/14/26 4:54:59 PM :Debug: MLG header created
+11/14/26 4:54:59 PM :Info: Started Data Log to file: C:\Projects\E78_14T\sample_tunes\peugeot106\boss_logs\log9.mlg
+11/14/26 4:54:59 PM :Info: Channels active on main config bossecu: 1951
+11/14/26 4:54:59 PM :Info: Capturing DataLog
+11/14/26 4:55:02 PM :Info: Data log stopped
+11/14/26 4:55:02 PM :Info: FileOutputStream Closed.
+11/14/26 4:55:12 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Triggered. expression:  triggerPageRefreshFlag 
+11/14/26 4:55:12 PM :Debug: TriggeredPage 1 Refresh:  triggerPageRefreshFlag : Trigger Expression:  triggerPageRefreshFlag  = 1.0
+11/14/26 4:55:12 PM :Info: CRC Mismatch, will need to refresh page from controller 
+11/14/26 4:55:12 PM :Info:    CRC from controller page 1:x9F x72 xE7 xEB                                                       .r..
+11/14/26 4:55:12 PM :Info:    Local Data CRC for page 1: x4A x14 x9B x81                                                       J...
+11/14/26 4:55:15 PM :Info: Checksum of data read: x9F x72 xE7 xEB                                                       .r..
+11/14/26 4:55:15 PM :Debug: Reset Ex: !( triggerPageRefreshFlag ) = true
+11/14/26 4:55:15 PM :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Reset. expression: !( triggerPageRefreshFlag )
+11/14/26 4:56:15 PM :Info: Initiating read page 1 : 67:33113
+11/14/26 4:56:15 PM :Debug: CRC matches for page 1:x9F x72 xE7 xEB                                                       .r..
+11/14/26 4:56:15 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:56:24 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:56:24 PM :Debug: Flush lasted: 80ms.
+11/14/26 4:56:24 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:56:24 PM :Info: Queueing burn to page:1
+11/14/26 4:56:24 PM :Debug: Burn time:7ms.
+11/14/26 4:56:24 PM :Debug: burned page 1
+11/14/26 4:56:24 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:56:24 PM :Debug: CRC matches for page 1:xD9 x59 xEF xB4                                                       .Y..
+11/14/26 4:56:25 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:56:25 PM :Debug: Flush lasted: 78ms.
+11/14/26 4:56:25 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:56:25 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:56:25 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:56:25 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+java.io.FileNotFoundException: C:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq (The requested operation cannot be performed on a file with a user-mapped section open)
+	at java.io.FileOutputStream.open0(Native Method)
+	at java.io.FileOutputStream.open(FileOutputStream.java:270)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:213)
+	at java.io.FileOutputStream.<init>(FileOutputStream.java:101)
+	at W.aa.a(Unknown Source)
+	at W.aa.a(Unknown Source)
+	at W.aa.a(Unknown Source)
+	at aP.f.a(Unknown Source)
+	at aP.f.e(Unknown Source)
+	at aP.jI.run(Unknown Source)
+11/14/26 4:56:25 PM :Info: Saved on retry.
+11/14/26 4:56:25 PM :Info: Time to save msq: 139.8415
+11/14/26 4:56:25 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:56:55 PM :Info: Initiating read page 1 : 6532:28008
+11/14/26 4:56:55 PM :Debug: CRC matches for page 1:xD9 x59 xEF xB4                                                       .Y..
+11/14/26 4:56:55 PM :Info: CrC matched skipped controller read on page:0
+11/14/26 4:56:59 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:56:59 PM :Debug: Flush lasted: 79ms.
+11/14/26 4:56:59 PM :Debug: Burn Page anonymous: 1
+11/14/26 4:56:59 PM :Info: Queueing burn to page:1
+11/14/26 4:56:59 PM :Debug: Burn time:6ms.
+11/14/26 4:56:59 PM :Debug: burned page 1
+11/14/26 4:56:59 PM :Debug: No Remaining Queue Write instructions
+11/14/26 4:56:59 PM :Debug: CRC matches for page 1:xBF xFB xAA x81                                                       ....
+11/14/26 4:57:00 PM :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+11/14/26 4:57:00 PM :Debug: Flush lasted: 71ms.
+11/14/26 4:57:00 PM :Debug: Burn Page anonymous: -1
+11/14/26 4:57:00 PM :Info: skip burn to page:1, lastWritePage = -2
+11/14/26 4:57:01 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:57:01 PM :Info: Time to save msq: 23.0296
+11/14/26 4:57:01 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:57:01 PM :Debug: Request to burn page, but no writes have been performed. Ignoring burn. page: 1
+11/14/26 4:57:02 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:57:02 PM :Info: Time to save msq: 19.0741
+11/14/26 4:57:02 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:57:02 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:57:02 PM :Info: Time to save msq: 18.5917
+11/14/26 4:57:02 PM :Info: bossecu Tune Saved!
+11/14/26 4:57:02 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:57:49 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:57:49 PM :Info: Time to save msq: 17.8103
+11/14/26 4:57:49 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+11/14/26 4:57:49 PM :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+11/14/26 4:57:49 PM :Info: Time to save msq: 16.9885
+11/14/26 4:57:49 PM :Info: bossecu Tune Saved!
+11/14/26 4:57:49 PM :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.

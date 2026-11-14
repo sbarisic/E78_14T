@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 16:34:53 CET 2026"/>
+<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 16:57:49 CET 2026"/>
 <versionInfo fileFormat="5.0" firmwareInfo="rusEFI+v20260409%401431655765" nPages="2" signature="rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -8,7 +8,7 @@
 <pcVariable name="pwmAxisLabels">"Zero"</pcVariable>
 <pcVariable name="veAxisLabels">"load"</pcVariable>
 <pcVariable name="targetAfrAxisLabels">"load"</pcVariable>
-<pcVariable digits="0" name="tuneCrcPcVariable">4780.0</pcVariable>
+<pcVariable digits="0" name="tuneCrcPcVariable">43649.0</pcVariable>
 <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
@@ -2712,7 +2712,7 @@
 <constant name="boostClosedLoopYAxis">"Zero"</constant>
 <constant name="l9779spiDevice">"Off"</constant>
 <constant name="imuType">"None"</constant>
-<constant digits="0" name="idlePidRpmUpperLimit" units="RPM">200.0</constant>
+<constant digits="0" name="idlePidRpmUpperLimit" units="RPM">400.0</constant>
 <constant name="lps25BaroSensorScl">"PB10"</constant>
 <constant name="lps25BaroSensorSda">"PB11"</constant>
 <constant name="vehicleSpeedSensorInputPin">"Digital Input 1 (F5)"</constant>
@@ -2931,7 +2931,7 @@
 <constant digits="0" name="tps2SecondaryMin" units="ADC">1000.0</constant>
 <constant digits="0" name="tps2SecondaryMax" units="ADC">0.0</constant>
 <constant name="widebandOnSecondBus">"CAN2"</constant>
-<constant name="fuelClosedLoopCorrectionEnabled">"true"</constant>
+<constant name="fuelClosedLoopCorrectionEnabled">"false"</constant>
 <constant name="alwaysWriteSdCard">"false"</constant>
 <constant name="knockDetectionUseDoubleFrequency">"first harmonic"</constant>
 <constant name="yesUnderstandLocking">"no"</constant>
@@ -2967,7 +2967,7 @@
 <constant name="transmissionIdleUpPin">"NONE"</constant>
 <constant name="vRefAdcChannel">"NONE"</constant>
 <constant digits="0" name="etbNeutralPosition" units="%">0.0</constant>
-<constant name="idleMode">"Open Loop"</constant>
+<constant name="idleMode">"Open Loop + Closed Loop"</constant>
 <constant name="isInjectionEnabled">"true"</constant>
 <constant name="isIgnitionEnabled">"true"</constant>
 <constant name="isCylinderCleanupEnabled">"true"</constant>
@@ -2998,7 +2998,7 @@
 <constant name="watchOutForLinearTime">"true"</constant>
 <constant digits="0" name="engineChartSize" units="count">300.0</constant>
 <constant digits="3" name="turboSpeedSensorMultiplier" units="mult">1.0</constant>
-<constant digits="0" name="acIdleRpmTarget" units="RPM">1100.0</constant>
+<constant digits="0" name="acIdleRpmTarget" units="RPM">1000.0</constant>
 <constant digits="0" name="transmissionIdleRpmTarget" units="RPM">0.0</constant>
 <constant digits="0" name="warningPeriod" units="seconds">10.0</constant>
 <constant digits="2" name="knockDetectionWindowStart" units="angle">20.0</constant>
@@ -3041,12 +3041,12 @@
 <constant digits="2" name="multisparkSparkDuration" units="ms">1.0</constant>
 <constant digits="2" name="multisparkDwell" units="ms">2.0</constant>
 <constant digits="4" name="idleRpmPid_pFactor">0.02</constant>
-<constant digits="4" name="idleRpmPid_iFactor">0.5</constant>
-<constant digits="4" name="idleRpmPid_dFactor">0.5</constant>
+<constant digits="4" name="idleRpmPid_iFactor">0.02</constant>
+<constant digits="4" name="idleRpmPid_dFactor">0.0</constant>
 <constant digits="0" name="idleRpmPid_offset">0.0</constant>
 <constant digits="0" name="idleRpmPid_periodMs" units="ms">0.0</constant>
-<constant digits="0" name="idleRpmPid_minValue">-5.0</constant>
-<constant digits="0" name="idleRpmPid_maxValue">5.0</constant>
+<constant digits="0" name="idleRpmPid_minValue">-8.0</constant>
+<constant digits="0" name="idleRpmPid_maxValue">8.0</constant>
 <constant digits="4" name="wwaeBeta" units="Fraction">0.3</constant>
 <constant name="binarySerialTxPin">"PA9"</constant>
 <constant name="binarySerialRxPin">"PA10"</constant>
@@ -4630,11 +4630,11 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="cltIdleRpm" rows="8" units="RPM">
-         1200.0 
-         1200.0 
-         1200.0 
          1100.0 
          1100.0 
+         1100.0 
+         1060.0 
+         1000.0 
          900.0 
          900.0 
          900.0 
@@ -10394,15 +10394,15 @@
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 -0.001 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 -0.002 -0.016 -0.03 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 -0.008 -0.003 -0.018 -0.149 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 -0.016 0.0 -5.287 -0.031 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 -0.027 0.0 -0.278 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 -0.001 -0.026 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 -0.023 -0.48 -0.317 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 -0.013 -2.025 -1.236 -0.229 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 -0.12 -2.9 -6.593 -0.032 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 -0.041 -0.501 -0.984 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         -0.003 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 -0.008 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 -0.023 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         -0.001 -0.023 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         -0.001 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -11129,7 +11129,7 @@
 <constant name="canWheelRLIsSigned">"false"</constant>
 <constant name="canWheelRRIsSigned">"false"</constant>
 <constant name="disable_mega_epic_slow_out">"false"</constant>
-<constant name="rotIdleEnabled">"true"</constant>
+<constant name="rotIdleEnabled">"false"</constant>
 <constant name="rot_idle_auto_engage">"false"</constant>
 <constant name="rot_idle_add_air">"true"</constant>
 <constant name="rot_idle_zero_stft">"true"</constant>
