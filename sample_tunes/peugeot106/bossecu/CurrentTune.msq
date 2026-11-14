@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 20:28:03 CET 2026"/>
+<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Sat Nov 14 21:56:18 CET 2026"/>
 <versionInfo fileFormat="5.0" firmwareInfo="rusEFI+v20260409%401431655765" nPages="2" signature="rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -8,7 +8,7 @@
 <pcVariable name="pwmAxisLabels">"Zero"</pcVariable>
 <pcVariable name="veAxisLabels">"load"</pcVariable>
 <pcVariable name="targetAfrAxisLabels">"load"</pcVariable>
-<pcVariable digits="0" name="tuneCrcPcVariable">65017.0</pcVariable>
+<pcVariable digits="0" name="tuneCrcPcVariable">24785.0</pcVariable>
 <pcVariable cols="1" digits="1" name="wueAfrTargetOffset" rows="16" units=":1">
          -1.5 
          -1.4 
@@ -2712,7 +2712,7 @@
 <constant name="boostClosedLoopYAxis">"Zero"</constant>
 <constant name="l9779spiDevice">"Off"</constant>
 <constant name="imuType">"None"</constant>
-<constant digits="0" name="idlePidRpmUpperLimit" units="RPM">400.0</constant>
+<constant digits="0" name="idlePidRpmUpperLimit" units="RPM">200.0</constant>
 <constant name="lps25BaroSensorScl">"PB10"</constant>
 <constant name="lps25BaroSensorSda">"PB11"</constant>
 <constant name="vehicleSpeedSensorInputPin">"Digital Input 1 (F5)"</constant>
@@ -2847,19 +2847,19 @@
 <constant digits="3" name="mapExpAverageAlpha">1.0</constant>
 <constant digits="0" name="turbochargerFilter">0.01</constant>
 <constant digits="0" name="launchTpsThreshold">0.0</constant>
-<constant digits="1" name="stft_deadband_rich" units="%">1.0</constant>
-<constant digits="1" name="stft_deadband_lean" units="%">1.0</constant>
-<constant digits="0" name="stft_minClt" units="C">0.0</constant>
+<constant digits="1" name="stft_deadband_rich" units="%">2.0</constant>
+<constant digits="1" name="stft_deadband_lean" units="%">2.0</constant>
+<constant digits="0" name="stft_minClt" units="C">60.0</constant>
 <constant digits="1" name="stft_minAfr" units="afr">10.0</constant>
 <constant digits="1" name="stft_maxAfr" units="afr">20.0</constant>
 <constant digits="2" name="stft_minLambda" units="lambda">0.7</constant>
 <constant digits="2" name="stft_maxLambda" units="lambda">1.25</constant>
-<constant digits="0" name="stft_startupDelay" units="seconds">5.0</constant>
+<constant digits="0" name="stft_startupDelay" units="seconds">20.0</constant>
 <constant digits="0" name="stft_cell_maxAdd" units="%">0.0</constant>
 <constant digits="0" name="stft_cell_maxRemove" units="%">0.0</constant>
 <constant digits="2" name="stft_cell_timeConstant" units="sec">0.0</constant>
-<constant name="ltft_enabled">"false"</constant>
-<constant name="ltft_correctionEnabled">"false"</constant>
+<constant name="ltft_enabled">"true"</constant>
+<constant name="ltft_correctionEnabled">"true"</constant>
 <constant digits="1" name="ltft_deadband" units="%">1.0</constant>
 <constant digits="1" name="ltft_maxAdd" units="%">20.0</constant>
 <constant digits="1" name="ltft_maxRemove" units="%">20.0</constant>
@@ -3518,10 +3518,10 @@
          -200.0 
          -100.0 
          0.0 
-         100.0 
-         200.0 
-         300.0 
-         400.0 
+         0.0 
+         0.0 
+         0.0 
+         0.0 
       </constant>
 <constant cols="1" digits="0" name="idleExtraPid" rows="9">
          0.0 
@@ -4635,16 +4635,16 @@
          1100.0 
          1060.0 
          1000.0 
-         960.0 
-         960.0 
-         960.0 
+         1000.0 
+         1000.0 
+         1000.0 
       </constant>
 <constant cols="5" digits="1" name="ignitionCltCorrTable" rows="5" units="deg">
-         0.0 0.0 0.0 0.0 -3.0 
-         0.0 0.0 0.0 0.0 -3.0 
-         0.0 0.0 0.0 0.0 -3.0 
-         0.0 0.0 0.0 0.0 -3.0 
-         0.0 0.0 0.0 0.0 -3.0 
+         0.0 0.0 0.0 0.0 -1.0 
+         0.0 0.0 0.0 0.0 -1.0 
+         0.0 0.0 0.0 0.0 -1.0 
+         0.0 0.0 0.0 0.0 -1.0 
+         0.0 0.0 0.0 0.0 -1.0 
       </constant>
 <constant cols="1" digits="0" name="ignitionCltCorrTempBins" rows="5" units="C">
          0.0 
@@ -5051,9 +5051,9 @@
          100.0 
       </constant>
 <constant cols="8" digits="1" name="cltIdleCorrTable" rows="3" units="%">
-         11.0 11.0 11.0 11.0 11.0 8.0 8.0 8.0 
-         16.0 16.0 16.0 16.0 16.0 13.0 13.0 13.0 
-         21.0 21.0 21.0 21.0 21.0 18.0 18.0 18.0 
+         11.0 11.0 11.0 11.0 11.0 11.0 11.0 11.0 
+         16.0 16.0 16.0 16.0 12.0 12.0 12.0 12.0 
+         21.0 21.0 21.0 21.0 14.0 14.0 14.0 14.0 
       </constant>
 <constant cols="1" digits="0" name="rpmIdleCorrBins" rows="3" units="Target RPM">
          900.0 
@@ -5462,10 +5462,10 @@
       </constant>
 <constant cols="5" digits="1" name="ignitionIatCorrTable" rows="5" units="deg">
          0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 0.0 0.0 
-         0.0 0.0 0.0 -3.2 -7.0 
-         0.0 0.0 0.0 -3.2 -7.0 
-         0.0 0.0 0.0 -3.2 -7.0 
+         0.0 0.0 0.0 -3.0 -7.0 
+         0.0 0.0 0.0 -3.0 -7.0 
+         0.0 0.0 0.0 -3.0 -7.0 
+         0.0 0.0 0.0 -3.0 -7.0 
       </constant>
 <constant cols="1" digits="0" name="ignitionIatCorrTempBins" rows="5" units="C">
          -25.0 
@@ -5722,28 +5722,28 @@
          8000.0 
       </constant>
 <constant cols="22" digits="1" name="veTable" rows="22" units="%">
-         45.09 45.09 45.99 46.89 44.01 45.99 46.98 58.5 58.5 58.5 60.21 61.74 63.18 64.8 64.8 63.72 63.72 63.72 60.3 59.67 59.22 59.04 
-         50.1 50.1 51.1 52.1 48.9 51.1 52.2 65.0 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 67.0 66.3 65.8 65.6 
-         51.9 51.9 52.9 53.8 50.74 52.2 53.3 63.8 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 68.5 67.9 67.5 67.3 
-         53.7 53.7 54.6 55.5 57.58 58.3 61.4 63.8 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 69.7 69.3 69.0 68.8 
-         54.4 54.4 55.2 56.1 58.2 59.0 61.9 63.8 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 70.1 69.8 69.7 69.6 
-         55.1 55.1 55.9 56.7 58.63 59.3 62.1 63.8 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 70.6 70.4 70.4 70.4 
-         54.9 54.9 55.7 56.3 58.3 59.0 61.6 63.8 65.0 65.0 66.9 68.6 70.2 72.0 72.0 70.8 70.8 70.8 71.4 71.2 71.1 71.2 
-         55.6 55.6 56.3 56.95 58.78 58.85 61.6 61.8 64.05 65.18 67.68 68.88 69.95 71.0 71.18 71.3 71.75 72.1 72.0 71.5 71.5 71.5 
-         57.23 57.23 57.83 58.43 59.83 59.53 60.95 60.1 62.8 64.9 67.8 68.7 69.4 69.8 70.1 71.4 72.2 72.8 72.8 72.7 72.8 72.8 
-         58.5 58.5 59.0 59.5 60.5 59.8 60.4 60.4 62.2 66.0 67.9 69.7 70.2 70.7 71.2 72.2 72.9 73.4 73.4 73.4 73.5 73.6 
-         59.2 59.2 59.6 60.1 61.0 60.3 60.7 60.6 62.4 66.2 68.0 69.8 70.5 71.2 71.9 72.8 73.4 73.8 73.8 73.8 73.8 73.8 
-         59.8 59.8 60.3 60.7 61.6 60.7 61.1 60.9 62.7 66.4 68.1 69.9 70.8 71.8 72.7 73.4 73.8 74.0 73.9 73.9 74.0 74.1 
-         59.8 59.8 60.3 60.7 61.6 60.8 61.3 61.5 63.2 66.9 68.6 70.3 71.2 72.1 73.0 73.7 74.0 74.1 74.0 74.0 74.1 74.2 
-         59.7 59.7 60.2 60.7 61.6 60.8 61.5 62.1 63.9 67.7 69.6 71.4 72.2 73.0 73.8 74.2 74.4 74.4 74.3 74.3 74.3 74.4 
-         59.0 59.0 59.6 60.1 60.7 60.6 61.7 62.6 64.7 68.9 70.9 72.9 73.5 74.0 74.6 74.9 74.9 74.7 74.5 74.4 74.4 74.5 
-         58.3 58.3 58.9 59.4 59.9 60.4 61.4 62.7 64.7 68.9 71.3 73.3 75.1 75.6 76.0 75.7 75.4 74.9 74.5 74.3 74.2 74.3 
-         58.3 58.3 58.9 59.4 59.9 60.5 61.7 63.3 65.6 70.5 73.4 76.2 78.1 77.9 77.5 77.0 76.5 75.5 74.9 74.5 74.4 74.4 
-         58.2 58.2 58.8 59.4 60.0 60.5 61.8 63.7 66.3 71.2 74.0 77.1 79.1 79.1 78.5 77.7 77.1 76.0 75.2 74.7 75.2 75.2 
-         58.2 58.2 58.8 59.4 60.0 60.6 61.8 64.0 67.0 71.7 74.5 77.6 79.9 80.0 79.2 78.4 77.5 77.2 76.8 76.4 76.0 76.0 
-         58.1 58.1 58.8 59.4 60.0 60.6 61.8 64.2 67.4 71.5 73.7 77.1 79.6 80.3 79.2 78.4 77.5 77.5 77.4 77.4 77.3 77.2 
-         58.1 58.1 58.7 59.4 60.0 60.7 61.9 64.4 67.7 71.4 73.1 76.6 79.3 80.5 79.3 78.4 77.6 77.8 78.1 78.4 78.7 78.6 
-         58.0 58.0 58.7 59.4 60.0 60.7 61.9 64.5 68.1 71.2 72.3 76.1 79.0 80.8 79.3 78.5 77.6 78.2 78.8 79.3 79.9 79.8 
+         42.09 42.09 41.99 42.89 42.4 45.9 43.98 51.0 55.5 55.5 57.21 58.74 60.18 61.8 61.8 60.72 60.72 60.72 57.3 56.67 56.22 56.04 
+         47.1 47.1 47.1 48.1 47.33 50.2 48.4 54.73 58.73 58.73 60.53 62.13 63.65 65.38 65.38 64.2 64.2 64.2 61.3 60.73 60.3 60.1 
+         48.9 48.9 48.9 49.9 50.58 53.1 52.43 57.08 60.88 60.88 62.75 64.43 66.0 67.75 67.75 66.55 66.55 66.55 64.43 63.93 63.55 63.35 
+         51.43 51.43 51.33 52.25 53.38 55.63 56.85 58.98 63.0 63.0 64.9 66.6 68.2 70.0 71.0 69.8 69.8 69.8 68.7 68.3 68.0 67.8 
+         52.4 52.4 52.2 53.1 55.7 57.9 59.83 59.2 63.0 63.0 64.9 66.6 68.2 70.0 71.0 69.8 69.8 69.8 69.1 68.8 68.7 68.6 
+         53.1 53.1 52.9 53.7 56.13 58.3 60.1 59.2 63.0 63.0 64.9 66.6 68.2 70.0 71.0 69.8 69.8 69.8 69.6 69.4 69.4 69.4 
+         52.9 52.9 51.7 52.3 54.8 57.0 59.6 59.2 63.0 63.0 64.9 66.6 68.2 70.0 71.0 69.8 69.8 69.8 70.4 70.2 70.1 70.2 
+         53.6 53.6 52.3 52.95 55.9 57.4 60.6 60.2 63.05 64.18 65.68 66.88 67.95 69.0 70.18 70.3 70.75 71.1 71.0 70.5 70.5 70.5 
+         55.23 55.23 54.83 55.43 56.9 57.4 59.95 59.1 61.8 63.9 65.8 66.7 67.4 67.8 69.1 70.4 71.2 71.8 71.8 71.7 71.8 71.8 
+         56.5 56.5 56.0 56.5 59.0 58.8 59.4 59.4 62.2 66.0 66.9 68.7 69.2 69.7 71.2 72.2 72.9 73.4 73.4 73.4 73.5 73.6 
+         57.7 57.7 57.1 57.6 59.5 59.3 60.7 60.6 62.4 66.2 68.0 69.8 70.5 71.2 71.9 72.8 73.4 73.8 73.8 73.8 73.8 73.8 
+         58.8 58.8 59.3 59.7 61.6 60.7 61.1 60.9 63.7 67.4 68.1 69.9 70.8 71.8 72.7 73.4 73.8 73.0 72.9 72.9 73.0 73.1 
+         58.8 58.8 59.3 59.7 61.6 60.8 61.3 61.5 64.2 67.9 68.6 70.3 71.2 72.1 73.0 73.7 74.0 73.1 73.0 73.0 73.1 73.2 
+         58.7 58.7 60.2 60.7 61.6 60.8 61.5 62.1 64.9 68.7 69.6 71.4 72.2 73.0 73.8 74.2 74.4 73.4 73.3 73.3 73.3 73.4 
+         58.0 58.0 59.6 60.1 60.7 60.6 61.7 62.6 65.7 69.9 70.9 72.9 73.5 74.0 74.6 74.9 74.9 73.7 73.5 73.4 73.4 73.5 
+         57.3 57.3 58.9 59.4 59.9 60.4 61.4 62.7 65.7 69.9 71.3 73.3 75.1 75.6 76.0 75.7 75.4 73.9 73.5 73.3 73.2 73.3 
+         57.3 57.3 58.9 59.4 59.9 60.5 61.7 63.3 65.6 70.5 73.4 76.2 78.1 77.9 77.5 77.0 76.5 74.5 73.9 73.5 73.4 73.4 
+         58.2 58.2 58.8 59.4 60.0 60.5 61.8 63.7 66.3 71.2 74.0 77.1 79.1 79.1 78.5 77.7 77.1 75.0 74.2 73.7 74.2 74.2 
+         58.2 58.2 58.8 59.4 60.0 60.6 61.8 64.0 67.0 71.7 74.5 77.6 79.9 80.0 79.2 78.4 77.5 75.2 74.8 74.4 74.0 74.0 
+         58.1 58.1 58.8 59.4 60.0 60.6 61.8 64.2 67.4 71.5 73.7 77.1 79.6 80.3 79.2 78.4 77.5 75.5 75.4 75.4 75.3 75.2 
+         58.1 58.1 58.7 59.4 60.0 60.7 61.9 64.4 67.7 71.4 73.1 76.6 79.3 80.5 79.3 78.4 77.6 75.8 76.1 76.4 76.7 76.6 
+         58.0 58.0 58.7 59.4 60.0 60.7 61.9 64.5 68.1 71.2 72.3 76.1 79.0 80.8 79.3 78.5 77.6 76.2 76.8 77.3 77.9 77.8 
       </constant>
 <constant cols="1" digits="0" name="veLoadBins" rows="22" units="kPa">
          15.0 
@@ -9138,28 +9138,28 @@
          8000.0 
       </constant>
 <constant cols="6" digits="2" name="stftTimeConstTable" rows="6" units="time(s)">
-         5.0 5.0 5.0 5.0 5.0 5.0 
-         5.0 5.0 5.0 5.0 5.0 5.0 
-         5.0 5.0 5.0 5.0 5.0 5.0 
-         5.0 5.0 5.0 5.0 5.0 5.0 
-         5.0 5.0 5.0 5.0 5.0 5.0 
-         5.0 5.0 5.0 5.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
+         15.0 15.0 15.0 10.0 5.0 5.0 
       </constant>
 <constant cols="6" digits="2" name="stftAuthorityAddFuelTable" rows="6" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
       </constant>
 <constant cols="6" digits="2" name="stftAuthorityRemoveFuelTable" rows="6" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 
          0.0 0.0 0.0 0.0 0.0 0.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
-         20.0 20.0 20.0 20.0 20.0 20.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
+         10.0 10.0 10.0 10.0 10.0 10.0 
       </constant>
 <constant cols="16" digits="2" name="ignBlends1_table" rows="16">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -9874,19 +9874,19 @@
          500.0 
       </constant>
 <constant cols="1" digits="2" name="idleTimingTargetErrorValues" rows="13" units="deg">
-         20.0 
-         16.67 
-         13.33 
-         10.0 
-         6.67 
-         3.33 
+         22.0 
+         16.0 
+         12.0 
+         8.0 
+         4.0 
+         2.0 
          0.0 
-         -3.33 
-         -6.67 
-         -10.0 
-         -13.34 
-         -16.67 
-         -20.01 
+         0.0 
+         0.0 
+         0.0 
+         0.0 
+         0.0 
+         0.0 
       </constant>
 <constant digits="2" name="tunedVeStrengthMultiplier" units="*">0.7</constant>
 <constant cols="1" digits="0" name="portsEnabled" rows="84" units="#">
@@ -10776,9 +10776,9 @@
          8000.0 
       </constant>
 <constant cols="1" digits="1" name="deltaTpsAverageCurveMultiplier" rows="4" units="mult">
-         2.2 
-         2.2 
-         2.2 
+         2.0 
+         2.0 
+         2.0 
          1.7 
       </constant>
 <constant cols="1" digits="1" name="tps_ae_scale_tps_bins" rows="3" units="TPS">
