@@ -572,6 +572,8 @@ Interpretation:
 
 ### Normalized Axis `0x2034`
 
+The [stock MAP load trace](analysis/stock_map_load.md) resolves the normal input as filtered ADC AN3 and identifies the gain and offset at `0x929B–0x929D`. Use that trace for base-map work. It revises the earlier producer interpretation below: `0x9187` supplies a diagnostic substitute, while the healthy path restores the calibrated sensor result saved on entry to `0x5D8D`.
+
 Confirmed:
 
 `0x2034` is built from RAM word `0x00CE`, doubled, and clamped to `0x07FF`.

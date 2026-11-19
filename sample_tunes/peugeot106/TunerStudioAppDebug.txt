@@ -27754,3 +27754,437 @@ Please check your Communications Settings.
 11/14/26 9:56:19 PM :Debug: ############################################# Save Project Backup ##########################################
 11/14/26 9:56:19 PM :Info: Finalizing Sensors
 Saved user properties successfully
+Starting on CARPPC
+TunerStudio 3.3.01 started on Wed Nov 18 22:12:54 CET 2026
+JRE 1.8.0_382, Windows 11 10.0, x86
+java.library.path=./lib
+TunerStudioMS.jar
+Look:Metal, ClassName:'javax.swing.plaf.metal.MetalLookAndFeel'
+Look:Nimbus, ClassName:'javax.swing.plaf.nimbus.NimbusLookAndFeel'
+Look:CDE/Motif, ClassName:'com.sun.java.swing.plaf.motif.MotifLookAndFeel'
+Look:Windows, ClassName:'com.sun.java.swing.plaf.windows.WindowsLookAndFeel'
+Look:Windows Classic, ClassName:'com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel'
+Look:Night Shade, ClassName:'de.muntjak.tinylookandfeel.TinyLookAndFeel'
+Setting Look & Feel to:javax.swing.plaf.metal.MetalLookAndFeel
+ScrollBar.width
+18/11/26 22:12:54 :Debug: no update:defaultFont
+18/11/26 22:12:54 :Debug: hid: 286.46152
+18/11/26 22:12:54 :Info: Initializing File Dialogs.
+18/11/26 22:12:55 :Info: Loading Language Content.
+18/11/26 22:12:57 :Debug: Command Non-VolatileBytes for F resolved to: x46                                                                   F
+18/11/26 22:12:57 :Debug: Command Non-VolatileBytes for I resolved to: x49                                                                   I
+18/11/26 22:12:57 :Debug: Command Non-VolatileBytes for f resolved to: x66                                                                   f
+18/11/26 22:12:57 :Info: Initializing Help.
+18/11/26 22:12:57 :Info: Initializing Edition Features.
+18/11/26 22:12:57 :Info: Initializing App Events.
+18/11/26 22:12:57 :Debug: App Name:TunerStudio, appEdition:MS Lite!
+18/11/26 22:12:57 :Debug: Dummy Function Factory Created.
+18/11/26 22:12:57 :Info: Initializing User Interface
+18/11/26 22:12:58 :Warning: Failed to parse tag:width= in line:
+                  <td align="center" background="images/buttonActive.png" height="35" width="166">
+18/11/26 22:12:58 :Warning: Failed to parse tag:height= in line:
+                  <td align="center" background="images/buttonActive.png" height="35" width="166">
+18/11/26 22:12:58 :Warning: Failed to parse tag:width= in line:
+                  <td align="center" background="images/buttonInactive.png" height="35" width="166">
+18/11/26 22:12:58 :Warning: Failed to parse tag:height= in line:
+                  <td align="center" background="images/buttonInactive.png" height="35" width="166">
+18/11/26 22:12:58 :Warning: Failed to parse tag:width= in line:
+      <center> <a href="https://www.facebook.com/efianalytics/"><img alt="Whats New" src="images/whatsNew.jpg" border="0" height="105" width="120"></a><br>
+18/11/26 22:12:58 :Warning: Failed to parse tag:height= in line:
+      <center> <a href="https://www.facebook.com/efianalytics/"><img alt="Whats New" src="images/whatsNew.jpg" border="0" height="105" width="120"></a><br>
+18/11/26 22:12:59 :Info: Loading Font list.
+18/11/26 22:12:59 :Debug: Time to retreive font name list: 9 ms.
+18/11/26 22:12:59 :Info: 
+18/11/26 22:12:59 :Info: Initializing UI Components.
+18/11/26 22:12:59 :Info: Ready
+18/11/26 22:13:01 :Info: IniUpdate: No updates available.
+18/11/26 22:13:01 :Info: IncUpdate: No updates available.
+Saved user properties successfully
+Saved user properties successfully
+18/11/26 22:13:18 :Debug: Directory Changed:
+	Old:C:\Users\cartm\Documents
+	New:E:\Projects\E78_14T\sample_tunes\peugeot106
+18/11/26 22:13:20 :Debug: File Changed:
+	Old:null
+	New:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu
+18/11/26 22:13:20 :Info: Opening Project ...
+18/11/26 22:13:20 :Debug: Opening project: E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu
+18/11/26 22:13:20 :Debug: Reading translation file as plain text
+18/11/26 22:13:20 :Info: Supported iniSpecVersion=3.79
+18/11/26 22:13:21 :Debug: Filtered ConfigurationOptionGroup in 34ms.
+18/11/26 22:13:21 :Info: Supported iniSpecVersion=3.79
+18/11/26 22:13:21 :Info: Read file canPcVariables.ini: 0.7696ms
+18/11/26 22:13:21 :Info: Filtered ini: 0.0316ms
+18/11/26 22:13:21 :Info: No iniVersion defined
+18/11/26 22:13:21 :Info: Loading Trigger Wheels
+18/11/26 22:13:21 :Info: Loaded All known ini sections
+18/11/26 22:13:21 :Info: Parsed and validated ini "canPcVariables.ini" in : 12ms.
+18/11/26 22:13:21 :Info: Read file mainController.ini: 22.1148ms
+18/11/26 22:13:21 :Info: Filtered ini: 50.7844ms
+18/11/26 22:13:21 :Info: No iniVersion defined
+18/11/26 22:13:21 :Debug: ini signature: rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881
+18/11/26 22:13:21 :Info: Set Write Blocks on = true
+18/11/26 22:13:21 :Info: Loading Trigger Wheels
+18/11/26 22:13:21 :Info: Loading Depricated ini section [UserDefined], use [UiDialogs]
+18/11/26 22:13:21 :Info: Loaded All known ini sections
+18/11/26 22:13:21 :Info: Parsed and validated ini "mainController.ini" in : 337ms.
+18/11/26 22:13:21 :Info: Not Loading default Tools because they were already loaded from the project ini(s)
+18/11/26 22:13:21 :Info: Time to load primary config: 427.62842ms. used cached config: false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+18/11/26 22:13:21 :Debug: set baud to 115200
+18/11/26 22:13:21 :Info: Setting connection to: RS232: Port:COM6, Baud:115200
+18/11/26 22:13:21 :Debug: Adding Configuration: bossecu
+18/11/26 22:13:21 :Info: Setting Active: TriggeredPage 1 Refresh:  triggerPageRefreshFlag , expression:  triggerPageRefreshFlag 
+18/11/26 22:13:21 :Debug: Activating Event Trigger: TriggeredPage 1 Refresh:  triggerPageRefreshFlag 
+18/11/26 22:13:21 :Debug: EventTrigger TriggeredPage 1 Refresh:  triggerPageRefreshFlag  Triggered. expression:  triggerPageRefreshFlag 
+18/11/26 22:13:21 :Debug: TriggeredPage 1 Refresh:  triggerPageRefreshFlag : Trigger Expression:  triggerPageRefreshFlag  = NaN
+18/11/26 22:13:21 :Debug: Fill Constants: 538
+18/11/26 22:13:23 :Info: Tune opened, 3651 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 3651 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 22:13:23 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:13:23 :Debug: Flush lasted: 85ms.
+18/11/26 22:13:23 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:13:23 :Debug: Flush lasted: 79ms.
+18/11/26 22:13:23 :Debug: Skip Burn, last write page: -2
+18/11/26 22:13:23 :Info: !!! Loaded config in 2349
+18/11/26 22:13:23 :Info: !!! Activated Project 2505
+18/11/26 22:13:23 :Info: Opening Gauge Cluster..
+18/11/26 22:13:23 :Debug: High Speed Paint: true
+18/11/26 22:13:23 :Info: 
+18/11/26 22:13:23 :Info: Com Thread created: COMM Thread9237.510695247942
+18/11/26 22:13:23 :Info: endModalBlock called, but Root Pane is not a ProgressPane.
+18/11/26 22:13:23 :Debug: !!! Opened Dash 2754
+18/11/26 22:13:23 :Info: Comm Manager for bossecu Started, thread ID: COMM Thread9237.510695247942
+18/11/26 22:13:23 :Info: Connecting to controller on: RS232: Port:COM6, Baud:115200
+18/11/26 22:13:23 :Info: bossecu Ready
+18/11/26 22:13:23 :Debug: Port not valid: Unable to open port: COM6
+Please check your Communications Settings. 
+18/11/26 22:13:23 :Debug: Tuning View Files loaded in 30.7262ms.
+18/11/26 22:13:24 :Info: No Persistor set, not activating persisted triggers.
+18/11/26 22:13:27 :Info: Initiating read page 1 : 176:33560
+18/11/26 22:13:30 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:13:30 :Debug: Flush lasted: 79ms.
+18/11/26 22:13:30 :Debug: Skip Burn, last write page: -2
+18/11/26 22:13:42 :Info: Tune opened, 699 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\Base_added_stock.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 699 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\Base_added_stock.msq
+18/11/26 22:13:42 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:13:42 :Debug: Flush lasted: 80ms.
+18/11/26 22:13:42 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:13:42 :Debug: Flush lasted: 80ms.
+18/11/26 22:13:42 :Debug: Skip Burn, last write page: -2
+18/11/26 22:13:48 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:14:11 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:14:11 :Debug: Flush lasted: 76ms.
+18/11/26 22:14:11 :Debug: Skip Burn, last write page: -2
+18/11/26 22:14:43 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:16:09 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:16:09 :Debug: Flush lasted: 77ms.
+18/11/26 22:16:09 :Debug: Skip Burn, last write page: -2
+18/11/26 22:16:15 :Info: Initiating read page 1 : 176:33560
+18/11/26 22:16:18 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:16:18 :Debug: Flush lasted: 77ms.
+18/11/26 22:16:18 :Debug: Skip Burn, last write page: -2
+18/11/26 22:16:24 :Info: Initiating read page 1 : 6008:3000
+18/11/26 22:17:35 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:17:35 :Debug: Flush lasted: 78ms.
+18/11/26 22:17:35 :Debug: Skip Burn, last write page: -2
+18/11/26 22:17:35 :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+18/11/26 22:17:35 :Info: Time to save msq: 73.3941
+18/11/26 22:17:35 :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+18/11/26 22:17:35 :Info: file:Base_added_stock.msq is not Monitored, cannot pause Monitoring of it.
+18/11/26 22:17:35 :Debug: File does not exist, creating new:
+E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\Base_added_stock.msq
+18/11/26 22:17:35 :Info: Time to save msq: 21.9967
+18/11/26 22:17:35 :Info: bossecu Tune Saved!
+18/11/26 22:17:35 :Info: file:Base_added_stock.msq is not Monitored, cannot unpause Monitoring of it.
+18/11/26 22:17:38 :Info: file:CurrentTune.msq is not Monitored, cannot pause Monitoring of it.
+18/11/26 22:17:38 :Info: Time to save msq: 27.6448
+18/11/26 22:17:38 :Info: file:CurrentTune.msq is not Monitored, cannot unpause Monitoring of it.
+18/11/26 22:17:38 :Info: file:Base_added_stock.msq is not Monitored, cannot pause Monitoring of it.
+18/11/26 22:17:38 :Info: Time to save msq: 18.9187
+18/11/26 22:17:38 :Info: bossecu Tune Saved!
+18/11/26 22:17:38 :Info: file:Base_added_stock.msq is not Monitored, cannot unpause Monitoring of it.
+18/11/26 22:18:30 :Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 22:18:30 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:18:30 :Debug: Flush lasted: 83ms.
+18/11/26 22:18:30 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:18:30 :Debug: Flush lasted: 79ms.
+18/11/26 22:18:30 :Debug: Skip Burn, last write page: -2
+18/11/26 22:18:32 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:18:56 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:18:56 :Debug: Flush lasted: 79ms.
+18/11/26 22:18:56 :Debug: Skip Burn, last write page: -2
+18/11/26 22:18:59 :Info: Initiating read page 1 : 12428:1056
+18/11/26 22:19:21 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:21 :Debug: Flush lasted: 77ms.
+18/11/26 22:19:21 :Debug: Skip Burn, last write page: -2
+18/11/26 22:19:22 :Info: Initiating read page 1 : 176:33560
+18/11/26 22:19:24 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:24 :Debug: Flush lasted: 76ms.
+18/11/26 22:19:24 :Debug: Skip Burn, last write page: -2
+18/11/26 22:19:29 :Info: Initiating read page 1 : 180:80
+18/11/26 22:19:35 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:35 :Debug: Flush lasted: 79ms.
+18/11/26 22:19:35 :Debug: Skip Burn, last write page: -2
+18/11/26 22:19:38 :Info: Initiating read page 1 : 276:8520
+18/11/26 22:19:42 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:42 :Debug: Flush lasted: 78ms.
+18/11/26 22:19:42 :Debug: Skip Burn, last write page: -2
+18/11/26 22:19:45 :Info: Initiating read page 1 : 6232:21701
+18/11/26 22:19:47 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:47 :Debug: Flush lasted: 78ms.
+18/11/26 22:19:47 :Debug: Skip Burn, last write page: -2
+18/11/26 22:19:49 :Info: Initiating read page 1 : 6344:28234
+18/11/26 22:19:51 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:19:51 :Debug: Flush lasted: 79ms.
+18/11/26 22:19:51 :Debug: Skip Burn, last write page: -2
+18/11/26 22:20:00 :Debug: EcuParameter: 'stoichiometricRatio' not found in Configuration bossecu
+18/11/26 22:20:00 :Info: Initiating read page 1 : 14540:304
+18/11/26 22:20:05 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:20:05 :Debug: Flush lasted: 79ms.
+18/11/26 22:20:05 :Debug: Skip Burn, last write page: -2
+18/11/26 22:20:18 :Info: Initiating read page 1 : 33100:8
+18/11/26 22:20:21 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:20:21 :Debug: Flush lasted: 74ms.
+18/11/26 22:20:21 :Debug: Skip Burn, last write page: -2
+18/11/26 22:20:42 :Info: Initiating read page 1 : 20888:8
+18/11/26 22:20:58 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:20:58 :Debug: Flush lasted: 71ms.
+18/11/26 22:20:58 :Debug: Skip Burn, last write page: -2
+18/11/26 22:21:04 :Info: Initiating read page 1 : 6008:3000
+18/11/26 22:21:06 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:21:06 :Debug: Flush lasted: 77ms.
+18/11/26 22:21:06 :Debug: Skip Burn, last write page: -2
+18/11/26 22:22:52 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:22:57 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:22:57 :Debug: Flush lasted: 80ms.
+18/11/26 22:22:57 :Debug: Skip Burn, last write page: -2
+18/11/26 22:23:01 :Info: Initiating read page 1 : 180:80
+18/11/26 22:23:19 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:23:19 :Debug: Flush lasted: 79ms.
+18/11/26 22:23:19 :Debug: Skip Burn, last write page: -2
+18/11/26 22:23:22 :Debug: EcuParameter: 'stoichiometricRatio' not found in Configuration bossecu
+18/11/26 22:23:22 :Info: Initiating read page 1 : 14540:304
+18/11/26 22:23:23 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:23:23 :Debug: Flush lasted: 78ms.
+18/11/26 22:23:23 :Debug: Skip Burn, last write page: -2
+18/11/26 22:23:28 :Info: Initiating read page 1 : 9004:18662
+18/11/26 22:24:03 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:24:03 :Debug: Flush lasted: 79ms.
+18/11/26 22:24:03 :Debug: Skip Burn, last write page: -2
+18/11/26 22:24:16 :Info: Initiating read page 1 : 552:8083
+18/11/26 22:24:38 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:24:38 :Debug: Flush lasted: 79ms.
+18/11/26 22:24:38 :Debug: Skip Burn, last write page: -2
+18/11/26 22:24:45 :Info: Initiating read page 1 : 9545:16
+18/11/26 22:24:49 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:24:49 :Debug: Flush lasted: 79ms.
+18/11/26 22:24:49 :Debug: Skip Burn, last write page: -2
+18/11/26 22:25:03 :Info: Initiating read page 1 : 12428:1056
+18/11/26 22:25:42 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:25:42 :Debug: Flush lasted: 79ms.
+18/11/26 22:25:42 :Debug: Skip Burn, last write page: -2
+18/11/26 22:29:05 :Info: Tune opened, 1 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 1 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 22:29:05 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:29:05 :Debug: Flush lasted: 77ms.
+18/11/26 22:29:05 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:29:05 :Debug: Flush lasted: 78ms.
+18/11/26 22:29:05 :Debug: Skip Burn, last write page: -2
+18/11/26 22:29:08 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:29:17 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:29:17 :Debug: Flush lasted: 79ms.
+18/11/26 22:29:17 :Debug: Skip Burn, last write page: -2
+18/11/26 22:29:20 :Info: Initiating read page 1 : 10420:35
+18/11/26 22:29:40 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:29:40 :Debug: Flush lasted: 78ms.
+18/11/26 22:29:40 :Debug: Skip Burn, last write page: -2
+18/11/26 22:29:51 :Info: Initiating read page 1 : 9545:16
+18/11/26 22:29:52 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:29:52 :Debug: Flush lasted: 82ms.
+18/11/26 22:29:52 :Debug: Skip Burn, last write page: -2
+18/11/26 22:31:59 :Info: Tune opened, 594 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 594 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 22:31:59 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:31:59 :Debug: Flush lasted: 72ms.
+18/11/26 22:31:59 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:31:59 :Debug: Flush lasted: 78ms.
+18/11/26 22:31:59 :Debug: Skip Burn, last write page: -2
+18/11/26 22:32:01 :Info: Initiating read page 1 : 12428:1056
+18/11/26 22:32:22 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:32:22 :Debug: Flush lasted: 78ms.
+18/11/26 22:32:22 :Debug: Skip Burn, last write page: -2
+18/11/26 22:32:26 :Info: Initiating read page 1 : 11496:60
+18/11/26 22:32:27 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:32:27 :Debug: Flush lasted: 79ms.
+18/11/26 22:32:27 :Debug: Skip Burn, last write page: -2
+18/11/26 22:32:28 :Info: Initiating read page 1 : 9562:60
+18/11/26 22:32:33 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:32:33 :Debug: Flush lasted: 78ms.
+18/11/26 22:32:33 :Debug: Skip Burn, last write page: -2
+18/11/26 22:32:47 :Info: Initiating read page 1 : 10420:35
+18/11/26 22:33:34 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:33:34 :Debug: Flush lasted: 79ms.
+18/11/26 22:33:34 :Debug: Skip Burn, last write page: -2
+18/11/26 22:34:39 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:34:47 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:34:48 :Debug: Flush lasted: 78ms.
+18/11/26 22:34:48 :Debug: Skip Burn, last write page: -2
+18/11/26 22:34:51 :Info: Initiating read page 1 : 6714:4994
+18/11/26 22:35:46 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:35:46 :Debug: Flush lasted: 78ms.
+18/11/26 22:35:46 :Debug: Skip Burn, last write page: -2
+18/11/26 22:51:56 :Info: Initiating read page 1 : 74:102
+18/11/26 22:52:00 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:52:00 :Debug: Flush lasted: 79ms.
+18/11/26 22:52:00 :Debug: Skip Burn, last write page: -2
+18/11/26 22:52:03 :Info: Initiating read page 1 : 564:13976
+18/11/26 22:52:15 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:52:15 :Debug: Flush lasted: 78ms.
+18/11/26 22:52:15 :Debug: Skip Burn, last write page: -2
+18/11/26 22:52:37 :Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 22:52:37 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:52:37 :Debug: Flush lasted: 70ms.
+18/11/26 22:52:37 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:52:37 :Debug: Flush lasted: 78ms.
+18/11/26 22:52:37 :Debug: Skip Burn, last write page: -2
+18/11/26 22:52:39 :Info: Initiating read page 1 : 6714:4994
+18/11/26 22:52:41 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:52:41 :Debug: Flush lasted: 78ms.
+18/11/26 22:52:41 :Debug: Skip Burn, last write page: -2
+18/11/26 22:52:45 :Info: Initiating read page 1 : 6008:3000
+18/11/26 22:53:09 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:53:09 :Debug: Flush lasted: 78ms.
+18/11/26 22:53:09 :Debug: Skip Burn, last write page: -2
+18/11/26 22:53:12 :Info: Initiating read page 1 : 176:33560
+18/11/26 22:53:57 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 22:53:57 :Debug: Flush lasted: 77ms.
+18/11/26 22:53:57 :Debug: Skip Burn, last write page: -2
+18/11/26 23:05:23 :Info: Initiating read page 1 : 564:13976
+18/11/26 23:05:31 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:05:31 :Debug: Flush lasted: 78ms.
+18/11/26 23:05:31 :Debug: Skip Burn, last write page: -2
+18/11/26 23:05:35 :Info: Tune opened, 7 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 7 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 23:05:35 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:05:35 :Debug: Flush lasted: 78ms.
+18/11/26 23:05:35 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:05:35 :Debug: Flush lasted: 78ms.
+18/11/26 23:05:35 :Debug: Skip Burn, last write page: -2
+18/11/26 23:05:44 :Info: Initiating read page 1 : 564:13976
+18/11/26 23:05:49 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:05:49 :Debug: Flush lasted: 78ms.
+18/11/26 23:05:49 :Debug: Skip Burn, last write page: -2
+18/11/26 23:15:39 :Info: Initiating read page 1 : 564:13976
+18/11/26 23:15:41 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:15:41 :Debug: Flush lasted: 78ms.
+18/11/26 23:15:41 :Debug: Skip Burn, last write page: -2
+18/11/26 23:15:45 :Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 0 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 23:15:45 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:15:45 :Debug: Flush lasted: 72ms.
+18/11/26 23:15:45 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:15:45 :Debug: Flush lasted: 78ms.
+18/11/26 23:15:45 :Debug: Skip Burn, last write page: -2
+18/11/26 23:15:46 :Info: Initiating read page 1 : 564:13976
+18/11/26 23:15:49 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:15:49 :Debug: Flush lasted: 78ms.
+18/11/26 23:15:49 :Debug: Skip Burn, last write page: -2
+18/11/26 23:48:08 :Info: Initiating read page 1 : 508:8520
+18/11/26 23:48:12 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:48:12 :Debug: Flush lasted: 77ms.
+18/11/26 23:48:12 :Debug: Skip Burn, last write page: -2
+18/11/26 23:48:26 :Info: Initiating read page 1 : 376:34160
+18/11/26 23:48:28 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:48:28 :Debug: Flush lasted: 78ms.
+18/11/26 23:48:28 :Debug: Skip Burn, last write page: -2
+18/11/26 23:59:31 :Info: Tune opened, 77 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 77 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+18/11/26 23:59:31 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:59:31 :Debug: Flush lasted: 83ms.
+18/11/26 23:59:31 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+18/11/26 23:59:31 :Debug: Flush lasted: 78ms.
+18/11/26 23:59:31 :Debug: Skip Burn, last write page: -2
+19/11/26 00:00:17 :Info: Initiating read page 1 : 74:102
+19/11/26 00:00:24 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 00:00:24 :Debug: Flush lasted: 78ms.
+19/11/26 00:00:24 :Debug: Skip Burn, last write page: -2
+19/11/26 00:00:28 :Info: Initiating read page 1 : 74:202
+19/11/26 00:00:32 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 00:00:32 :Debug: Flush lasted: 78ms.
+19/11/26 00:00:32 :Debug: Skip Burn, last write page: -2
+19/11/26 00:08:51 :Debug: EcuParameter: 'userTableXAxis1' not found in Configuration bossecu
+19/11/26 00:08:51 :Debug: EcuParameter: 'userTableYAxis1' not found in Configuration bossecu
+19/11/26 00:08:51 :Debug: EcuParameter: 'userTableOutput1' not found in Configuration bossecu
+19/11/26 00:08:51 :Info: Initiating read page 1 : 14844:1018
+19/11/26 00:30:14 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 00:30:14 :Debug: Flush lasted: 78ms.
+19/11/26 00:30:14 :Debug: Skip Burn, last write page: -2
