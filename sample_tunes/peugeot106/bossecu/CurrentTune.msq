@@ -4702,10 +4702,10 @@
          400.0 
       </constant>
 <constant cols="1" digits="2" name="crankingAdvance" rows="4" units="deg">
-         6.0 
          8.0 
-         10.0 
-         12.0 
+         8.0 
+         8.0 
+         8.0 
       </constant>
 <constant cols="1" digits="0" name="iacCoastingRpmBins" rows="8" units="RPM">
          900.0 

@@ -28188,3 +28188,82 @@ E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\Base_added_stock.msq
 [Duplicate entry] received 2 times: Info: dirtyData.size(): 0
 19/11/26 00:30:14 :Debug: Flush lasted: 78ms.
 19/11/26 00:30:14 :Debug: Skip Burn, last write page: -2
+19/11/26 01:34:34 :Info: Tune opened, 658 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 658 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+19/11/26 01:34:34 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:34:35 :Debug: Flush lasted: 76ms.
+19/11/26 01:34:35 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:34:35 :Debug: Flush lasted: 79ms.
+19/11/26 01:34:35 :Debug: Skip Burn, last write page: -2
+19/11/26 01:34:37 :Info: Initiating read page 1 : 564:13976
+19/11/26 01:34:44 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:34:44 :Debug: Flush lasted: 79ms.
+19/11/26 01:34:44 :Debug: Skip Burn, last write page: -2
+19/11/26 01:34:46 :Info: Initiating read page 1 : 12428:1056
+19/11/26 01:34:48 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:34:48 :Debug: Flush lasted: 79ms.
+19/11/26 01:34:48 :Debug: Skip Burn, last write page: -2
+19/11/26 01:34:50 :Debug: EcuParameter: 'userTableXAxis1' not found in Configuration bossecu
+19/11/26 01:34:50 :Debug: EcuParameter: 'userTableYAxis1' not found in Configuration bossecu
+19/11/26 01:34:50 :Debug: EcuParameter: 'userTableOutput1' not found in Configuration bossecu
+19/11/26 01:34:50 :Info: Initiating read page 1 : 14844:1018
+19/11/26 01:34:53 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:34:53 :Debug: Flush lasted: 81ms.
+19/11/26 01:34:53 :Debug: Skip Burn, last write page: -2
+19/11/26 01:34:57 :Debug: EcuParameter: 'gppwmSwitch1' not found in Configuration bossecu
+19/11/26 01:34:57 :Debug: EcuParameter: 'gppwmXAxis1' not found in Configuration bossecu
+19/11/26 01:34:57 :Debug: EcuParameter: 'gppwmYAxis1' not found in Configuration bossecu
+19/11/26 01:34:57 :Debug: EcuParameter: 'gppwmOutput1' not found in Configuration bossecu
+19/11/26 01:34:57 :Info: Initiating read page 1 : 7416:124
+19/11/26 01:35:01 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:35:01 :Debug: Flush lasted: 80ms.
+19/11/26 01:35:01 :Debug: Skip Burn, last write page: -2
+19/11/26 01:35:07 :Debug: EcuParameter: 'userTableXAxis2' not found in Configuration bossecu
+19/11/26 01:35:07 :Debug: EcuParameter: 'userTableYAxis2' not found in Configuration bossecu
+19/11/26 01:35:07 :Debug: EcuParameter: 'userTableOutput2' not found in Configuration bossecu
+19/11/26 01:35:07 :Info: Initiating read page 1 : 14844:1362
+19/11/26 01:35:08 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:35:08 :Debug: Flush lasted: 77ms.
+19/11/26 01:35:08 :Debug: Skip Burn, last write page: -2
+19/11/26 01:36:25 :Info: Initiating read page 1 : 176:33560
+19/11/26 01:36:28 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:36:28 :Debug: Flush lasted: 79ms.
+19/11/26 01:36:28 :Debug: Skip Burn, last write page: -2
+19/11/26 01:45:02 :Info: Tune opened, 1 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+[Duplicate entry] received 2 times: Info: Tune opened, 1 bytes updated. File:E:\Projects\E78_14T\sample_tunes\peugeot106\bossecu\CurrentTune.msq
+19/11/26 01:45:02 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:45:02 :Debug: Flush lasted: 72ms.
+19/11/26 01:45:02 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:45:02 :Debug: Flush lasted: 78ms.
+19/11/26 01:45:02 :Debug: Skip Burn, last write page: -2
+19/11/26 01:45:04 :Info: Initiating read page 1 : 564:13976
+19/11/26 01:45:08 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:45:08 :Debug: Flush lasted: 77ms.
+19/11/26 01:45:08 :Debug: Skip Burn, last write page: -2
+19/11/26 01:55:12 :Debug: EcuParameter: 'stoichiometricRatio' not found in Configuration bossecu
+19/11/26 01:55:12 :Info: Initiating read page 1 : 14540:304
+19/11/26 01:55:20 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:55:20 :Debug: Flush lasted: 77ms.
+19/11/26 01:55:20 :Debug: Skip Burn, last write page: -2
+19/11/26 01:55:57 :Info: Initiating read page 1 : 19568:16
+19/11/26 01:55:58 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:55:58 :Debug: Flush lasted: 81ms.
+19/11/26 01:55:58 :Debug: Skip Burn, last write page: -2
+19/11/26 01:56:00 :Info: Initiating read page 1 : 9084:144
+19/11/26 01:56:16 :Info: dirtyData.size(): 0
+[Duplicate entry] received 2 times: Info: dirtyData.size(): 0
+19/11/26 01:56:16 :Debug: Flush lasted: 79ms.
+19/11/26 01:56:16 :Debug: Skip Burn, last write page: -2
