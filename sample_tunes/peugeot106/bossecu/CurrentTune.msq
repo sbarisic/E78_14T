@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <msq xmlns="http://www.msefi.com/:msq">
-<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Wed Nov 18 22:17:38 CET 2026"/>
+<bibliography author="TunerStudio MS Lite! 3.3.01 - EFI Analytics, Inc." tuneComment="" writeDate="Fri Nov 20 08:38:26 CET 2026"/>
 <versionInfo fileFormat="5.0" firmwareInfo="rusEFI+v20260409%401431655765" nPages="2" signature="rusEFI master.2026.04.09.bossECU_BrainF427_22x22.3928517881"/>
 <page>
 <pcVariable name="tsCanId">"0"</pcVariable>
@@ -394,34 +394,34 @@
 <constant digits="0" name="etbRevLimitStart" units="rpm">0.0</constant>
 <constant digits="0" name="etbRevLimitRange" units="rpm">200.0</constant>
 <constant cols="1" digits="0" name="map_samplingAngleBins" rows="8">
-         700 
-         1000 
-         1800 
-         4500 
-         5000 
-         5500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1800.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="1" name="map_samplingAngle" rows="8" units="deg">
-         100 
+         100.0 
          105.1 
          109.4 
          121.6 
          124.3 
          126.5 
-         130 
-         130 
+         130.0 
+         130.0 
       </constant>
 <constant cols="1" digits="0" name="map_samplingWindowBins" rows="8">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="1" name="map_samplingWindow" rows="8" units="deg">
          50.0 
@@ -2891,12 +2891,12 @@
 <constant digits="1" name="vvtOffsets3" units="value">0.0</constant>
 <constant digits="1" name="vvtOffsets4" units="value">0.0</constant>
 <constant cols="1" digits="0" name="vrThreshold1_rpmBins" rows="6" units="rpm">
-         700 
-         850 
-         2000 
-         3800 
-         7000 
-         7600 
+         700.0 
+         850.0 
+         2000.0 
+         3800.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="vrThreshold1_values" rows="6" units="volts">
          0.63 
@@ -2910,12 +2910,12 @@
 <constant name="vrThreshold1_enable_pin">"NONE"</constant>
 <constant name="vrThreshold1_enabled">"false"</constant>
 <constant cols="1" digits="0" name="vrThreshold2_rpmBins" rows="6" units="rpm">
-         700 
-         850 
-         2000 
-         3800 
-         7000 
-         7600 
+         700.0 
+         850.0 
+         2000.0 
+         3800.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="vrThreshold2_values" rows="6" units="volts">
          0.63 
@@ -3035,7 +3035,7 @@
 <constant name="starterControlPin">"NONE"</constant>
 <constant name="startStopButtonMode">"DEFAULT"</constant>
 <constant name="mc33816_flag0">"NONE"</constant>
-<constant digits="3" name="tachPulsePerRev">1.0</constant>
+<constant digits="3" name="tachPulsePerRev">2.0</constant>
 <constant digits="2" name="mapErrorDetectionTooLow" units="kPa">5.0</constant>
 <constant digits="2" name="mapErrorDetectionTooHigh" units="kPa">110.0</constant>
 <constant digits="2" name="multisparkSparkDuration" units="ms">1.0</constant>
@@ -3330,10 +3330,10 @@
 <constant name="vvtPins2">"NONE"</constant>
 <constant name="vvtPins3">"NONE"</constant>
 <constant name="vvtPins4">"NONE"</constant>
-<constant digits="3" name="tChargeMinRpmMinTps">0.830</constant>
-<constant digits="3" name="tChargeMinRpmMaxTps">0.830</constant>
-<constant digits="3" name="tChargeMaxRpmMinTps">0.830</constant>
-<constant digits="3" name="tChargeMaxRpmMaxTps">0.830</constant>
+<constant digits="3" name="tChargeMinRpmMinTps">0.83</constant>
+<constant digits="3" name="tChargeMinRpmMaxTps">0.83</constant>
+<constant digits="3" name="tChargeMaxRpmMinTps">0.83</constant>
+<constant digits="3" name="tChargeMaxRpmMaxTps">0.83</constant>
 <constant digits="0" name="vvtOutputFrequency" units="Hz">300.0</constant>
 <constant digits="0" name="vvtItermMin1">-100.0</constant>
 <constant digits="0" name="vvtItermMin2">-100.0</constant>
@@ -3505,8 +3505,8 @@
 <constant name="mc33816_cs">"NONE"</constant>
 <constant digits="1" name="auxFrequencyFilter" units="hz">0.0</constant>
 <constant name="sentInputPins1">"NONE"</constant>
-<constant digits="0" name="coastingFuelCutRpmHigh" units="rpm">1600.0</constant>
-<constant digits="0" name="coastingFuelCutRpmLow" units="rpm">1400.0</constant>
+<constant digits="0" name="coastingFuelCutRpmHigh" units="rpm">1700</constant>
+<constant digits="0" name="coastingFuelCutRpmLow" units="rpm">1450</constant>
 <constant digits="0" name="coastingFuelCutTps" units="%">1.0</constant>
 <constant digits="0" name="coastingFuelCutClt" units="C">60.0</constant>
 <constant digits="0" name="pidExtraForLowRpm" units="%">5.0</constant>
@@ -3663,14 +3663,14 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="gppwm2_rpmBins" rows="8">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="1" name="gppwm2_table" rows="8" units="duty">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -3706,14 +3706,14 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="gppwm3_rpmBins" rows="8">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="1" name="gppwm3_table" rows="8" units="duty">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -3749,14 +3749,14 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="gppwm4_rpmBins" rows="8">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="1" name="gppwm4_table" rows="8" units="duty">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -3829,22 +3829,22 @@
 <constant name="tChargeMode">"RPM+TPS (Default)"</constant>
 <constant digits="0" name="dfcoExitEnrichmentMaxRpm" units="RPM">3800.0</constant>
 <constant cols="1" digits="0" name="dfcoExitRpmBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="dfcoExitTimeBins" rows="4" units="ms">
-         0 
-         80 
-         250 
-         400 
+         0.0 
+         80.0 
+         250.0 
+         400.0 
       </constant>
 <constant cols="4" digits="0" name="dfcoExitEnrichment" rows="4" units="%">
-         135 65 54 0 
-         65 18 10 0 
-         54 10 3 0 
-         0 0 0 0 
+         135.0 65.0 54.0 0.0 
+         65.0 18.0 10.0 0.0 
+         54.0 10.0 3.0 0.0 
+         0.0 0.0 0.0 0.0 
       </constant>
 <constant digits="3" name="fordInjectorSmallPulseBreakPoint" units="mg">0.0</constant>
 <constant digits="0" name="etbJamDetectThreshold" units="%">10.0</constant>
@@ -4099,8 +4099,8 @@
 <constant name="injAdvAssistEnabled">"false"</constant>
 <constant name="enableWaterPump2WithAc">"false"</constant>
 <constant name="forceIdleBelowTpsThreshold">"false"</constant>
-<constant name="forceIdleIgnitionBelowTps">"false"</constant>
-<constant name="forceIdleIgnitionUseDFCO">"false"</constant>
+<constant name="forceIdleIgnitionBelowTps">"true"</constant>
+<constant name="forceIdleIgnitionUseDFCO">"true"</constant>
 <constant name="bypassTcharge">"false"</constant>
 <constant name="assistedEtbTuningEnabled">"false"</constant>
 <constant name="assistedEtbRotate">"false"</constant>
@@ -4389,7 +4389,7 @@
 <constant name="useCustomOTSensor">"false"</constant>
 <constant name="fuelPumpDisable">"false"</constant>
 <constant name="injectorPrimeInhibit">"false"</constant>
-<constant name="useIdleTimingTargetError">"false"</constant>
+<constant name="useIdleTimingTargetError">"true"</constant>
 <constant name="useIdleTimingTargetErrorMode">"false"</constant>
 <constant name="tpsAeResetsEgo">"true"</constant>
 <constant name="useBiQuadOnWheelSpeedSensors1">"false"</constant>
@@ -4479,12 +4479,12 @@
          0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
 <constant cols="1" digits="0" name="torqueRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="torqueLoadBins" rows="6" units="Load">
          0.0 
@@ -4610,11 +4610,11 @@
          0.0 
       </constant>
 <constant cols="1" digits="0" name="sparkDwellRpmBins" rows="5" units="RPM">
-         700 
-         2300 
-         4200 
-         6000 
-         7600 
+         700.0 
+         2300.0 
+         4200.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="cltIdleRpmBins" rows="8" units="C">
          -40.0 
@@ -4664,10 +4664,10 @@
          105.0 
       </constant>
 <constant cols="1" digits="0" name="baroCorrRpmBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="4" digits="2" name="baroCorrTable" rows="4" units="ratio">
          1.0 1.0 1.0 1.0 
@@ -4702,10 +4702,10 @@
          400.0 
       </constant>
 <constant cols="1" digits="2" name="crankingAdvance" rows="4" units="deg">
+         6.0 
          8.0 
-         8.0 
-         8.0 
-         8.0 
+         10.0 
+         12.0 
       </constant>
 <constant cols="1" digits="0" name="iacCoastingRpmBins" rows="8" units="RPM">
          900.0 
@@ -4738,14 +4738,14 @@
          100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
       </constant>
 <constant cols="1" digits="0" name="boostRpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="boostOpenLoopLoadBins" rows="8">
          0.0 
@@ -4804,12 +4804,12 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="pedalToTpsRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="cltCrankingCorrBins" rows="8" units="C">
          -40.0 
@@ -4940,18 +4940,18 @@
          1.0 
       </constant>
 <constant cols="1" digits="0" name="boostPidRPMBins" rows="12" units="RPM">
-         700 
-         1500 
-         2300 
-         2900 
-         3500 
-         4200 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1500.0 
+         2300.0 
+         2900.0 
+         3500.0 
+         4200.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="4" name="boostPidP" rows="12">
          0.0 
@@ -5479,14 +5479,14 @@
          140.0 
       </constant>
 <constant cols="8" digits="0" name="injectionPhase" rows="8" units="deg">
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
-         -2 -2 -2 -2 -2 -2 -2 -2 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
+         -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 -2.0 
       </constant>
 <constant cols="1" digits="0" name="injPhaseLoadBins" rows="8" units="Load">
          20.0 
@@ -5499,14 +5499,14 @@
          200.0 
       </constant>
 <constant cols="1" digits="0" name="injPhaseRpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2300 
-         3200 
-         4200 
-         5000 
-         7000 
-         7600 
+         700.0 
+         1500.0 
+         2300.0 
+         3200.0 
+         4200.0 
+         5000.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="2" name="mapEstimateTable" rows="8" units="kPa">
          34.49 26.92 24.35 21.89 15.44 13.68 13.5 13.5 
@@ -5529,14 +5529,14 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="mapEstimateRpmBins" rows="8" units="RPM">
-         700 
-         1000 
-         1200 
-         1500 
-         2600 
-         4500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1200.0 
+         1500.0 
+         2600.0 
+         4500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="16" digits="0" name="vvtTable1" rows="16" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -5575,22 +5575,22 @@
          200.0 
       </constant>
 <constant cols="1" digits="0" name="vvtTable1RpmBins" rows="16" units="RPM">
-         700 
-         1000 
-         1500 
-         1800 
-         2300 
-         2600 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1500.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="16" digits="0" name="vvtTable2" rows="16" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -5629,46 +5629,46 @@
          120.0 
       </constant>
 <constant cols="1" digits="0" name="vvtTable2RpmBins" rows="16" units="RPM">
-         700 
-         1000 
-         1500 
-         1800 
-         2300 
-         2600 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1500.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="22" digits="1" name="ignitionTable" rows="22" units="deg">
-         23 22 22 23 24.5 28 30 32 34.5 36 37 38.5 39 38 36 33.5 33 33 33 33 33 33 
-         23 22 22 23 24.5 28 30 32 34.5 36 37 38.5 39 38 36 33.5 33 33 33 33 33 33 
-         22.5 22 21.5 22.5 24.5 28 30 32.5 35 36.5 38 39.5 40 39 37 34.5 34 34 34 34 34 34 
-         22 21.5 20.5 21 23.5 28.5 31 33.5 36 38.5 40.5 42 42 41.5 40 38 37.5 37 37 37 37 37 
-         21.5 21.5 19.5 19.5 22.5 28.5 31.5 34 37.5 40.5 43 44.5 44.5 44 43 41.5 40.5 40.5 40.5 40.5 40 39.5 
-         21 21 18 18 21.5 29 32 35 38.5 42 45 46.5 46.5 46.5 45.5 44.5 43.5 43 43 43 42.5 42 
-         21 21 17.5 17.5 21.5 29 32 35 38.5 42 45 46.5 46.5 46.5 45.5 44.5 43.5 43 43 43 42.5 42 
-         21 20.5 17 16.5 21 29 32 35.5 38.5 41.5 45 46.5 46.5 46.5 45 44 43.5 43 42.5 42.5 42 42 
-         21 20.5 15.5 15 20 28.5 32 35.5 38.5 41.5 44 46 46.5 46 45 44 43 42.5 42.5 42.5 42 42 
-         21 20 15 14 19.5 28.5 32 36 38.5 41 44 46 46.5 46 44.5 43.5 43 42.5 42 42 42 42 
-         21 20 14.5 14 20 29 32 36 38.5 41 43.5 45.5 46 46 44.5 43.5 43 42.5 42 42 42 42 
-         21 20.5 16.5 17.5 23 30 32.5 36 38 40.5 42.5 45 45.5 45 44 43 42.5 42 42 42 42 42 
-         21 21 17.5 19 24 30.5 33 36 38 40 42.5 44.5 45 44.5 43.5 42.5 42.5 42 42 42 42 42 
-         21 21 19.5 22.5 27 31.5 33.5 36.5 38 40 41.5 43.5 44 44 43 42.5 42 42 41.5 41.5 41.5 41.5 
-         21 21.5 21.5 26 30 32.5 34 36.5 37.5 39.5 41 42.5 43 43 42.5 42 41.5 41.5 41.5 41.5 41.5 41.5 
-         21 22 24.5 28.5 31 32.5 33.5 35 36.5 37.5 39 40.5 40.5 40.5 39.5 39.5 39.5 40 39.5 39.5 39.5 39.5 
-         21 22 26 28 29.5 31 32 33.5 35 36 37.5 38.5 38.5 38 37 37.5 37 38 37.5 37.5 37.5 37.5 
-         21 22.5 25 26.5 28 29 29.5 31 32.5 34 35 36.5 37 37 36 35.5 34.5 35 34 34 34 34 
-         20 22 23.5 24 26 27 27.5 28.5 30.5 32 33 34.5 35.5 35.5 35 33.5 33 32.5 31.5 31.5 31.5 31.5 
-         15.5 17.5 19.5 21.5 23.5 25 25.5 27 29 30.5 32 33 33.5 33.5 33 32.5 32 31.5 31 31 31 31 
-         14 16 18.5 20.5 22.5 24 25 26.5 28.5 30 31.5 32.5 32.5 32.5 32.5 32 31.5 31.5 31 31 31 31 
-         10.5 12.5 15 18 21 22.5 23.5 25.5 27.5 29 30.5 31 31 31 31 31 31 31 31 31 31 31 
+         23.0 22.0 22.0 23.0 24.5 28.0 30.0 32.0 34.5 36.0 37.0 38.5 39.0 38.0 36.0 33.5 33.0 33.0 33.0 33.0 33.0 33.0 
+         23.0 22.0 22.0 23.0 24.5 28.0 30.0 32.0 34.5 36.0 37.0 38.5 39.0 38.0 36.0 33.5 33.0 33.0 33.0 33.0 33.0 33.0 
+         22.5 22.0 21.5 22.5 24.5 28.0 30.0 32.5 35.0 36.5 38.0 39.5 40.0 39.0 37.0 34.5 34.0 34.0 34.0 34.0 34.0 34.0 
+         22.0 21.5 20.5 21.0 23.5 28.5 31.0 33.5 36.0 38.5 40.5 42.0 42.0 41.5 40.0 38.0 37.5 37.0 37.0 37.0 37.0 37.0 
+         21.5 21.5 19.5 19.5 22.5 28.5 31.5 34.0 37.5 40.5 43.0 44.5 44.5 44.0 43.0 41.5 40.5 40.5 40.5 40.5 40.0 39.5 
+         21.0 21.0 18.0 18.0 21.5 29.0 32.0 35.0 38.5 42.0 45.0 46.5 46.5 46.5 45.5 44.5 43.5 43.0 43.0 43.0 42.5 42.0 
+         21.0 21.0 17.5 17.5 21.5 29.0 32.0 35.0 38.5 42.0 45.0 46.5 46.5 46.5 45.5 44.5 43.5 43.0 43.0 43.0 42.5 42.0 
+         21.0 20.5 17.0 16.5 21.0 29.0 32.0 35.5 38.5 41.5 45.0 46.5 46.5 46.5 45.0 44.0 43.5 43.0 42.5 42.5 42.0 42.0 
+         21.0 20.5 15.5 15.0 20.0 28.5 32.0 35.5 38.5 41.5 44.0 46.0 46.5 46.0 45.0 44.0 43.0 42.5 42.5 42.5 42.0 42.0 
+         21.0 20.0 15.0 14.0 19.5 28.5 32.0 36.0 38.5 41.0 44.0 46.0 46.5 46.0 44.5 43.5 43.0 42.5 42.0 42.0 42.0 42.0 
+         21.0 20.0 14.5 14.0 20.0 29.0 32.0 36.0 38.5 41.0 43.5 45.5 46.0 46.0 44.5 43.5 43.0 42.5 42.0 42.0 42.0 42.0 
+         21.0 20.5 16.5 17.5 23.0 30.0 32.5 36.0 38.0 40.5 42.5 45.0 45.5 45.0 44.0 43.0 42.5 42.0 42.0 42.0 42.0 42.0 
+         21.0 21.0 17.5 19.0 24.0 30.5 33.0 36.0 38.0 40.0 42.5 44.5 45.0 44.5 43.5 42.5 42.5 42.0 42.0 42.0 42.0 42.0 
+         21.0 21.0 19.5 22.5 27.0 31.5 33.5 36.5 38.0 40.0 41.5 43.5 44.0 44.0 43.0 42.5 42.0 42.0 41.5 41.5 41.5 41.5 
+         21.0 21.5 21.5 26.0 30.0 32.5 34.0 36.5 37.5 39.5 41.0 42.5 43.0 43.0 42.5 42.0 41.5 41.5 41.5 41.5 41.5 41.5 
+         21.0 22.0 24.5 28.5 31.0 32.5 33.5 35.0 36.5 37.5 39.0 40.5 40.5 40.5 39.5 39.5 39.5 40.0 39.5 39.5 39.5 39.5 
+         21.0 22.0 26.0 28.0 29.5 31.0 32.0 33.5 35.0 36.0 37.5 38.5 38.5 38.0 37.0 37.5 37.0 38.0 37.5 37.5 37.5 37.5 
+         21.0 22.5 25.0 26.5 28.0 29.0 29.5 31.0 32.5 34.0 35.0 36.5 37.0 37.0 36.0 35.5 34.5 35.0 34.0 34.0 34.0 34.0 
+         20.0 22.0 23.5 24.0 26.0 27.0 27.5 28.5 30.5 32.0 33.0 34.5 35.5 35.5 35.0 33.5 33.0 32.5 31.5 31.5 31.5 31.5 
+         15.5 17.5 19.5 21.5 23.5 25.0 25.5 27.0 29.0 30.5 32.0 33.0 33.5 33.5 33.0 32.5 32.0 31.5 31.0 31.0 31.0 31.0 
+         14.0 16.0 18.5 20.5 22.5 24.0 25.0 26.5 28.5 30.0 31.5 32.5 32.5 32.5 32.5 32.0 31.5 31.5 31.0 31.0 31.0 31.0 
+         10.5 12.5 15.0 18.0 21.0 22.5 23.5 25.5 27.5 29.0 30.5 31.0 31.0 31.0 31.0 31.0 31.0 31.0 31.0 31.0 31.0 31.0 
       </constant>
 <constant cols="1" digits="0" name="ignitionLoadBins" rows="22" units="Load">
          15.0 
@@ -5695,44 +5695,44 @@
          105.0 
       </constant>
 <constant cols="1" digits="0" name="ignitionRpmBins" rows="22" units="RPM">
-         700 
-         850 
-         1000 
-         1200 
-         1500 
-         1800 
-         2000 
-         2300 
-         2600 
-         2900 
-         3200 
-         3500 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7350 
-         7600 
+         700.0 
+         850.0 
+         1000.0 
+         1200.0 
+         1500.0 
+         1800.0 
+         2000.0 
+         2300.0 
+         2600.0 
+         2900.0 
+         3200.0 
+         3500.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7350.0 
+         7600.0 
       </constant>
 <constant cols="22" digits="1" name="veTable" rows="22" units="%">
-         7.34 8.76 17.05 12.51 12.37 28.09 38.78 29.09 36.10 51.48 50.15 35.10 28.09 24.07 50.15 49.48 78.22 75.55 45.13 12.37 1.67 19.60 
-         7.34 8.76 17.05 12.51 25.86 39.21 47.73 40.92 46.61 58.82 57.68 48.02 42.34 40.63 58.82 58.25 79.84 79.84 55.41 31.82 23.58 19.60 
-         7.34 8.76 17.05 27.47 38.36 49.26 55.41 53.04 55.17 62.98 62.04 58.01 53.99 54.46 63.70 63.46 76.25 82.64 65.12 52.81 46.88 43.81 
-         20.09 22.13 28.82 37.14 46.48 54.80 59.88 59.27 59.67 65.56 65.16 62.92 60.28 62.11 66.98 66.98 76.12 83.62 71.45 65.96 61.71 59.47 
-         29.13 31.79 37.12 44.22 51.33 56.83 62.34 61.09 61.62 67.14 67.31 64.83 62.87 64.83 69.61 70.15 78.67 83.47 76.54 73.17 69.44 67.49 
-         35.99 38.84 42.94 49.41 54.46 57.15 63.62 61.41 62.20 67.72 68.20 65.04 63.46 65.20 71.35 72.30 80.51 82.41 80.51 77.83 73.88 72.30 
-         41.35 44.19 47.46 52.85 56.68 57.82 64.51 61.94 62.65 68.49 69.05 65.36 63.93 65.50 72.61 74.02 82.12 82.12 82.68 81.69 77.86 75.87 
-         45.85 48.56 51.28 55.41 58.77 60.19 65.87 63.80 64.45 69.36 70.14 67.29 66.13 67.68 74.39 75.82 83.31 83.44 83.18 86.41 82.92 81.11 
-         49.72 52.10 54.23 57.30 59.91 62.40 66.89 64.88 65.94 70.21 71.04 68.43 67.72 69.15 75.66 77.31 84.30 84.54 82.64 90.22 87.26 85.60 
-         53.12 54.86 56.61 58.47 61.09 64.16 67.87 66.12 67.10 70.82 71.69 69.61 69.28 70.49 77.05 78.47 85.46 85.46 82.08 92.24 89.73 88.42 
-         56.02 56.93 58.56 59.77 62.31 64.95 68.81 66.88 68.00 71.96 72.97 71.24 70.93 71.85 78.45 79.86 87.07 86.57 81.49 88.19 87.78 87.27 
-         59.10 58.73 59.77 60.91 63.65 65.73 69.61 67.54 69.05 73.03 74.35 72.65 72.18 73.21 79.37 80.89 88.28 87.34 80.32 83.45 84.58 85.06 
-         61.45 60.03 60.92 61.45 64.56 66.24 70.24 68.10 69.80 73.79 75.30 73.79 73.44 74.33 80.36 81.96 89.69 88.26 79.12 78.05 81.43 82.58 
-         62.15 60.59 61.00 62.24 64.79 66.28 70.16 68.18 69.83 73.62 74.78 73.79 73.29 74.45 80.29 81.86 89.11 88.21 79.56 78.81 82.68 84.25 
+         7.34 8.76 17.05 12.51 12.37 28.09 38.78 28.81 34.72 49.51 49.31 35.10 28.09 24.07 50.15 49.48 78.22 75.55 45.13 12.37 1.67 19.60 
+         7.34 8.76 17.05 12.51 25.86 37.58 45.24 38.17 42.14 53.18 55.28 48.02 42.34 40.63 58.82 58.25 79.84 79.84 55.41 31.82 23.58 19.60 
+         7.34 8.76 17.05 27.47 37.66 43.1 47.91 45.42 45.65 52.12 57.39 58.01 53.99 54.46 63.70 63.46 76.25 82.64 65.12 52.81 46.88 43.81 
+         20.09 22.13 28.82 37.14 42.22 43.38 46.78 46.21 45.95 50.48 58.64 62.92 60.28 62.11 66.98 66.98 76.12 83.62 71.45 65.96 61.71 59.47 
+         29.13 31.79 37.12 44.22 42.86 42.62 46.76 47.04 47.45 51.7 60.58 64.83 62.87 64.83 69.61 70.15 78.67 83.47 76.54 73.17 69.44 67.49 
+         35.99 38.84 42.94 46.94 42.48 42.86 47.72 47.29 49.09 53.44 61.95 65.04 63.46 65.20 71.35 72.30 80.51 82.41 80.51 77.83 73.88 72.30 
+         41.35 44.19 47.46 46.68 44.21 45.77 51.74 51.85 54.24 59.3 65.02 65.36 63.93 65.50 72.61 74.02 82.12 82.12 82.68 81.69 77.86 75.87 
+         45.85 45.16 47.69 45.25 46.92 52.67 58.32 58.3 60.74 65.37 68.39 67.29 66.13 67.68 74.39 75.82 83.31 83.44 83.18 86.41 82.92 81.11 
+         49.72 44.81 46.64 45.84 52.22 59.8 64.8 64.26 65.94 70.21 71.04 68.43 67.72 69.15 75.66 77.31 84.30 84.54 82.64 90.22 87.26 85.60 
+         53.12 43.34 44.72 46.78 57.73 64.16 67.87 66.12 67.10 70.82 71.69 69.61 69.28 70.49 77.05 78.47 85.46 85.46 82.08 92.24 89.73 88.42 
+         56.02 44.97 46.26 50.8 62.31 64.95 68.81 66.88 68.00 71.96 72.97 71.24 70.93 71.85 78.45 79.86 87.07 86.57 81.49 88.19 87.78 87.27 
+         59.10 46.4 47.22 55.83 63.65 65.73 69.61 67.54 69.05 73.03 74.35 72.65 72.18 73.21 79.37 80.89 88.28 87.34 80.32 83.45 84.58 85.06 
+         61.45 51.63 52.39 60.43 64.56 66.24 70.24 68.10 69.80 73.79 75.30 73.79 73.44 74.33 80.36 81.96 89.69 88.26 79.12 78.05 81.43 82.58 
+         62.15 56.35 56.73 62.24 64.79 66.28 70.16 68.18 69.83 73.62 74.78 73.79 73.29 74.45 80.29 81.86 89.11 88.21 79.56 78.81 82.68 84.25 
          62.35 60.89 60.66 62.58 64.66 66.42 69.96 68.26 69.65 73.25 74.26 73.40 73.33 74.79 80.32 81.85 88.38 88.07 79.93 79.54 84.00 85.54 
          62.26 60.75 60.32 62.97 64.62 66.20 69.57 68.07 69.43 72.87 73.52 73.23 72.87 74.67 79.91 81.48 87.64 87.93 80.41 79.91 84.78 86.79 
          63.35 62.01 60.59 63.27 64.75 66.17 69.13 67.77 69.05 72.41 73.29 73.15 72.62 74.50 79.40 81.01 86.52 87.39 80.81 81.22 86.59 88.67 
@@ -5743,52 +5743,52 @@
          67.25 68.31 70.34 71.86 70.30 71.15 72.96 71.53 72.77 77.90 80.17 79.51 78.99 80.56 83.83 86.44 90.68 92.38 94.42 99.03 96.95 93.76 
       </constant>
 <constant cols="1" digits="0" name="veLoadBins" rows="22" units="kPa">
-         17 
-         20 
-         24 
-         28 
-         32 
-         36 
-         40 
-         44 
-         48 
-         52 
-         56 
-         60 
-         64 
-         68 
-         72 
-         76 
-         80 
-         84 
-         90 
-         95 
-         100 
-         105 
+         17.0 
+         20.0 
+         24.0 
+         28.0 
+         32.0 
+         36.0 
+         40.0 
+         44.0 
+         48.0 
+         52.0 
+         56.0 
+         60.0 
+         64.0 
+         68.0 
+         72.0 
+         76.0 
+         80.0 
+         84.0 
+         90.0 
+         95.0 
+         100.0 
+         105.0 
       </constant>
 <constant cols="1" digits="0" name="veRpmBins" rows="22" units="RPM">
-         700 
-         850 
-         1000 
-         1200 
-         1500 
-         1800 
-         2000 
-         2300 
-         2600 
-         2900 
-         3200 
-         3500 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7350 
-         7600 
+         700.0 
+         850.0 
+         1000.0 
+         1200.0 
+         1500.0 
+         1800.0 
+         2000.0 
+         2300.0 
+         2600.0 
+         2900.0 
+         3200.0 
+         3500.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7350.0 
+         7600.0 
       </constant>
 <constant cols="16" digits="1" name="lambdaTable" rows="16" units="afr">
          14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 14.7 
@@ -5827,22 +5827,22 @@
          105.0 
       </constant>
 <constant cols="1" digits="0" name="lambdaRpmBins" rows="16" units="RPM">
-         700 
-         1000 
-         1500 
-         1800 
-         2300 
-         2600 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1500.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant name="userTable1Enabled">"false"</constant>
 <constant name="userTable2Enabled">"false"</constant>
@@ -6107,14 +6107,14 @@
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
 <constant cols="1" digits="3" name="userTables1_xBins" rows="8">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="3" name="userTables1_yBins" rows="8">
          30.0 
@@ -6337,34 +6337,34 @@
 <constant name="userTables6_enablePinMode">"DEFAULT"</constant>
 <constant name="userTables6_enablePin">"NONE"</constant>
 <constant cols="8" digits="3" name="userTables7_table" rows="8" units="value">
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1 1 1 1 
-         1 1 1 1 1.035 1.055 1.075 1.075 
-         1 1 1 1 1.035 1.055 1.075 1.075 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 
+         1.0 1.0 1.0 1.0 1.035 1.055 1.075 1.075 
+         1.0 1.0 1.0 1.0 1.035 1.055 1.075 1.075 
       </constant>
 <constant cols="1" digits="3" name="userTables7_xBins" rows="8">
-         -40 
-         21 
-         35 
-         40 
-         50 
-         55 
-         62 
-         100 
+         -40.0 
+         21.0 
+         35.0 
+         40.0 
+         50.0 
+         55.0 
+         62.0 
+         100.0 
       </constant>
 <constant cols="1" digits="3" name="userTables7_yBins" rows="8">
-         -40 
-         0 
-         20 
-         40 
-         60 
-         75 
-         80 
-         120 
+         -40.0 
+         0.0 
+         20.0 
+         40.0 
+         60.0 
+         75.0 
+         80.0 
+         120.0 
       </constant>
 <constant name="userTables7_xAxis">"IAT"</constant>
 <constant name="userTables7_yAxis">"CLT"</constant>
@@ -6397,14 +6397,14 @@
          14.65 
       </constant>
 <constant cols="1" digits="3" name="userTables8_yBins" rows="8">
-         -40 
-         0 
-         20 
-         40 
-         60 
-         75 
-         80 
-         120 
+         -40.0 
+         0.0 
+         20.0 
+         40.0 
+         60.0 
+         75.0 
+         80.0 
+         120.0 
       </constant>
 <constant name="userTables8_xAxis">"Battery voltage"</constant>
 <constant name="userTables8_yAxis">"CLT"</constant>
@@ -6619,10 +6619,10 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="ignTrimRpmBins" rows="4" units="rpm">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="4" digits="1" name="ignTrims1_table" rows="4">
          0.0 0.0 0.0 0.0 
@@ -6679,10 +6679,10 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="fuelTrimRpmBins" rows="4" units="rpm">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="4" digits="1" name="fuelTrims1_table" rows="4">
          0.0 0.0 0.0 0.0 
@@ -6759,12 +6759,12 @@
          0.0 
       </constant>
 <constant cols="1" digits="0" name="throttle2TrimRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="16" digits="1" name="knockThresholdTable" rows="6" units="dB">
          -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 
@@ -6783,22 +6783,22 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="knockThresholdRpmBins" rows="16" units="RPM">
-         700 
-         1000 
-         1500 
-         1800 
-         2300 
-         2600 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1500.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="2" name="maxKnockRetardTable" rows="6" units="deg">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -6825,20 +6825,20 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="maxKnockRetardRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="1" name="ALSTimingRetardTable" rows="6" units="deg">
-         0 0 -24 -41.5 -48.7 -55 
-         0 0 -9.6 -16.6 -19.5 -22 
-         0 0 0 0 0 0 
-         0 0 0 0 0 0 
-         0 0 0 0 0 0 
-         0 0 0 0 0 0 
+         0.0 0.0 -24.0 -41.5 -48.7 -55.0 
+         0.0 0.0 -9.6 -16.6 -19.5 -22.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
 <constant cols="1" digits="0" name="alsIgnRetardLoadBins" rows="6" units="TPS">
          2.0 
@@ -6849,12 +6849,12 @@
          10.0 
       </constant>
 <constant cols="1" digits="0" name="alsIgnRetardrpmBins" rows="6" units="RPM">
-         700 
-         1800 
-         2000 
-         2300 
-         4500 
-         7600 
+         700.0 
+         1800.0 
+         2000.0 
+         2300.0 
+         4500.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="1" name="ALSFuelAdjustment" rows="6" units="percent">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -6873,12 +6873,12 @@
          10.0 
       </constant>
 <constant cols="1" digits="0" name="alsFuelAdjustmentrpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="1" name="ALSIgnSkipTable" rows="6" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -6897,12 +6897,12 @@
          10.0 
       </constant>
 <constant cols="1" digits="0" name="alsIgnSkiprpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="1" name="ALSEtbAirAddTable" rows="6" units="ratio">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -6921,12 +6921,12 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="alsEtbAirAddRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="1" name="throttleEstimateEffectiveAreaBins" rows="8" units="%">
          0.0 
@@ -7069,10 +7069,10 @@
          200.0 
       </constant>
 <constant cols="1" digits="0" name="lambdaMaxDeviationRpmBins" rows="4" units="RPM">
-         700 
-         2900 
-         5000 
-         7600 
+         700.0 
+         2900.0 
+         5000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="0" name="injectorStagingTable" rows="6" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 
@@ -7091,12 +7091,12 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="injectorStagingRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="wwCltBins" rows="8" units="deg C">
          -40.0 
@@ -7247,8 +7247,8 @@
          180.0 
       </constant>
 <constant cols="1" digits="0" name="hpfpTargetRpmBins" rows="2" units="RPM">
-         700 
-         7600 
+         700.0 
+         7600.0 
       </constant>
 <constant cols="10" digits="0" name="hpfpCompensation" rows="10" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -7275,16 +7275,16 @@
          0.12 
       </constant>
 <constant cols="1" digits="0" name="hpfpCompensationRpmBins" rows="10" units="RPM">
-         700 
-         1500 
-         2300 
-         2900 
-         3500 
-         4200 
-         5000 
-         6000 
-         7000 
-         7600 
+         700.0 
+         1500.0 
+         2300.0 
+         2900.0 
+         3500.0 
+         4200.0 
+         5000.0 
+         6000.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="2" digits="2" name="hpfpFuelMassCompensation" rows="2" units="%">
          1.0 1.0 
@@ -7337,20 +7337,20 @@
          0.0 
       </constant>
 <constant cols="1" digits="0" name="digitalKnockCountThresholdRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="knockGainRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="knockGains1_curve" rows="6">
          0.0 
@@ -7417,22 +7417,22 @@
          0.0 
       </constant>
 <constant cols="1" digits="0" name="knockNoiseRpmBins" rows="16" units="RPM">
-         700 
-         1000 
-         1500 
-         1800 
-         2300 
-         2600 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1000.0 
+         1500.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="1" name="knockBaseNoise" rows="16" units="dB">
          0.0 
@@ -7453,10 +7453,10 @@
          0.0 
       </constant>
 <constant cols="1" digits="0" name="tpsTspCorrValuesBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="tpsTspCorrValues" rows="4" units="multiplier">
          1.0 
@@ -7465,10 +7465,10 @@
          1.0 
       </constant>
 <constant cols="1" digits="0" name="predictiveMapBlendDurationBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="predictiveMapBlendDurationValues" rows="4" units="second">
          1.0 
@@ -7563,10 +7563,10 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="alternatorVoltageTargetRpmBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="cltBoostCorrBins" rows="5" units="C">
          20.0 
@@ -7646,27 +7646,27 @@
       </constant>
 <constant cols="1" digits="0" name="dfcoMapRpmValuesBins" rows="4" units="RPM">
          1000.0 
-         3700.0 
-         6300.0 
-         9000.0 
+         1800 
+         3700 
+         6300 
       </constant>
 <constant cols="1" digits="1" name="dfcoMapRpmValues" rows="4" units="MAP">
          30.0 
-         40.0 
-         50.0 
+         38 
+         40 
          50.0 
       </constant>
 <constant cols="4" digits="1" name="trailingSparkTable" rows="4" units="deg">
-         7.7 9 9.8 12 
-         7.7 9 9.8 12 
-         7.7 9 9.8 12 
-         7.7 9 9.8 12 
+         7.7 9.0 9.8 12.0 
+         7.7 9.0 9.8 12.0 
+         7.7 9.0 9.8 12.0 
+         7.7 9.0 9.8 12.0 
       </constant>
 <constant cols="1" digits="0" name="trailingSparkRpmBins" rows="4" units="rpm">
-         700 
-         850 
-         3200 
-         7600 
+         700.0 
+         850.0 
+         3200.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="0" name="trailingSparkLoadBins" rows="4" units="Load">
          20.0 
@@ -7784,14 +7784,14 @@
          120.0 
       </constant>
 <constant cols="1" digits="0" name="scriptTable1RpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="2" name="scriptTable2" rows="8" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -7814,14 +7814,14 @@
          120.0 
       </constant>
 <constant cols="1" digits="0" name="scriptTable2RpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="0" name="scriptTable3" rows="8" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -7844,14 +7844,14 @@
          120.0 
       </constant>
 <constant cols="1" digits="0" name="scriptTable3RpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="10" digits="0" name="scriptTable4" rows="8" units="value">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -7874,16 +7874,16 @@
          120.0 
       </constant>
 <constant cols="1" digits="0" name="scriptTable4RpmBins" rows="10" units="RPM">
-         700 
-         1500 
-         2300 
-         2900 
-         3500 
-         4200 
-         5000 
-         6000 
-         7000 
-         7600 
+         700.0 
+         1500.0 
+         2300.0 
+         2900.0 
+         3500.0 
+         4200.0 
+         5000.0 
+         6000.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="3" name="scriptCurve1Bins" rows="8" units="x">
          0.0 
@@ -9099,14 +9099,14 @@
          300.0 
       </constant>
 <constant cols="1" digits="0" name="mafmapBlendRpmBins" rows="8" units="rpm">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="8" digits="1" name="mafmapBlendValues" rows="8" units="%maf">
          100.0 100.0 100.0 100.0 100.0 100.0 100.0 100.0 
@@ -9127,12 +9127,12 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="stftTimeConstRpmBins" rows="6" units="RPM">
-         700 
-         2000 
-         3200 
-         4500 
-         6000 
-         7600 
+         700.0 
+         2000.0 
+         3200.0 
+         4500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="6" digits="2" name="stftTimeConstTable" rows="6" units="time(s)">
          15.0 15.0 15.0 15.0 15.0 15.0 
@@ -9525,14 +9525,14 @@
          100.0 
       </constant>
 <constant cols="1" digits="0" name="wwRpmBins" rows="8" units="RPM">
-         700 
-         1500 
-         2600 
-         3500 
-         4500 
-         5500 
-         6500 
-         7600 
+         700.0 
+         1500.0 
+         2600.0 
+         3500.0 
+         4500.0 
+         5500.0 
+         6500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="cltAFRTargetCorrBins" rows="8" units="C">
          -40.0 
@@ -9751,14 +9751,14 @@
 <constant digits="0" name="dtTuneCycles" units="cycles">100.0</constant>
 <constant digits="0" name="dtTuneMinRpm" units="RPM">1500.0</constant>
 <constant cols="1" digits="0" name="tpsAeThresholdRpmBins" rows="8" units="RPM">
-         700 
-         2300 
-         4200 
-         4500 
-         5000 
-         5500 
-         7000 
-         7600 
+         700.0 
+         2300.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="3" name="tpsAeThresholdValue" rows="8" units="#">
          0.4 
@@ -9767,8 +9767,8 @@
          0.422 
          0.533 
          0.765 
-         2 
-         2 
+         2.0 
+         2.0 
       </constant>
 <constant digits="0" name="tpsaeburnskipinitial">15.0</constant>
 <constant cols="1" digits="4" name="cltCalVoltsBins" rows="2" units="volt">
@@ -9856,34 +9856,34 @@
          50.0 50.0 50.0 50.0 50.0 
       </constant>
 <constant cols="1" digits="0" name="idleTimingTargetErrorBins" rows="13" units="RPM">
-         -300.0 
+         -500 
          -250.0 
-         -200.0 
-         -150.0 
-         -100.0 
-         -50.0 
-         0.0 
-         84.0 
-         167.0 
-         250.0 
-         333.0 
-         417.0 
-         500.0 
+         -150 
+         -65 
+         0 
+         80 
+         180 
+         350 
+         550 
+         820 
+         1000 
+         1200 
+         1450 
       </constant>
 <constant cols="1" digits="2" name="idleTimingTargetErrorValues" rows="13" units="deg">
-         20.0 
-         16.67 
-         13.33 
+         23 
+         20 
+         15 
          10.0 
-         6.67 
-         3.33 
-         0.0 
-         -3.33 
-         -6.67 
-         -10.0 
-         -13.34 
-         -16.67 
-         -20.01 
+         6.5 
+         4.5 
+         5 
+         6.5 
+         7.5 
+         8.5 
+         10 
+         22 
+         30 
       </constant>
 <constant digits="2" name="tunedVeStrengthMultiplier" units="*">0.7</constant>
 <constant cols="1" digits="0" name="portsEnabled" rows="84" units="#">
@@ -10369,40 +10369,40 @@
          350.0 
       </constant>
 <constant cols="1" digits="0" name="ltftTableRpmBins" rows="16" units="RPM">
-         700 
-         1200 
-         1800 
-         2300 
-         2600 
-         2900 
-         3200 
-         3800 
-         4200 
-         4500 
-         5000 
-         5500 
-         6000 
-         6500 
-         7000 
-         7600 
+         700.0 
+         1200.0 
+         1800.0 
+         2300.0 
+         2600.0 
+         2900.0 
+         3200.0 
+         3800.0 
+         4200.0 
+         4500.0 
+         5000.0 
+         5500.0 
+         6000.0 
+         6500.0 
+         7000.0 
+         7600.0 
       </constant>
 <constant cols="16" digits="3" name="ltft_trims1_ltftTable" rows="16" units="%">
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 0.006 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         -0.383 -7.729 -5.812 -24.048 -9.774 0.883 4.302 -2.956 6.746 9.667 4.194 0.334 -4.279 -4.094 -0.114 0 
-         -0.965 22.97 23.19 1.597 3.594 5.224 6.12 23.575 13.995 9.623 8.963 1.758 -0.659 -6.021 -0.045 0 
-         0 6.288 8.644 4.014 4.575 5.156 5.781 9.461 6.444 6.363 7.873 0.377 -3.448 -22.175 -0.479 0 
-         0 0 0.131 0.118 1.887 3.247 3.788 4.401 4.253 5.372 6.639 0.008 0 0 0 0 
-         0.248 1.36 -3.996 7.311 16.847 19.837 9.737 8.147 7.303 7.441 7.387 1.409 0 0 0 0 
-         0 0 0 0.154 2.462 4 4 4 4 4 3.077 0 0 0 0 0 
-         0 0 0.013 0.787 9.995 17.839 22.954 25 11.2 4.842 3.256 0 0 0 0 0 
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 25 24.038 9.615 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 1.836 22.956 9.214 0.043 0.012 0 0 0 0 0 0 0 0 0 
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
-         0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.006 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         -0.383 -7.729 -5.812 -24.048 -9.774 0.883 4.302 -2.956 6.746 9.667 4.194 0.334 -4.279 -4.094 -0.114 0.0 
+         -0.965 22.97 23.19 1.597 3.594 5.224 6.12 23.575 13.995 9.623 8.963 1.758 -0.659 -6.021 -0.045 0.0 
+         0.0 6.288 8.644 4.014 4.575 5.156 5.781 9.461 6.444 6.363 7.873 0.377 -3.448 -22.175 -0.479 0.0 
+         0.0 0.0 0.131 0.118 1.887 3.247 3.788 4.401 4.253 5.372 6.639 0.008 0.0 0.0 0.0 0.0 
+         0.248 1.36 -3.996 7.311 16.847 19.837 9.737 8.147 7.303 7.441 7.387 1.409 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.154 2.462 4.0 4.0 4.0 4.0 4.0 3.077 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.013 0.787 9.995 17.839 22.954 25.0 11.2 4.842 3.256 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 25.0 24.038 9.615 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 1.836 22.956 9.214 0.043 0.012 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
+         0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
       </constant>
 <constant cols="16" digits="3" name="ltft_trims2_ltftTable" rows="16" units="%">
          0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 
@@ -10742,10 +10742,10 @@
          150.0 
       </constant>
 <constant cols="1" digits="0" name="tachCorrectionRpmBins" rows="4" units="RPM">
-         700 
-         3200 
-         5500 
-         7600 
+         700.0 
+         3200.0 
+         5500.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="tachCorrectionTable" rows="4" units="mult">
          1.0 
@@ -10767,14 +10767,14 @@
       </constant>
 <constant digits="3" name="deltaTpsAverageAlpha">0.003</constant>
 <constant cols="1" digits="0" name="deltaTpsAverageCurveRpmBins" rows="4" units="RPM">
-         700 
-         5500 
-         6000 
-         7600 
+         700.0 
+         5500.0 
+         6000.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="1" name="deltaTpsAverageCurveMultiplier" rows="4" units="mult">
-         2 
-         2 
+         2.0 
+         2.0 
          1.9 
          1.6 
       </constant>
@@ -10819,7 +10819,7 @@
 <constant digits="0" name="cc_accdec_request_timeout" units="sec">30.0</constant>
 <constant digits="1" name="cc_max_soft_etb" units="%">60.0</constant>
 <constant digits="3" name="cc_smooth_exp_average" units="expavg">0.1</constant>
-<constant digits="4" name="idleDeltaRpmAdjAvgFactor">0.1</constant>
+<constant digits="4" name="idleDeltaRpmAdjAvgFactor">1</constant>
 <constant name="assistedEtbWaveType">"Square"</constant>
 <constant digits="2" name="assistedEtbMinPct" units="%">5.0</constant>
 <constant digits="2" name="assistedEtbMaxPct" units="%">30.0</constant>
@@ -10930,9 +10930,9 @@
 <constant digits="0" name="preSyncFuelToothCountMax" units="events">4.0</constant>
 <constant digits="2" name="preSyncFuelMultiplier" units="x">0.5</constant>
 <constant cols="1" digits="0" name="tpsAeInstantRpmBins" rows="3" units="RPM">
-         700 
-         4200 
-         7600 
+         700.0 
+         4200.0 
+         7600.0 
       </constant>
 <constant cols="1" digits="2" name="tpsAeInstantRpmMultiplier" rows="3" units="mult">
          1.0 
@@ -14948,11 +14948,41 @@
 </page>
 <page number="1" size="3600">
 <constant name="luaScript">
+-- Hold overrun cut through the Marelli post-start phase.
+-- Counts are 720-degree cycles, indexed by the stock coolant ADC.
+setTickRate(25)
+local counts = {538, 482, 460, 430, 412, 383, 296, 235, 192, 158, 134, 113, 88, 97, 108, 115, 124, 130, 135, 141, 144, 144, 147, 149, 150, 154, 155, 158, 158, 161, 164, 164, 168, 170, 171, 173, 176, 176, 179, 182, 185, 185, 188, 188, 192, 192, 196, 196, 198, 200, 200, 202, 203, 205, 207, 210, 210, 213, 214, 215, 217, 218, 222, 222}
+-- Lower temperature of each ADC bin, in Boss calibrated degrees Celsius.
+local lowC = {109.150, 106.682, 104.372, 102.201, 100.153, 98.216, 96.377, 94.629, 92.961, 91.367, 89.841, 88.377, 86.970, 85.616, 84.310, 83.050, 81.832, 80.653, 79.511, 78.403, 77.327, 76.282, 75.265, 74.275, 73.311, 72.370, 71.453, 70.557, 69.681, 68.824, 67.987, 67.166, 66.363, 65.576, 64.803, 64.046, 63.302, 62.572, 61.855, 61.149, 60.456, 59.774, 59.103, 58.442, 57.791, 57.150, 56.518, 55.896, 55.281, 54.675, 54.078, 53.487, 52.905, 52.329, 51.761, 51.199, 50.644, 50.095, 49.552, 49.015, 48.483, 47.957, 47.437, 46.922}
+local ready = false
+local progress = 0
+local lastCycle = 0
 
 function onTick()
-
+    if getEngineState() ~= 2 then
+        ready = false
+        progress = 0
+        lastCycle = 0
+    elseif not ready then
+        local cycle = getOutput("revolutionCounterSinceStart")
+        local seconds = getOutput("engineRunTime")
+        local coolant = getOutput("coolant")
+        if cycle and seconds and coolant and coolant &gt;= -40 and coolant &lt;= 150 and seconds &lt; 90 and cycle &gt;= lastCycle then
+            local lo, hi = 1, #counts
+            while lo &lt; hi do
+                local mid = math.floor((lo + hi) / 2)
+                if coolant &gt; lowC[mid] then hi = mid else lo = mid + 1 end
+            end
+            progress = progress + (cycle - lastCycle) / counts[lo]
+            lastCycle = cycle
+            -- Allow for single-precision accumulation in the Boss Lua VM.
+            ready = progress &gt;= 0.9999
+        else
+            ready = true
+        end
+    end
+    setDfcoDisabled(not ready)
 end
-
     </constant>
 </page>
 <settings Comment="These setting are only used if this msq is opened without a project.">
